@@ -1,73 +1,65 @@
 import { ValueText } from 'onecore';
 import * as React from 'react';
-import { buildFromUrl, HistoryProps, SearchComponent, SearchState } from 'react-onex';
+import { buildFromUrl, DispatchWithCallback } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'react-pagination-x';
-import { getModel } from 'search-utilities';
-import { handleError, initForm, inputSearch, registerEvents, storage } from 'uione';
+import {useHistory} from 'react-router-dom';
+import { mergeSearchModel } from 'search-utilities';
+import { pageSizes, SearchComponentState, useSearch } from 'src/core/hooks/useSearch';
+import { handleError, inputSearch } from 'uione';
 import { context } from '../app';
 import { Role } from '../model/Role';
 import { RoleSM } from '../search-model/RoleSM';
 
-interface InternalState extends SearchState<Role, RoleSM> {
+interface RoleSearch extends SearchComponentState<Role, RoleSM> {
   statusList: ValueText[];
 }
-export class RolesForm extends SearchComponent<Role, RoleSM, HistoryProps, InternalState> {
-  constructor(props: HistoryProps) {
-    super(props, context.getRoleService(), inputSearch());
-    this.viewable = true;
-    this.editable = true;
-    this.state = {
-      statusList: [],
-      list: [],
-      model: {
-        keyword: '',
-        roleName: '',
-        status: []
-      }
-    };
-  }
 
-  private readonly masterDataService = context.getMasterDataService();
+const sm: RoleSM = {
+  roleId: '',
+  roleName: '',
+};
 
-  componentDidMount() {
-    this.form = initForm(this.ref.current, registerEvents);
-    const s = this.mergeSearchModel(buildFromUrl(), this.state.model, ['status']);
-    this.load(s, storage.autoSearch);
-  }
+const RoleSearch: RoleSearch = {
+  statusList: [],
+  list: [],
+  model: sm
+};
 
-  edit = (e: any, id: string) => {
+const initialize = (load: (s: RoleSM, auto?: boolean) => void, setPrivateState: DispatchWithCallback<RoleSearch>, c?: SearchComponentState<Role, RoleSM>) => {
+  const masterDataService = context.getMasterDataService();
+  Promise.all([
+    masterDataService.getStatus()
+  ]).then(values => {
+    const s2 = mergeSearchModel(buildFromUrl(), sm, pageSizes, ['activate']);
+    const [activationStatuses] = values;
+    setPrivateState({ statusList: activationStatuses }, () => load(s2, true));
+  }).catch(handleError);
+};
+
+export const RolesForm = () => {
+  const history = useHistory();
+  const refForm = React.useRef();
+  const getSearchModel = (): RoleSM => {
+    return RoleSearch.model;
+  };
+  const p = {initialize, getSearchModel};
+  const hooks = useSearch<Role, RoleSM, RoleSearch>(refForm, RoleSearch, context.getRoleService(), p, inputSearch());
+  const { state, resource, component, updateState } = hooks;
+
+  const edit = (e: any, id: string) => {
     e.preventDefault();
-    this.props.history.push('roles/' + id );
-  }
+    history.push('roles/' + id );
+  };
 
-  approve = (e: any, role: Role) => {
-    e.preventDefault();
-    this.props.history.push('access-role-definition/approve/' + role.roleId);
-  }
-
-  getSearchModel(): any {
-    const name = this.getModelName();
-    const lc = this.getLocale();
-    const cc = this.getCurrencyCode();
-    const fields = this.getDisplayFields();
-    const f = this.getSearchForm();
-    const dc = (this.ui ? this.ui.decodeFromForm : null);
-    const obj3 = getModel(this.state, name, this, fields, this.excluding, this.keys, [], f, dc, lc, cc);
-    return obj3;
-  }
-  render() {
-    const resource = this.resource;
-    const { model, list } = this.state;
-    console.log(this.editable);
-    return (
-      <div className='view-container'>
+  return (
+    <div className='view-container'>
         <header>
           <h2>{resource.role_list}</h2>
-          {this.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' onClick={this.add} />}
+          {component.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' onClick={hooks.add} />}
         </header>
         <div>
-          <form id='rolesForm' name='rolesForm' noValidate={true} ref={this.ref}>
+          <form id='rolesForm' name='rolesForm' noValidate={true} ref={refForm}>
             <section className='row search-group inline'>
               <label className='col s12 m6'>
                 {resource.role_name}
@@ -75,8 +67,8 @@ export class RolesForm extends SearchComponent<Role, RoleSM, HistoryProps, Inter
                   type='text'
                   id='roleName'
                   name='roleName'
-                  value={model.roleName}
-                  onChange={this.updateState}
+                  value={state.model.roleName}
+                  onChange={updateState}
                   maxLength={240}
                   placeholder={resource.roleName} />
               </label>
@@ -89,8 +81,8 @@ export class RolesForm extends SearchComponent<Role, RoleSM, HistoryProps, Inter
                       id='active'
                       name='status'
                       value='A'
-                      checked={model.status.includes('A')}
-                      onChange={this.updateState} />
+                      checked={state.model.status?.includes('A')}
+                      onChange={updateState} />
                     {resource.active}
                   </label>
                   <label>
@@ -99,8 +91,8 @@ export class RolesForm extends SearchComponent<Role, RoleSM, HistoryProps, Inter
                       id='inactive'
                       name='status'
                       value='I'
-                      checked={model.status.includes('I')}
-                      onChange={this.updateState} />
+                      checked={state.model.status?.includes('I')}
+                      onChange={updateState} />
                     {resource.inactive}
                   </label>
                 </section>
@@ -109,16 +101,16 @@ export class RolesForm extends SearchComponent<Role, RoleSM, HistoryProps, Inter
             <section className='btn-group'>
               <label>
                 {resource.page_size}
-                <PageSizeSelect pageSize={this.pageSize} pageSizes={this.pageSizes} onPageSizeChanged={this.pageSizeChanged} />
+                <PageSizeSelect pageSize={component.pageSize} pageSizes={component.pageSizes} onPageSizeChanged={hooks.pageSizeChanged} />
               </label>
-              <button type='submit' className='btn-search' onClick={this.searchOnClick}>{resource.search}</button>
+              <button type='submit' className='btn-search' onClick={hooks.searchOnClick}>{resource.search}</button>
             </section>
           </form>
           <form className='list-result'>
             <ul className='row list-view'>
-            {list && list.length > 0 && list.map((item, i) => {
+            {state.list && state.list.length > 0 && state.list.map((item, i) => {
               return (
-                <li key={i} className='col s12 m6 l4 xl3' onClick={e => this.edit(e, item.roleId)}>
+                <li key={i} className='col s12 m6 l4 xl3' onClick={e => edit(e, item.roleId)}>
                   <section>
                     <div>
                       <h3 className={item.status === 'I' ? 'inactive' : ''}>{item.roleName}</h3>
@@ -130,10 +122,9 @@ export class RolesForm extends SearchComponent<Role, RoleSM, HistoryProps, Inter
               );
             })}
             </ul>
-            <Pagination className='col s12 m6' totalRecords={this.itemTotal} itemsPerPage={this.pageSize} maxSize={this.pageMaxSize} currentPage={this.pageIndex} onPageChanged={this.pageChanged} />
+            <Pagination className='col s12 m6' totalRecords={component.itemTotal} itemsPerPage={component.pageSize} maxSize={component.pageMaxSize} currentPage={component.pageIndex} onPageChanged={hooks.pageChanged} />
           </form>
         </div>
       </div>
-    );
-  }
-}
+  );
+};

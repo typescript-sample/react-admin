@@ -1,158 +1,150 @@
-import { SearchModel, ValueText } from 'onecore';
+import { ValueText } from 'onecore';
 import * as React from 'react';
-import { buildFromUrl, HistoryProps, SearchComponent, SearchState } from 'react-onex';
+import { buildFromUrl, DispatchWithCallback, ModelProps, useMergeState, useRouter } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'react-pagination-x';
-import { getModel } from 'search-utilities';
-import { handleError, initForm, inputSearch, registerEvents, setSearchPermission, storage, user } from 'uione';
+import { mergeSearchModel } from 'search-utilities';
+import { pageSizes, SearchComponentState, useSearch } from 'src/core/hooks/useSearch';
+import { handleError, inputSearch, storage } from 'uione';
+import femaleIcon from '../../assets/images/female.png';
+import maleIcon from '../../assets/images/male.png';
 import { context } from '../app';
 import { User } from '../model/User';
 import { UserSM } from '../search-model/UserSM';
 
-interface InternalState extends SearchState<User, UserSM> {
+interface UserSearch extends SearchComponentState<User, UserSM> {
   statusList: ValueText[];
 }
-export class UsersForm extends SearchComponent<User, UserSM, HistoryProps, InternalState> {
-  constructor(props) {
-    super(props, context.getUserService(), inputSearch());
-    this.viewable = true;
-    this.editable = true;
-    this.state = {
-      statusList: [],
-      list: [],
-      model: {
-        userId: '',
-        keyword: '',
-        status: []
-      }
-    };
-  }
-  private readonly masterDataService = context.getMasterDataService();
+const sm: UserSM = {
+  userId: '',
+  username: '',
+  displayName: '',
+  email: '',
+  status: []
+};
 
-  componentDidMount() {
-    this.form = initForm(this.ref.current, registerEvents);
-    const s = this.mergeSearchModel(buildFromUrl(), this.state.model, ['ctrlStatus', 'activate']);
-    this.load(s, storage.autoSearch);
-  }
+const initialState: UserSearch = {
+  statusList: [],
+  list: [],
+  model: sm
+};
+let currentState = initialState;
+const initialize = (load: (s: UserSM, auto?: boolean) => void, setPrivateState: DispatchWithCallback<UserSearch>, c?: SearchComponentState<User, UserSM>) => {
+  const masterDataService = context.getMasterDataService();
+  Promise.all([
+    masterDataService.getStatus()
+  ]).then(values => {
+    const s2 = mergeSearchModel(buildFromUrl(), sm, pageSizes, ['activate']);
+    const [activationStatuses] = values;
+    setPrivateState({ statusList: activationStatuses }, () => load(s2, true));
+  }).catch(handleError);
+};
+export const UsersForm = (props: ModelProps) => {
+  const refForm = React.useRef();
+  const { match, push } = useRouter();
 
-  load(s: UserSM, autoSearch: boolean) {
-    Promise.all([
-      this.masterDataService.getStatus()
-    ]).then(values => {
-      const [statusList] = values;
-      this.setState({ statusList }, () => super.load(s, autoSearch));
-    }).catch(handleError);
-  }
+  const getSearchModel = (): UserSM => {
+    return currentState.model;
+  };
+  const p = { initialize, getSearchModel };
+  const hooks = useSearch<User, UserSM, UserSearch>(refForm, initialState, context.getUserService(), p, inputSearch());
+  const { state, resource, component, updateState } = hooks;
+  currentState = state;
+  component.viewable = true;
+  component.editable = true;
 
-  edit = (e: any, id: string) => {
+  const edit = (e: any, id: string) => {
     e.preventDefault();
-    this.props.history.push(`users/${id}`);
-  }
+    push(`users/${id}`);
+  };
 
-  approve = (e: any, id: number) => {
+  const approve = (e: any, id: string) => {
     e.preventDefault();
-    this.props.history.push(`users/approve/${id}`);
-  }
+    push(`users/approve/${id}`);
+  };
 
-  getSearchModel(): any {
-    const name = this.getModelName();
-    const lc = this.getLocale();
-    const cc = this.getCurrencyCode();
-    const fields = this.getDisplayFields();
-    const f = this.getSearchForm();
-    const dc = (this.ui ? this.ui.decodeFromForm : null);
-    const obj3 = getModel(this.state, name, this, fields, this.excluding, this.keys, [], f, dc, lc, cc);
-    return obj3;
-  }
-  render() {
-    const resource = this.resource;
-    const { statusList, model } = this.state;
-    console.log(this.editable);
-    return (
-      <div className='view-container'>
-        <header>
-          <h2>{resource.users}</h2>
-          {this.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' onClick={this.add} />}
-        </header>
-        <div>
-          <form id='usersForm' name='usersForm' noValidate={true} ref={this.ref}>
-            <section className='row search-group inline'>
-              <label className='col s12 m4 l3'>
-                {resource.user_id}
-                <input type='text'
-                  id='userId' name='userId'
-                  value={model.userId}
-                  onChange={this.updateState}
-                  maxLength={255}
-                  placeholder={resource.user_id} />
-              </label>
-              <label className='col s12 m8 l4 checkbox-section'>
-                {resource.activation_status}
-                <section className='checkbox-group'>
-                  {statusList.map((item, index) => (
-                    <label key={index}>
-                      <input
-                        type='checkbox'
-                        id={item.value}
-                        name='status'
-                        key={index}
-                        value={item.value}
-                        checked={model.status.includes(item.value)}
-                        onChange={this.updateState} />
-                      {item.text}
-                    </label>
-                  )
-                  )}
-                </section>
-              </label>
-            </section>
-            <section className='btn-group'>
-              <label>
-                {resource.page_size}
-                <PageSizeSelect pageSize={this.pageSize} pageSizes={this.pageSizes} onPageSizeChanged={this.pageSizeChanged} />
-              </label>
-              <button type='submit' className='btn-search' onClick={this.searchOnClick}>{resource.search}</button>
-            </section>
-          </form>
-          <form className='list-result'>
-            <div className='table-responsive'>
-              <table>
-                <thead>
-                  <tr>
-                    <th>{resource.sequence}</th>
-                    <th data-field='userId'><button type='button' id='sortUserId' onClick={this.sort}>{resource.user_id}</button></th>
-                    <th data-field='username'><button type='button' id='sortUserName' onClick={this.sort}>{resource.username}</button></th>
-                    <th data-field='email'><button type='button' id='sortEmail' onClick={this.sort}>{resource.email}</button></th>
-                    <th data-field='displayname'><button type='button' id='sortDisplayName' onClick={this.sort}>{resource.display_name}</button></th>
-                    <th data-field='status'><button type='button' id='sortStatus' onClick={this.sort}>{resource.status}</button></th>
-                    <th className='action'>{resource.action}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.state && this.state.list && this.state.list.map((item, i) => {
-                    return (
-                      <tr key={i}>
-                        <td className='text-right'>{(item as any).sequenceNo}</td>
-                        <td>{item.userId}</td>
-                        <td>{item.username}</td>
-                        <td>{item.email}</td>
-                        <td>{item.displayName}</td>
-                        <td>{item.status}</td>
-                        <td>
-                          {(this.editable || this.viewable) &&
-                            <button type='button' id={'btnView' + i} className={this.editable ? 'btn-edit' : 'btn-view'}
-                              onClick={(e) => this.edit(e, item.userId)} />}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-            <Pagination className='col s12 m6' totalRecords={this.itemTotal} itemsPerPage={this.pageSize} maxSize={this.pageMaxSize} currentPage={this.pageIndex} onPageChanged={this.pageChanged} initPageSize={this.initPageSize} />
-          </form>
-        </div>
+  const { model, list } = state;
+  return (
+    <div className='view-container'>
+      <header>
+        <h2>{resource.users}</h2>
+        {component.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' onClick={hooks.add} />}
+      </header>
+      <div>
+        <form id='usersForm' name='usersForm' noValidate={true} ref={refForm}>
+          <section className='row search-group inline'>
+            <label className='col s12 m4 l4'>
+              {resource.username}
+              <input type='text'
+                id='username' name='username'
+                value={model.username}
+                onChange={updateState}
+                maxLength={255}
+                placeholder={resource.username} />
+            </label>
+            <label className='col s12 m4 l4'>
+              {resource.display_name}
+              <input type='text'
+                id='displayName' name='displayName'
+                value={model.displayName}
+                onChange={updateState}
+                maxLength={255}
+                placeholder={resource.display_name} />
+            </label>
+            <label className='col s12 m4 l4 checkbox-section'>
+              {resource.status}
+              <section className='checkbox-group'>
+                <label>
+                  <input
+                    type='checkbox'
+                    id='A'
+                    name='status'
+                    value='A'
+                    checked={model && model.status && model.status.includes('A')}
+                    onChange={updateState} />
+                  {resource.active}
+                </label>
+                <label>
+                  <input
+                    type='checkbox'
+                    id='I'
+                    name='status'
+                    value='I'
+                    checked={model && model.status && model.status.includes('I')}
+                    onChange={updateState} />
+                  {resource.inactive}
+                </label>
+              </section>
+            </label>
+          </section>
+          <section className='btn-group'>
+            <label>
+              {resource.page_size}
+              <PageSizeSelect pageSize={component.pageSize} pageSizes={component.pageSizes} onPageSizeChanged={hooks.pageSizeChanged} />
+            </label>
+            <button type='submit' className='btn-search' onClick={hooks.searchOnClick}>{resource.search}</button>
+          </section>
+        </form>
+        <form className='list-result'>
+          <ul className='row list-view'>
+            {list && list.length > 0 && list.map((item, i) => {
+              return (
+                <li key={i} className='col s12 m6 l4 xl3' onClick={e => edit(e, item.userId)}>
+                  <section>
+                    <img src={item.gender === 'F' ? femaleIcon : maleIcon} className='round-border'/>
+                    <div>
+                      <h3 className={item.status === 'I' ? 'inactive' : ''}>{item.displayName}</h3>
+                      <p>{item.email}</p>
+                    </div>
+                    <button className='btn-detail' />
+                  </section>
+                </li>
+              );
+            })}
+          </ul>
+          <Pagination className='col s12 m6' totalRecords={component.itemTotal} itemsPerPage={component.pageSize} maxSize={component.pageMaxSize} currentPage={component.pageIndex} onPageChanged={hooks.pageChanged} initPageSize={component.initPageSize} />
+        </form>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};

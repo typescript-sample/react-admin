@@ -9,12 +9,9 @@ import {WithDefaultProps} from '../core/default';
 import AuditForm from './component/audit-form';
 import {RoleAssignmentForm} from './component/role-assignment-form';
 import {RoleForm} from './component/role-form';
-// import {RolesForm} from './component/roles-form';
-// import {UserForm} from './component/user-form';
-// import {UsersForm} from './component/users-form';
-import RolesForm from './component/roles-form-hook';
-import {UserForm} from './component/user-form-hook';
-import {UsersForm} from './component/users-form-hook';
+import {RolesForm} from './component/roles-form';
+import {UserForm} from './component/user-form';
+import {UsersForm} from './component/users-form';
 
 
 interface AppProps {
