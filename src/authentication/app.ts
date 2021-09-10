@@ -9,43 +9,51 @@ import {PasswordWebClient} from 'password-component';
 import {SignupInfo} from 'signup-component';
 import {SignupService} from 'signup-component';
 import {SignupClient} from 'signup-component';
-import config from 'src/config';
-import {options} from 'uione';
+import {options, storage} from 'uione';
 
+export interface Config {
+  authentication_url: string;
+  signup_url: string;
+  password_url: string;
+  oauth2_url: string;
+}
 class ApplicationContext {
   private readonly httpRequest = new HttpRequest(axios, options);
-  public signupService: SignupService<SignupInfo>;
-  public authenticator: Authenticator<AuthInfo>;
-  public passwordService: PasswordService;
-  public oauth2Service: OAuth2Service;
+  private signupService: SignupService<SignupInfo>;
+  private authenticator: Authenticator<AuthInfo>;
+  private passwordService: PasswordService;
+  private oauth2Service: OAuth2Service;
+  getConfig(): Config {
+    return storage.config();
+  }
   getSignupService(): SignupService<SignupInfo> {
     if (!this.signupService) {
-      this.signupService = new SignupClient<SignupInfo>(this.httpRequest, config.signupUrl + '/signup/signup', config.signupUrl);
+      const c = this.getConfig();
+      this.signupService = new SignupClient<SignupInfo>(this.httpRequest, c.signup_url + '/signup', c.signup_url);
     }
     return this.signupService;
   }
   getAuthenticator(): Authenticator<AuthInfo> {
     if (!this.authenticator) {
-      this.authenticator = new AuthenticationClient<AuthInfo>(this.httpRequest, config.authenticationUrl + '/authenticate');
+      const c = this.getConfig();
+      this.authenticator = new AuthenticationClient<AuthInfo>(this.httpRequest, c.authentication_url + '/authenticate');
     }
     return this.authenticator;
   }
   getPasswordServicer(): PasswordService {
     if (!this.passwordService) {
-      this.passwordService = new PasswordWebClient(this.httpRequest, config.passwordUrl);
+      const c = this.getConfig();
+      this.passwordService = new PasswordWebClient(this.httpRequest, c.password_url);
     }
     return this.passwordService;
   }
   getOAuth2Service(): OAuth2Service {
     if (!this.oauth2Service) {
-      this.oauth2Service = new OAuth2Client(this.httpRequest, config.authenticationUrl + '/oauth2/authenticate', config.authenticationUrl + '/oauth2/configurations');
+      const c = this.getConfig();
+      this.oauth2Service = new OAuth2Client(this.httpRequest, c.oauth2_url + '/authenticate', c.oauth2_url + '/configurations');
     }
     return this.oauth2Service;
   }
-  // readonly signupService: SignupService<SignupInfo> = new SignupClient<SignupInfo>(this.httpRequest, config.signupUrl + '/signup/signup', config.signupUrl);
-  // readonly authenticator: Authenticator<AuthInfo> = new AuthenticationClient<AuthInfo>(this.httpRequest, config.authenticationUrl + '/authenticate');
-  // readonly passwordService: PasswordService = new PasswordWebClient(this.httpRequest, config.passwordUrl);
-  // readonly oauth2Service: OAuth2Service = new OAuth2Client(this.httpRequest, config.authenticationUrl + '/oauth2/authenticate', config.authenticationUrl + '/oauth2/configurations');
 }
 
 export const context = new ApplicationContext();

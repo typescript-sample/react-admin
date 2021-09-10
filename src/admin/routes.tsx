@@ -1,3 +1,4 @@
+import {AxiosInstance} from 'axios';
 import * as H from 'history';
 import * as React from 'react';
 import {connect} from 'react-redux';
@@ -9,10 +10,9 @@ import {WithDefaultProps} from '../core/default';
 import AuditForm from './component/audit-form';
 import {RoleAssignmentForm} from './component/role-assignment-form';
 import {RoleForm} from './component/role-form';
-import {RolesForm} from './component/roles-form';
+import RolesForm from './component/roles-form';
 import {UserForm} from './component/user-form';
 import {UsersForm} from './component/users-form';
-
 
 interface AppProps {
   history: H.History;
@@ -33,7 +33,6 @@ class StatelessApp extends React.Component<AppProps & RouteComponentProps<any>, 
           <Route path={this.props.match.url + 'roles/:id'} exact={true} component={WithDefaultProps(RoleForm)} />
 
           <Route path={this.props.match.url + 'audit-logs'} exact={true} component={WithDefaultProps(AuditForm)} />
-
           <Route path={this.props.match.url + '/access-role-assignment/add'} exact={true} component={WithDefaultProps(RoleAssignmentForm)} />
           <Route path={this.props.match.url + '/access-role-assignment/edit/:id/:cId'} exact={true} component={WithDefaultProps(RoleAssignmentForm)} />
         </React.Fragment>
@@ -57,8 +56,8 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(null, mapDispatchToProps);
 
-const AccessRoutes = compose(
+const adminRoutes = compose(
   withRouter,
   withConnect
 )(StatelessApp);
-export default AccessRoutes;
+export default adminRoutes;

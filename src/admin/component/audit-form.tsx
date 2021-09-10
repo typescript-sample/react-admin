@@ -6,8 +6,7 @@ import {useHistory} from 'react-router-dom';
 import { SearchComponentState, useSearch } from 'src/core/hooks/useSearch';
 import { inputSearch } from 'uione';
 import { context } from '../app';
-import { Audit } from '../model/Audit';
-import { AuditSM } from '../search-model/AuditSM';
+import { Audit, AuditSM } from '../model/Audit';
 
 interface AuditSearch extends SearchComponentState<Audit, AuditSM> {
   statusList: ValueText[];

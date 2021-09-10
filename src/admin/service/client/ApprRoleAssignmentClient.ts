@@ -1,14 +1,14 @@
-import {ViewSearchWebClient} from 'web-clients';
+import {RoleSM} from 'onecore';
+import {ViewSearchClient} from 'web-clients';
 import {HttpRequest} from 'web-clients';
 import config from '../../../config';
 import {roleModel} from '../../metadata/RoleModel';
 import {Role} from '../../model/Role';
-import {RoleSM} from '../../search-model/RoleSM';
 import {ApprAccessRoleAssignmentService} from '../ApprRoleAssignmentService';
 
-export class ApprRoleAssignmentClient extends ViewSearchWebClient<Role, any, RoleSM> implements ApprAccessRoleAssignmentService {
+export class ApprRoleAssignmentClient extends ViewSearchClient<Role, any, RoleSM> implements ApprAccessRoleAssignmentService {
   constructor(http: HttpRequest) {
-    super(config.backOfficeUrl + 'common/resources/accessRole', http, roleModel);
+    super(http, config.backOfficeUrl + 'common/resources/accessRole', roleModel.attributes);
   }
   /*
   protected formatObject(obj): AccessRole {

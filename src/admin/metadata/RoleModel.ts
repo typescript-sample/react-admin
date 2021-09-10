@@ -1,46 +1,41 @@
-import {Model, Type} from 'onecore';
+import {Model} from 'onecore';
 import {userModel} from './UserModel';
 
 export const roleModel: Model = {
   name: 'role',
   attributes: {
     roleId: {
-      type: Type.string,
       length: 40,
       key: true
     },
     roleName: {
-      type: Type.string ,
+      type: 'string' ,
       length: 120
     },
     remark: {
-      type: Type.string,
       length: 255
     },
     status: {
-      type: Type.string,
       length: 1
     },
     createdBy: {
-      type: Type.string,
       length: 40
     },
     createdAt: {
-      type: Type.date
+      type: 'datetime'
     },
     updatedBy: {
-      type: Type.string,
       length: 40
     },
     updatedAt: {
-      type: Type.date
+      type: 'datetime'
     },
     modules: {
-      type: Type.array
+      type: 'array'
     },
     users: {
-      type: Type.array,
-      typeof: userModel
+      type: 'array',
+      typeof: userModel.attributes
     }
   }
 };

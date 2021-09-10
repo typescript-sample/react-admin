@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {EditComponent, HistoryProps} from 'react-onex';
+import { EditComponent, HistoryProps } from 'src/core/hooks';
+// import {EditComponent, HistoryProps} from 'react-onex';
 import {handleError, inputEdit} from 'uione';
 import {context} from '../app';
 import {Privilege, Role} from '../model/Role';

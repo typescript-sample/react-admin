@@ -1,4 +1,4 @@
-import { ValueText } from 'onecore';
+import { UserSM, ValueText } from 'onecore';
 import * as React from 'react';
 import { buildFromUrl, DispatchWithCallback, ModelProps, useMergeState, useRouter } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
@@ -10,7 +10,6 @@ import femaleIcon from '../../assets/images/female.png';
 import maleIcon from '../../assets/images/male.png';
 import { context } from '../app';
 import { User } from '../model/User';
-import { UserSM } from '../search-model/UserSM';
 
 interface UserSearch extends SearchComponentState<User, UserSM> {
   statusList: ValueText[];
@@ -61,6 +60,11 @@ export const UsersForm = (props: ModelProps) => {
   const approve = (e: any, id: string) => {
     e.preventDefault();
     push(`users/approve/${id}`);
+  };
+
+  const handleNavigateToUpload = (e: any, userId: string) => {
+    e.preventDefault();
+    push(`uploads/${userId}/image`);
   };
 
   const { model, list } = state;
@@ -129,11 +133,11 @@ export const UsersForm = (props: ModelProps) => {
           <ul className='row list-view'>
             {list && list.length > 0 && list.map((item, i) => {
               return (
-                <li key={i} className='col s12 m6 l4 xl3' onClick={e => edit(e, item.userId)}>
+                <li key={i} className='col s12 m6 l4 xl3'>
                   <section>
-                    <img src={item.gender === 'F' ? femaleIcon : maleIcon} className='round-border'/>
+                    <img onClick={(e) => handleNavigateToUpload(e, item.userId)} src={item.imageURL && item.imageURL.length > 0 ? item.imageURL : (item.gender === 'F' ? femaleIcon : maleIcon)} className='round-border'/>
                     <div>
-                      <h3 className={item.status === 'I' ? 'inactive' : ''}>{item.displayName}</h3>
+                      <h3 onClick={e => edit(e, item.userId)} className={item.status === 'I' ? 'inactive' : ''}>{item.displayName}</h3>
                       <p>{item.email}</p>
                     </div>
                     <button className='btn-detail' />

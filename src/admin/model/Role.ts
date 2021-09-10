@@ -1,7 +1,7 @@
-import {TrackingModel} from './TrackingModel';
+import {Tracking} from 'onecore';
 import {User} from './User';
 
-export interface Role extends TrackingModel {
+export interface Role extends Tracking {
   roleId: string;
   roleName: string;
   status: string;

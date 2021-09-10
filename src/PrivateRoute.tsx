@@ -15,8 +15,7 @@
 
 import * as React from 'react';
 import {Redirect, Route} from 'react-router-dom';
-import {alert, resource} from 'uione';
-import {authorized} from './core/authorization';
+import {alert, authorized, resource} from 'uione';
 
 interface PrivateRouteProps {
   rootUrl: string;

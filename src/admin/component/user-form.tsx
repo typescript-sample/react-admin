@@ -4,12 +4,9 @@ import 'react-day-picker/lib/style.css';
 import {createModel, DispatchWithCallback, error, ModelProps} from 'react-onex';
 import {EditComponentParam, useEdit} from 'src/core/hooks/useEdit';
 import {formatter} from 'ui-plus';
-import {inputEdit, storage} from 'uione';
-import {emailOnBlur, phoneOnBlur} from 'uione';
+import {emailOnBlur, Gender, inputEdit, phoneOnBlur, Status, storage} from 'uione';
 import '../../assets/css//datepicker.css';
 import {context} from '../app';
-import {Gender} from '../enum/Gender';
-import {ModelStatus} from '../enum/ModelStatus';
 import {User} from '../model/User';
 
 interface InternalState {
@@ -20,7 +17,7 @@ interface InternalState {
 
 const createUser = (): User => {
   const user = createModel<User>();
-  user.status = ModelStatus.Active;
+  user.status = Status.Active;
   return user;
 };
 
@@ -171,7 +168,7 @@ export const UserForm = (props: ModelProps) => {
                   id='active'
                   name='status'
                   onChange={updateState}
-                  value={ModelStatus.Active} checked={user.status === ModelStatus.Active} />
+                  value={Status.Active} checked={user.status === Status.Active} />
                 {resource.yes}
               </label>
               <label>
@@ -180,7 +177,7 @@ export const UserForm = (props: ModelProps) => {
                   id='inactive'
                   name='status'
                   onChange={updateState}
-                  value={ModelStatus.Inactive} checked={user.status === ModelStatus.Inactive} />
+                  value={Status.Inactive} checked={user.status === Status.Inactive} />
                 {resource.no}
               </label>
             </div>

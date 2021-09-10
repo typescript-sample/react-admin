@@ -1,6 +1,7 @@
 import {ValueText} from 'onecore';
 import * as React from 'react';
-import {EditComponent, HistoryProps} from 'react-onex';
+import { EditComponent, HistoryProps } from 'src/core/hooks';
+// import {EditComponent, HistoryProps} from 'react-onex';
 import {handleError, inputEdit, resource as getResource} from 'uione';
 import femaleIcon from '../../assets/images/female.png';
 import maleIcon from '../../assets/images/male.png';

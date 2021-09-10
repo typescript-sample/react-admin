@@ -1,8 +1,5 @@
-import {ResultInfo} from 'onecore';
-import {GenericSearchDiffApprService} from 'onecore';
-import { Audit, Privilege } from '../model/Audit';
-import {AuditSM} from '../search-model/AuditSM';
+import {ViewSearchService} from 'onecore';
+import {Audit, AuditSM} from '../model/Audit';
 
-export interface AuditService extends GenericSearchDiffApprService<Audit, any, number|ResultInfo<Audit>, AuditSM> {
-  getPrivileges?(ctx?: any): Promise<Privilege[]>;
+export interface AuditService extends ViewSearchService<Audit, string, AuditSM> {
 }

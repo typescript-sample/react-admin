@@ -1,13 +1,13 @@
-import {SearchModel} from 'onecore';
+import {SearchModel, UserSM} from 'onecore';
 import * as React from 'react';
 import Modal from 'react-modal';
-import {HistoryProps, SearchComponent, SearchState} from 'react-onex';
+// import {HistoryProps, SearchComponent, SearchState} from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'react-pagination-x';
+import { HistoryProps, SearchComponent, SearchState } from 'src/core/hooks';
 import {initForm, inputSearch, registerEvents, storage} from 'uione';
 import {context} from '../app';
 import {User} from '../model/User';
-import {UserSM} from '../search-model/UserSM';
 
 interface InternalState extends SearchState<User, UserSM> {
   users: User[];

@@ -1,7 +1,12 @@
 const localConfigUrl = {
-  authenticationUrl: 'http://localhost:8080',
-  signupUrl: 'http://localhost:8080',
-  passwordUrl: 'http://localhost:8080',
+  authentication_url: 'http://localhost:8080',
+  signup_url: 'http://localhost:8080/signup',
+  password_url: 'http://localhost:8080/password',
+  oauth2_url: 'http://localhost:8080/oauth2',
+
+  user_url: 'http://localhost:7070/users',
+  role_url: 'http://localhost:7070/roles',
+  audit_log_url: 'http://localhost:7070/audit-logs',
 
   backOfficeUrl: 'http://localhost:7070/',
   backTripalUrl: 'http://localhost:7070/',
@@ -46,9 +51,10 @@ const localConfigUrl = {
 };
 
 const sitConfigUrl = {
-  authenticationUrl: 'http://10.1.0.234:3003',
-  signupUrl: 'http://10.1.0.234:3003',
-  passwordUrl: 'http://10.1.0.234:3003',
+  authentication_url: 'http://10.1.0.234:3003',
+  signup_url: 'http://10.1.0.234:3003',
+  password_url: 'http://10.1.0.234:3003',
+  oauth2_url: 'http://10.1.0.234:3003',
 
   backOfficeUrl: 'http://10.1.0.234:8080/',
   backTripalUrl: 'http://10.1.0.234:8080/',
@@ -92,9 +98,10 @@ const sitConfigUrl = {
 };
 
 const deployConfigUrl = {
-  authenticationUrl: '/server',
-  signupUrl: '/server',
-  passwordUrl: '/server',
+  authentication_url: '/server',
+  signup_url: '/server',
+  password_url: '/server',
+  oauth2_url: 'server',
 
   backOfficeUrl: '/server/',
   backTripalUrl: 'http://localhost:8080/',

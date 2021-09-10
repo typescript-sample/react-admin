@@ -33,7 +33,7 @@ class StatelessApp extends React.Component<AppProps & RouteComponentProps<any>, 
   }
 }
 
-const AuthenticationRoutes = compose(
+const authenticationRoutes = compose(
   withRouter,
 )(StatelessApp);
-export default AuthenticationRoutes;
+export default authenticationRoutes;

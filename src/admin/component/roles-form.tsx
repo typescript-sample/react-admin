@@ -1,4 +1,4 @@
-import { ValueText } from 'onecore';
+import { RoleSM, ValueText } from 'onecore';
 import * as React from 'react';
 import { buildFromUrl, DispatchWithCallback } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
@@ -9,7 +9,6 @@ import { pageSizes, SearchComponentState, useSearch } from 'src/core/hooks/useSe
 import { handleError, inputSearch } from 'uione';
 import { context } from '../app';
 import { Role } from '../model/Role';
-import { RoleSM } from '../search-model/RoleSM';
 
 interface RoleSearch extends SearchComponentState<Role, RoleSM> {
   statusList: ValueText[];
@@ -37,7 +36,7 @@ const initialize = (load: (s: RoleSM, auto?: boolean) => void, setPrivateState: 
   }).catch(handleError);
 };
 
-export const RolesForm = () => {
+const RolesForm = () => {
   const history = useHistory();
   const refForm = React.useRef();
   const getSearchModel = (): RoleSM => {
@@ -128,3 +127,4 @@ export const RolesForm = () => {
       </div>
   );
 };
+export default RolesForm;

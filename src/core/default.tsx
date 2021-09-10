@@ -156,7 +156,7 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     */
     const httpRequest = new HttpRequest(axios, options);
     try {
-      const url = config.authenticationUrl + '/authentication/signout/' + storage.username();
+      const url = config.authentication_url + '/authentication/signout/' + storage.username();
       const success = await httpRequest.get(url);
       if (success) {
         sessionStorage.setItem('authService', null);

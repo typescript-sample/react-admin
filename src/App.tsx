@@ -12,17 +12,18 @@ import {DefaultUIService, resources as uiresources} from 'ui-plus';
 import {toast} from 'ui-toast';
 import {storage} from 'uione';
 import {resources as vresources} from 'validation-util';
-import {DefaultCsvService, resources, SearchConfig} from 'web-clients';
-import AuthenticationRoutes from './authentication/routes';
+import {DefaultCsvService, resources} from 'web-clients';
+import authenticationRoutes from './authentication/routes';
+import config from './config';
 import NotFoundPage from './core/containers/400/page';
 import UnAuthorizedPage from './core/containers/401/page';
 import InternalServerErrorPage from './core/containers/500/page';
 import DefaultWrapper from './core/default';
 import {Loading} from './core/Loading';
-import Resources from './core/Resources';
+import {resources as locales} from './core/resources';
 import {WelcomeForm} from './core/welcome-form';
 
-const AccessRoutes = LazyLoadModule({ loader: () => import(`./admin/routes`), loading: Loading });
+const adminRoutes = LazyLoadModule({ loader: () => import(`./admin/routes`), loading: Loading });
 
 interface StateProps {
   anyProps?: any;
@@ -47,19 +48,14 @@ function parseDate(value: string, format: string): Date {
 class StatelessApp extends React.Component<AppProps & RouteComponentProps<any>, {}> {
   constructor(props) {
     super(props);
-
+    storage.setConfig(config);
     resources.csv = new DefaultCsvService(csv);
-    /*
-    const c: SearchConfig = {
-      page: 'pageIndex',
-      limit: 'pageSize',
-      firstLimit: 'firstPageSize'
+    resources.config = {
+      list: 'list'
     };
-    resource.config = c;
-    */
     storage.moment = true;
     storage.home = '/welcome';
-    storage.setResources(Resources);
+    storage.setResources(locales);
     storage.setLoadingService(loading);
     storage.setUIService(new DefaultUIService());
     storage.currency = currency;
@@ -82,12 +78,12 @@ class StatelessApp extends React.Component<AppProps & RouteComponentProps<any>, 
       <Switch>
         <Route path='/401' component={UnAuthorizedPage} />
         <Route path='/500' component={InternalServerErrorPage} />
-        <Route path='/auth' component={AuthenticationRoutes} />
+        <Route path='/auth' component={authenticationRoutes} />
         <Route path='/' exact={true} render={(props) => (<Redirect to='/auth' {...props} />)} />
 
         <DefaultWrapper history={this.props.history} location={this.props.location}>
           <Route path='/welcome' component={WelcomeForm} />
-          <Route path='' component={AccessRoutes} />
+          <Route path='' component={adminRoutes} />
         </DefaultWrapper>
 
         <Route path='**' component={NotFoundPage} />
