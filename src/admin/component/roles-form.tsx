@@ -80,7 +80,7 @@ const RolesForm = () => {
                       id='active'
                       name='status'
                       value='A'
-                      checked={state.model.status?.includes('A')}
+                      checked={state.model && state.model.status && state.model.status.includes('A')}
                       onChange={updateState} />
                     {resource.active}
                   </label>
@@ -90,7 +90,7 @@ const RolesForm = () => {
                       id='inactive'
                       name='status'
                       value='I'
-                      checked={state.model.status?.includes('I')}
+                      checked={state.model && state.model.status && state.model.status.includes('I')}
                       onChange={updateState} />
                     {resource.inactive}
                   </label>
