@@ -174,7 +174,7 @@ export const RoleAssignmentForm = (props) => {
             <form id='roleAssignmentForm' name='roleAssignmentForm' model-name='role' ref={this.ref}>
                 <header>
                     <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back}/>
-                    <h2>{this.newMode ? resource.create : resource.edit} {resource.role_assignment_subject}</h2>
+                    <h2>{resource.edit} {resource.role_assignment_subject}</h2>
                 </header>
                 <div>
                     <section className='row'>
@@ -184,7 +184,6 @@ export const RoleAssignmentForm = (props) => {
                             <input type='text'
                                    id='roleId' name='roleId'
                                    value={role.roleId || ''}
-                                   onChange={this.updateState}
                                    maxLength={255}
                                    placeholder={resource.roleId}
                                    disabled={true}/>
@@ -194,7 +193,6 @@ export const RoleAssignmentForm = (props) => {
                             <input type='text'
                                    id='roleName' name='roleName'
                                    value={role.roleName || ''}
-                                   onChange={this.updateState}
                                    maxLength={255}
                                    placeholder={resource.role_name}
                                    disabled={true}/>
