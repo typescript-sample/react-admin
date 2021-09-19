@@ -152,6 +152,12 @@ export class RoleForm extends EditComponent<Role, any, HistoryProps, InternalSta
     this.setState({ keyword, shownPrivileges });
   }
 
+   assign = (e: any, id: string) => {
+    e.preventDefault();
+    this.props.history.push(`/roles/${id}/assign`);
+    return;
+  }
+
   renderForms = (role: Role, modules: Privilege[], parentId: string, disabled: boolean, allPrivileges: Privilege[]) => {
     if (!modules || modules.length === 0) {
       return '';
@@ -207,6 +213,7 @@ export class RoleForm extends EditComponent<Role, any, HistoryProps, InternalSta
           <header>
             <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={this.back} />
             <h2>{this.newMode ? resource.create : resource.edit} {resource.role}</h2>
+            <i onClick={e => this.assign(e, role.roleId)} className='btn material-icons'>group</i>
           </header>
           <div>
             <section className='row'>

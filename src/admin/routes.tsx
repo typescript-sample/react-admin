@@ -30,11 +30,10 @@ class StatelessApp extends React.Component<AppProps & RouteComponentProps<any>, 
 
           <Route path={this.props.match.url + 'roles'} exact={true} component={WithDefaultProps(RolesForm)} />
           <Route path={this.props.match.url + 'roles/add'} exact={true} component={WithDefaultProps(RoleForm)} />
+          <Route path={this.props.match.url + 'roles/:id/assign'} exact={true} component={WithDefaultProps(RoleAssignmentForm)} />
           <Route path={this.props.match.url + 'roles/:id'} exact={true} component={WithDefaultProps(RoleForm)} />
 
           <Route path={this.props.match.url + 'audit-logs'} exact={true} component={WithDefaultProps(AuditForm)} />
-          <Route path={this.props.match.url + '/access-role-assignment/add'} exact={true} component={WithDefaultProps(RoleAssignmentForm)} />
-          <Route path={this.props.match.url + '/access-role-assignment/edit/:id/:cId'} exact={true} component={WithDefaultProps(RoleAssignmentForm)} />
         </React.Fragment>
       );
       /*

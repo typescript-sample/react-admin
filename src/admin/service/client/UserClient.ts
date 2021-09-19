@@ -16,6 +16,11 @@ export class UserClient extends GenericSearchDiffApprClient<User, number, number
       const obj = await this.http.get<User>(url);
       return json(obj, this._metamodel);
   }
+
+  async loadUserByRoleID(id: number): Promise<User[]> {
+      const url = `${this.serviceUrl}?roleId=${id}`;
+      return this.http.get<User[]>(url);
+  }
   protected postOnly(s: UserSM): boolean {
     return true;
   }

@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import { options, storage } from 'uione';
-import { ApprRoleAssignmentClient } from './service/client/ApprRoleAssignmentClient';
 import { AuditClient } from './service/client/AuditClient';
 import { MasterDataClient } from './service/client/MasterDataClient';
-import { RoleAssignmentClient } from './service/client/RoleAssignmentClient';
 import { RoleClient } from './service/client/RoleClient';
 import { UserClient } from './service/client/UserClient';
 import { MasterDataService } from './service/MasterDataService';
@@ -17,8 +15,6 @@ export interface Config {
 }
 class ApplicationContext {
   private masterDataService: MasterDataService;
-  private roleAssignmentService: RoleAssignmentClient;
-  private apprRoleAssignmentService: ApprRoleAssignmentClient;
   private roleService: RoleClient;
   private userService: UserClient;
   private auditService: AuditClient;
@@ -31,18 +27,7 @@ class ApplicationContext {
     }
     return this.masterDataService;
   }
-  getRoleAssignmentService(): RoleAssignmentClient {
-    if (!this.roleAssignmentService) {
-      this.roleAssignmentService = new RoleAssignmentClient(httpRequest);
-    }
-    return this.roleAssignmentService;
-  }
-  getApprRoleAssignmentService(): ApprRoleAssignmentClient {
-    if (!this.apprRoleAssignmentService) {
-      this.apprRoleAssignmentService = new ApprRoleAssignmentClient(httpRequest);
-    }
-    return this.apprRoleAssignmentService;
-  }
+
   getRoleService(): RoleClient {
     if (!this.roleService) {
       const c = this.getConfig();

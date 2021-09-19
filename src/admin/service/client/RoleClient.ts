@@ -1,6 +1,7 @@
 import {ResultInfo, RoleSM} from 'onecore';
 import {GenericSearchDiffApprClient} from 'web-clients';
 import {HttpRequest} from 'web-clients';
+import {json} from 'web-clients/src/json';
 import config from '../../../config';
 import {roleModel} from '../../metadata/RoleModel';
 import {Privilege, Role} from '../../model/Role';
@@ -10,6 +11,21 @@ export class RoleClient extends GenericSearchDiffApprClient<Role, any, number|Re
   constructor(http: HttpRequest, url: string) {
     super(http, url, roleModel.attributes, null);
   }
+  assign(objs: string[], roleId: string, ctx?: any): Promise<any> {
+    return this.http.put<string[]>(`${this.serviceUrl}/${roleId}/assign`, objs).then(res => {
+      if (!this._metamodel) {
+        return res;
+      }
+      return this.formatResultInfo(res, ctx);
+    });
+  }
+  protected formatResultInfo(result: any, ctx?: any): any {
+    if (this._metamodel && result && typeof result === 'object' && result.status === 1 && result.value && typeof result.value === 'object') {
+      result.value = json(result.value, this._metamodel);
+    }
+    return result;
+  }
+
   getPrivileges(ctx?: any): Promise<Privilege[]> {
     return this.http.get<Privilege[]>(config.backOfficeUrl + 'privileges');
   }

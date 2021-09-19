@@ -75,7 +75,8 @@ export class UsersLookup extends SearchComponent<User, SearchModel, Props, Inter
   }
 
   onChangeText = (event) => {
-    this.setState({ [event.target.name]: event.target.value } as any);
+    const {model} = this.state;
+    this.setState({model: {...model, ...{[event.target.name]: event.target.value} as any}});
   }
 
   onSearch = (e) => {
