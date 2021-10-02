@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {clone, makeDiff} from 'reflectx';
 import {Attributes, buildId, createEditStatus, EditPermission, EditStatusConfig, getModelName as getModelName2, hideLoading, initForm, LoadingService, Locale, message, messageByHttpStatus, ModelProps, ResourceService, showLoading, UIService} from './core';
 import {build, createModel as createModel2, EditParameter, GenericService, handleStatus, handleVersion, initPropertyNullInModel, ResultInfo} from './edit';
-import {focusFirstError, readOnly} from './formutil';
+import {focusFirstError, readOnly as setReadOnly} from './formutil';
 import {DispatchWithCallback, useMergeState} from './merge';
 import {useRouter} from './router';
 import {useUpdate} from './update';
@@ -250,7 +250,7 @@ export const useBaseEditOneWithProps = <T, ID, S, P extends ModelProps>(p: HookP
     newMode: false,
     setBack: false,
     addable,
-    readOnly,
+    readOnly: p.readOnly,
     originalModel: undefined
   });
 
@@ -260,8 +260,9 @@ export const useBaseEditOneWithProps = <T, ID, S, P extends ModelProps>(p: HookP
     objSet[n] = model;
     setState(objSet);
     if (p.readOnly) {
+      debugger;
       const f = p.refForm.current;
-      readOnly(f);
+      setReadOnly(f);
     }
   };
 
@@ -273,7 +274,7 @@ export const useBaseEditOneWithProps = <T, ID, S, P extends ModelProps>(p: HookP
   const _handleNotFound = (form?: any): void => {
     const msg = message(p.resourceService.value, 'error_not_found', 'error');
     if (form) {
-      readOnly(form);
+      setReadOnly(form);
     }
     p.showError(msg.message, msg.title);
   };
@@ -507,7 +508,7 @@ export const useBaseEditOneWithProps = <T, ID, S, P extends ModelProps>(p: HookP
             msg = messageByHttpStatus(data.status, r.value);
           }
           if (data && (data.status === 401 || data.status === 403)) {
-            readOnly(p.refForm.current);
+            setReadOnly(p.refForm.current);
           }
           p.showError(msg, title);
         }

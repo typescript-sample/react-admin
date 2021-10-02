@@ -11,6 +11,7 @@ const httpRequest = new HttpRequest(axios, options);
 export interface Config {
   user_url: string;
   role_url: string;
+  privilege_url: string;
   audit_log_url: string;
 }
 class ApplicationContext {
@@ -31,7 +32,7 @@ class ApplicationContext {
   getRoleService(): RoleClient {
     if (!this.roleService) {
       const c = this.getConfig();
-      this.roleService = new RoleClient(httpRequest, c.role_url);
+      this.roleService = new RoleClient(httpRequest, c.role_url, c.privilege_url);
     }
     return this.roleService;
   }

@@ -50,6 +50,7 @@ const param: EditComponentParam<User, number, InternalState> = {
 export const UserForm = (props: ModelProps) => {
   const refForm = React.useRef();
   const {state, setState, back, flag, updateState, saveOnClick, updatePhoneState, resource} = useEdit<User, number, InternalState, ModelProps>(props, refForm, initialState, context.getUserService(), param, inputEdit());
+  debugger;
   const user = state.user;
   return (
     <div className='view-container'>

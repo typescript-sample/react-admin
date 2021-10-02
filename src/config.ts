@@ -4,14 +4,10 @@ const localConfigUrl = {
   password_url: 'http://localhost:8080/password',
   oauth2_url: 'http://localhost:8080/oauth2',
 
-  user_url: 'http://localhost:7070/users',
-  role_url: 'http://localhost:7070/roles',
-  audit_log_url: 'http://localhost:7070/audit-logs',
-
-  backOfficeUrl: 'http://localhost:7070/',
-  backTripalUrl: 'http://localhost:7070/',
-
-  evaluation: 'http://localhost:8080/evaluation/',
+  user_url: 'http://localhost:8080/users',
+  role_url: 'http://localhost:8080/roles',
+  privilege_url: 'http://localhost:8080/privileges',
+  audit_log_url: 'http://localhost:8080/audit-logs',
 
   myprofileUrl: 'http://localhost:3003',
 
@@ -56,11 +52,6 @@ const sitConfigUrl = {
   password_url: 'http://10.1.0.234:3003',
   oauth2_url: 'http://10.1.0.234:3003',
 
-  backOfficeUrl: 'http://10.1.0.234:8080/',
-  backTripalUrl: 'http://10.1.0.234:8080/',
-
-  evaluation: 'http://localhost:8080/evaluation/',
-
   myprofileUrl: 'http://10.1.0.234:8080',
 
   contentUrl: 'http://10.1.0.234:8080/contentCategory',
@@ -102,11 +93,6 @@ const deployConfigUrl = {
   signup_url: '/server',
   password_url: '/server',
   oauth2_url: 'server',
-
-  backOfficeUrl: '/server/',
-  backTripalUrl: 'http://localhost:8080/',
-
-  evaluation: 'http://localhost:8080/evaluation/',
 
   myprofileUrl: '/server',
 
