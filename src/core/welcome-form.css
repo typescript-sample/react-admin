@@ -1,3 +1,10 @@
+.view-container.menu { 
+  min-height: calc(100vh - 44px);
+}
+.row.welcome {
+  overflow-y: auto;
+  max-height: calc(100vh - 44px - 44px);
+}
 .welcome ul {
   margin-block-end: 0;
 }
@@ -15,6 +22,7 @@
     display: flex;
 }
 .welcome label div > span,
+.welcome label > i:first-child,
 .welcome label div > i:first-child{
     align-self: center;
 }

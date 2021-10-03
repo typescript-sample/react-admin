@@ -30,8 +30,6 @@ export class WelcomeForm extends React.Component<ModelHistoryProps, any> {
       const features = feature.children;
       return (
         <label className='col s12 m12' key={idx}>
-          <i className={className + ' menu-type'} />
-          <span className='menu-type'>{name}</span>
           <div>
             <i className='material-icons menu-type'>{className}</i>
             <span className='menu-type'>{name}</span>
@@ -58,7 +56,7 @@ export class WelcomeForm extends React.Component<ModelHistoryProps, any> {
   render() {
     const resource = this.resource;
     return (
-      <div className='view-container'>
+      <div className='view-container menu'>
         <header>
           <h2 className='label'>{resource.welcome_title}</h2>
         </header>

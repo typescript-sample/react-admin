@@ -130,8 +130,10 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     this.setState((prev) => ({ isToggleSearch: !prev.isToggleSearch }));
   }
 
-  toggleMenu = (e) => {
-    e.preventDetault();
+  toggleMenu = (e: any) => {
+    if (e && e.preventDetault) {
+      e.preventDetault();
+    }
     this.setState((prev) => ({ isToggleMenu: !prev.isToggleMenu }));
   }
 
@@ -145,28 +147,15 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     });
   }
 
-  signout = async (event) => {
+  signout = (event) => {
     event.preventDefault();
-    /*
-    this.signoutService.signout(GlobalApps.getUserName()).subscribe(success => {
-      if (success === true) {
-        this.navigate('signin');
-      }
-    }, this.handleError);
-    */
     const httpRequest = new HttpRequest(axios, options);
-    try {
-      const url = config.authentication_url + '/authentication/signout/' + storage.username();
-      const success = await httpRequest.get(url);
-      if (success) {
-        sessionStorage.setItem('authService', null);
-        sessionStorage.clear();
-        storage.setUser(null);
-        navigate(this.props.history, '');
-      }
-    } catch (err) {
-      handleError(err);
-    }
+    const url = config.authentication_url + '/authentication/signout/' + storage.username();
+    httpRequest.get(url).catch(err => {});
+    sessionStorage.setItem('authService', null);
+    sessionStorage.clear();
+    storage.setUser(null);
+    navigate(this.props.history, '');
   }
 
   viewMyprofile = (e) => {

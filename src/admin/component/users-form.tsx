@@ -1,8 +1,9 @@
 import { UserSM, ValueText } from 'onecore';
 import * as React from 'react';
-import { buildFromUrl, DispatchWithCallback, ModelProps, useMergeState, useRouter } from 'react-onex';
+import { buildFromUrl, DispatchWithCallback, ModelProps } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'react-pagination-x';
+import { useHistory } from 'react-router-dom';
 import { mergeSearchModel } from 'search-utilities';
 import { pageSizes, SearchComponentState, useSearch } from 'src/core/hooks/useSearch';
 import { handleError, inputSearch, storage } from 'uione';
@@ -40,7 +41,7 @@ const initialize = (load: (s: UserSM, auto?: boolean) => void, setPrivateState: 
 };
 export const UsersForm = (props: ModelProps) => {
   const refForm = React.useRef();
-  const { match, push } = useRouter();
+  const history = useHistory();
 
   const getSearchModel = (): UserSM => {
     return currentState.model;
@@ -54,17 +55,17 @@ export const UsersForm = (props: ModelProps) => {
 
   const edit = (e: any, id: string) => {
     e.preventDefault();
-    push(`users/${id}`);
+    history.push(`users/${id}`);
   };
 
   const approve = (e: any, id: string) => {
     e.preventDefault();
-    push(`users/approve/${id}`);
+    history.push(`users/approve/${id}`);
   };
 
   const handleNavigateToUpload = (e: any, userId: string) => {
     e.preventDefault();
-    push(`uploads/${userId}/image`);
+    history.push(`uploads/${userId}/image`);
   };
 
   const { model, list } = state;

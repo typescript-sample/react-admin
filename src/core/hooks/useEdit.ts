@@ -260,7 +260,6 @@ export const useBaseEditOneWithProps = <T, ID, S, P extends ModelProps>(p: HookP
     objSet[n] = model;
     setState(objSet);
     if (p.readOnly) {
-      debugger;
       const f = p.refForm.current;
       setReadOnly(f);
     }
