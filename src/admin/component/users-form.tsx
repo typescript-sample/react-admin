@@ -1,12 +1,11 @@
 import { UserSM, ValueText } from 'onecore';
 import * as React from 'react';
-import { buildFromUrl, DispatchWithCallback, ModelProps } from 'react-onex';
+import { buildFromUrl, DispatchWithCallback, ModelProps, pageSizes, SearchComponentState, useSearch } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'react-pagination-x';
 import { useHistory } from 'react-router-dom';
 import { mergeSearchModel } from 'search-utilities';
-import { pageSizes, SearchComponentState, useSearch } from 'src/core/hooks/useSearch';
-import { handleError, inputSearch, storage } from 'uione';
+import { handleError, inputSearch } from 'uione';
 import femaleIcon from '../../assets/images/female.png';
 import maleIcon from '../../assets/images/male.png';
 import { context } from '../app';
@@ -136,7 +135,7 @@ export const UsersForm = (props: ModelProps) => {
               return (
                 <li key={i} className='col s12 m6 l4 xl3'>
                   <section>
-                    <img onClick={(e) => handleNavigateToUpload(e, item.userId)} src={item.imageURL && item.imageURL.length > 0 ? item.imageURL : (item.gender === 'F' ? femaleIcon : maleIcon)} className='round-border'/>
+                    <img onClick={(e) => handleNavigateToUpload(e, item.userId)} src={item.imageURL && item.imageURL.length > 0 ? item.imageURL : (item.gender === 'F' ? femaleIcon : maleIcon)} className='round-border' />
                     <div>
                       <h3 onClick={e => edit(e, item.userId)} className={item.status === 'I' ? 'inactive' : ''}>{item.displayName}</h3>
                       <p>{item.email}</p>

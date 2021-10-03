@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { EditComponent, HistoryProps } from 'src/core/hooks';
-// import {EditComponent, HistoryProps} from 'react-onex';
-import {handleError, inputEdit} from 'uione';
-import {context} from '../app';
-import {Privilege, Role} from '../model/Role';
+import { EditComponent, HistoryProps } from 'react-onex';
+import { handleError, inputEdit } from 'uione';
+import { context } from '../app';
+import { Privilege, Role } from '../model/Role';
 
 interface InternalState {
   role: Role;
@@ -127,14 +126,14 @@ export class RoleForm extends EditComponent<Role, any, HistoryProps, InternalSta
     } else {
       role.privileges = role.privileges.map(p => p.split(' ', 1)[0]);
     }
-    this.setState({role}, () => isCheckedAll(role.privileges, all, this.setState));
+    this.setState({ role }, () => isCheckedAll(role.privileges, all, this.setState));
   }
   handleCheckAll = (event: any) => {
     const { role, all } = this.state;
     event.persist();
     const checkedAll = event.target.checked;
     role.privileges = (checkedAll ? all : []);
-    this.setState({role, checkedAll});
+    this.setState({ role, checkedAll });
   }
   handleCheck = (event: any) => {
     const { role, all, allPrivileges } = this.state;
@@ -152,7 +151,7 @@ export class RoleForm extends EditComponent<Role, any, HistoryProps, InternalSta
     this.setState({ keyword, shownPrivileges });
   }
 
-   assign = (e: any, id: string) => {
+  assign = (e: any, id: string) => {
     e.preventDefault();
     this.props.history.push(`/roles/${id}/assign`);
     return;
@@ -246,28 +245,28 @@ export class RoleForm extends EditComponent<Role, any, HistoryProps, InternalSta
                   placeholder={resource.remark} />
               </label>
               <div className='col s12 m6 radio-section'>
-              {resource.status}
-              <div className='radio-group'>
-                <label>
-                  <input
-                    type='radio'
-                    id='active'
-                    name='status'
-                    onChange={this.updateState}
-                    value='A' checked={role.status === 'A'} />
-                  {resource.active}
-                </label>
-                <label>
-                  <input
-                    type='radio'
-                    id='inactive'
-                    name='status'
-                    onChange={this.updateState}
-                    value='I' checked={role.status === 'I'} />
-                  {resource.inactive}
-                </label>
+                {resource.status}
+                <div className='radio-group'>
+                  <label>
+                    <input
+                      type='radio'
+                      id='active'
+                      name='status'
+                      onChange={this.updateState}
+                      value='A' checked={role.status === 'A'} />
+                    {resource.active}
+                  </label>
+                  <label>
+                    <input
+                      type='radio'
+                      id='inactive'
+                      name='status'
+                      onChange={this.updateState}
+                      value='I' checked={role.status === 'I'} />
+                    {resource.inactive}
+                  </label>
+                </div>
               </div>
-            </div>
             </section>
             <h4>
               <label>

@@ -1,13 +1,12 @@
-import {ValueText} from 'onecore';
+import { ValueText } from 'onecore';
 import * as React from 'react';
 import 'react-day-picker/lib/style.css';
-import {createModel, DispatchWithCallback, error, ModelProps} from 'react-onex';
-import {EditComponentParam, useEdit} from 'src/core/hooks/useEdit';
-import {formatter} from 'ui-plus';
-import {emailOnBlur, Gender, inputEdit, phoneOnBlur, Status, storage} from 'uione';
+import { createModel, DispatchWithCallback, EditComponentParam, error, ModelProps, useEdit } from 'react-onex';
+import { formatPhone } from 'ui-plus';
+import { emailOnBlur, Gender, inputEdit, phoneOnBlur, Status, storage } from 'uione';
 import '../../assets/css//datepicker.css';
-import {context} from '../app';
-import {User} from '../model/User';
+import { context } from '../app';
+import { User } from '../model/User';
 
 interface InternalState {
   user: User;
@@ -24,17 +23,17 @@ const createUser = (): User => {
 const initialize = (id: number, load: (id: number) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
   const masterDataService = context.getMasterDataService();
   Promise.all([
-   masterDataService.getTitles(),
-   masterDataService.getPositions()
+    masterDataService.getTitles(),
+    masterDataService.getPositions()
   ]).then(values => {
     const [titleList, positionList] = values;
-    set({titleList, positionList}, () => load(id));
+    set({ titleList, positionList }, () => load(id));
   }).catch(err => error(err, storage.resource().value, storage.alert));
 };
 const updateTitle = (title: string, user: User, set: DispatchWithCallback<Partial<InternalState>>) => {
   user.title = title;
   user.gender = (user.title === 'Mr' ? Gender.Male : Gender.Female);
-  set({user});
+  set({ user });
 };
 
 const initialState: InternalState = {
@@ -49,7 +48,7 @@ const param: EditComponentParam<User, number, InternalState> = {
 };
 export const UserForm = (props: ModelProps) => {
   const refForm = React.useRef();
-  const {state, setState, back, flag, updateState, saveOnClick, updatePhoneState, resource} = useEdit<User, number, InternalState, ModelProps>(props, refForm, initialState, context.getUserService(), param, inputEdit());
+  const { state, setState, back, flag, updateState, saveOnClick, updatePhoneState, resource } = useEdit<User, number, InternalState, ModelProps>(props, refForm, initialState, context.getUserService(), param, inputEdit());
   const user = state.user;
   return (
     <div className='view-container'>
@@ -91,7 +90,7 @@ export const UserForm = (props: ModelProps) => {
               onChange={e => updateTitle(e.target.value, state.user, setState)}>
               <option selected={true} value=''>{resource.please_select}</option>
               )
-                {state.titleList.map((item, index) => (
+              {state.titleList.map((item, index) => (
                 <option key={index} value={item.value}>{item.text}</option>)
               )}
             </select>
@@ -115,7 +114,7 @@ export const UserForm = (props: ModelProps) => {
               type='tel'
               id='phone'
               name='phone'
-              value={formatter.formatPhone(user.phone)}
+              value={formatPhone(user.phone)}
               onChange={updatePhoneState}
               onBlur={phoneOnBlur}
               maxLength={17}
