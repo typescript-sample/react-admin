@@ -187,17 +187,19 @@ export class RoleForm extends EditComponent<Role, any, HistoryProps, InternalSta
       );
     } else {
       return (
-        <label className='col s6 m4 l3'>
-          <input
-            type='checkbox'
-            name='modules'
-            data-id={m.id}
-            data-parent={parentId}
-            checked={role.privileges ? (role.privileges.find(item => item === m.id) ? true : false) : false}
-            onChange={this.handleCheck}
-          />
-          {m.name}
-        </label>
+        <section className='col s12 m4 l3'>
+          <label className='checkbox-container'>
+            <input
+              type='checkbox'
+              name='modules'
+              data-id={m.id}
+              data-parent={parentId}
+              checked={role.privileges ? (role.privileges.find(item => item === m.id) ? true : false) : false}
+              onChange={this.handleCheck}
+            />
+            {m.name}
+          </label>
+        </section>
       );
     }
   }
