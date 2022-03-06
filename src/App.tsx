@@ -23,7 +23,7 @@ import {Loading} from './core/Loading';
 import {resources as locales} from './core/resources';
 import {WelcomeForm} from './core/welcome-form';
 
-const adminRoutes = LazyLoadModule({ loader: () => import(`./admin/routes`), loading: Loading });
+const adminRoutes = LazyLoadModule({ loader: () => import(`./admin`), loading: Loading });
 
 interface StateProps {
   anyProps?: any;

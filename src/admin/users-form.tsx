@@ -6,10 +6,10 @@ import Pagination from 'react-pagination-x';
 import { useHistory } from 'react-router-dom';
 import { mergeSearchModel } from 'search-utilities';
 import { handleError, inputSearch } from 'uione';
-import femaleIcon from '../../assets/images/female.png';
-import maleIcon from '../../assets/images/male.png';
-import { context } from '../app';
-import { User } from '../model/User';
+import femaleIcon from '../assets/images/female.png';
+import maleIcon from '../assets/images/male.png';
+import { context } from './app';
+import { User } from './model/User';
 
 interface UserSearch extends SearchComponentState<User, UserSM> {
   statusList: ValueText[];

@@ -4,9 +4,9 @@ import 'react-day-picker/lib/style.css';
 import { createModel, DispatchWithCallback, EditComponentParam, error, ModelProps, useEdit } from 'react-onex';
 import { formatPhone } from 'ui-plus';
 import { emailOnBlur, Gender, inputEdit, phoneOnBlur, Status, storage } from 'uione';
-import '../../assets/css//datepicker.css';
-import { context } from '../app';
-import { User } from '../model/User';
+import '../assets/css/datepicker.css';
+import { context } from './app';
+import { User } from './model/User';
 
 interface InternalState {
   user: User;

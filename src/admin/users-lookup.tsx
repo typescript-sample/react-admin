@@ -5,8 +5,8 @@ import { HistoryProps, SearchComponent, SearchState } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'react-pagination-x';
 import { initForm, inputSearch, registerEvents, storage } from 'uione';
-import { context } from '../app';
-import { User } from '../model/User';
+import { context } from './app';
+import { User } from './model/User';
 
 interface InternalState extends SearchState<User, UserSM> {
   users: User[];

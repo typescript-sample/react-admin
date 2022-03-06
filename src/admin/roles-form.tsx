@@ -6,8 +6,8 @@ import Pagination from 'react-pagination-x';
 import { useHistory } from 'react-router-dom';
 import { mergeSearchModel } from 'search-utilities';
 import { handleError, inputSearch } from 'uione';
-import { context } from '../app';
-import { Role } from '../model/Role';
+import { context } from './app';
+import { Role } from './model/Role';
 
 interface RoleSearch extends SearchComponentState<Role, RoleSM> {
   statusList: ValueText[];
