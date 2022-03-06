@@ -13,7 +13,7 @@ import {toast} from 'ui-toast';
 import {storage} from 'uione';
 import {resources as vresources} from 'validation-util';
 import {DefaultCsvService, resources} from 'web-clients';
-import authenticationRoutes from './authentication/routes';
+import authenticationRoutes from './authentication';
 import config from './config';
 import NotFoundPage from './core/containers/400/page';
 import UnAuthorizedPage from './core/containers/401/page';

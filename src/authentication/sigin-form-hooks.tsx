@@ -1,14 +1,14 @@
 import {dayDiff, getMessage, handleCookie, initFromCookie, store, validate} from 'authentication-component';
-import {Authenticator, AuthInfo, AuthResult, Status} from 'authentication-component';
+import {AuthInfo, AuthResult, Status} from 'authentication-component';
 import {DefaultCookieService} from 'cookie-core';
 import {Base64} from 'js-base64';
 import * as React from 'react';
-import {MessageComponent, MessageState} from 'react-message-component';
+import {MessageState} from 'react-message-component';
 import {useHistory} from 'react-router-dom';
 import useMessage from 'src/core/hooks/useMessage';
 import {alertInfo} from 'ui-alert';
 import {handleError, message, storage} from 'uione';
-import {context} from './app';
+import {context} from './service';
 
 export const map = {
   '3': 'fail_authentication',

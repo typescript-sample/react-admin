@@ -5,7 +5,7 @@ import {MessageComponent, MessageState} from 'react-message-component';
 import {HistoryProps, navigate} from 'react-onex';
 import {handleError, initForm, loading, registerEvents, resource as getResource, storage} from 'uione';
 import logo from '../assets/images/logo.png';
-import {context} from './app';
+import {context} from './service';
 
 export interface ChangePasswordState extends MessageState {
   user: PasswordChange;
