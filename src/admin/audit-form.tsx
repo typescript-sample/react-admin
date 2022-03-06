@@ -5,8 +5,8 @@ import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'react-pagination-x';
 import { useHistory } from 'react-router-dom';
 import { inputSearch } from 'uione';
-import { context } from './app';
-import { Audit, AuditSM } from './model/Audit';
+import { context } from './service';
+import { Audit, AuditSM } from './service';
 
 interface AuditSearch extends SearchComponentState<Audit, AuditSM> {
   statusList: ValueText[];

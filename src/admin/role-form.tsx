@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { EditComponent, HistoryProps } from 'react-onex';
 import { handleError, inputEdit } from 'uione';
-import { context } from './app';
-import { Privilege, Role } from './model/Role';
+import { context } from './service';
+import { Privilege, Role } from './service';
 
 interface InternalState {
   role: Role;

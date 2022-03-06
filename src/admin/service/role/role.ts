@@ -1,5 +1,34 @@
-import {Model} from 'onecore';
-import {userModel} from './UserModel';
+import {GenericSearchDiffApprService, Model, ResultInfo, RoleSM, Tracking} from 'onecore';
+
+export interface Role extends Tracking {
+  roleId: string;
+  roleName: string;
+  status: string;
+  remark?: string;
+  privileges?: string[];
+  users?: User[];
+}
+interface User extends Tracking {
+  userId: string;
+  username: string;
+  email: string;
+  displayName: string;
+  imageURL?: string;
+  status: string;
+  gender?: string;
+  phone?: string;
+  title?: string;
+  position?: string;
+  roles?: string[];
+}
+export interface Privilege {
+  id: string;
+  name: string;
+  children?: Privilege[];
+}
+export interface RoleService extends GenericSearchDiffApprService<Role, any, number|ResultInfo<Role>, RoleSM> {
+  getPrivileges?(ctx?: any): Promise<Privilege[]>;
+}
 
 export const roleModel: Model = {
   name: 'role',
@@ -32,10 +61,6 @@ export const roleModel: Model = {
     },
     modules: {
       type: 'array'
-    },
-    users: {
-      type: 'array',
-      typeof: userModel.attributes
     }
   }
 };

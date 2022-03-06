@@ -8,8 +8,8 @@ import { mergeSearchModel } from 'search-utilities';
 import { handleError, inputSearch } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
-import { context } from './app';
-import { User } from './model/User';
+import { context } from './service';
+import { User } from './service';
 
 interface UserSearch extends SearchComponentState<User, UserSM> {
   statusList: ValueText[];
