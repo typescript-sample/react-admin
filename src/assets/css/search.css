@@ -43,7 +43,7 @@
 .row > .col > label.search-input > *:first-child,
 .row > label.search-input > *:first-child,
 .search-input > *:first-child {
-  padding-left: 6px;
+  padding-left: 8px;
   border-right: 0;
   border-left: 1px solid;
   border-top-left-radius: 15px;
@@ -84,7 +84,7 @@ h4 > label.search-input > i:first-child.btn-search,
 .view-container > div > label.search-input > select,
 .row > .col > label.search-input > select,
 .row > label.search-input > select {
-  width: 50px;
+  width: 51px;
 }
 
 label.search-input.focused > input,
@@ -124,6 +124,14 @@ label.search-input > button.btn-search {
   width: 24px;
   height: 24px;
 }
+.search-input > .btn-filter::before {
+  font-size: 17px;
+  font-weight: 100;
+  content: "\279E";
+}
+.search-input > .btn-filter.on::before {
+  transform: rotate(90deg);
+}
 .toggle-search::before,
 .btn-lookup::before,
 .search-input > .btn-search::before {
@@ -162,7 +170,13 @@ section.row nav.col {
   margin-top: 4px;
   margin-bottom: 4px;
 }
-
+.view-container > div > form > section.search-group {
+  padding-bottom: 8px;
+}
+section.row.search-group nav.col {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 .list-content > div > form:first-child > section.btn-group,
 .view-container > div > form:first-child > section.btn-group {
   position: relative;
@@ -190,8 +204,8 @@ section.row nav.col {
 .view-container > div > form:first-child > section.btn-group > label > select {
   border: none;
   outline: none;
-  width: 24px;
-  padding-left: 7px;
+  width: 30px;
+  padding-left: 5px;
   font-size: 14px;
   font-weight: 400;
   background-image: none !important;

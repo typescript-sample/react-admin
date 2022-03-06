@@ -1,51 +1,54 @@
-import { SearchModel, UserSM } from 'onecore';
 import * as React from 'react';
-import Modal from 'react-modal';
-import { HistoryProps, SearchComponent, SearchState } from 'react-onex';
+import { SearchComponent, SearchState, value } from 'react-hook-core';
+import * as ReactModal from 'react-modal';
 import PageSizeSelect from 'react-page-size-select';
-import Pagination from 'react-pagination-x';
+import { RouteComponentProps } from 'react-router';
+import Pagination from 'reactx-pagination';
 import { initForm, inputSearch, registerEvents, storage } from 'uione';
-import { context } from './service';
-import { User } from './service';
+import { User, UserFilter, useUser } from './service';
 
-interface InternalState extends SearchState<User, UserSM> {
+interface InternalState extends SearchState<User, UserFilter> {
   users: User[];
   availableUsers: User[];
-  textSearch?: string;
 }
-interface Props extends HistoryProps {
-  isOpenModel?: boolean;
-  roleAssignToUsers?: User[];
-  onModelClose?: (e: any) => void;
-  onModelSave?: (e: any) => void;
+interface Props extends RouteComponentProps {
+  isOpenModel: boolean;
+  users: User[];
+  onModelClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
+  onModelSave: (e: User[]) => void;
   props?: any;
 }
 
-export class UsersLookup extends SearchComponent<User, SearchModel, Props, InternalState> {
+export class UsersLookup extends SearchComponent<User, UserFilter, Props, InternalState> {
   constructor(props: Props) {
-    super(props, context.getUserService(), inputSearch());
-    this.createSearchModel = this.createSearchModel.bind(this);
+    super(props, useUser(), inputSearch());
+    this.createFilter = this.createFilter.bind(this);
     this.state = {
       list: [],
       users: [],
-      availableUsers: null,
+      availableUsers: [],
       model: {
-        keyword: '',
+        q: '',
         userId: '',
+        username: '',
+        displayName: '',
+        email: '',
+        status: []
       }
     };
   }
   componentDidMount() {
     this.form = initForm(this.ref.current, registerEvents);
-    this.load(this.createSearchModel(), storage.autoSearch);
+    this.load(this.createFilter(), storage.autoSearch);
   }
-  createSearchModel(): SearchModel {
+  createFilter(): UserFilter {
     const obj: any = {};
     return obj;
   }
-  onCheckUser = (event: any) => {
+  onCheckUser = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     const { users, list } = this.state;
-    const result = list.find((value) => value.userId === event.target.value);
+    const target: HTMLInputElement = e.target as HTMLInputElement;
+    const result = (list ? list.find(v => v.userId === target.value) : undefined);
     if (result) {
       const index = users.indexOf(result);
       if (index !== -1) {
@@ -58,38 +61,44 @@ export class UsersLookup extends SearchComponent<User, SearchModel, Props, Inter
   }
 
   onModelSave = () => {
-    this.setState({ users: [], availableUsers: null, textSearch: '' });
+    this.setState({ users: [], availableUsers: [], q: '' });
     this.props.onModelSave(this.state.users);
   }
 
-  onModelClose = (event) => {
-    this.setState({ users: [], availableUsers: null, textSearch: '' });
-    this.props.onModelClose(event);
+  onModelClose = (e: React.MouseEvent | React.KeyboardEvent) => {
+    this.setState({ users: [], availableUsers: [], q: '' });
+    if (this.props.onModelClose) {
+      this.props.onModelClose(e);
+    }
   }
 
   protected clearUserId = () => {
     const m = this.state.model;
-    m.userId = '';
-    this.setState({ model: m });
+    if (m) {
+      m.q = '';
+      this.setState({ model: m });
+    }
   }
 
-  onChangeText = (event) => {
+  onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { model } = this.state;
-    this.setState({ model: { ...model, ...{ [event.target.name]: event.target.value } as any } });
+    this.setState({ model: { ...model, ...{ [e.target.name]: e.target.value } as any } });
   }
 
-  onSearch = (e) => {
+  onSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     this.setState({ list: [] });
-    this.searchOnClick(e);
+    this.search(e);
   }
 
   render() {
-    const { isOpenModel, roleAssignToUsers } = this.props;
-    const { list, model } = this.state;
+    const { isOpenModel } = this.props;
+    const users = this.props.users ? this.props.users : [];
+    const { list } = this.state;
+    const filter = value(this.state.model);
     const resource = this.resource;
     let index = 0;
     return (
-      <Modal
+      <ReactModal
         isOpen={isOpenModel}
         onRequestClose={this.props.onModelClose}
         contentLabel='Modal'
@@ -107,18 +116,18 @@ export class UsersLookup extends SearchComponent<User, SearchModel, Props, Inter
             <form id='usersLookupForm' name='usersLookupForm' noValidate={true} ref={this.ref}>
               <section className='row search-group'>
                 <label className='col s12 m6 search-input'>
-                  <PageSizeSelect pageSize={this.pageSize} pageSizes={this.pageSizes} onPageSizeChanged={this.pageSizeChanged} />
+                  <PageSizeSelect size={this.pageSize} sizes={this.pageSizes} onChange={this.pageSizeChanged} />
                   <input type='text'
-                    id='userId'
-                    name='userId'
+                    id='q'
+                    name='q'
                     onChange={this.onChangeText}
-                    value={model.userId}
+                    value={filter.q}
                     maxLength={40}
                     placeholder={resource.user_lookup} />
-                  <button type='button' hidden={!model.userId} className='btn-remove-text' onClick={this.clearUserId} />
+                  <button type='button' hidden={!filter.userId} className='btn-remove-text' onClick={this.clearUserId} />
                   <button type='submit' className='btn-search' onClick={this.onSearch} />
                 </label>
-                <Pagination className='col s12 m6' totalRecords={this.itemTotal} itemsPerPage={this.pageSize} maxSize={this.pageMaxSize} currentPage={this.pageIndex} onPageChanged={this.pageChanged} initPageSize={this.initPageSize} />
+                <Pagination className='col s12 m6' total={this.total} size={this.pageSize} max={this.pageMaxSize} page={this.pageIndex} onChange={this.pageChanged} />
               </section>
             </form>
             <form className='list-result'>
@@ -132,29 +141,24 @@ export class UsersLookup extends SearchComponent<User, SearchModel, Props, Inter
                       <th data-field='email'><button type='button' id='sortEmail' onClick={this.sort}>{resource.email}</button></th>
                       <th data-field='displayname'><button type='button' id='sortDisplayName' onClick={this.sort}>{resource.display_name}</button></th>
                       <th data-field='status'><button type='button' id='sortStatus' onClick={this.sort}>{resource.status}</button></th>
-                      <th data-field=''>{resource.action}</th>
+                      <th>{resource.action}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state && list && list.map((item, i) => {
-                      const result = roleAssignToUsers.find((v) => {
-                        if (v) {
-                          return v.userId === item.userId;
-                        }
-                        return false;
-                      });
+                    {this.state && list && list.map((user, i) => {
+                      const result = users.find(v => v.userId === user.userId);
                       if (!result) {
                         index++;
                         return (
                           <tr key={i}>
                             <td className='text-right'>{index}</td>
-                            <td>{item.userId}</td>
-                            <td>{item.username}</td>
-                            <td>{item.email}</td>
-                            <td>{item.displayName}</td>
-                            <td>{item.status}</td>
+                            <td>{user.userId}</td>
+                            <td>{user.username}</td>
+                            <td>{user.email}</td>
+                            <td>{user.displayName}</td>
+                            <td>{user.status}</td>
                             <td>
-                              <input type='checkbox' id={'chkSelect' + i} value={item.userId} onClick={this.onCheckUser} />
+                              <input type='checkbox' id={`chkSelect${i}`} value={user.userId} onClick={this.onCheckUser} />
                             </td>
                           </tr>
                         );
@@ -169,7 +173,7 @@ export class UsersLookup extends SearchComponent<User, SearchModel, Props, Inter
             <button type='button' onClick={this.onModelSave}>{resource.select}</button>
           </footer>
         </div>
-      </Modal>
+      </ReactModal>
     );
   }
 }

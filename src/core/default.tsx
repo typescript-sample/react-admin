@@ -1,22 +1,17 @@
 import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import * as React from 'react';
-import { BaseComponent, HistoryProps, ModelHistoryProps, navigate } from 'react-onex';
 import PageSizeSelect from 'react-page-size-select';
-import { Link } from 'react-router-dom';
-import { getLocale, handleError, Privilege, removeError, storage } from 'uione';
-import { options } from 'uione';
-import { isArray } from 'util';
+import { RouteComponentProps } from 'react-router';
+import { options, Privilege, storage, StringMap } from 'uione';
 import logoTitle from '../assets/images/logo-title.png';
 import logo from '../assets/images/logo.png';
-import AvataIcon from '../assets/images/male.png';
 import topBannerLogo from '../assets/images/top-banner-logo.png';
-import config from '../config';
+import { hideAll, renderItems, showAll } from './menu';
 
 interface InternalState {
   pageSizes: number[];
   pageSize: number;
-  authenticationService: any;
   se: any;
   isToggleMenu: boolean;
   isToggleSidebar: boolean;
@@ -24,22 +19,31 @@ interface InternalState {
   keyword: string;
   classProfile: string;
   forms: Privilege[];
-  username: string;
-  userType: string;
+  username?: string;
+  userType?: string;
   pinnedModules: Privilege[];
 }
-
-export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, InternalState> {
-  constructor(props) {
-    super(props, getLocale, removeError);
+export function sub(n1?: number, n2?: number): number {
+  if (!n1 && !n2) {
+    return 0;
+  } else if (n1 && n2) {
+    return n1 - n2;
+  } else if (n1) {
+    return n1;
+  } else if (n2) {
+    return -n2;
+  }
+  return 0;
+}
+export default class DefaultWrapper extends React.Component<RouteComponentProps, InternalState> {
+  constructor(props: RouteComponentProps) {
+    super(props);
     this.resource = storage.resource().resource();
-    this.renderForm = this.renderForm.bind(this);
-    this.renderForms = this.renderForms.bind(this);
+    this.pinModulesHandler = this.pinModulesHandler.bind(this);
     // this.menuItemOnBlur = this.menuItemOnBlur.bind(this);
     this.state = {
       pageSizes: [10, 20, 40, 60, 100, 200, 400, 10000],
       pageSize: 10,
-      authenticationService: undefined,
       se: {} as any,
       keyword: '',
       classProfile: '',
@@ -53,13 +57,11 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     };
     this.httpRequest = new HttpRequest(axios, options);
   }
-  protected resource: any = {};
+  protected resource: StringMap;
   protected httpRequest: HttpRequest;
   protected pageSize = 20;
   protected pageSizes = [10, 20, 40, 60, 100, 200, 400, 10000];
-  pageSizeChanged = (event) => {};
-
-  componentWillMount() {
+  componentDidMount() {
     // TODO : TB temporary fix form service null .
     /*
     if (!this.formService) {
@@ -75,6 +77,13 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     });
     */
     const forms = storage.privileges();
+    if (forms && forms.length > 0) {
+      for (let i = 0; i <= forms.length; i++) {
+        if (forms[i]) {
+          forms[i].sequence = i + 1;
+        }
+      }
+    }
     this.setState({ forms });
 
     const username = storage.username();
@@ -90,42 +99,7 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     });
   }
 
-  activeWithPath = (path, isParent, features?: any) => {
-    if (isParent && features && isArray(features)) {
-      const hasChildLink = features.some((item) => this.props.location.pathname.startsWith(item['link']));
-      return path && this.props.location.pathname.startsWith(path) && hasChildLink ? 'active' : '';
-    }
-    return path && this.props.location.pathname.startsWith(path) ? 'active' : '';
-  }
-
-  toggleMenuItem = (event) => {
-    event.preventDefault();
-    let target = event.currentTarget;
-    const currentTarget = event.currentTarget;
-    const elI = currentTarget.querySelectorAll('.menu-item > i')[1];
-    if (elI) {
-      if (elI.classList.contains('down')) {
-        elI.classList.remove('down');
-        elI.classList.add('up');
-      } else {
-        if (elI.classList.contains('up')) {
-          elI.classList.remove('up');
-          elI.classList.add('down');
-        }
-      }
-    }
-    if (currentTarget.nextElementSibling) {
-      currentTarget.nextElementSibling.classList.toggle('expanded');
-    }
-    if (target.nodeName === 'A') {
-      target = target.parentElement;
-    }
-    if (target.nodeName === 'LI') {
-      target.classList.toggle('open');
-    }
-  }
-
-  searchOnClick = () => {};
+  searchOnClick = () => { };
   toggleSearch = () => {
     this.setState((prev) => ({ isToggleSearch: !prev.isToggleSearch }));
   }
@@ -147,141 +121,48 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     });
   }
 
-  signout = (event) => {
+  signout = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     const httpRequest = new HttpRequest(axios, options);
+    const config: any = storage.config();
     const url = config.authentication_url + '/authentication/signout/' + storage.username();
-    httpRequest.get(url).catch(err => {});
-    sessionStorage.setItem('authService', null);
+    httpRequest.get(url).catch(err => { });
+    sessionStorage.removeItem('authService');
     sessionStorage.clear();
     storage.setUser(null);
-    navigate(this.props.history, '');
+    this.props.history.push('');
   }
 
-  viewMyprofile = (e) => {
+  viewMyprofile = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    navigate(this.props.history, '/my-profile');
+    this.props.history.push('/my-profile');
   }
 
-  viewMySetting = (e) => {
+  viewMySetting = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    navigate(this.props.history, '/my-profile/my-settings');
+    this.props.history.push('/my-profile/my-settings');
   }
 
-  viewChangePassword = (e) => {
+  viewChangePassword = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    navigate(this.props.history, '/auth/change-password');
+    this.props.history.push('/auth/change-password');
   }
 
-  pinModulesHandler(event, index, moduleSequence) {
+  pinModulesHandler(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, m: Privilege) {
     event.stopPropagation();
     const { forms, pinnedModules } = this.state;
-    if (forms.find((module) => module.sequence === moduleSequence)) {
+    if (forms.find((module) => module === m)) {
       const removedModule = forms.splice(index, 1);
       pinnedModules.push(removedModule[0]);
-      forms.sort((moduleA, moduleB) => moduleA.sequence - moduleB.sequence);
+      forms.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
+      pinnedModules.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
       this.setState({ forms, pinnedModules });
     } else {
       const removedModule = pinnedModules.splice(index, 1);
       forms.push(removedModule[0]);
-      forms.sort((moduleA, moduleB) => moduleA.sequence - moduleB.sequence);
+      forms.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
+      pinnedModules.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
       this.setState({ forms, pinnedModules });
-    }
-  }
-
-  renderForms = (features: Privilege[], isPinnedModules: boolean = false) => {
-    return features.map((feature, index) => {
-      return this.renderForm(index, feature, isPinnedModules);
-    });
-  }
-  renderForm = (key: any, module: Privilege, isPinnedModules: boolean = false) => {
-    const name = !this.resource[module.resource] || this.resource[module.resource] === '' ? module.name : this.resource[module.resource];
-    // if (module.status !== 'A') {
-    //   return (null);
-    // }
-    if (module.children && Array.isArray(module.children)) {
-      const className = !module.icon || module.icon === '' ? 'settings' : module.icon;
-      const link = module.path;
-      const features = module.children;
-      return (
-        <li key={key} className={'open ' + this.activeWithPath(link, true, features)} /* onBlur={this.menuItemOnBlur} */>
-          <a
-            className='menu-item'
-            onClick={(e) => {
-              this.toggleMenuItem(e);
-            }}
-          >
-            <button type='button' className={`btn-pin ${isPinnedModules ? 'pinned' : ''}`} onClick={(event) => this.pinModulesHandler(event, key, module.sequence)} />
-            <i className='material-icons'>{className}</i>
-            <span>{name}</span>
-            <i className='entity-icon down' />
-          </a>
-          <ul className='list-child'>{this.renderForms(features)}</ul>
-        </li>
-      );
-    } else {
-      const className = !module.icon || module.icon === '' ? 'settings' : module.icon;
-      return (
-        <li key={key} className={this.activeWithPath(module.path, false)}>
-          <Link to={module.path}>
-            <i className='material-icons'>{className}</i>
-            <span>{name}</span>
-          </Link>
-        </li>
-      );
-    }
-  }
-
-  onMouseHover = (e) => {
-    e.preventDefault();
-    const sysBody = (window as any).sysBody;
-    if (sysBody.classList.contains('top-menu') && window.innerWidth > 768) {
-      const navbar = Array.from(document.querySelectorAll('.sidebar>nav>ul>li>ul.expanded'));
-      const icons = Array.from(document.querySelectorAll('.sidebar>nav>ul>li>a>i.up'));
-      if (navbar.length > 0) {
-        for (let i = 0; i < navbar.length; i++) {
-          navbar[i].classList.toggle('expanded');
-          if (icons[i]) {
-            icons[i].className = 'entity-icon down';
-          }
-        }
-      }
-    }
-  }
-
-  onShowAllMenu = (e) => {
-    e.preventDefault();
-    const sysBody = (window as any).sysBody;
-    if (sysBody.classList.contains('top-menu2')) {
-      const navbar = Array.from(document.querySelectorAll('.sidebar>nav>ul>li>ul.list-child'));
-      const icons = Array.from(document.querySelectorAll('.sidebar>nav>ul>li>a>i.down'));
-      if (navbar.length > 0) {
-        let i = 0;
-        for (i = 0; i < navbar.length; i++) {
-          navbar[i].className = 'list-child expanded';
-          if (icons[i]) {
-            icons[i].className = 'entity-icon up';
-          }
-        }
-      }
-    }
-  }
-
-  onHideAllMenu = (e) => {
-    e.preventDefault();
-    const sysBody = (window as any).sysBody;
-    if (sysBody.classList.contains('top-menu2')) {
-      const navbar = Array.from(document.querySelectorAll('.sidebar>nav>ul>li>ul.expanded'));
-      const icons = Array.from(document.querySelectorAll('.sidebar>nav>ul>li>a>i.up'));
-      if (navbar.length > 0) {
-        let i = 0;
-        for (i = 0; i < navbar.length; i++) {
-          navbar[i].className = 'list-child';
-          if (icons[i]) {
-            icons[i].className = 'entity-icon down';
-          }
-        }
-      }
     }
   }
 
@@ -317,12 +198,12 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
                 <a className='toggle-menu' onClick={this.toggleMenu} />
                 <p className='sidebar-off-menu'>
                   <i className='toggle' onClick={this.toggleSidebar} />
-                  {!isToggleSidebar ? <i className='expand' onClick={this.onShowAllMenu} /> : null}
-                  {!isToggleSidebar ? <i className='collapse' onClick={this.onHideAllMenu} /> : null}
+                  {!isToggleSidebar ? <i className='expand' onClick={showAll} /> : null}
+                  {!isToggleSidebar ? <i className='collapse' onClick={hideAll} /> : null}
                 </p>
               </li>
-              {this.renderForms(this.state.pinnedModules, true)}
-              {this.renderForms(this.state.forms)}
+              {renderItems(this.props.location.pathname, this.state.pinnedModules, this.pinModulesHandler, this.resource, true, true)}
+              {renderItems(this.props.location.pathname, this.state.forms, this.pinModulesHandler, this.resource, true)}
             </ul>
           </nav>
         </div>
@@ -339,8 +220,8 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
                   <img className='logo' src={logo} alt='Logo of The Company' />
                 </div>
                 <label className='search-input'>
-                  <PageSizeSelect pageSize={pageSize} pageSizes={pageSizes} onPageSizeChanged={this.pageSizeChanged} />
-                  <input type='text' id='keyword' name='keyword' value={this.state.keyword} onChange={this.updateState} maxLength={1000} placeholder={this.resource.keyword} />
+                  <PageSizeSelect size={pageSize} sizes={pageSizes} />
+                  <input type='text' id='keyword' name='keyword' maxLength={1000} placeholder={this.resource['keyword']} />
                   <button type='button' hidden={!this.state.keyword} className='btn-remove-text' onClick={this.clearKeyworkOnClick} />
                   <button type='submit' className='btn-search' onClick={this.searchOnClick} />
                 </label>
@@ -384,7 +265,3 @@ export default class DefaultWrapper extends BaseComponent<ModelHistoryProps, Int
     );
   }
 }
-
-export const WithDefaultProps = (Component: any) => (props: HistoryProps) => {
-  return <Component props={props} history={props.history} />;
-};

@@ -1,12 +1,11 @@
-import {getMessage, Status} from 'authentication-component';
-import {OAuth2Info} from 'authentication-component';
+import { getMessage, OAuth2Info, Status } from 'authen-client';
 import * as React from 'react';
-import {MessageComponent, MessageState} from 'react-message-component';
-import {HistoryProps} from 'react-onex';
-import {alertInfo} from 'ui-alert';
-import {handleError, storage} from 'uione';
+import { MessageComponent, MessageState } from 'react-hook-core';
+import { RouteComponentProps } from 'react-router';
+import { alertInfo } from 'ui-alert';
+import { handleError, storage } from 'uione';
 import logo from '../assets/images/logo.png';
-import {context} from './service';
+import { context } from './service';
 
 const status: Status = {
   success: 0,
@@ -15,7 +14,16 @@ const status: Status = {
   fail: 3,
   password_expired: 5
 };
-
+export const map = {
+  '3': 'fail_authentication',
+  '4': 'fail_wrong_password',
+  '5': 'fail_expired_password',
+  '6': 'fail_access_time_locked',
+  '7': 'fail_suspended_account',
+  '8': 'fail_locked_account',
+  '9': 'fail_disabled_account',
+  '10': 'fail_disabled_account',
+};
 export class SourceType {
   static username = 'email';
   static facebook = 'facebook';
@@ -32,8 +40,8 @@ export interface ConnectState extends MessageState {
   componentRef: any;
 }
 
-export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
-  constructor(props) {
+export class ConnectForm extends MessageComponent<ConnectState, RouteComponentProps> {
+  constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
       connectType: '',
@@ -49,7 +57,10 @@ export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
     if (redirect) {
       const url = new URL(window.location.href);
       const searchParams = new URLSearchParams(url.search);
-      this.props.history.push(searchParams.get('redirect'));
+      const s = searchParams.get('redirect');
+      if (s) {
+        this.props.history.push(s);
+      }
     } else {
       this.props.history.push('/welcome');
     }
@@ -61,14 +72,19 @@ export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
       connectType = 'signup';
     }
 
-    const connectTypePretty = connectType === 'signup' ? 'Sign up' :  'Sign in';
-    this.setState({connectType, connectTypePretty});
+    const connectTypePretty = connectType === 'signup' ? 'Sign up' : 'Sign in';
+    this.setState({ connectType, connectTypePretty });
   }
 
   protected content() {
     this.props.history.push('/content/drive');
   }
-
+  back(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    if (event) {
+      event.preventDefault();
+    }
+    this.props.history.goBack();
+  }
   async connect(signInType?: string) {
     this.hideMessage();
     const connectType = this.state.connectType;
@@ -83,7 +99,7 @@ export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
         return this.showError(msg);
       }
 
-      let url: string;
+      let url: string = '';
       let redirectUrl = storage.getRedirectUrl();
       if (signInType === SourceType.linkedIn) {
         url = 'https://www.linkedin.com/uas/oauth2/authorization?client_id=' + integrationConfiguration.clientId + '&response_type=code&redirect_uri='
@@ -102,7 +118,7 @@ export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
         const u = 'http://localhost:3001/auth/connect/oauth2';
         redirectUrl = encodeURIComponent(u);
         url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=' + integrationConfiguration.clientId + '&response_type=code&redirect_uri='
-            + redirectUrl + '&response_mode=query&scope=https%3A%2F%2Fgraph.microsoft.com%2FFiles.ReadWrite.All%20onedrive.readwrite%20onedrive.appfolder%20offline_access&state=12345&grant_type=authorization_Code';
+          + redirectUrl + '&response_mode=query&scope=https%3A%2F%2Fgraph.microsoft.com%2FFiles.ReadWrite.All%20onedrive.readwrite%20onedrive.appfolder%20offline_access&state=12345&grant_type=authorization_Code';
       } else if (signInType === SourceType.dropbox) {
         url = 'https://www.dropbox.com/oauth2/authorize?client_id=' + integrationConfiguration.clientId + '&response_type=code&redirect_uri=' + redirectUrl;
       }
@@ -110,7 +126,7 @@ export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
       const oAuth2Info: OAuth2Info = {
         id: SourceType[signInType],
         redirectUri: redirectUrl,
-        code: null
+        code: ''
       };
 
       const left = screen.width / 2 - 300;
@@ -137,14 +153,14 @@ export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
                   // _this.navigateToHome();
                 } else {
                   const message3 = r.value('msg_account_reactivated');
-                  alertInfo(message3, null, () => {
+                  alertInfo(message3, 'Error', () => {
                     storage.setUser(result.user);
                     com.navigateToHome();
                   });
                 }
               } else {
                 storage.setUser(null);
-                const msg = getMessage(s, r);
+                const msg = getMessage(s, map);
                 com.showError(msg);
               }
             } else {
@@ -167,41 +183,41 @@ export class ConnectForm extends MessageComponent<HistoryProps, ConnectState> {
       <div className='view-container central-full' ref={this.state.componentRef}>
         <form id='connectForm' name='connectForm' noValidate={true} autoComplete='off'>
           <div>
-            <img className='logo' src={logo}/>
+            <img className='logo' src={logo} />
             <h2>{connectTypePretty}</h2>
             <div className={'message ' + this.alertClass}>
               {this.state.message}
-              <span onClick={this.hideMessage} hidden={!this.state.message || this.state.message === ''}/>
+              <span onClick={this.hideMessage} hidden={!this.state.message || this.state.message === ''} />
             </div>
             <button type='button' onClick={() => this.connect('linkedIn')}>
-              <i className='fa fa-linkedin pull-left'/>
+              <i className='fa fa-linkedin pull-left' />
               {resource.connect_linkedin}</button>
             <button type='button' onClick={() => this.connect('google')}>
-              <i className='fa fa-google pull-left'/>
+              <i className='fa fa-google pull-left' />
               {resource.connect_google}
             </button>
             <button type='button' onClick={() => this.connect('facebook')}>
-              <i className='fa fa-facebook pull-left'/>
+              <i className='fa fa-facebook pull-left' />
               {resource.connect_facebook}
             </button>
             <button type='button' onClick={() => this.connect('twitter')}>
-              <i className='fa fa-twitter pull-left'/>
+              <i className='fa fa-twitter pull-left' />
               {resource.connect_twitter}
             </button>
             <button type='button' onClick={() => this.connect('amazon')}>
-              <i className='fa fa-amazon pull-left'/>
+              <i className='fa fa-amazon pull-left' />
               {resource.connect_amazon}
             </button>
             <button type='button' onClick={() => this.connect('microsoft')}>
-              <i className='fa fa-windows pull-left'/>
+              <i className='fa fa-windows pull-left' />
               {resource.connect_microsoft}
             </button>
             <button type='button' onClick={() => this.connect('dropbox')}>
-              <i className='fa fa-dropbox pull-left'/>
+              <i className='fa fa-dropbox pull-left' />
               {resource.connect_dropbox}
             </button>
             <button type='submit' onClick={() => this.connect()}>
-              <i className='fa fa-envelope-o pull-left'/>
+              <i className='fa fa-envelope-o pull-left' />
               {resource.connect_username}
             </button>
             <button type='button' className='btn-cancel' id='btnCancel' name='btnCancel' onClick={this.back}>

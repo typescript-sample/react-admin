@@ -1,10 +1,10 @@
 import { HttpRequest, ViewSearchClient } from 'web-clients';
-import { Audit, auditModel, AuditService, AuditSM } from './audit-log';
+import { AuditLog, AuditLogFilter, auditLogModel, AuditLogService } from './audit-log';
 
 export * from './audit-log';
 
-export class AuditClient extends ViewSearchClient<Audit, string, AuditSM> implements AuditService {
+export class AuditClient extends ViewSearchClient<AuditLog, string, AuditLogFilter> implements AuditLogService {
   constructor(http: HttpRequest, url: string) {
-    super(http, url, auditModel.attributes);
+    super(http, url, auditLogModel);
   }
 }

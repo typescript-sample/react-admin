@@ -54,7 +54,7 @@
   max-height: 500px;
   display: block;
 }
-
+.sidebar .menu-item,
 .sidebar nav ul li a {
   position: relative;
   /*display: block;*/

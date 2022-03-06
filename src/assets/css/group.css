@@ -1,32 +1,34 @@
 .view-container.menu { 
   min-height: calc(100vh - 44px);
 }
-.row.welcome {
+.row.group {
   overflow-y: auto;
   max-height: calc(100vh - 44px - 44px);
 }
-.welcome ul {
+.group ul {
   margin-block-end: 0;
 }
 
-.welcome a > div > i:first-child {
+.group .material-icons {
   margin-right: 4px;
-  color: rgb(50, 129, 90);
+  color: #32815A;
   font-size: 25px;
+  width: 25px;
 }
-.welcome a > div > span {
+.group ul.group-ul > .group-span > a > div > span {
   font-size: 12pt;
-  color: rgb(50, 129, 90);
+  color: #32815A;
 }
-.welcome label div {
+.group label div {
     display: flex;
+    color: rgb(157, 163, 160);
 }
-.welcome label div > span,
-.welcome label > i:first-child,
-.welcome label div > i:first-child{
+.group label div > span,
+.group label > i:first-child,
+.group label div > i:first-child {
     align-self: center;
 }
-.welcome-span
+.group-span
 {
     display:inline-block;
     width: 65%;
@@ -38,23 +40,20 @@
 }
 
 @media only screen and (max-width: 800px) {
-  .welcome a > i:first-child {
+  .group a > i:first-child {
     font-size: 40px;
     display: block;
   }
-  .welcome-span
-  {
-    text-align: center;
-  }
+  .group-span { text-align: center; }
 }
-
-.menu-type
+.group > .group-span> a > div,
+.group-header
 {
   color: green;
-  font-size: 15pt;
-  padding: 2px;
+  font-size: 14pt;
+  padding-bottom: 4px;
 }
-.menu-ul
+.group-ul
 {
   text-align: left;
   padding: 0;

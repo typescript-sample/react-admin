@@ -1,51 +1,45 @@
 import { ValueText } from 'onecore';
 import * as React from 'react';
-import { SearchComponentState, useSearch } from 'react-onex';
+import { SearchComponentState, useSearch, value } from 'react-hook-core';
 import PageSizeSelect from 'react-page-size-select';
-import Pagination from 'react-pagination-x';
 import { useHistory } from 'react-router-dom';
+import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
-import { context } from './service';
-import { Audit, AuditSM } from './service';
+import { AuditLog, AuditLogFilter, useAuditLog} from './service';
 
-interface AuditSearch extends SearchComponentState<Audit, AuditSM> {
+interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> {
   statusList: ValueText[];
 }
 
-const sm: AuditSM = {
+const auditLogfilter: AuditLogFilter = {
   id: '',
   action: '',
 };
 
-const AuditSearch: AuditSearch = {
+const AuditSearch: AuditLogSearch = {
   statusList: [],
   list: [],
-  model: sm
+  filter: auditLogfilter
 };
 
-const RolesForm = () => {
+export const AuditLogsForm = () => {
   const history = useHistory();
   const refForm = React.useRef();
-  const getSearchModel = (): AuditSM => {
-    return AuditSearch.model;
-  };
-  const p = { getSearchModel };
-  const hooks = useSearch<Audit, AuditSM, AuditSearch>(refForm, AuditSearch, context.getAuditService(), p, inputSearch());
-  const { state, resource, component, updateState } = hooks;
+  const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch());
+  const { state, resource, component, updateState, pageSizeChanged, pageChanged } = hooks;
 
   const edit = (e: any, id: string) => {
     e.preventDefault();
     history.push('audit-logs/' + id);
   };
-
+  const filter = value(state.filter);
   return (
     <div className='view-container'>
       <header>
         <h2>{resource.role_list}</h2>
-        {component.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' onClick={hooks.add} />}
       </header>
       <div>
-        <form id='rolesForm' name='rolesForm' noValidate={true} ref={refForm}>
+        <form id='rolesForm' name='rolesForm' noValidate={true} ref={refForm as any}>
           <section className='row search-group inline'>
             <label className='col s12 m6'>
               Action
@@ -53,7 +47,7 @@ const RolesForm = () => {
                 type='text'
                 id='action'
                 name='action'
-                value={state.model.action}
+                value={filter.action}
                 onChange={updateState}
                 maxLength={240}
               />
@@ -62,9 +56,9 @@ const RolesForm = () => {
           <section className='btn-group'>
             <label>
               {resource.page_size}
-              <PageSizeSelect pageSize={component.pageSize} pageSizes={component.pageSizes} onPageSizeChanged={hooks.pageSizeChanged} />
+              <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
             </label>
-            <button type='submit' className='btn-search' onClick={hooks.searchOnClick}>{resource.search}</button>
+            <button type='submit' className='btn-search' onClick={hooks.search}>{resource.search}</button>
           </section>
         </form>
         <form className='list-result'>
@@ -78,16 +72,14 @@ const RolesForm = () => {
                       <h4>{item.action}</h4>
                       <p>{item.remark}</p>
                     </div>
-                    <button className='btn-detail' />
                   </section>
                 </li>
               );
             })}
           </ul>
-          <Pagination className='col s12 m6' totalRecords={component.itemTotal} itemsPerPage={component.pageSize} maxSize={component.pageMaxSize} currentPage={component.pageIndex} onPageChanged={hooks.pageChanged} />
+          <Pagination className='col s12 m6' total={component.total} size={component.pageSize} max={component.pageMaxSize} page={component.pageIndex} onChange={pageChanged} />
         </form>
       </div>
     </div>
   );
 };
-export default RolesForm;

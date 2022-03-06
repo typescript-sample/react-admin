@@ -1,12 +1,10 @@
 import { ValueText } from 'onecore';
 import * as React from 'react';
-import 'react-day-picker/lib/style.css';
-import { createModel, DispatchWithCallback, EditComponentParam, error, ModelProps, useEdit } from 'react-onex';
+import { createModel, DispatchWithCallback, EditComponentParam, useEditProps } from 'react-hook-core';
+import { RouteComponentProps } from 'react-router';
 import { formatPhone } from 'ui-plus';
-import { emailOnBlur, Gender, inputEdit, phoneOnBlur, Status, storage } from 'uione';
-import '../assets/css/datepicker.css';
-import { context } from './service';
-import { User } from './service';
+import { emailOnBlur, Gender, handleError, inputEdit, phoneOnBlur, Status } from 'uione';
+import { useMasterData, User, useUser } from './service';
 
 interface InternalState {
   user: User;
@@ -19,16 +17,15 @@ const createUser = (): User => {
   user.status = Status.Active;
   return user;
 };
-
-const initialize = (id: number, load: (id: number) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
-  const masterDataService = context.getMasterDataService();
+const initialize = (id: string|null, load: (id: string|null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
+  const masterDataService = useMasterData();
   Promise.all([
     masterDataService.getTitles(),
     masterDataService.getPositions()
   ]).then(values => {
     const [titleList, positionList] = values;
     set({ titleList, positionList }, () => load(id));
-  }).catch(err => error(err, storage.resource().value, storage.alert));
+  }).catch(handleError);
 };
 const updateTitle = (title: string, user: User, set: DispatchWithCallback<Partial<InternalState>>) => {
   user.title = title;
@@ -42,17 +39,17 @@ const initialState: InternalState = {
   positionList: []
 };
 
-const param: EditComponentParam<User, number, InternalState> = {
+const param: EditComponentParam<User, string, InternalState> = {
   createModel: createUser,
   initialize
 };
-export const UserForm = (props: ModelProps) => {
+export const UserForm = (props: RouteComponentProps) => {
   const refForm = React.useRef();
-  const { state, setState, back, flag, updateState, saveOnClick, updatePhoneState, resource } = useEdit<User, number, InternalState, ModelProps>(props, refForm, initialState, context.getUserService(), param, inputEdit());
+  const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEditProps<User, string, InternalState, RouteComponentProps>(props, refForm, initialState, useUser(), inputEdit(), param);
   const user = state.user;
   return (
     <div className='view-container'>
-      <form id='userForm' name='userForm' model-name='user' ref={refForm}>
+      <form id='userForm' name='userForm' model-name='user' ref={refForm as any}>
         <header>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
           <h2>{flag.newMode ? resource.create : resource.edit} {resource.user}</h2>
@@ -88,7 +85,7 @@ export const UserForm = (props: ModelProps) => {
               name='title'
               value={user.title}
               onChange={e => updateTitle(e.target.value, state.user, setState)}>
-              <option selected={true} value=''>{resource.please_select}</option>
+              <option value=''>{resource.please_select}</option>
               )
               {state.titleList.map((item, index) => (
                 <option key={index} value={item.value}>{item.text}</option>)
@@ -102,7 +99,7 @@ export const UserForm = (props: ModelProps) => {
               name='position'
               value={user.position}
               onChange={updateState}>
-              <option selected={true} value=''>{resource.please_select}</option>
+              <option value=''>{resource.please_select}</option>
               {
                 state.positionList.map((item, index) => (<option key={index} value={item.value}>{item.text}</option>))
               }
@@ -184,7 +181,7 @@ export const UserForm = (props: ModelProps) => {
         </div>
         <footer>
           {!flag.readOnly &&
-            <button type='submit' id='btnSave' name='btnSave' onClick={saveOnClick}>
+            <button type='submit' id='btnSave' name='btnSave' onClick={save}>
               {resource.save}
             </button>}
         </footer>

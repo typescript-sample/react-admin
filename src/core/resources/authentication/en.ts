@@ -74,9 +74,10 @@ export const en = {
 
   success_send_passcode_change_password: 'We have sent you an email to change your password. Please check your mailbox.',
   success_change_password: 'You have changed your password successfully. You need to log out and login again by the new password.',
+  password_duplicate: 'Your password must be different from 5 latest passwords',
   fail_change_password: 'Cannot change your password.',
 
-  error_contact_exp: 'You must enter and email or an valid username',
+  error_contact_exp: 'You must enter an email or an valid username',
   success_forgot_password: 'We have sent you an email to reset your password. Please check your mailbox.',
   fail_forgot_password: 'Error. Your account or email does not exist. Please try again.',
 

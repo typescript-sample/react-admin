@@ -1,6 +1,6 @@
-import {Model, SearchModel, ViewSearchService} from 'onecore';
+import { Attributes, Filter, ViewSearchService } from 'onecore';
 
-export interface Audit {
+export interface AuditLog {
   id: string;
   resource: string;
   userId: string;
@@ -10,14 +10,7 @@ export interface Audit {
   status: string;
   remark?: string;
 }
-
-interface Privilege {
-  id: string;
-  name: string;
-  children?: Privilege[];
-}
-
-export interface AuditSM extends SearchModel {
+export interface AuditLogFilter extends Filter {
   id?: string;
   resource?: string;
   userId?: string;
@@ -26,38 +19,32 @@ export interface AuditSM extends SearchModel {
   timestamp?: string;
   status?: string;
 }
-export interface AuditService extends ViewSearchService<Audit, string, AuditSM> {
+export interface AuditLogService extends ViewSearchService<AuditLog, string, AuditLogFilter> {
 }
-
-export const auditModel: Model = {
-  name: 'audit',
-  attributes: {
-    id: {
-      length: 40,
-      required: true,
-      key: true
-    },
-    resource: {
-      length: 100,
-      required: true
-    },
-    userId: {
-      length: 20
-    },
-    ip: {
-      length: 20
-    },
-    action: {
-      length: 20
-    },
-    timestamp: {
-      type: 'datetime'
-    },
-    status: {
-      length: 10
-    },
-    remark: {
-      length: 100
-    },
-  }
+export const auditLogModel: Attributes = {
+  id: {
+    key: true,
+    length: 40
+  },
+  resource: {
+    column: 'resourceType',
+    match: 'equal'
+  },
+  userId: {
+    required: true,
+    length: 40,
+    match: 'equal'
+  },
+  ip: {},
+  action: {
+    match: 'equal'
+  },
+  timestamp: {
+    type: 'datetime'
+  },
+  status: {
+    match: 'equal',
+    length: 1
+  },
+  remark: {}
 };

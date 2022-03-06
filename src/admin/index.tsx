@@ -1,60 +1,40 @@
-import * as H from 'history';
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {Route, RouteComponentProps, withRouter} from 'react-router-dom';
-import {compose} from 'redux';
-import {updateGlobalState} from 'redux-plus';
-import {WithDefaultProps} from '../core/default';
-import AuditForm from './audit-form';
-import {RoleAssignmentForm} from './role-assignment-form';
-import {RoleForm} from './role-form';
-import RolesForm from './roles-form';
-import {UserForm} from './user-form';
-import {UsersForm} from './users-form';
+import { withDefaultProps } from 'react-hook-core';
+import { Redirect, Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import { alert, authenticated, useResource } from 'uione';
+import { AuditLogsForm } from './audit-logs-form';
+import { RoleAssignmentForm } from './role-assignment-form';
+import { RoleForm } from './role-form';
+import { RolesForm } from './roles-form';
+import { UserForm } from './user-form';
+import { UsersForm } from './users-form';
 
-interface AppProps {
-  history: H.History;
-  setGlobalState: (data: any) => void;
-}
-
-class StatelessApp extends React.Component<AppProps & RouteComponentProps<any>, {}> {
+class Admin extends React.Component<RouteComponentProps<any>, any> {
   render() {
-    // if (authenticated()) {
+    if (authenticated()) {
       return (
         <React.Fragment>
-          <Route path={this.props.match.url + 'users'} exact={true} component={WithDefaultProps(UsersForm)} />
-          <Route path={this.props.match.url + 'users/add'} exact={true} component={WithDefaultProps(UserForm)} />
-          <Route path={this.props.match.url + 'users/:id'} exact={true} component={WithDefaultProps(UserForm)} />
+          <Route path={this.props.match.url + 'users'} exact={true} component={withDefaultProps(UsersForm)} />
+          <Route path={this.props.match.url + 'users/add'} exact={true} component={withDefaultProps(UserForm)} />
+          <Route path={this.props.match.url + 'users/edit/:id'} exact={true} component={withDefaultProps(UserForm)} />
 
-          <Route path={this.props.match.url + 'roles'} exact={true} component={WithDefaultProps(RolesForm)} />
-          <Route path={this.props.match.url + 'roles/add'} exact={true} component={WithDefaultProps(RoleForm)} />
-          <Route path={this.props.match.url + 'roles/:id/assign'} exact={true} component={WithDefaultProps(RoleAssignmentForm)} />
-          <Route path={this.props.match.url + 'roles/:id'} exact={true} component={WithDefaultProps(RoleForm)} />
+          <Route path={this.props.match.url + 'roles'} exact={true} component={withDefaultProps(RolesForm)} />
+          <Route path={this.props.match.url + 'roles/add'} exact={true} component={withDefaultProps(RoleForm)} />
+          <Route path={this.props.match.url + 'roles/edit/:id'} exact={true} component={withDefaultProps(RoleForm)} />
+          <Route path={this.props.match.url + 'roles/assign/:id'} exact={true} component={withDefaultProps(RoleAssignmentForm)} />
 
-          <Route path={this.props.match.url + 'audit-logs'} exact={true} component={WithDefaultProps(AuditForm)} />
+          <Route path={this.props.match.url + 'audit-logs'} exact={true} component={withDefaultProps(AuditLogsForm)} />
         </React.Fragment>
       );
-      /*
     } else {
-      const resourceService = resource();
-      const title = resourceService.value('error_permission');
-      const msg = resourceService.value('error_unauthorized');
+      const resource = useResource();
+      const title = resource.error_permission;
+      const msg = resource.error_unauthorized;
       alert(msg, title);
       return <Redirect to={{ pathname: '/auth', state: { from: this.props.location } }} />;
-    }*/
+    }
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    setGlobalState: (res) => dispatch(updateGlobalState(res))
-  };
-}
-
-const withConnect = connect(null, mapDispatchToProps);
-
-const adminRoutes = compose(
-  withRouter,
-  withConnect
-)(StatelessApp);
+const adminRoutes = withRouter(Admin);
 export default adminRoutes;

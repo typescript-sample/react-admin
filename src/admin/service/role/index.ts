@@ -1,42 +1,20 @@
-import {ResultInfo, RoleSM} from 'onecore';
-import {GenericSearchDiffApprClient} from 'web-clients';
-import {HttpRequest} from 'web-clients';
-import {json} from 'web-clients/src/json';
-import {Privilege, Role, roleModel, RoleService} from './role';
+import { HttpRequest } from 'axios-core';
+import { RoleFilter } from 'onecore';
+import { Client } from 'web-clients';
+import { Privilege, Role, roleModel, RoleService } from './role';
 
 export * from './role';
 
-export class RoleClient extends GenericSearchDiffApprClient<Role, any, number|ResultInfo<Role>, RoleSM> implements RoleService {
-  constructor(http: HttpRequest, url: string, protected privilegeUrl) {
-    super(http, url, roleModel.attributes, null);
+export class RoleClient extends Client<Role, string, RoleFilter> implements RoleService {
+  constructor(http: HttpRequest, url: string, protected privilegeUrl: string) {
+    super(http, url, roleModel);
+    this.assign = this.assign.bind(this);
+    this.getPrivileges = this.getPrivileges.bind(this);
   }
-  assign(objs: string[], roleId: string, ctx?: any): Promise<any> {
-    return this.http.put<string[]>(`${this.serviceUrl}/${roleId}/assign`, objs).then(res => {
-      if (!this._metamodel) {
-        return res;
-      }
-      return this.formatResultInfo(res, ctx);
-    });
+  assign(roleId: string, users: string[]): Promise<number> {
+    return this.http.put<number>(`${this.serviceUrl}/${roleId}/assign`, users);
   }
-  protected formatResultInfo(result: any, ctx?: any): any {
-    if (this._metamodel && result && typeof result === 'object' && result.status === 1 && result.value && typeof result.value === 'object') {
-      result.value = json(result.value, this._metamodel);
-    }
-    return result;
-  }
-
-  getPrivileges(ctx?: any): Promise<Privilege[]> {
+  getPrivileges(): Promise<Privilege[]> {
     return this.http.get<Privilege[]>(this.privilegeUrl);
   }
-/*
-  protected formatObject(obj): AccessRole {
-    const role: AccessRole = super.formatObject(obj);
-    if (role.modules) {
-      role.modules.forEach(module => {
-          module.showName = module.parentId ? module.parentId + '->' + module.moduleName : module.moduleName;
-      });
-    }
-    return role;
-  }
-  */
 }
