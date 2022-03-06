@@ -5,6 +5,7 @@
     "module": "esnext",
     "target": "es5",
     "lib": ["dom","es7"],
+    "strict": true,
     "sourceMap": true,
     "allowJs": true,
     "skipLibCheck": true,
