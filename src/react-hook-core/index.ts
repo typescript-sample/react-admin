@@ -10,6 +10,7 @@ export * from './merge';
 export * from './update';
 export * from './useSearch';
 export * from './useMessage';
+export * from './useEdit';
 
 export function checked(s: string[]|string|undefined, v: string): boolean|undefined {
   if (s) {

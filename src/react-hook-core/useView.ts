@@ -71,13 +71,12 @@ export const useCoreView = <T, ID, S>(
   ) => {
   const [state, setState] = useMergeState<S>(initialState);
   const [running, setRunning] = useState<boolean>();
+  const navigate = useNavigate();
 
   const back = (event: any) => {
     if (event) {
       event.preventDefault();
     }
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const navigate = useNavigate();
     navigate(-1);
   };
 

@@ -69,7 +69,7 @@ export function useRole(): RoleService {
 export function useUser(): UserService {
   return context.getUserService();
 }
-export function useMasterData(): MasterDataService {
+export function getMasterData(): MasterDataService {
   return context.getMasterDataService();
 }
 export function useAuditLog(): AuditLogService {

@@ -1,24 +1,23 @@
 import { ValueText } from 'onecore';
 import * as React from 'react';
-// import { createModel, DispatchWithCallback, EditComponentParam, useEditProps } from 'react-hook-core';
+import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from '../react-hook-core';
 import { formatPhone } from 'ui-plus';
-import { emailOnBlur, Gender, inputView, phoneOnBlur, Status } from 'uione';
-import { useView } from '../react-hook-core/useView';
-import { User, useUser } from './service';
+import { emailOnBlur, Gender, handleError, inputEdit, phoneOnBlur, Status } from 'uione';
+import { getMasterData, User, useUser } from './service';
 
 interface InternalState {
   user: User;
   titleList: ValueText[];
   positionList: ValueText[];
 }
-/*
+
 const createUser = (): User => {
   const user = createModel<User>();
   user.status = Status.Active;
   return user;
 };
 const initialize = (id: string|null, load: (id: string|null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
-  const masterDataService = useMasterData();
+  const masterDataService = getMasterData();
   Promise.all([
     masterDataService.getTitles(),
     masterDataService.getPositions()
@@ -33,25 +32,26 @@ const updateTitle = (title: string, user: User, set: DispatchWithCallback<Partia
   set({ user });
 };
 
-const param: EditComponentParam<User, string, InternalState> = {
-  createModel: createUser,
-  initialize
-};
-*/
 const initialState: InternalState = {
   user: {} as User,
   titleList: [],
   positionList: []
 };
+
+const param: EditComponentParam<User, string, InternalState> = {
+  createModel: createUser,
+  initialize
+};
 export const UserForm = () => {
   const refForm = React.useRef();
-  const { resource, state, back } = useView<User, string, InternalState>(refForm, initialState, useUser(), inputView());
+  const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(refForm, initialState, useUser(), inputEdit(), param);
   const user = state.user;
   return (
     <div className='view-container'>
       <form id='userForm' name='userForm' model-name='user' ref={refForm as any}>
         <header>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
+          <h2>{flag.newMode ? resource.create : resource.edit} {resource.user}</h2>
         </header>
         <div className='row'>
           <label className='col s12 m6'>
@@ -61,6 +61,8 @@ export const UserForm = () => {
               id='userId'
               name='userId'
               value={user.userId}
+              readOnly={!flag.newMode}
+              onChange={updateState}
               maxLength={20} required={true}
               placeholder={resource.user_id} />
           </label>
@@ -71,8 +73,36 @@ export const UserForm = () => {
               id='displayName'
               name='displayName'
               value={user.displayName}
+              onChange={updateState}
               maxLength={40} required={true}
               placeholder={resource.display_name} />
+          </label>
+          <label className='col s12 m6'>
+            {resource.person_title}
+            <select
+              id='title'
+              name='title'
+              value={user.title}
+              onChange={e => updateTitle(e.target.value, state.user, setState)}>
+              <option value=''>{resource.please_select}</option>
+              )
+              {state.titleList.map((item, index) => (
+                <option key={index} value={item.value}>{item.text}</option>)
+              )}
+            </select>
+          </label>
+          <label className='col s12 m6'>
+            {resource.position}
+            <select
+              id='position'
+              name='position'
+              value={user.position}
+              onChange={updateState}>
+              <option value=''>{resource.please_select}</option>
+              {
+                state.positionList.map((item, index) => (<option key={index} value={item.value}>{item.text}</option>))
+              }
+            </select>
           </label>
           <label className='col s12 m6'>
             {resource.phone}
@@ -81,6 +111,7 @@ export const UserForm = () => {
               id='phone'
               name='phone'
               value={formatPhone(user.phone)}
+              onChange={updatePhoneState}
               onBlur={phoneOnBlur}
               maxLength={17}
               placeholder={resource.phone} />
@@ -93,6 +124,7 @@ export const UserForm = () => {
               name='email'
               data-type='email'
               value={user.email}
+              onChange={updateState}
               onBlur={emailOnBlur}
               maxLength={100}
               placeholder={resource.email} />
@@ -105,6 +137,7 @@ export const UserForm = () => {
                   type='radio'
                   id='gender'
                   name='gender'
+                  onChange={updateState}
                   disabled={user.title !== 'Dr'}
                   value={Gender.Male} checked={user.gender === Gender.Male} />
                 {resource.male}
@@ -114,6 +147,7 @@ export const UserForm = () => {
                   type='radio'
                   id='gender'
                   name='gender'
+                  onChange={updateState}
                   disabled={user.title !== 'Dr'}
                   value={Gender.Female} checked={user.gender === Gender.Female} />
                 {resource.female}
@@ -128,6 +162,7 @@ export const UserForm = () => {
                   type='radio'
                   id='active'
                   name='status'
+                  onChange={updateState}
                   value={Status.Active} checked={user.status === Status.Active} />
                 {resource.yes}
               </label>
@@ -136,12 +171,19 @@ export const UserForm = () => {
                   type='radio'
                   id='inactive'
                   name='status'
+                  onChange={updateState}
                   value={Status.Inactive} checked={user.status === Status.Inactive} />
                 {resource.no}
               </label>
             </div>
           </div>
         </div>
+        <footer>
+          {!flag.readOnly &&
+            <button type='submit' id='btnSave' name='btnSave' onClick={save}>
+              {resource.save}
+            </button>}
+        </footer>
       </form>
     </div>
   );
