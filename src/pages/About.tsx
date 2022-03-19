@@ -13,7 +13,7 @@ const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
     } else {
       setMessage('No number was provided');
     }
-  }, []);
+  }, [number]);
 
   return (
     <div>
