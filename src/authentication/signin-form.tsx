@@ -74,26 +74,8 @@ export const SigninForm = () => {
   };
 
   const isTwoFactor = (state.user.step ? state.user.step === 1 : false);
-  const forgotPassword = () => {
-    navigate('/auth/forgot-password');
-  };
-  const signup = () => {
-    navigate('/auth/signup');
-  };
   const succeed = (result: AuthResult) => {
     store(result.user, setUser, setPrivileges);
-    navigateToHome();
-  };
-  const navigateToHome = () => {
-    /*
-    const redirect = window.location.search;
-    if (redirect) {
-      const url = new URL(window.location.href);
-      const searchParams = new URLSearchParams(url.search);
-      navigate(searchParams.get('redirect'));
-    } else {
-      navigate(storage.home);
-    } */
     navigate(storage.home);
   };
   const signin = async (event: any) => {
@@ -189,8 +171,8 @@ export const SigninForm = () => {
             {resource.signin_remember_me}
           </label>
           <button type='submit' id='btnSignin' name='btnSignin' onClick={signin}>{resource.button_signin}</button>
-          <a id='btnForgotPassword' onClick={forgotPassword}>{resource.button_forgot_password}</a>
-          <a id='btnSignup' onClick={signup}>{resource.button_signup}</a>
+          <a id='btnForgotPassword' href='forgot-password'>{resource.button_forgot_password}</a>
+          <a id='btnSignup' href='signup'>{resource.button_signup}</a>
         </div>
       </form>
     </div>

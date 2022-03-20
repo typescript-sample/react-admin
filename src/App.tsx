@@ -14,9 +14,14 @@ import LayoutComponent from './components/Layout';
 import AboutPage from './pages/About';
 import HomePage from './pages/Home';
 import { SigninForm } from './authentication/signin-form';
+import { ChangePasswordForm } from './authentication/change-password-form';
+import { ForgotPasswordForm } from './authentication/forgot-password-form';
+import { ResetPasswordForm } from './authentication/reset-password-form';
 import { UsersForm } from './admin/users-form';
 import { UserForm } from './admin/user-form';
-import Authentication from './authentication';
+import { RolesForm } from './admin/roles-form';
+import { RoleForm } from './admin/role-form';
+// import Authentication from './authentication';
 import { config } from './config';
 import { resources as locales } from './core/resources';
 
@@ -61,7 +66,7 @@ export function init() {
   if (storage.home == null || storage.home === undefined) {
     storage.home = '/admin/users';
   }
-  storage.home = '/admin/users';
+  storage.home = '/admin/roles';
   // storage.token = getToken;
   storage.moment = true;
   storage.setResources(locales);
@@ -86,10 +91,14 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="home" element={<HomePage />} />
-        <Route path="auth/*" element={<Authentication />} />
         <Route path="signin" element={<SigninForm />} />
+        <Route path="change-password" element={<ChangePasswordForm />} />
+        <Route path="reset-password" element={<ResetPasswordForm />} />
+        <Route path="forgot-password" element={<ForgotPasswordForm />} />
         <Route path="admin/users" element={<UsersForm />} />
         <Route path="admin/users/:id" element={<UserForm />} />
+        <Route path="admin/roles" element={<RolesForm />} />
+        <Route path="admin/roles/:id" element={<RoleForm />} />
         <Route path="about">
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />

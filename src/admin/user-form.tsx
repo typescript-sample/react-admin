@@ -3,7 +3,7 @@ import * as React from 'react';
 import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from '../react-hook-core';
 import { formatPhone } from 'ui-plus';
 import { emailOnBlur, Gender, handleError, inputEdit, phoneOnBlur, Status } from 'uione';
-import { getMasterData, User, useUser } from './service';
+import { getMasterData, User, getUserService } from './service';
 
 interface InternalState {
   user: User;
@@ -44,7 +44,7 @@ const param: EditComponentParam<User, string, InternalState> = {
 };
 export const UserForm = () => {
   const refForm = React.useRef();
-  const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(refForm, initialState, useUser(), inputEdit(), param);
+  const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(refForm, initialState, getUserService(), inputEdit(), param);
   const user = state.user;
   return (
     <div className='view-container'>

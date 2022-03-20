@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import {clone} from 'reflectx';
-import {addParametersIntoUrl, append, buildMessage, Filter, formatResults, getFieldsFromForm, getModel, handleAppend, handleSort, initFilter, mergeFilter as mergeFilter2, Pagination, removeSortStatus, showPaging, Sortable, validate} from 'search-core';
 import {error, getDecodeFromForm, getName, getRemoveError, getValidateForm, handleToggle, hideLoading, initForm, Locale, PageChange, pageSizes, removeFormError, ResourceService, SearchParameter, SearchResult, SearchService, showLoading} from './core';
 import {DispatchWithCallback, useMergeState} from './merge';
 import {buildFromUrl} from './route';
+import {addParametersIntoUrl, append, buildMessage, formatResults, getFieldsFromForm, getModel, handleAppend, handleSort, initFilter, mergeFilter as mergeFilter2, Pagination, removeSortStatus, showPaging, Sortable, validate} from './search';
 import {enLocale} from './state';
 import {useUpdate} from './update';
 
@@ -11,6 +11,13 @@ export interface Searchable<T> extends Pagination, Sortable {
   nextPageToken?: string;
   excluding?: string[]|number[];
   list?: T[];
+}
+interface Filter {
+  page?: number;
+  limit?: number;
+  firstLimit?: number;
+  fields?: string[];
+  sort?: string;
 }
 function prepareData(data: any): void {
 }

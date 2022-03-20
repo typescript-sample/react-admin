@@ -7,7 +7,7 @@ import { inputSearch } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
 import { checked, SearchComponentState, useSearch, value } from '../react-hook-core';
-import { User, useUser } from './service';
+import { User, getUserService } from './service';
 
 interface UserSearch extends SearchComponentState<User, UserFilter> {
   statusList: ValueText[];
@@ -25,9 +25,9 @@ const initialState: UserSearch = {
   filter: userFilter
 };
 export const UsersForm = () => {
-  const refForm = React.useRef();
   const navigate = useNavigate();
-  const { state, resource, component, updateState, search, sort, toggleFilter, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, useUser(), inputSearch());
+  const refForm = React.useRef();
+  const { state, resource, component, updateState, search, sort, toggleFilter, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());
   component.viewable = true;
   component.editable = true;
 

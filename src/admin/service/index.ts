@@ -63,10 +63,10 @@ class ApplicationContext {
 }
 
 export const context = new ApplicationContext();
-export function useRole(): RoleService {
+export function getRoleService(): RoleService {
   return context.getRoleService();
 }
-export function useUser(): UserService {
+export function getUserService(): UserService {
   return context.getUserService();
 }
 export function getMasterData(): MasterDataService {
