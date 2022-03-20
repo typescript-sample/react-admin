@@ -2,7 +2,7 @@ import { ValueText } from 'onecore';
 import * as React from 'react';
 import { useNavigate } from 'react-router';
 import { checked, SearchComponentState, useSearch, value } from '../react-hook-core';
-import { PageSizeSelect } from 'react-page-size-select';
+import { PageSizeSelect } from '../core/react-page-size-select';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { Role, RoleFilter, getRoleService } from './service';

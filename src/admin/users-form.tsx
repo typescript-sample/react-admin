@@ -1,6 +1,6 @@
 import { UserFilter, ValueText } from 'onecore';
 import * as React from 'react';
-import { PageSizeSelect } from 'react-page-size-select';
+import { PageSizeSelect } from '../core/react-page-size-select';
 import { useNavigate } from 'react-router';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';

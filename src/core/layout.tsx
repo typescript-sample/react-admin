@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import PageSizeSelect from 'react-page-size-select';
+import PageSizeSelect from '../core/react-page-size-select';
 import { options, Privilege, storage, StringMap } from 'uione';
 import logoTitle from '../assets/images/logo-title.png';
 import logo from '../assets/images/logo.png';
