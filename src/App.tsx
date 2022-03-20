@@ -20,11 +20,11 @@ import { UsersForm } from './admin/users-form';
 import { UserForm } from './admin/user-form';
 import { RolesForm } from './admin/roles-form';
 import { RoleForm } from './admin/role-form';
-// import Authentication from './authentication';
 import { config } from './config';
 import { resources as locales } from './core/resources';
 
 import './App.css';
+import './assets/fonts/material-icon/css/material-icons.css';
 import './assets/css/reset.css';
 import './assets/css/checkbox.css';
 import './assets/css/radio.css';
@@ -88,7 +88,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
         <Route path="home" element={<HomePage />} />
         <Route path="signin" element={<SigninForm />} />
         <Route path="change-password" element={<ChangePasswordForm />} />
@@ -98,14 +97,15 @@ function App() {
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />
         </Route>
-        <Route path="/admin" element={<LayoutComponent />}>          
+        <Route path="" element={<LayoutComponent />}>
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />
-          <Route path="users" element={<UsersForm />} />
-          <Route path="users/:id" element={<UserForm />} />
-          <Route path="roles" element={<RolesForm />} />
-          <Route path="roles/:id" element={<RoleForm />} />
+          <Route path="admin/users" element={<UsersForm />} />
+          <Route path="admin/users/:id" element={<UserForm />} />
+          <Route path="admin/roles" element={<RolesForm />} />
+          <Route path="admin/roles/:id" element={<RoleForm />} />
         </Route>
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );
@@ -130,5 +130,4 @@ function App() {
   );
   */
 }
-
 export default App;

@@ -148,7 +148,7 @@ export interface DiffState<T> {
 
 // tslint:disable-next-line:class-name
 export class resource {
-  static phone = / |\-|\.|\(|\)/g;
+  static phone = / |-|\.|\(|\)/g;
   static _cache: any = {};
   static cache = true;
 }

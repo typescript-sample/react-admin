@@ -94,7 +94,6 @@ export const useEdit = <T, ID, S>(
       }
     }
     const id = buildId<ID>(params, keys);
-    debugger;
     if (p && p.initialize) {
       p.initialize(id, baseProps.load, baseProps.setState, p.callback);
     } else {
