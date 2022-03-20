@@ -47,7 +47,7 @@ import './assets/css/pagination.css';
 import './assets/css/solid-container.css';
 import './assets/css/common-button.css';
 import './assets/css/search.css';
-import './assets/css/default-layout.css';
+import './assets/css/layout.css';
 import './assets/css/profile.css';
 import './assets/css/theme.css';
 

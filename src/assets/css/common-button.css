@@ -230,17 +230,11 @@ footer > .btn-next {
 }
 
 .btn-back::before {
-  font-size: 28px;
-  font-weight: 100;
-  font-family: FontAwesome;
-  content: "\f104";
-  /*
   position: absolute;
-  top: 7px;
-  left: 1px;
-  font-size: 21px;
-  font-weight: 100;
-  content: "\276E"; 2039 */
+  top: -9px;
+  font-size: 36px;
+  font-weight: 400;
+  content: "\2039";
 }
 
 .btn-close {

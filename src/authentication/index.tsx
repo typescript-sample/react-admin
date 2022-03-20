@@ -5,7 +5,6 @@ export default function Authentication() {
   return (
     <Routes>
       <Route path='signin' element={<SigninForm/>} />
-      {/* <Route path='test' element={<Hello/>} /> */}
     </Routes>
   );
 }

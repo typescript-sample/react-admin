@@ -121,6 +121,33 @@
   display: block;
 }
 
+.menu-item > i.entity-icon {
+  transform: rotate(90deg);
+  margin-right: 10px;
+  width: 28px;
+  font-size: 24px;
+  text-align: center;
+}
+.menu-item > i.entity-icon.down,
+.menu-item > i.entity-icon.up {
+  font-style: normal;
+  font-weight: 800;
+  right: -14px;
+  top: 0;
+  height: 100%;
+  position: absolute;
+}
+
+.top-menu a.menu-item > i.entity-icon.down,
+.top-menu a.menu-item > i.entity-icon.up {
+  right: -20px;
+}
+.menu-item > i.entity-icon.down:before {
+  content: "\203A";
+}
+.menu-item > i.entity-icon.up:before {
+    content: "\2039";
+}
 @media screen and (min-width: 601px) {
   .sidebar-off .sidebar {
     width: 46px;
