@@ -10,7 +10,7 @@ import { toast } from 'ui-toast';
 import { storage } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
-import LayoutComponent from './components/Layout';
+import LayoutComponent from './components/default';
 import AboutPage from './pages/About';
 import HomePage from './pages/Home';
 import { SigninForm } from './authentication/signin-form';
