@@ -66,7 +66,7 @@ export function init() {
   if (storage.home == null || storage.home === undefined) {
     storage.home = '/admin/users';
   }
-  storage.home = '/admin/roles';
+  storage.home = '/admin/users';
   // storage.token = getToken;
   storage.moment = true;
   storage.setResources(locales);
@@ -95,17 +95,17 @@ function App() {
         <Route path="change-password" element={<ChangePasswordForm />} />
         <Route path="reset-password" element={<ResetPasswordForm />} />
         <Route path="forgot-password" element={<ForgotPasswordForm />} />
-        <Route path="admin/users" element={<UsersForm />} />
-        <Route path="admin/users/:id" element={<UserForm />} />
-        <Route path="admin/roles" element={<RolesForm />} />
-        <Route path="admin/roles/:id" element={<RoleForm />} />
         <Route path="about">
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />
         </Route>
-        <Route path="/layout" element={<LayoutComponent />}>          
+        <Route path="/admin" element={<LayoutComponent />}>          
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />
+          <Route path="users" element={<UsersForm />} />
+          <Route path="users/:id" element={<UserForm />} />
+          <Route path="roles" element={<RolesForm />} />
+          <Route path="roles/:id" element={<RoleForm />} />
         </Route>
       </Routes>
     </BrowserRouter>
