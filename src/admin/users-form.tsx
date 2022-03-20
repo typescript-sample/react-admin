@@ -1,8 +1,8 @@
 import { UserFilter, ValueText } from 'onecore';
 import * as React from 'react';
-import { PageSizeSelect } from '../core/react-page-size-select';
+import { PageSizeSelect } from 'react-page-size-select';
 import { useNavigate } from 'react-router';
-import { Pagination } from '../core/react-pagination';
+import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';

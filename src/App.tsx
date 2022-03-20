@@ -1,4 +1,3 @@
-import React from 'react';
 import * as csv from 'csvtojson';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { currency, locale } from 'locale-service';
@@ -10,7 +9,7 @@ import { toast } from 'ui-toast';
 import { storage } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
-import LayoutComponent from './core/default';
+import LayoutComponent from './core/layout';
 import AboutPage from './pages/About';
 import HomePage from './pages/Home';
 import { SigninForm } from './authentication/signin-form';
