@@ -18,3 +18,4 @@ export const env = {
     authentication_url: '/server'
   }
 };
+  

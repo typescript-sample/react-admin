@@ -47,7 +47,6 @@ const initialize = (id: string, set: DispatchWithCallback<Partial<InternalState>
 
 export const RoleAssignmentForm = (props: any) => {
   console.log(props)
-  debugger
   const [state, setState] = useState(initialState);
   const roleService = getRoleService();
   const navigate = useNavigate();

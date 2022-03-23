@@ -105,7 +105,7 @@ function App() {
           <Route path="admin/users/:id" element={<UserForm />} />
           <Route path="admin/roles" element={<RolesForm />} />
           <Route path="admin/roles/:id" element={<RoleForm />} />
-          <Route path='roles/assign/:id' element={<RoleAssignmentForm/>} />
+          <Route path='roles/assign/:id' element={<RoleAssignmentForm />} />
         </Route>
         <Route path="/" element={<HomePage />} />
       </Routes>
