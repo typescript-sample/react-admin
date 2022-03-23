@@ -50,6 +50,7 @@ import './assets/css/search.css';
 import './assets/css/layout.css';
 import './assets/css/profile.css';
 import './assets/css/theme.css';
+import { RoleAssignmentForm } from './admin/role-assignment-form';
 
 let isInit = false;
 export function init() {
@@ -104,6 +105,7 @@ function App() {
           <Route path="admin/users/:id" element={<UserForm />} />
           <Route path="admin/roles" element={<RolesForm />} />
           <Route path="admin/roles/:id" element={<RoleForm />} />
+          <Route path='roles/assign/:id' element={<RoleAssignmentForm/>} />
         </Route>
         <Route path="/" element={<HomePage />} />
       </Routes>
