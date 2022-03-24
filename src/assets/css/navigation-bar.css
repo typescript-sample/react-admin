@@ -35,11 +35,11 @@
 }
 
 .icon-down:before {
-  content: "\f107"
+  content: "\f107";
 }
 
 .icon-up:before {
-  content: "\f106"
+  content: "\f106";
 }
 
 .list-child {
@@ -70,7 +70,7 @@
   box-sizing: border-box;
   color: white;
 }
-.sidebar .menu-item i{
+.sidebar .menu-item i {
   font-size: 18px;
 }
 .sidebar nav ul {
@@ -103,6 +103,10 @@
 }
 
 .sidebar-off .sidebar > nav > ul > li > ul > li > a > span,
+.sidebar-off .sidebar > nav > ul > li > a > span,
+.sidebar-off .sidebar > nav > ul > li > .menu-item > span {
+  display: none;
+}
 .sidebar-off .sidebar > nav > ul > li > a > span {
   display: none;
 }
@@ -148,7 +152,7 @@
   content: "\203A";
 }
 .menu-item > i.entity-icon.up:before {
-    content: "\2039";
+  content: "\2039";
 }
 @media screen and (min-width: 601px) {
   .sidebar-off .sidebar {
@@ -205,7 +209,7 @@
   .top-menu .entity-icon.up,
   .top-menu .sidebar-off-menu,
   .entity-icon.down,
-  .entity-icon.up{
+  .entity-icon.up {
     display: none;
   }
 }
@@ -257,12 +261,12 @@
     width: 6px;
     height: 6px;
   }
-  
+
   .top-menu .menu.sidebar::-webkit-scrollbar-thumb {
     border-radius: 3px;
     background: #747978;
   }
-  
+
   .top-menu .menu.sidebar::-webkit-scrollbar-track {
     background: transparent;
     border-radius: 3px;
@@ -305,13 +309,25 @@
   .top-menu .menu.sidebar > nav > ul > li > ul {
     position: absolute;
   }
-/*
+  /*
   .top-menu .menu.sidebar > nav > ul > li > ul.list-child.expanded {
     display: none;
   }
 */
-  .top-menu .menu.sidebar > nav > ul > li > ul.list-child > li:hover > ul.list-child
-  .top-menu .menu.sidebar > nav > ul > li:hover > ul.list-child.expanded,
+  .top-menu
+    .menu.sidebar
+    > nav
+    > ul
+    > li
+    > ul.list-child
+    > li:hover
+    > ul.list-child
+    .top-menu
+    .menu.sidebar
+    > nav
+    > ul
+    > li:hover
+    > ul.list-child.expanded,
   .top-menu .menu.sidebar > nav > ul > li > ul > li:hover > ul,
   .top-menu .menu.sidebar > nav > ul > li:hover > ul {
     display: inline;
@@ -327,7 +343,14 @@
     right: -11px;
   }
 
-  .top-menu .menu.sidebar > nav > ul > li > ul.list-child > li:hover > ul.list-child {
+  .top-menu
+    .menu.sidebar
+    > nav
+    > ul
+    > li
+    > ul.list-child
+    > li:hover
+    > ul.list-child {
     display: inline;
     position: fixed;
     margin-left: 192px;
@@ -338,12 +361,29 @@
     display: none;
   }
 
-  .top-menu .menu.sidebar > nav > ul > li > ul.list-child > li > ul.list-child > li {
+  .top-menu
+    .menu.sidebar
+    > nav
+    > ul
+    > li
+    > ul.list-child
+    > li
+    > ul.list-child
+    > li {
     border-left: 1px outset lightgreen;
     border-bottom: 1px solid lightgreen;
   }
 
-  .top-menu .menu.sidebar > nav > ul > li > ul.list-child > li > ul.list-child > li > a {
+  .top-menu
+    .menu.sidebar
+    > nav
+    > ul
+    > li
+    > ul.list-child
+    > li
+    > ul.list-child
+    > li
+    > a {
     color: white;
   }
   /* End level 2 menu */
@@ -405,7 +445,12 @@
   .classic.top-menu .view-container {
     height: auto;
   }
-  .classic.top-menu .page-container > .page-body .view-container > .view-body > form:last-child,
+  .classic.top-menu
+    .page-container
+    > .page-body
+    .view-container
+    > .view-body
+    > form:last-child,
   .classic.top-menu .page-container > .page-body .view-container > form > div,
   .classic.top-menu .page-container > .page-body .view-container,
   .classic.top-menu .page-container > .page-body .view-container > form,
