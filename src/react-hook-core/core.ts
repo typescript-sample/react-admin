@@ -292,8 +292,7 @@ export function buildId<ID>(p: Readonly<Params<string>>, keys?: string[]): ID | 
     if (keys && keys.length === 1) {
       const id = p[keys[0]];
       if (id) return id as any;
-      else
-        return p['id'] as any;
+      return p['id'] as any;
 
     }
     return p['id'] as any;
