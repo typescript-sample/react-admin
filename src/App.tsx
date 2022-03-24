@@ -22,7 +22,8 @@ import { RolesForm } from './admin/roles-form';
 import { RoleForm } from './admin/role-form';
 import { config } from './config';
 import { resources as locales } from './core/resources';
-
+import { Loading } from './react-hook-core';
+import LazyLoadModule from 'react-loadable';
 import './App.css';
 import './assets/fonts/material-icon/css/material-icons.css';
 import './assets/css/reset.css';
@@ -54,6 +55,8 @@ import { RoleAssignmentForm } from './admin/role-assignment-form';
 
 let isInit = false;
 export function init() {
+ 
+
   if (isInit) {
     return;
   }
@@ -86,6 +89,7 @@ export function init() {
 }
 function App() {
   init();
+  // const adminRoutes = LazyLoadModule({ loader: () => import(`./admin`), loading: Loading });
   return (
     <BrowserRouter>
       <Routes>
@@ -101,11 +105,12 @@ function App() {
         <Route path="" element={<LayoutComponent />}>
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />
-          <Route path="users" element={<UsersForm />} />
-          <Route path="users/:id" element={<UserForm />} />
-          <Route path="roles" element={<RolesForm />} />
-          <Route path="roles/:id" element={<RoleForm />} />
-          <Route path='roles/assign/:id' element={<RoleAssignmentForm />} />
+          {/* <Route path="" element={adminRoutes} /> */}
+          <Route path="admin/users" element={<UsersForm />} />
+          <Route path="admin/users/:id" element={<UserForm />} />
+          <Route path="admin/roles" element={<RolesForm />} />
+          <Route path="admin/roles/:id" element={<RoleForm />} />
+          <Route path='admin/roles/assign/:id' element={<RoleAssignmentForm />} />
         </Route>
         <Route path="/" element={<HomePage />} />
       </Routes>

@@ -164,7 +164,7 @@ export function RoleForm() {
   };
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
-    navigate(`/roles/assign/${id}`);
+    navigate(`/admin/roles/assign/${id}`);
     return;
   };
 
