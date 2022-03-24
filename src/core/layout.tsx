@@ -63,6 +63,7 @@ export const LayoutComponent = () => {
   const [pageSize] = useState<number>(20)
   const [pageSizes] = useState<number[]>([10, 20, 40, 60, 100, 200, 400, 10000])
   const [topClass, setTopClass] = useState('')
+  console.log('user',storage.user())
   const [user, setUser] = useState(storage.user())
 
   useEffect(() => {
@@ -159,7 +160,6 @@ export const LayoutComponent = () => {
 
   useEffect(() => {
     setUser(storage.user())
-    console.log('storage.user()',storage.user())
   }, [storage.user()])
   useEffect(() => {
     const { isToggleSidebar, isToggleMenu, isToggleSearch } = state;
@@ -223,8 +223,8 @@ export const LayoutComponent = () => {
                   <button type='button'><i className='fa fa-envelope-o'/></button>*/}
                 <div className='dropdown-menu-profile'>
                   {(!user || !user.imageURL) && (
-                    <i className='material-icons' onClick={toggleProfile}>
-                      person
+                    <i className='mdi mdi-account' onClick={toggleProfile}>
+                      
                     </i>
                   )}
                   <ul id='dropdown-basic' className={state.classProfile + ' dropdown-content-profile'}>
@@ -247,7 +247,7 @@ export const LayoutComponent = () => {
             </div>
           </form>
         </div>
-        <div className='page-body'><Outlet/></div>
+        <div className='page-body'><Outlet /></div>
       </div>
     </div>
   );

@@ -31,8 +31,8 @@ export const renderItem = (activePath: string, key: number, module: Privilege, p
     return (
       <li key={key} className={'open ' + activeWithPath(activePath, link, true, features)} /* onBlur={this.menuItemOnBlur} */>
         <div className='menu-item' onClick={(e) => toggleMenuItem(e)}>
-        {pinable && <button type='button' className={`btn-pin ${isPinned ? 'pinned' : ''}`} onClick={(event) => pin(event, key, module)} />}
-          <i className='material-icons'>{className}</i>
+          {pinable && <button type='button' className={`btn-pin ${isPinned ? 'pinned' : ''}`} onClick={(event) => pin(event, key, module)} ><i className='mdi mdi-pin' /></button>}
+          <i className={`mdi mdi-${className} `} />
           <span>{name}</span>
           <i className='entity-icon down' />
         </div>
@@ -43,16 +43,16 @@ export const renderItem = (activePath: string, key: number, module: Privilege, p
     return (
       <li key={key} className={activeWithPath(activePath, module.path, false)}>
         <Link to={module.path as any}>
-          {pinable && <button type='button' className={`btn-pin ${isPinned ? 'pinned' : ''}`} onClick={(event) => pin(event, key, module)} />}
-          <i className='material-icons'>{className}</i>
+          {pinable && <button type='button' className={`btn-pin ${isPinned ? 'pinned' : ''}`} onClick={(event) => pin(event, key, module)}><i className='mdi mdi-pin' /></button> }
+          <i className={`mdi mdi-${className}` } />
           <span>{name}</span>
         </Link>
       </li>
     );
   }
 };
-export function findParent(ele: HTMLElement, node: string): HTMLElement|null {
-  let current: HTMLElement|null = ele;
+export function findParent(ele: HTMLElement, node: string): HTMLElement | null {
+  let current: HTMLElement | null = ele;
   while (true) {
     current = current.parentElement;
     if (!current) {
@@ -124,7 +124,7 @@ export const activeWithPath = (activePath: string, path: string | undefined, isP
 };
 export const toggleMenuItem = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
   event.preventDefault();
-  let target: HTMLElement|null = event.currentTarget;
+  let target: HTMLElement | null = event.currentTarget;
   const currentTarget = event.currentTarget;
   const elI = currentTarget.querySelectorAll('.menu-item > i')[1];
   if (elI) {

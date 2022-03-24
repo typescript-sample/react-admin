@@ -266,18 +266,21 @@
   position: absolute;
   background-color: transparent;
   border-color: transparent;
+  font-size: 18px;
+  color: white;
 }
+
 .menu.sidebar .btn-pin::after {
   font-size: 15px;
   font-weight: 100;
   font-family: FontAwesome;
-  content: "\f08d";
-  color: white;
+  /* content: "\f08d"; */
+  /* color: white; */
 }
 .menu.sidebar nav ul li:hover button.btn-pin {
   display: inline-block;
 }
-.menu.sidebar .btn-pin.pinned {
+.menu.sidebar .pinned {
   display: inline-block;
   transform: rotate(45deg);
 }

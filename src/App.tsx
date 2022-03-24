@@ -101,10 +101,10 @@ function App() {
         <Route path="" element={<LayoutComponent />}>
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />
-          <Route path="admin/users" element={<UsersForm />} />
-          <Route path="admin/users/:id" element={<UserForm />} />
-          <Route path="admin/roles" element={<RolesForm />} />
-          <Route path="admin/roles/:id" element={<RoleForm />} />
+          <Route path="users" element={<UsersForm />} />
+          <Route path="users/:id" element={<UserForm />} />
+          <Route path="roles" element={<RolesForm />} />
+          <Route path="roles/:id" element={<RoleForm />} />
           <Route path='roles/assign/:id' element={<RoleAssignmentForm />} />
         </Route>
         <Route path="/" element={<HomePage />} />

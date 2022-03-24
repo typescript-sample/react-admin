@@ -25,7 +25,7 @@ const createRole = (): Role => {
   user.status = Status.Active;
   return user;
 };
-function getPrivilege(id: string, all: Privilege[]): Privilege|undefined {
+function getPrivilege(id: string, all: Privilege[]): Privilege | undefined {
   if (!all || !id) {
     return undefined;
   }
@@ -90,7 +90,7 @@ function buildPrivileges(id: string, type: string, privileges: string[], all: Pr
     }
   }
 }
-function isCheckedAll<S extends InternalState, P>(privileges: string[]|undefined, all: string[], setState2: DispatchWithCallback<Partial<InternalState>>) {
+function isCheckedAll<S extends InternalState, P>(privileges: string[] | undefined, all: string[], setState2: DispatchWithCallback<Partial<InternalState>>) {
   const checkedAll = privileges && all && privileges.length === all.length;
   setState2({ checkedAll });
 }
@@ -108,7 +108,7 @@ function buildShownModules(keyword: string, allPrivileges: Privilege[]): Privile
   }).filter(item => (item.children && item.children.length > 0) || item.name.toLowerCase().includes(w));
   return shownPrivileges;
 }
-const initialize = async (roleId: string|null, load: (id: string|null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
+const initialize = async (roleId: string | null, load: (id: string | null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
   const roleService = getRoleService();
   roleService.getPrivileges().then(allPrivileges => {
     const all: string[] = [];
@@ -168,7 +168,7 @@ export function RoleForm() {
     return;
   };
 
-  const renderForms = (roles: Role, modules: Privilege[]|undefined, parentId: string, disableds: boolean, allPrivilege: Privilege[]) => {
+  const renderForms = (roles: Role, modules: Privilege[] | undefined, parentId: string, disableds: boolean, allPrivilege: Privilege[]) => {
     if (!modules || modules.length === 0) {
       return '';
     }
@@ -221,7 +221,7 @@ export function RoleForm() {
         <header>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
           <h2>{flag.newMode ? resource.create : resource.edit} {resource.role}</h2>
-          <i onClick={e => assign(e, state.role.roleId)}className='btn material-icons'>group</i>
+          <i onClick={e => assign(e, state.role.roleId)} className="mdi mdi-group btn" />
         </header>
         <div>
           <section className='row'>

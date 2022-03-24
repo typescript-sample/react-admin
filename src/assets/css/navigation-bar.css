@@ -70,7 +70,9 @@
   box-sizing: border-box;
   color: white;
 }
-
+.sidebar .menu-item i{
+  font-size: 18px;
+}
 .sidebar nav ul {
   white-space: normal;
   margin: 0;

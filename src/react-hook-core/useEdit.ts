@@ -83,6 +83,7 @@ export const useEdit = <T, ID, S>(
     obj[n] = baseProps.createNewModel();
     baseProps.setState(obj);
     let keys: string[]|undefined;
+    console.log(!!p , !p?.keys , !!service , !!service.metadata)
     if (p && !p.keys && service && service.metadata) {
       const metadata = (p.metadata ? p.metadata : service.metadata());
       if (metadata) {

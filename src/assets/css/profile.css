@@ -161,7 +161,7 @@ header.nav > .profile-followers {
 .profile-followers > a > i {
   margin-right: 8px;
 }
-.profile-followers > a > i.material-icons {
+.profile-followers > a > i.mdi {
   font-size: 19px;
 }
 
