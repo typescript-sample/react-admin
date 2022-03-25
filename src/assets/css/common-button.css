@@ -81,6 +81,8 @@ div.card > button.btn-pick,
 .view-footer .btn-accept,
 .view-container > form > footer .btn-next,
 .view-container > footer .btn-next,
+.view-container > div> .usersLookupForm > .search-group > .btn-group > .btn-table,
+.view-container > div> .usersLookupForm > .search-group > .btn-group > .btn-list-view,
 .view-footer .btn-next {
   height: 40px;
   width: fit-content;
@@ -130,7 +132,7 @@ footer > button:hover {
   align-content: center;
   font-family: Lucida Sans Unicode;
   font-size: 35px;
-  content: '\21BB';
+  content: "\21BB";
 }
 footer > button.btn-accept:hover,
 footer > button.btn-next:hover,
@@ -149,7 +151,7 @@ footer > button.btn-cancel:hover {
 }
 footer > .btn-next::after {
   font-family: Material Icons;
-  content: '\e5c8';
+  content: "\e5c8";
   height: 40px;
   width: 40px;
   border-radius: 50%;
@@ -164,7 +166,7 @@ footer > .btn-next::after {
 
 footer > .btn-accept::after {
   font-family: Material Icons;
-  content: '\e5ca';
+  content: "\e5ca";
   height: 40px;
   width: 40px;
   border-radius: 50%;
@@ -178,7 +180,7 @@ footer > .btn-accept::after {
 }
 
 footer > .btn-cancel::before {
-  content: '\2715';
+  content: "\2715";
   height: 40px;
   width: 40px;
   border-radius: 50%;
@@ -293,7 +295,7 @@ h4 > .btn-edit {
 }
 
 .btn-edit::before {
-  content: ' \270E';
+  content: " \270E";
   font-size: 18px;
   font-weight: 100;
   -moz-transform: rotate(-90deg);
@@ -329,7 +331,7 @@ td > .btn-remove::before {
   margin-top: 18px;
 }
 
-h4> .btn-add {
+h4 > .btn-add {
   margin-left: 10px;
 }
 
@@ -434,7 +436,9 @@ h4> .btn-add {
   content: "\e412";
 }
 
-.btn-divide, .btn-transfer, .btn-history {
+.btn-divide,
+.btn-transfer,
+.btn-history {
   border: none;
   background-color: transparent;
 }
