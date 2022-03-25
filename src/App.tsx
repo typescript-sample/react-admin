@@ -22,8 +22,6 @@ import { RolesForm } from './admin/roles-form';
 import { RoleForm } from './admin/role-form';
 import { config } from './config';
 import { resources as locales } from './core/resources';
-import { Loading } from './react-hook-core';
-import LazyLoadModule from 'react-loadable';
 import './App.css';
 import './assets/fonts/material-icon/css/material-icons.css';
 import './assets/css/reset.css';
