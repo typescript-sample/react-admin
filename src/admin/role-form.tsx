@@ -90,7 +90,7 @@ function buildPrivileges(id: string, type: string, privileges: string[], all: Pr
     }
   }
 }
-function isCheckedAll<S extends InternalState, P>(privileges: string[]|undefined, all: string[], setState2: DispatchWithCallback<Partial<InternalState>>) {
+function isCheckedAll(privileges: string[]|undefined, all: string[], setState2: DispatchWithCallback<Partial<InternalState>>) {
   const checkedAll = privileges && all && privileges.length === all.length;
   setState2({ checkedAll });
 }

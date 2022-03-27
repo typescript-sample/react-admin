@@ -208,6 +208,7 @@ export const useSearch = <T, S extends Filter, ST extends SearchComponentState<T
       const s: any = mergeFilter2(buildFromUrl<S>(), se, component.pageSizes);
       load(s, p2.auto);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return { ...baseProps };
 };

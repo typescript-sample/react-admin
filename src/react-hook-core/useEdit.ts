@@ -99,6 +99,7 @@ export const useEdit = <T, ID, S>(
     } else {
       baseProps.load(id, p ? p.callback : undefined);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return {...baseProps};
 };
@@ -138,6 +139,7 @@ export const useEditProps = <T, ID, S, P>(
     } else {
       baseProps.load(id, p ? p.callback : undefined);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return {...baseProps};
 };
