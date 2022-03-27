@@ -1,5 +1,6 @@
 import ReCAPTCHA from 'react-google-recaptcha';
-import { MessageComponent, MessageState } from 'react-hook-core';
+import { MessageComponent, MessageState, OnClick } from 'react-hook-core';
+import { Link } from 'react-router-dom';
 import { isEmail, isValidUsername, SignupService, Status, strongPassword, User, validate, validateAndSignup } from 'signup-client';
 import { handleError, initForm, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
@@ -50,7 +51,7 @@ export class SignupForm extends MessageComponent<SignupState, any> {
     });
   }
 
-  signup(event: any) {
+  signup(event: OnClick) {
     event.preventDefault();
     const r = storage.resource();
     const { reCAPTCHA } = this.state;
@@ -124,7 +125,7 @@ export class SignupForm extends MessageComponent<SignupState, any> {
             <button type='submit' id='btnSignup' name='btnSignup' onClick={this.signup}>
               {resource.button_signup}
             </button>
-            <a id='btnSignin' href='signin'>{resource.button_signin}</a>
+            <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
           </div>
         </form>
       </div>

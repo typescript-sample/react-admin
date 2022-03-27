@@ -1,6 +1,6 @@
 import { email, PasswordService, validateAndForgotPassword, validateContact } from 'password-client';
-import * as React from 'react';
-import { MessageComponent, MessageState, navigate } from 'react-hook-core';
+import { MessageComponent, MessageState, navigate, OnClick } from 'react-hook-core';
+import { Link } from 'react-router-dom';
 import { handleError, initForm, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
 import { context } from './service';
@@ -35,7 +35,7 @@ export class ForgotPasswordForm extends MessageComponent<ContactInternalState, a
     navigate(this.props.history, 'reset-password');
   }
 
-  forgotPassword(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  forgotPassword(event: OnClick) {
     event.preventDefault();
     validateAndForgotPassword(
       this.passwordService.forgotPassword, this.state.contact, 'email', storage.resource(),
@@ -67,8 +67,8 @@ export class ForgotPasswordForm extends MessageComponent<ContactInternalState, a
             </label>
             <button type='submit' id='btnForgotPassword' name='btnForgotPassword'
               onClick={this.forgotPassword}>{resource.button_send_code_to_reset_password}</button>
-            <a id='btnSignin' href='signin'>{resource.button_signin}</a>
-            <a id='btnResetPassword' href='reset-password'>{resource.button_reset_password}</a>
+            <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
+            <Link id='btnResetPassword' to='/reset-password'>{resource.button_reset_password}</Link>
           </div>
         </form>
       </div>

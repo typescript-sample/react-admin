@@ -56,7 +56,7 @@ export const en = {
   placeholder_confirm_password: 'Confirm Password',
 
   button_send_code_to_reset_password: 'Send a code to reset password',
-  button_forgot_password: 'Reset password',
+  button_forgot_password: 'Forgot password',
   button_reset_password: 'Reset password',
   button_change_password: 'Change password',
   button_change_email: 'Change email',

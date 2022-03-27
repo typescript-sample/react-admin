@@ -13,6 +13,7 @@ import LayoutComponent from './core/layout';
 import AboutPage from './pages/About';
 import HomePage from './pages/Home';
 import { SigninForm } from './authentication/signin-form';
+import { SignupForm } from './authentication/signup-form';
 import { ChangePasswordForm } from './authentication/change-password-form';
 import { ForgotPasswordForm } from './authentication/forgot-password-form';
 import { ResetPasswordForm } from './authentication/reset-password-form';
@@ -92,6 +93,7 @@ function App() {
       <Routes>
         <Route path="home" element={<HomePage />} />
         <Route path="signin" element={<SigninForm />} />
+        <Route path="signup" element={<SignupForm />} />
         <Route path="change-password" element={<ChangePasswordForm />} />
         <Route path="reset-password" element={<ResetPasswordForm />} />
         <Route path="forgot-password" element={<ForgotPasswordForm />} />

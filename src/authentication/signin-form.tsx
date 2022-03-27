@@ -2,11 +2,11 @@ import { AuthResult, dayDiff, getMessage, handleCookie, initFromCookie, Status, 
 import { CookieService } from 'cookie-core';
 import { Base64 } from 'js-base64';
 import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { initForm, OnClick, useMessage, useUpdate } from 'react-hook-core';
+import { Link, useNavigate } from 'react-router-dom';
 import { alertInfo } from 'ui-alert';
 import { getResource, handleError, loading, message, registerEvents, setPrivileges, setUser, storage, useResource } from 'uione';
 import logo from '../assets/images/logo.png';
-import { initForm, useMessage, useUpdate } from 'react-hook-core';
 import { getAuthen } from './service';
 
 export const map = {
@@ -78,7 +78,7 @@ export const SigninForm = () => {
     store(result.user, setUser, setPrivileges);
     navigate(storage.home);
   };
-  const signin = async (event: any) => {
+  const signin = async (event: OnClick) => {
     event.preventDefault();
     const r = getResource();
     const user = state.user;
@@ -171,8 +171,8 @@ export const SigninForm = () => {
             {resource.signin_remember_me}
           </label>
           <button type='submit' id='btnSignin' name='btnSignin' onClick={signin}>{resource.button_signin}</button>
-          <a id='btnForgotPassword' href='forgot-password'>{resource.button_forgot_password}</a>
-          <a id='btnSignup' href='signup'>{resource.button_signup}</a>
+          <Link id='btnForgotPassword' to='/forgot-password'>{resource.button_forgot_password}</Link>
+          <Link id='btnSignup' to='/signup'>{resource.button_signup}</Link>
         </div>
       </form>
     </div>

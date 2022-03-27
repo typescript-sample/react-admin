@@ -1,6 +1,6 @@
 import { PasswordChange, PasswordService, strongPassword, validateAndChangePassword, validateChange } from 'password-client';
-import * as React from 'react';
-import { MessageComponent, MessageState, navigate } from 'react-hook-core';
+import { MessageComponent, MessageState, navigate, OnClick } from 'react-hook-core';
+import { Link } from 'react-router-dom';
 import { handleError, initForm, loading, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
 import { context } from './service';
@@ -39,7 +39,7 @@ export class ChangePasswordForm extends MessageComponent<ChangePasswordState, an
     navigate(this.props.history, 'signin');
   }
 
-  changePassword(event: any) {
+  changePassword(event: OnClick) {
     event.preventDefault();
     const user = this.state.user;
     validateAndChangePassword(
@@ -109,7 +109,7 @@ export class ChangePasswordForm extends MessageComponent<ChangePasswordState, an
             </label>
             <button type='submit' id='btnChangePassword' name='btnChangePassword'
               onClick={this.changePassword}>{resource.button_change_password}</button>
-            <a id='btnSignin' href='change-password'>{resource.button_signin}</a>
+            <Link id='btnSignin' to='change-password'>{resource.button_signin}</Link>
           </div>
         </form>
       </div>

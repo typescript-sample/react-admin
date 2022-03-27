@@ -1,6 +1,6 @@
 import { PasswordReset, PasswordService, resetPassword, validateReset } from 'password-client';
-import * as React from 'react';
-import { MessageComponent, MessageState, navigate } from 'react-hook-core';
+import { MessageComponent, MessageState, navigate, OnClick } from 'react-hook-core';
+import { Link } from 'react-router-dom';
 import { handleError, initForm, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
 import { context } from './service';
@@ -37,7 +37,7 @@ export class ResetPasswordForm extends MessageComponent<ResetPasswordState, any>
     navigate(this.props.history, 'signin');
   }
 
-  resetPassword(event: any) {
+  resetPassword(event: OnClick) {
     event.preventDefault();
     const { user, confirmPassword } = this.state;
     const customPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
@@ -108,7 +108,7 @@ export class ResetPasswordForm extends MessageComponent<ResetPasswordState, any>
             <button type='submit' id='btnResetPassword' name='btnResetPassword' onClick={this.resetPassword}>
               {resource.button_reset_password}
             </button>
-            <a id='btnSignin' href='signin'>{resource.button_signin}</a>
+            <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
           </div>
         </form>
       </div>
