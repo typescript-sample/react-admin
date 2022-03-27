@@ -290,8 +290,9 @@ type Readonly<T> = {
 export function buildId<ID>(p: Readonly<Params<string>>, keys?: string[]): ID | null {
   if (!keys || keys.length === 0 || keys.length === 1) {
     if (keys && keys.length === 1) {
-      if (p[keys[0]])
+      if (p[keys[0]]) {
         return p[keys[0]] as any;
+      }
     }
     return p['id'] as any;
   }

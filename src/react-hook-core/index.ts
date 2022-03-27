@@ -13,6 +13,7 @@ export * from './useMessage';
 export * from './useEdit';
 export * from './components';
 export * from './search';
+export * from './reflect';
 
 export function checked(s: string[]|string|undefined, v: string): boolean|undefined {
   if (s) {
