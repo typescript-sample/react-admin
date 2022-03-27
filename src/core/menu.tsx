@@ -1,6 +1,38 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
+export interface Props {
+  id?: string;
+  name?: string;
+  className?: string;
+  resource?: StringMap;
+  iconClass?: string;
+  path: string;
+  toggle?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  expand?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  collapse?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  pin: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, m: Privilege) => void;
+  pins: Privilege[];
+  items: Privilege[];
+}
+export function Nav(p: Props) {
+  return (
+    <nav className={p.className}>
+      <ul>
+        <li>
+          <button className='toggle-menu' onClick={p.toggle} />
+          <p className='sidebar-off-menu'>
+            <button className='toggle' onClick={p.toggle} />
+            <i className='expand' onClick={p.expand} />
+            <i className='collapse' onClick={p.collapse} />
+          </p>
+        </li>
+        {renderItems(p.path, p.pins, p.pin, p.resource, p.iconClass, true, true)}
+        {renderItems(p.path, p.items, p.pin, p.resource, p.iconClass, true)}
+      </ul>
+    </nav>
+  );
+}
 export interface StringMap {
   [key: string]: string;
 }

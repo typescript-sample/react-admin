@@ -14,7 +14,11 @@
   padding-top: 6px;
 }
 .sidebar-off-menu > .toggle {
-  margin-right: 16px
+  border: none;
+  background-color: inherit;
+  color: inherit;
+  margin-left: -6px;
+  margin-right: 8px;
 }
 .sidebar-off-menu > .expand {
   margin-right: 11px;
@@ -152,12 +156,6 @@
   color: inherit;
   background-color: inherit;
 }
-*/
-.sidebar-off .sidebar > nav > ul > li > ul > li > a > span,
-.sidebar-off .sidebar > nav > ul > li > a > span {
-  display: none;
-}
-/*
 .sidebar > nav > ul > li {
   position: inherit;
 }
@@ -169,10 +167,6 @@
 ul.list-child > li {
   padding-left: 20px;
 }
-.sidebar-off .sidebar > nav > ul > li > ul > li {
-  padding-left: 0;
-}
-
 .sidebar > nav > ul > li.open > ul {
   display: block;
 }
@@ -203,24 +197,6 @@ ul.list-child > li {
 }
 .menu-item > i.entity-icon.up:before {
     content: "\2039";
-}
-@media screen and (min-width: 601px) {
-  .sidebar-off .sidebar {
-    width: 46px;
-  }
-
-  .sidebar-off .page-container {
-    margin-left: 46px;
-  }
-
-  .sidebar-off .sidebar > nav > ul > li > a {
-    padding-left: 9px;
-  }
-
-  .sidebar-off .sidebar > nav > ul > li > a > i.entity-icon.down,
-  .sidebar-off .sidebar > nav > ul > li > a > i.entity-icon.up {
-    display: none;
-  }
 }
 
 @media screen and (max-width: 768px) and (min-width: 601px) {
@@ -305,11 +281,6 @@ ul.list-child > li {
 
   .page-container {
     margin-left: 0;
-  }
-
-  .sidebar-off .sidebar > nav > ul > li > ul > li > a > span,
-  .sidebar-off .sidebar > nav > ul > li > a > span {
-    display: inline-block;
   }
 }
 

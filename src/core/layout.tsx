@@ -10,14 +10,13 @@ import { options, Privilege, storage, StringMap } from 'uione';
 import logoTitle from '../assets/images/logo-title.png';
 import logo from '../assets/images/logo.png';
 import topBannerLogo from '../assets/images/top-banner-logo.png';
-import { collapseAll, renderItems, expandAll } from './menu';
+import { collapseAll, expandAll, Nav } from './menu';
 
 interface InternalState {
   pageSizes: number[];
   pageSize: number;
   se: any;
   isToggleMenu: boolean;
-  isToggleSidebar: boolean;
   isToggleSearch: boolean;
   keyword: string;
   classProfile: string;
@@ -45,7 +44,6 @@ const initialState: InternalState = {
   keyword: '',
   classProfile: '',
   isToggleMenu: false,
-  isToggleSidebar: false,
   isToggleSearch: false,
   forms: [],
   username: '',
@@ -83,8 +81,6 @@ export const LayoutComponent = () => {
     }
   }, [])
 
-
-
   const clearKeyworkOnClick = () => {
     setState({
       keyword: '',
@@ -96,15 +92,13 @@ export const LayoutComponent = () => {
     setState({ isToggleSearch: !state.isToggleSearch });
   }
 
-  const toggleMenu = (e: any) => {
+  const toggleMenu = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    /*
     if (e && e.preventDetault) {
       e.preventDetault();
     }
+    */
     setState({ isToggleMenu: !state.isToggleMenu });
-  }
-
-  const toggleSidebar = () => {
-    setState({ isToggleSidebar: !state.isToggleSidebar });
   }
 
   function toggleProfile() {
@@ -138,7 +132,7 @@ export const LayoutComponent = () => {
     navigate('/change-password');
   }
 
-  const pinModulesHandler = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, m: Privilege) => {
+  const pin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, m: Privilege) => {
     event.stopPropagation();
     const { forms, pinnedModules } = state;
     if (forms.find((module) => module === m)) {
@@ -161,11 +155,8 @@ export const LayoutComponent = () => {
     setUser(storage.user())
   }, [storage.user()])
   useEffect(() => {
-    const { isToggleSidebar, isToggleMenu, isToggleSearch } = state;
+    const { isToggleMenu, isToggleSearch } = state;
     const topClassList = ['sidebar-parent'];
-    if (isToggleSidebar) {
-      topClassList.push('sidebar-off');
-    }
     if (isToggleMenu) {
       topClassList.push('menu-on');
     }
@@ -184,12 +175,22 @@ export const LayoutComponent = () => {
         </div>
       </div>
       <div className='menu sidebar'>
+        <Nav className='expanded-all'
+          iconClass='material-icons'
+          path={pathname}
+          pins={state.pinnedModules}
+          items={state.forms}
+          resource={resource}
+          pin={pin}
+          expand={expandAll}
+          collapse={collapseAll}/>
+        {/*
         <nav className='expanded-all'>
           <ul>
             <li>
               <button className='toggle-menu' onClick={toggleMenu} />
               <p className='sidebar-off-menu'>
-                <i className='toggle' onClick={toggleMenu} />
+                <button className='toggle' onClick={toggleMenu} />
                 <i className='expand' onClick={expandAll} />
                 <i className='collapse' onClick={collapseAll} />
               </p>
@@ -198,6 +199,7 @@ export const LayoutComponent = () => {
             {renderItems(pathname, state.forms, pinModulesHandler, resource, 'material-icons', true)}
           </ul>
         </nav>
+        */}
       </div>
       <div className='page-container'>
         <div className='page-header'>
