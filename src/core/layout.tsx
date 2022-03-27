@@ -2,7 +2,7 @@ import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { useMergeState, PageSizeSelect } from 'react-hook-core';
+import { PageSizeSelect, useMergeState } from 'react-hook-core'
 import { useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { options, Privilege, storage, StringMap } from 'uione';
 import logoTitle from '../assets/images/logo-title.png';
 import logo from '../assets/images/logo.png';
 import topBannerLogo from '../assets/images/top-banner-logo.png';
-import { hideAll, renderItems, showAll } from './menu';
+import { collapseAll, renderItems, expandAll } from './menu';
 
 interface InternalState {
   pageSizes: number[];
@@ -62,6 +62,7 @@ export const LayoutComponent = () => {
   const [pageSize] = useState<number>(20)
   const [pageSizes] = useState<number[]>([10, 20, 40, 60, 100, 200, 400, 10000])
   const [topClass, setTopClass] = useState('')
+  console.log('user',storage.user())
   const [user, setUser] = useState(storage.user())
 
   useEffect(() => {
@@ -158,7 +159,6 @@ export const LayoutComponent = () => {
 
   useEffect(() => {
     setUser(storage.user())
-    console.log('storage.user()',storage.user())
   }, [storage.user()])
   useEffect(() => {
     const { isToggleSidebar, isToggleMenu, isToggleSearch } = state;
@@ -184,18 +184,18 @@ export const LayoutComponent = () => {
         </div>
       </div>
       <div className='menu sidebar'>
-        <nav>
+        <nav className='expanded-all'>
           <ul>
             <li>
               <button className='toggle-menu' onClick={toggleMenu} />
               <p className='sidebar-off-menu'>
-                <i className='toggle' onClick={toggleSidebar} />
-                {!state.isToggleSidebar ? <i className='expand' onClick={showAll} /> : null}
-                {!state.isToggleSidebar ? <i className='collapse' onClick={hideAll} /> : null}
+                <i className='toggle' onClick={toggleMenu} />
+                <i className='expand' onClick={expandAll} />
+                <i className='collapse' onClick={collapseAll} />
               </p>
             </li>
-            {renderItems(pathname, state.pinnedModules, pinModulesHandler, resource, true, true)}
-            {renderItems(pathname, state.forms, pinModulesHandler, resource, true)}
+            {renderItems(pathname, state.pinnedModules, pinModulesHandler, resource, 'material-icons', true, true)}
+            {renderItems(pathname, state.forms, pinModulesHandler, resource, 'material-icons', true)}
           </ul>
         </nav>
       </div>
@@ -222,8 +222,8 @@ export const LayoutComponent = () => {
                   <button type='button'><i className='fa fa-envelope-o'/></button>*/}
                 <div className='dropdown-menu-profile'>
                   {(!user || !user.imageURL) && (
-                    <i className='material-icons' onClick={toggleProfile}>
-                      person
+                    <i className='mdi mdi-account' onClick={toggleProfile}>
+                      
                     </i>
                   )}
                   <ul id='dropdown-basic' className={state.classProfile + ' dropdown-content-profile'}>
@@ -246,7 +246,7 @@ export const LayoutComponent = () => {
             </div>
           </form>
         </div>
-        <div className='page-body'><Outlet/></div>
+        <div className='page-body'><Outlet /></div>
       </div>
     </div>
   );

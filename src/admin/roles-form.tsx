@@ -1,7 +1,7 @@
 import { Item } from 'onecore';
 import * as React from 'react';
 import { useNavigate } from 'react-router';
-import { checked, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
+import { checked, OnClick,  PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { Role, RoleFilter, getRoleService } from './service';
@@ -25,11 +25,11 @@ export const RolesForm = () => {
   const refForm = React.useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, changeView, pageChanged, pageSizeChanged } = useSearch<Role, RoleFilter, RoleSearch>(refForm, roleSearch, getRoleService(), inputSearch());
 
-  const add = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const add = (e: OnClick) => {
     e.preventDefault();
     navigate(`add`);
   };
-  const edit = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+  const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`edit/${id}`);
   };

@@ -72,50 +72,8 @@
   transform: rotate(180deg);
   height: 100%;
 }
-
-.sidebar .toggle-menu,
-.sidebar-off-menu {
-  padding-left: 16px;
-  margin-top: 6px;
-  margin-bottom: 0;
-}
-.sidebar .toggle-menu {
-  margin-top: 0;
-  padding-top: 6px;
-}
 .page-header button.toggle-menu {
   padding-top: 0;
-}
-.sidebar-off-menu > .toggle {
-  margin-right: 16px
-}
-.sidebar-off-menu > .expand {
-  margin-right: 11px;
-  transform: rotate(90deg);
-  display: inline-block;
-}
-.sidebar-off-menu > .collapse {
-  transform: rotate(90deg);
-  display: inline-block;
-}
-.sidebar-off-menu > .expand::before {
-  font-size: 25px;
-  font-style: normal;
-  font-weight: 800;
-  content: "\00BB";
-}
-.sidebar-off-menu > .collapse::before {
-  font-size: 25px;
-  font-style: normal;
-  font-weight: 800;
-  content: "\00AB";
-}
-.sidebar-off-menu > .toggle::before,
-.toggle-menu::before {
-  font-size: 25px;
-  font-style: normal;
-  font-weight: 800;
-  content: "\2261";
 }
 
 .close-search {

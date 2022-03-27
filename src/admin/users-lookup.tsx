@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { value, SearchComponentState, useSearch } from 'react-hook-core';
+import { PageSizeSelect, value, SearchComponentState, useSearch } from 'react-hook-core';
 import ReactModal from 'react-modal';
-import PageSizeSelect from 'react-page-size-select';
 import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { User, UserFilter, getUserService } from './service';

@@ -1,12 +1,11 @@
 import { Item } from 'onecore';
 import * as React from 'react';
-import { PageSizeSelect } from 'react-hook-core';
+import { checked, OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
-import { checked, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { User, UserFilter, getUserService } from './service';
 
 interface UserSearch extends SearchComponentState<User, UserFilter> {
@@ -31,11 +30,11 @@ export const UsersForm = () => {
   component.viewable = true;
   component.editable = true;
 
-  const add = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const add = (e: OnClick) => {
     e.preventDefault();
     navigate(`add`);
   };
-  const edit = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+  const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`edit/${id}`);
   };

@@ -24,9 +24,9 @@ import { RoleAssignmentForm } from './admin/role-assignment-form';
 import { config } from './config';
 import { resources as locales } from './core/resources';
 
+import './assets/css/reset.css';
 import './App.css';
 import './assets/fonts/material-icon/css/material-icons.css';
-import './assets/css/reset.css';
 import './assets/css/checkbox.css';
 import './assets/css/radio.css';
 import './assets/css/materialize-grid.css';

@@ -1,8 +1,7 @@
 import { Item } from 'onecore';
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SearchComponentState, useSearch, value } from 'react-hook-core';
-import PageSizeSelect from 'react-page-size-select';
+import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { AuditLog, AuditLogFilter, useAuditLog} from './service';
@@ -28,7 +27,7 @@ export const AuditLogsForm = () => {
   const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch());
   const { state, resource, component, updateState, pageSizeChanged, pageChanged } = hooks;
 
-  const edit = (e: any, id: string) => {
+  const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate('audit-logs/' + id);
   };

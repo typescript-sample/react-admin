@@ -14,12 +14,12 @@ export interface Privilege {
   children?: Privilege[];
 }
 export type Pin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, id: Privilege) => void;
-export const renderItems = (activePath: string, features: Privilege[], pin: Pin, resource?: StringMap, pinable?: boolean, isPinned?: boolean) => {
+export const renderItems = (activePath: string, features: Privilege[], pin: Pin, resource?: StringMap, iconClass?: string, pinable?: boolean, isPinned?: boolean) => {
   return features.map((feature, index) => {
-    return renderItem(activePath, index, feature, pin, resource, pinable, isPinned);
+    return renderItem(activePath, index, feature, pin, resource, iconClass, pinable, isPinned);
   });
 };
-export const renderItem = (activePath: string, key: number, module: Privilege, pin: Pin, resource?: StringMap, pinable?: boolean, isPinned?: boolean) => {
+export const renderItem = (activePath: string, key: number, module: Privilege, pin: Pin, resource?: StringMap, iconClass?: string, pinable?: boolean, isPinned?: boolean) => {
   let name = module.name;
   if (resource && module.resource) {
     name = !resource[module.resource] || resource[module.resource] === '' ? module.name : resource[module.resource];
@@ -32,19 +32,19 @@ export const renderItem = (activePath: string, key: number, module: Privilege, p
       <li key={key} className={'open ' + activeWithPath(activePath, link, true, features)} /* onBlur={this.menuItemOnBlur} */>
         <div className='menu-item' onClick={(e) => toggleMenuItem(e)}>
         {pinable && <button type='button' className={`btn-pin ${isPinned ? 'pinned' : ''}`} onClick={(event) => pin(event, key, module)} />}
-          <i className='material-icons'>{className}</i>
+          <i className={iconClass}>{className}</i>
           <span>{name}</span>
           <i className='entity-icon down' />
         </div>
-        <ul className='list-child'>{renderItems(activePath, features, pin, resource, false)}</ul>
+        <ul className='list-child expanded'>{renderItems(activePath, features, pin, resource, iconClass, false)}</ul>
       </li>
     );
   } else {
     return (
       <li key={key} className={activeWithPath(activePath, module.path, false)}>
-        <Link to={module.path as any}>
+        <Link to={module.path as any} className='menu-item'>
           {pinable && <button type='button' className={`btn-pin ${isPinned ? 'pinned' : ''}`} onClick={(event) => pin(event, key, module)} />}
-          <i className='material-icons'>{className}</i>
+          <i className={iconClass}>{className}</i>
           <span>{name}</span>
         </Link>
       </li>
@@ -81,13 +81,15 @@ export const onMouseHover = (e: { preventDefault: () => void; }, sysBody: HTMLEl
     }
   }
 };
-export const hideAll = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+export const collapseAll = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
   e.preventDefault();
   const parent = findParent(e.currentTarget, 'NAV');
   if (parent) {
+    parent.classList.add('collapsed-all');
+    parent.classList.remove('expanded-all');
     const navbar = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>ul.expanded'));
-    const icons = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>a>i.up'));
     if (navbar.length > 0) {
+      const icons = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>a>i.up'));
       let i = 0;
       for (i = 0; i < navbar.length; i++) {
         navbar[i].className = 'list-child';
@@ -98,13 +100,15 @@ export const hideAll = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     }
   }
 };
-export const showAll = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+export const expandAll = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
   e.preventDefault();
   const parent = findParent(e.currentTarget, 'NAV');
   if (parent) {
+    parent.classList.remove('collapsed-all');
+    parent.classList.add('expanded-all');
     const navbar = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>ul.list-child'));
-    const icons = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>a>i.down'));
     if (navbar.length > 0) {
+      const icons = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>a>i.down'));
       let i = 0;
       for (i = 0; i < navbar.length; i++) {
         navbar[i].className = 'list-child expanded';
@@ -115,6 +119,32 @@ export const showAll = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     }
   }
 };
+export function isCollapsedAll(parent: HTMLElement): boolean {
+  const navbar = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>ul.list-child'));
+  if (navbar.length > 0) {
+    let i = 0;
+    for (i = 0; i < navbar.length; i++) {
+      if (navbar[i].classList.contains('expanded')) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
+export function isExpandedAll(parent: HTMLElement): boolean {
+  const navbar = Array.from(parent.querySelectorAll('.sidebar>nav>ul>li>ul.list-child'));
+  if (navbar.length > 0) {
+    let i = 0;
+    for (i = 0; i < navbar.length; i++) {
+      if (!navbar[i].classList.contains('expanded')) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
 export const activeWithPath = (activePath: string, path: string | undefined, isParent: boolean, features?: Privilege[]) => {
   if (isParent && features && Array.isArray(features)) {
     const hasChildLink = features.some((item) => item.path && item.path.length > 0 && activePath.startsWith(item.path));
@@ -146,5 +176,20 @@ export const toggleMenuItem = (event: React.MouseEvent<HTMLElement, MouseEvent>)
   }
   if (target && target.nodeName === 'LI') {
     target.classList.toggle('open');
+  }
+  const parent = findParent(currentTarget, 'NAV');
+  if (parent) {
+    setTimeout(() => {
+      if (isExpandedAll(parent)) {
+        parent.classList.remove('collapsed-all');
+        parent.classList.add('expanded-all');
+      } else if (isCollapsedAll(parent)) {
+        parent.classList.remove('expanded-all');
+        parent.classList.add('collapsed-all');
+      } else {
+        parent.classList.remove('expanded-all');
+        parent.classList.remove('collapsed-all');
+      }
+    }, 0);
   }
 };
