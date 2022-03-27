@@ -2,16 +2,15 @@ import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
+import { useMergeState, PageSizeSelect } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import PageSizeSelect from '../core/react-page-size-select';
 import { options, Privilege, storage, StringMap } from 'uione';
 import logoTitle from '../assets/images/logo-title.png';
 import logo from '../assets/images/logo.png';
 import topBannerLogo from '../assets/images/top-banner-logo.png';
 import { hideAll, renderItems, showAll } from './menu';
-import { useMergeState } from '../react-hook-core'
 
 interface InternalState {
   pageSizes: number[];

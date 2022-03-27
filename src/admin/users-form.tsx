@@ -1,16 +1,16 @@
-import { ValueText } from 'onecore';
+import { Item } from 'onecore';
 import * as React from 'react';
-import { PageSizeSelect } from '../core/react-page-size-select';
+import { PageSizeSelect } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
-import { checked, SearchComponentState, useSearch, value } from '../react-hook-core';
+import { checked, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { User, UserFilter, getUserService } from './service';
 
 interface UserSearch extends SearchComponentState<User, UserFilter> {
-  statusList: ValueText[];
+  statusList: Item[];
 }
 const userFilter: UserFilter = {
   userId: '',
@@ -31,9 +31,13 @@ export const UsersForm = () => {
   component.viewable = true;
   component.editable = true;
 
+  const add = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault();
+    navigate(`add`);
+  };
   const edit = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
-    navigate(`${id}`);
+    navigate(`edit/${id}`);
   };
 
   const { list } = state;
@@ -45,7 +49,7 @@ export const UsersForm = () => {
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
-          {component.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' />}
+          {component.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' onClick={add} />}
         </div>
       </header>
       <div>

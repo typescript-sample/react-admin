@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { alertInfo } from 'ui-alert';
 import { getResource, handleError, loading, message, registerEvents, setPrivileges, setUser, storage, useResource } from 'uione';
 import logo from '../assets/images/logo.png';
-import { initForm, useMessage, useUpdate } from '../react-hook-core';
+import { initForm, useMessage, useUpdate } from 'react-hook-core';
 import { getAuthen } from './service';
 
 export const map = {

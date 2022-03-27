@@ -1,14 +1,14 @@
-import { ValueText } from 'onecore';
+import { Item } from 'onecore';
 import * as React from 'react';
-import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from '../react-hook-core';
+import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from 'react-hook-core';
 import { formatPhone } from 'ui-plus';
 import { emailOnBlur, Gender, handleError, inputEdit, phoneOnBlur, Status } from 'uione';
 import { getMasterData, User, getUserService } from './service';
 
 interface InternalState {
   user: User;
-  titleList: ValueText[];
-  positionList: ValueText[];
+  titleList: Item[];
+  positionList: Item[];
 }
 
 const createUser = (): User => {

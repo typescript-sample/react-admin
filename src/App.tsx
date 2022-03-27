@@ -20,6 +20,7 @@ import { UsersForm } from './admin/users-form';
 import { UserForm } from './admin/user-form';
 import { RolesForm } from './admin/roles-form';
 import { RoleForm } from './admin/role-form';
+import { RoleAssignmentForm } from './admin/role-assignment-form';
 import { config } from './config';
 import { resources as locales } from './core/resources';
 
@@ -102,9 +103,12 @@ function App() {
           <Route index element={<AboutPage />} />
           <Route path=":number" element={<AboutPage />} />
           <Route path="admin/users" element={<UsersForm />} />
-          <Route path="admin/users/:id" element={<UserForm />} />
+          <Route path="admin/users/add" element={<UserForm />} />
+          <Route path="admin/users/edit/:id" element={<UserForm />} />
           <Route path="admin/roles" element={<RolesForm />} />
-          <Route path="admin/roles/:id" element={<RoleForm />} />
+          <Route path="admin/roles/add" element={<RoleForm />} />
+          <Route path="admin/roles/edit/:id" element={<RoleForm />} />
+          <Route path="admin/roles/assign/:id" element={<RoleAssignmentForm />} />
         </Route>
         <Route path="/" element={<HomePage />} />
       </Routes>

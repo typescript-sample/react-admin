@@ -1,10 +1,10 @@
-import { ValueText } from 'onecore';
+import { Item } from 'onecore';
 
 export interface MasterDataService {
-  getStatus(): Promise<ValueText[]>;
-  getTitles(): Promise<ValueText[]>;
-  getPositions(): Promise<ValueText[]>;
-  getGenders(): Promise<ValueText[]>;
+  getStatus(): Promise<Item[]>;
+  getTitles(): Promise<Item[]>;
+  getPositions(): Promise<Item[]>;
+  getGenders(): Promise<Item[]>;
 }
 export class MasterDataClient implements MasterDataService {
   private status = [
@@ -26,16 +26,16 @@ export class MasterDataClient implements MasterDataService {
     { value: 'M', text: 'Male' },
     { value: 'F', text: 'Female' }
   ];
-  getGenders(): Promise<ValueText[]> {
+  getGenders(): Promise<Item[]> {
     return Promise.resolve(this.genders);
   }
-  getTitles(): Promise<ValueText[]> {
+  getTitles(): Promise<Item[]> {
     return Promise.resolve(this.titles);
   }
-  getPositions(): Promise<ValueText[]> {
+  getPositions(): Promise<Item[]> {
     return Promise.resolve(this.positions);
   }
-  getStatus(): Promise<ValueText[]> {
+  getStatus(): Promise<Item[]> {
     return Promise.resolve(this.status);
   }
 }

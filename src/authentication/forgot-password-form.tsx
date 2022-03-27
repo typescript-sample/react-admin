@@ -1,6 +1,6 @@
 import { email, PasswordService, validateAndForgotPassword, validateContact } from 'password-client';
 import * as React from 'react';
-import { MessageComponent, MessageState, navigate } from '../react-hook-core';
+import { MessageComponent, MessageState, navigate } from 'react-hook-core';
 import { handleError, initForm, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
 import { context } from './service';

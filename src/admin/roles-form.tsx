@@ -1,14 +1,13 @@
-import { ValueText } from 'onecore';
+import { Item } from 'onecore';
 import * as React from 'react';
 import { useNavigate } from 'react-router';
-import { checked, SearchComponentState, useSearch, value } from '../react-hook-core';
-import { PageSizeSelect } from '../core/react-page-size-select';
+import { checked, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { Role, RoleFilter, getRoleService } from './service';
 
 interface RoleSearch extends SearchComponentState<Role, RoleFilter> {
-  statusList: ValueText[];
+  statusList: Item[];
 }
 const roleFilter: RoleFilter = {
   roleId: '',
@@ -26,9 +25,13 @@ export const RolesForm = () => {
   const refForm = React.useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, changeView, pageChanged, pageSizeChanged } = useSearch<Role, RoleFilter, RoleSearch>(refForm, roleSearch, getRoleService(), inputSearch());
 
+  const add = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault();
+    navigate(`add`);
+  };
   const edit = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
-    navigate(`${id}`);
+    navigate(`edit/${id}`);
   };
   const filter = value(state.filter);
   return (
@@ -38,7 +41,7 @@ export const RolesForm = () => {
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
-          {component.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' />}
+          {component.addable && <button type='button' id='btnNew' name='btnNew' className='btn-new' onClick={add}/>}
         </div>
       </header>
       <div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from '../react-hook-core';
+import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from 'react-hook-core';
 import { handleError, inputEdit, Status } from 'uione';
 import { Privilege, Role, getRoleService } from './service';
 
@@ -164,7 +164,7 @@ export function RoleForm() {
   };
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
-    navigate(`/roles/assign/${id}`);
+    navigate(`/admin/roles/assign/${id}`);
     return;
   };
 

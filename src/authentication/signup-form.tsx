@@ -1,5 +1,5 @@
 import ReCAPTCHA from 'react-google-recaptcha';
-import { MessageComponent, MessageState } from '../react-hook-core';
+import { MessageComponent, MessageState } from 'react-hook-core';
 import { isEmail, isValidUsername, SignupService, Status, strongPassword, User, validate, validateAndSignup } from 'signup-client';
 import { handleError, initForm, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
