@@ -17,7 +17,7 @@
     "csvtojson": "^2.0.10",
     "js-base64": "^2.6.4",
     "locale-service": "^0.0.6",
-    "onecore": "^0.0.27",
+    "onecore": "0.0.28",
     "password-client": "^0.1.1",
     "phonecodes": "^0.0.2",
     "query-string": "^7.0.1",
