@@ -1,77 +1,89 @@
 import { email, PasswordService, validateAndForgotPassword, validateContact } from 'password-client';
-import { MessageComponent, MessageState, navigate, OnClick } from 'react-hook-core';
+import { useEffect, useRef, useState } from 'react';
+import { MessageComponent, MessageState, navigate, OnClick, useMessage, useUpdate } from 'react-hook-core';
 import { Link } from 'react-router-dom';
-import { handleError, initForm, registerEvents, storage } from 'uione';
+import { handleError, initForm, registerEvents, storage, message } from 'uione';
 import logo from '../assets/images/logo.png';
-import { context } from './service';
+import { context, getPasswordServicer } from './service';
+import { alertInfo } from 'ui-alert';
 
-interface ContactInternalState extends MessageState {
-  contact: string;
+interface ContactInternalState {
+  contact: {
+    contact: string;
+  };
 }
 
-export class ForgotPasswordForm extends MessageComponent<ContactInternalState, any> {
-  constructor(props: any) {
-    super(props);
-    this.signin = this.signin.bind(this);
-    this.resetPassword = this.resetPassword.bind(this);
-    this.forgotPassword = this.forgotPassword.bind(this);
-    this.passwordService = context.getPasswordServicer();
-    this.state = {
-      message: '',
-      contact: ''
-    };
-  }
-  private passwordService: PasswordService;
+const forgotPasswordData = {
+  contact: {
+    contact: ''
+  },
+};
 
-  componentDidMount() {
-    this.form = initForm(this.ref.current, registerEvents);
+const msgData = {
+  message: '',
+  alertClass: '',
+};
+
+function init() {
+
+}
+
+export const ForgotPasswordForm = (props: any) => {
+
+  const { msg, showError, hideMessage } = useMessage(msgData);
+  const { state, setState, updateState } = useUpdate<ContactInternalState>(forgotPasswordData, 'contact');
+  const form = useRef();
+  const [resource] = useState(storage.getResource())
+  useEffect(() => {
+    if (form && form.current) {
+      initForm(form.current, registerEvents);
+    }
+  }, [])
+
+  const signin = () => {
+    navigate(props.history, 'signin');
   }
 
-  signin() {
-    navigate(this.props.history, 'signin');
+  const resetPassword = () => {
+    navigate(props.history, 'reset-password');
   }
 
-  resetPassword() {
-    navigate(this.props.history, 'reset-password');
-  }
-
-  forgotPassword(event: OnClick) {
+  const forgotPassword = (event: OnClick) => {
     event.preventDefault();
+    const passwordServicer = getPasswordServicer();
     validateAndForgotPassword(
-      this.passwordService.forgotPassword, this.state.contact, 'email', storage.resource(),
-      this.showMessage, this.showError, this.hideMessage, validateContact, handleError, email, storage.loading());
+      passwordServicer.forgotPassword, state.contact.contact, 'email', storage.resource(),
+      message, showError, hideMessage, validateContact, handleError, email, storage.loading());
   }
+  console.log(state.contact)
 
-  render() {
-    const resource = storage.getResource();
-    const message = this.state.message;
-    return (
-      <div className='view-container central-full'>
-        <form id='forgotPasswordForm' name='forgotPasswordForm' noValidate={true} autoComplete='off' ref={this.ref}>
-          <div>
-            <img className='logo' src={logo} alt='logo'/>
-            <h2>{resource.forgot_password}</h2>
-            <div className={'message ' + this.alertClass}>
-              {message}
-              <span onClick={this.hideMessage} hidden={!message || message === ''} />
-            </div>
-            <label>
-              {resource.email}
-              <input type='text'
-                id='contact' name='contact'
-                value={this.state.contact}
-                placeholder={resource.placeholder_user_email}
-                onChange={this.updateFlatState}
-                maxLength={255} required={true}
-              />
-            </label>
-            <button type='submit' id='btnForgotPassword' name='btnForgotPassword'
-              onClick={this.forgotPassword}>{resource.button_send_code_to_reset_password}</button>
-            <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
-            <Link id='btnResetPassword' to='/reset-password'>{resource.button_reset_password}</Link>
+  return (
+    <div className='view-container central-full'>
+      <form id='forgotPasswordForm' name='forgotPasswordForm' noValidate={true} autoComplete='off' ref={form as any}>
+        <div>
+          <img className='logo' src={logo} alt='logo' />
+          <h2>{resource.forgot_password}</h2>
+          <div className={'message ' + msg.alertClass}>
+            {msg.message}
+            <span onClick={hideMessage} hidden={!msg.message || msg.message === ''} />
           </div>
-        </form>
-      </div>
-    );
-  }
+          <label>
+            {resource.email}
+            <input type='text'
+              id='contact' name='contact'
+              value={state.contact.contact}
+              placeholder={resource.placeholder_user_email}
+              onChange={updateState}
+              maxLength={255} required={true}
+            />
+          </label>
+          <button type='submit' id='btnForgotPassword' name='btnForgotPassword'
+            onClick={forgotPassword}>{resource.button_send_code_to_reset_password}</button>
+          <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
+          <Link id='btnResetPassword' to='/reset-password'>{resource.button_reset_password}</Link>
+        </div>
+      </form>
+    </div>
+  );
+
 }

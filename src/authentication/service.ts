@@ -62,3 +62,16 @@ export const context = new ApplicationContext();
 export function getAuthen(): AuthenService<User> {
   return context.getAuthenticator();
 }
+
+export function getPasswordServicer(): PasswordService {
+  return context.getPasswordServicer();
+}
+
+
+export function getOAuth2Service(): OAuth2Service {
+  return context.getOAuth2Service();
+}
+
+export function getSignupService(): SignupService<Signup> {
+  return context.getSignupService();
+}
