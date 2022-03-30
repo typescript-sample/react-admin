@@ -224,8 +224,8 @@ export const LayoutComponent = () => {
                   <button type='button'><i className='fa fa-envelope-o'/></button>*/}
                 <div className='dropdown-menu-profile'>
                   {(!user || !user.imageURL) && (
-                    <i className='mdi mdi-account' onClick={toggleProfile}>
-                      
+                    <i className='material-icons' onClick={toggleProfile}>
+                      person
                     </i>
                   )}
                   <ul id='dropdown-basic' className={state.classProfile + ' dropdown-content-profile'}>
