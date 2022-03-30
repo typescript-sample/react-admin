@@ -79,7 +79,7 @@ export const LayoutComponent = () => {
     if (username || storageRole) {
       setState({ username, userType: storageRole });
     }
-  }, [])
+  }, [])// eslint-disable-line react-hooks/exhaustive-deps
 
   const clearKeyworkOnClick = () => {
     setState({
@@ -117,20 +117,20 @@ export const LayoutComponent = () => {
     navigate('/signin');
   }
 
-  const viewMyprofile = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    navigate('/my-profile');
-  }
+  // const viewMyprofile = (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   navigate('/my-profile');
+  // }
 
-  const viewMySetting = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    navigate('/my-profile/my-settings');
-  }
+  // const viewMySetting = (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   navigate('/my-profile/my-settings');
+  // }
 
-  const viewChangePassword = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    navigate('/change-password');
-  }
+  // const viewChangePassword = (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   navigate('/change-password');
+  // }
 
   const pin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, m: Privilege) => {
     event.stopPropagation();
@@ -153,7 +153,7 @@ export const LayoutComponent = () => {
 
   useEffect(() => {
     setUser(storage.user())
-  }, [storage.user()])
+  }, [storage.user()])// eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const { isToggleMenu, isToggleSearch } = state;
     const topClassList = ['sidebar-parent'];

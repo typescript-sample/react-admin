@@ -127,7 +127,7 @@ export function RoleForm() {
   const { state, setState, back, flag, updateState, save, resource } = useEdit<Role, string, InternalState>(refForm, initialState, getRoleService(), inputEdit(), param);
   React.useEffect(() => {
     showModel(state.role);
-  }, [state.role]);
+  }, [state.role]);// eslint-disable-line react-hooks/exhaustive-deps
   function showModel(role: Role) {
     if (!role) {
       return;

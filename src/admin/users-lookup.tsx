@@ -5,7 +5,7 @@ import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { User, UserFilter, getUserService } from './service';
 import { Item } from 'onecore';
-
+ReactModal.setAppElement('#root');
 interface Props {
   isOpenModel: boolean;
   users: User[];
@@ -45,7 +45,7 @@ const initialState: UserSearch = {
     userId: "",
     username: "",
     email: "",
-    status: [],
+    status: [], 
   },
   availableUsers: [],
 };

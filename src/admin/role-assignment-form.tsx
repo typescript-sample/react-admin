@@ -60,7 +60,7 @@ export const RoleAssignmentForm = () => {
     if (id) {
       initialize(id, setState as any, state);
     }
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (users) {
@@ -82,9 +82,7 @@ export const RoleAssignmentForm = () => {
   };
 
   const onModelSave = (arr: User[]) => {
-    arr.map((value) => {
-      users.push(value);
-    });
+    arr.map((value) => users.push(value));
     setState({ ...state, role, users, isOpenModel: false });
   };
 
@@ -125,6 +123,7 @@ export const RoleAssignmentForm = () => {
         if (!user) {
           arr.push(value);
         }
+        return null
       });
       users = arr;
       selectedUsers = [];
@@ -217,7 +216,7 @@ export const RoleAssignmentForm = () => {
                     <section>
                       {isCheckboxShown === true ? <input type='checkbox' name='selected'
                         checked={result ? true : false} /> : ''}
-                      <img src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : (user.gender === 'F' ? femaleIcon : maleIcon)} className='round-border' />
+                      <img alt='' src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : (user.gender === 'F' ? femaleIcon : maleIcon)} className='round-border' />
                       <div>
                         <h3>{user.displayName}</h3>
                         <p>{user.email}</p>
