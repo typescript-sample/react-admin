@@ -1,11 +1,12 @@
 import { Item } from 'onecore';
 import * as React from 'react';
-import { checked, OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
+import { checked, OnClick, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
+import { Search } from './search';
 import { User, UserFilter, getUserService } from './service';
 
 interface UserSearch extends SearchComponentState<User, UserFilter> {
@@ -17,7 +18,7 @@ const userFilter: UserFilter = {
   displayName: '',
   email: '',
   status: [],
-  q:''
+  q: ''
 };
 const initialState: UserSearch = {
   statusList: [],
@@ -30,7 +31,6 @@ export const UsersForm = () => {
   const { state, resource, component, updateState, search, sort, toggleFilter, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());
   component.viewable = true;
   component.editable = true;
-
   const add = (e: OnClick) => {
     e.preventDefault();
     navigate(`add`);
@@ -55,12 +55,10 @@ export const UsersForm = () => {
       <div>
         <form id='usersForm' name='usersForm' noValidate={true} ref={refForm as any}>
           <section className='row search-group'>
-            <label className='col s12 m4 search-input'>
-              <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
-              <input type='text' id='q' name='q' value={filter.q} onChange={updateState} maxLength={255} placeholder={resource.keyword}/>
-              <button type='button' className='btn-filter' onClick={toggleFilter}/>
-              <button type='submit' className='btn-search' onClick={search}/>
-            </label>
+            <Search size={component.pageSize} sizes={component.pageSizes} pageSizeChanged={pageSizeChanged}
+              inputChange={updateState} placeholder={resource.keyword}
+              toggleFilter={toggleFilter} value={filter.q || ''}
+              search={search} />
             <Pagination className='col s12 m8' total={component.total} size={component.pageSize} max={component.pageMaxSize} page={component.pageIndex} onChange={pageChanged} />
           </section>
           <section className='row search-group inline' hidden={component.hideFilter}>
@@ -68,7 +66,7 @@ export const UsersForm = () => {
               {resource.username}
               <input type='text'
                 id='username' name='username'
-                value={filter.username}
+                value={filter.username || ''}
                 onChange={updateState}
                 maxLength={255}
                 placeholder={resource.username} />
@@ -77,7 +75,7 @@ export const UsersForm = () => {
               {resource.display_name}
               <input type='text'
                 id='displayName' name='displayName'
-                value={filter.displayName}
+                value={filter.displayName || ''}
                 onChange={updateState}
                 maxLength={255}
                 placeholder={resource.display_name} />
