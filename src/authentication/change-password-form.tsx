@@ -64,7 +64,7 @@ export const ChangePasswordForm = () => {
   
   useEffect(() => {
     setHiddenPasscode(!(state.user.step && state.user.step >= 1))
-  }, [state])
+  }, [state.user])
   
   return (
     <div className='view-container central-full'>
@@ -117,7 +117,7 @@ export const ChangePasswordForm = () => {
             <input type='password' className='form-control'
               id='passcode' name='passcode'
               value={state.user.passcode}
-              // onChange={updateState}
+              onChange={updateState}
               maxLength={255}
               placeholder={resource.placeholder_passcode} />
           </label>

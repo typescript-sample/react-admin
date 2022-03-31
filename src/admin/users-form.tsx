@@ -16,7 +16,8 @@ const userFilter: UserFilter = {
   username: '',
   displayName: '',
   email: '',
-  status: []
+  status: [],
+  q:''
 };
 const initialState: UserSearch = {
   statusList: [],
