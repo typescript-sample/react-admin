@@ -1,11 +1,10 @@
-import { email, PasswordService, validateAndForgotPassword, validateContact } from 'password-client';
+import { email, validateAndForgotPassword, validateContact } from 'password-client';
 import { useEffect, useRef, useState } from 'react';
-import { MessageComponent, MessageState, navigate, OnClick, useMessage, useUpdate } from 'react-hook-core';
+import { OnClick, useMessage, useUpdate } from 'react-hook-core';
 import { Link } from 'react-router-dom';
 import { handleError, initForm, registerEvents, storage, message } from 'uione';
 import logo from '../assets/images/logo.png';
-import { context, getPasswordServicer } from './service';
-import { alertInfo } from 'ui-alert';
+import { getPasswordServicer } from './service';
 
 interface ContactInternalState {
   contact: {
@@ -24,14 +23,10 @@ const msgData = {
   alertClass: '',
 };
 
-function init() {
-
-}
-
-export const ForgotPasswordForm = (props: any) => {
+export const ForgotPasswordForm = () => {
 
   const { msg, showError, hideMessage } = useMessage(msgData);
-  const { state, setState, updateState } = useUpdate<ContactInternalState>(forgotPasswordData, 'contact');
+  const { state, updateState } = useUpdate<ContactInternalState>(forgotPasswordData, 'contact');
   const form = useRef();
   const [resource] = useState(storage.getResource())
   useEffect(() => {
@@ -40,14 +35,6 @@ export const ForgotPasswordForm = (props: any) => {
     }
   }, [])
 
-  const signin = () => {
-    navigate(props.history, 'signin');
-  }
-
-  const resetPassword = () => {
-    navigate(props.history, 'reset-password');
-  }
-
   const forgotPassword = (event: OnClick) => {
     event.preventDefault();
     const passwordServicer = getPasswordServicer();
@@ -55,7 +42,6 @@ export const ForgotPasswordForm = (props: any) => {
       passwordServicer.forgotPassword, state.contact.contact, 'email', storage.resource(),
       message, showError, hideMessage, validateContact, handleError, email, storage.loading());
   }
-  console.log(state.contact)
 
   return (
     <div className='view-container central-full'>
@@ -85,5 +71,4 @@ export const ForgotPasswordForm = (props: any) => {
       </form>
     </div>
   );
-
 }

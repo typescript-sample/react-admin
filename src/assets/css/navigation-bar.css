@@ -100,11 +100,14 @@
   -moz-transition: max-height 0.8s;
   transition: max-height 0.8s;
 }
-
 .list-child.expanded {
   max-height: 500px;
   display: block;
 }
+.top-menu .list-child.expanded {
+  max-height: 0;
+}
+
 .sidebar .menu-item {
   position: relative;
   /*display: block;*/
@@ -187,11 +190,14 @@ ul.list-child > li {
   height: 100%;
   position: absolute;
 }
-
-.top-menu a.menu-item > i.entity-icon.down,
-.top-menu a.menu-item > i.entity-icon.up {
-  right: -20px;
+.top-menu div.menu-item > span {
+  padding-right: 12px;
 }
+.top-menu div.menu-item > i.entity-icon.down,
+.top-menu div.menu-item > i.entity-icon.up {
+  right: -16px;
+}
+.top-menu
 .menu-item > i.entity-icon.down:before {
   content: "\203A";
 }
@@ -335,7 +341,7 @@ ul.list-child > li {
     padding-right: 4px;
   }
 
-  .top-menu .menu.sidebar > nav > ul > li > a {
+  .top-menu .menu.sidebar > nav > ul > li > .menu-item {
     height: 46px;
     padding-top: 14px;
   }

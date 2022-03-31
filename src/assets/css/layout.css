@@ -239,3 +239,6 @@
   display: inline-block;
   transform: rotate(45deg);
 }
+.top-menu .menu.sidebar nav ul li:hover button.btn-pin {
+  display: none;
+}

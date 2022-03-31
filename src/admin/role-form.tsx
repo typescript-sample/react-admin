@@ -221,7 +221,7 @@ export function RoleForm() {
         <header>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
           <h2>{flag.newMode ? resource.create : resource.edit} {resource.role}</h2>
-          <i onClick={e => assign(e, state.role.roleId)}className='btn material-icons'>group</i>
+          <button className='btn-group btn-right'><i onClick={e => assign(e, state.role.roleId)} className='material-icons'>group</i></button>
         </header>
         <div>
           <section className='row'>

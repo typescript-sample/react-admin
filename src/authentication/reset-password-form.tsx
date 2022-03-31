@@ -1,53 +1,57 @@
-import { PasswordReset, PasswordService, resetPassword, validateReset } from 'password-client';
-import { MessageComponent, MessageState, navigate, OnClick } from 'react-hook-core';
+import { PasswordReset, resetPassword, validateReset } from 'password-client';
+import { OnClick, useMessage, useUpdate } from 'react-hook-core';
 import { Link } from 'react-router-dom';
-import { handleError, initForm, registerEvents, storage } from 'uione';
+import { handleError, initForm, message, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
-import { context } from './service';
+import { getPasswordServicer } from './service';
+import { useEffect, useRef, useState } from 'react';
 
-interface ResetPasswordState extends MessageState {
-  user: PasswordReset;
-  confirmPassword: string;
+interface ResetState {
+  user: NewPasswordReset;
+  message: string;
+}
+interface NewPasswordReset extends PasswordReset {
+  confirmPassword: '',
 }
 
-export class ResetPasswordForm extends MessageComponent<ResetPasswordState, any> {
-  constructor(props: any) {
-    super(props);
-    this.signin = this.signin.bind(this);
-    this.resetPassword = this.resetPassword.bind(this);
-    this.passwordService = context.getPasswordServicer();
-    const user: PasswordReset = {
-      username: '',
-      passcode: '',
-      password: ''
-    };
-    this.state = {
-      user,
-      message: '',
-      confirmPassword: ''
-    };
-  }
-  private passwordService: PasswordService;
+const signinData: ResetState = {
+  user: {
+    username: '',
+    password: '',
+    passcode: '',
+    confirmPassword: '',
+  },
+  message: '',
+};
 
-  componentDidMount() {
-    this.form = initForm(this.ref.current, registerEvents);
-  }
+const msgData = {
+  message: '',
+  alertClass: '',
+};
 
-  signin() {
-    navigate(this.props.history, 'signin');
-  }
+export const ResetPasswordForm = () => {
+  const form = useRef();
+  const [resource] = useState(storage.getResource())
+  const { msg, showError, hideMessage } = useMessage(msgData);
+  const { state, updateState } = useUpdate<ResetState>(signinData, 'user');
+  useEffect(() => {
+    if (form && form.current) {
+      initForm(form.current, registerEvents);
+    }
+  }, [])
 
-  resetPassword(event: OnClick) {
+  const onResetPassword = (event: OnClick) => {
+    const passwordService = getPasswordServicer()
     event.preventDefault();
-    const { user, confirmPassword } = this.state;
+    const { user } = state;
     const customPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
     const r = storage.resource();
-    const results = validateReset(user, confirmPassword, r, customPassword);
+    const results = validateReset(user, user.confirmPassword, r, customPassword);
     if (Array.isArray(results) && results.length > 0) {
-      this.showError(results);
+      showError(results);
       return;
     }
-    resetPassword(this.passwordService.resetPassword, user, r.resource(), this.showMessage, this.showError, handleError, storage.loading());
+    resetPassword(passwordService.resetPassword, user, storage.resource().resource(), message, showError, handleError, storage.loading());
     /*
     validateAndResetPassword(
       this.passwordService.resetPassword, this.state.user, this.state.confirmPassword,
@@ -56,62 +60,60 @@ export class ResetPasswordForm extends MessageComponent<ResetPasswordState, any>
       */
   }
 
-  render() {
-    const resource = storage.getResource();
-    const { message, user } = this.state;
-    return (
-      <div className='view-container central-full'>
-        <form id='userForm' name='userForm' noValidate={true} autoComplete='off' ref={this.ref} model-name='user'>
-          <div>
-            <img className='logo' src={logo} alt='logo'/>
-            <h2>{resource.reset_password}</h2>
-            <div className={'message ' + this.alertClass}>
-              {message}
-              <span onClick={this.hideMessage} hidden={!message || message === ''} />
-            </div>
-            <label>
-              {resource.username}
-              <input type='text'
-                id='username' name='username'
-                value={user.username}
-                placeholder={resource.placeholder_username}
-                onChange={this.updateState}
-                maxLength={255} required={true} />
-            </label>
-            <label>
-              {resource.passcode}
-              <input type='text'
-                id='passcode' name='passcode'
-                value={user.passcode}
-                placeholder={resource.placeholder_passcode}
-                onChange={this.updateState}
-                maxLength={255} required={true} />
-            </label>
-            <label>
-              {resource.new_password}
-              <input type='password'
-                id='password' name='password'
-                value={user.password}
-                placeholder={resource.placeholder_new_password}
-                onChange={this.updateState}
-                maxLength={255} required={true} />
-            </label>
-            <label>
-              {resource.confirm_password}
-              <input type='password'
-                id='confirmPassword' name='confirmPassword'
-                value={this.state.confirmPassword}
-                placeholder={resource.placeholder_confirm_password}
-                onChange={this.updateFlatState}
-                maxLength={255} required={true} />
-            </label>
-            <button type='submit' id='btnResetPassword' name='btnResetPassword' onClick={this.resetPassword}>
-              {resource.button_reset_password}
-            </button>
-            <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
+
+  return (
+    <div className='view-container central-full'>
+      <form id='userForm' name='userForm' noValidate={true} autoComplete='off' ref={form as any} model-name='user'>
+        <div>
+          <img className='logo' src={logo} alt='logo' />
+          <h2>{resource.reset_password}</h2>
+          <div className={'message ' + msg.alertClass}>
+            {msg.message}
+            <span onClick={hideMessage} hidden={!msg.message || msg.message === ''} />
           </div>
-        </form>
-      </div>
-    );
-  }
+          <label>
+            {resource.username}
+            <input type='text'
+              id='username' name='username'
+              value={state.user.username}
+              placeholder={resource.placeholder_username}
+              onChange={updateState}
+              maxLength={255} required={true} />
+          </label>
+          <label>
+            {resource.passcode}
+            <input type='text'
+              id='passcode' name='passcode'
+              value={state.user.passcode}
+              placeholder={resource.placeholder_passcode}
+              onChange={updateState}
+              maxLength={255} required={true} />
+          </label>
+          <label>
+            {resource.new_password}
+            <input type='password'
+              id='password' name='password'
+              value={state.user.password}
+              placeholder={resource.placeholder_new_password}
+              onChange={updateState}
+              maxLength={255} required={true} />
+          </label>
+          <label>
+            {resource.confirm_password}
+            <input type='password'
+              id='confirmPassword' name='confirmPassword'
+              value={state.user.confirmPassword}
+              placeholder={resource.placeholder_confirm_password}
+              onChange={updateState}
+              maxLength={255} required={true} />
+          </label>
+          <button type='submit' id='btnResetPassword' name='btnResetPassword' onClick={onResetPassword}>
+            {resource.button_reset_password}
+          </button>
+          <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
+        </div>
+      </form>
+    </div>
+  );
+
 }

@@ -1,10 +1,11 @@
+import { useEffect, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { MessageComponent, MessageState, OnClick } from 'react-hook-core';
+import { OnClick, useMessage, useUpdate } from 'react-hook-core';
 import { Link } from 'react-router-dom';
-import { isEmail, isValidUsername, SignupService, Status, strongPassword, User, validate, validateAndSignup } from 'signup-client';
-import { handleError, initForm, registerEvents, storage } from 'uione';
+import { isEmail, isValidUsername, Status, strongPassword, validate, validateAndSignup } from 'signup-client';
+import { handleError, initForm, message, registerEvents, storage } from 'uione';
 import logo from '../assets/images/logo.png';
-import { context } from './service';
+import { getSignupService } from './service';
 
 const status: Status = {
   error: 0,
@@ -15,120 +16,125 @@ const status: Status = {
   format_contact: -3,
   format_password: -1
 };
-interface SignupState extends MessageState {
-  user: User;
+
+interface User {
+  username: string;
+  password: string;
+  contact?: string;
   confirmPassword: string;
+}
+
+const userData: SignupState = {
+  user: {
+    username: '',
+    contact: '',
+    password: '',
+    confirmPassword: ''
+  },
+  reCAPTCHA: '',
+  passwordRequired: true,
+  message: '',
+}
+
+const msgData = {
+  message: '',
+  alertClass: '',
+};
+
+interface SignupState {
+  user: User;
   reCAPTCHA: string | null;
   passwordRequired: boolean;
+  message: string
 }
-export class SignupForm extends MessageComponent<SignupState, any> {
-  constructor(props: any) {
-    super(props);
-    this.signup = this.signup.bind(this);
-    this.signupService = context.getSignupService();
-    const user: User = {
-      username: '',
-      contact: '',
-      password: '',
-    };
-    this.state = {
-      message: '',
-      user,
-      confirmPassword: '',
-      reCAPTCHA: '',
-      passwordRequired: true
-    };
-  }
-  private signupService: SignupService<User>;
+export const SignupForm = () => {
+  const form = useRef();
+  const [resource] = useState(storage.getResource())
+  const { msg, showError, hideMessage } = useMessage(msgData);
+  const { state, setState, updateState } = useUpdate<SignupState>(userData, 'user');
+  useEffect(() => {
+    if (form && form.current) {
+      initForm(form.current, registerEvents);
+    }
+  }, [])
 
-  componentDidMount() {
-    this.form = initForm(this.ref.current, registerEvents);
-  }
-
-  checkPass = () => {
-    this.setState({
-      passwordRequired: !this.state.passwordRequired
-    });
-  }
-
-  signup(event: OnClick) {
+  const signup = (event: OnClick) => {
     event.preventDefault();
+    const signupService = getSignupService()
     const r = storage.resource();
-    const { reCAPTCHA } = this.state;
+    const { reCAPTCHA } = state;
     if (!reCAPTCHA) {
-      this.showError(r.value('error_captcha'));
+      showError(r.value('error_captcha'));
       return;
     }
-    const { user, passwordRequired, confirmPassword } = this.state;
-    validateAndSignup(this.signupService.signup, status, user, passwordRequired, confirmPassword, r,
-      this.showMessage, this.showError, this.hideMessage,
+    const { user, passwordRequired } = state;
+    validateAndSignup(signupService.signup, status, user, passwordRequired, user.confirmPassword, r,
+      message, showError, hideMessage,
       isValidUsername, isEmail, validate, handleError, strongPassword, storage.loading());
   }
 
-  onChange = (value: string | null) => {
-    this.setState({ reCAPTCHA: value });
+  const onChange = (value: string | null) => {
+    setState({ reCAPTCHA: value });
   }
-  render() {
-    const resource = storage.getResource();
-    const { message, user } = this.state;
-    return (
-      <div className='view-container central-full'>
-        <form id='userForm' name='userForm' noValidate={true} autoComplete='off' ref={this.ref}>
-          <div>
-            <img className='logo' src={logo} alt='logo'/>
-            <h2>{resource.signup}</h2>
-            <div className={'message ' + this.alertClass}>
-              {message}
-              <span onClick={this.hideMessage} hidden={!message || message === ''} />
-            </div>
-            <label>
-              {resource.username}
-              <input type='text'
-                id='username' name='username'
-                value={user.username}
-                placeholder={resource.placeholder_username}
-                onChange={this.updateState}
-                maxLength={255} required={true} />
-            </label>
-            <label>
-              {resource.email}
-              <input type='text'
-                id='contact' name='contact'
-                value={user.contact}
-                placeholder={resource.placeholder_email}
-                onChange={this.updateState}
-                maxLength={255} required={true} />
-            </label>
-            <label hidden={!this.state.passwordRequired}>
-              {resource.password}
-              <input type='password'
-                id='password' name='password'
-                value={user.password}
-                placeholder={resource.placeholder_password}
-                onChange={this.updateState}
-                maxLength={255} />
-            </label>
-            <label hidden={!this.state.passwordRequired}>
-              {resource.confirm_password}
-              <input type='password'
-                id='confirmPassword' name='confirmPassword'
-                placeholder={resource.placeholder_confirm_password}
-                onChange={this.updateFlatState}
-                maxLength={255} />
-            </label>
-            <div style={{ marginTop: '10px' }}>
-              <ReCAPTCHA
-                sitekey='6LetDbQUAAAAAEqIqVnSKgrI644y8w7O8mk89ijV'
-                onChange={this.onChange}
-              />
-            </div>
-            <button type='submit' id='btnSignup' name='btnSignup' onClick={this.signup}>
-              {resource.button_signup}
-            </button>
-            <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
+
+  return (
+    <div className='view-container central-full'>
+      <form id='userForm' name='userForm' noValidate={true} autoComplete='off' ref={form as any}>
+        <div>
+          <img className='logo' src={logo} alt='logo' />
+          <h2>{resource.signup}</h2>
+          <div className={'message ' + msg.alertClass}>
+            {msg.message}
+            <span onClick={hideMessage} hidden={!msg.message || msg.message === ''} />
           </div>
-        </form>
-      </div>
-    );
-  }
+          <label>
+            {resource.username}
+            <input type='text'
+              id='username' name='username'
+              value={state.user.username}
+              placeholder={resource.placeholder_username}
+              onChange={updateState}
+              maxLength={255} required={true} />
+          </label>
+          <label>
+            {resource.email}
+            <input type='text'
+              id='contact' name='contact'
+              value={state.user.contact}
+              placeholder={resource.placeholder_email}
+              onChange={updateState}
+              maxLength={255} required={true} />
+          </label>
+          <label hidden={!state.passwordRequired}>
+            {resource.password}
+            <input type='password'
+              id='password' name='password'
+              value={state.user.password}
+              placeholder={resource.placeholder_password}
+              onChange={updateState}
+              maxLength={255} />
+          </label>
+          <label hidden={!state.passwordRequired}>
+            {resource.confirm_password}
+            <input type='password'
+              id='confirmPassword' name='confirmPassword'
+              placeholder={resource.placeholder_confirm_password}
+              onChange={updateState}
+              maxLength={255} />
+          </label>
+          <div style={{ marginTop: '10px' }}>
+            <ReCAPTCHA
+              sitekey='6LetDbQUAAAAAEqIqVnSKgrI644y8w7O8mk89ijV'
+              onChange={onChange}
+            />
+          </div>
+          <button type='submit' id='btnSignup' name='btnSignup' onClick={signup}>
+            {resource.button_signup}
+          </button>
+          <Link id='btnSignin' to='/signin'>{resource.button_signin}</Link>
+        </div>
+      </form>
+    </div>
+  );
+
 }

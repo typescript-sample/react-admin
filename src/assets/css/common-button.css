@@ -248,6 +248,8 @@ footer > .btn-next {
   content: "\2573";
 }
 
+.view-container > form > header > .btn,
+.btn-group,
 .btn-new,
 .btn-add,
 .btn-view,
@@ -261,7 +263,10 @@ footer > .btn-next {
   color: inherit;
   background-color: transparent;
 }
-
+.btn-group.btn-right {
+  margin-top: 15px;
+  color: inherit;
+}
 .btn-edit {
   width: 18px;
   height: 18px;
@@ -374,6 +379,7 @@ h4> .btn-add {
 }
 .list-content > header > .btn-new,
 .view-container > header > .btn-new,
+.view-container > form > header > .btn-right,
 .view-container > header > .btn-group {
   position: absolute;
   top: -4px;
@@ -422,7 +428,7 @@ h4> .btn-add {
   content: "\E0CD";
 }
 
-.btn-camera {
+.btn-camera, .btn-divide, .btn-transfer, .btn-history {
   border: none;
   background-color: transparent;
 }
@@ -432,11 +438,6 @@ h4> .btn-add {
   font-family: Material Icons;
   font-style: normal;
   content: "\e412";
-}
-
-.btn-divide, .btn-transfer, .btn-history {
-  border: none;
-  background-color: transparent;
 }
 
 .btn-divide::before {
