@@ -10,7 +10,7 @@ import { UserClient, UserService } from './user';
 export * from './role';
 export * from './user';
 export * from './audit-log';
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 const httpRequest = new HttpRequest(axios, options);
 export interface Config {

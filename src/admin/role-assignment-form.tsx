@@ -5,8 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { confirm, handleError, showMessage, storage, useResource } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
-import { User, getUserService } from './service';
-import { Role, getRoleService } from './service';
+import { getUserService, User } from './service';
+import { getRoleService, Role } from './service';
 import { UsersLookup } from './users-lookup';
 
 interface InternalState {
@@ -46,21 +46,20 @@ const initialize = (id: string, set: DispatchWithCallback<Partial<InternalState>
 };
 
 export const RoleAssignmentForm = () => {
-  const params = useParams();
-  const r = useResource();
-  const [state, setState] = useState(initialState);
-  const roleService = getRoleService();
-  const navigate = useNavigate();
   const resource = useResource();
+  const navigate = useNavigate();
+  const params = useParams();
+  const roleService = getRoleService();
+  const [state, setState] = useState(initialState);
   const { role, isOpenModel, q } = state;
   let { users, selectedUsers, isCheckboxShown } = state;
-  
+
   useEffect(() => {
     const id = buildId<string>(params);
     if (id) {
       initialize(id, setState as any, state);
     }
-  }, []);// eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (users) {
@@ -116,14 +115,14 @@ export const RoleAssignmentForm = () => {
 
   const onDelete = () => {
 
-    confirm(r.msg_confirm_delete, r.confirm, () => {
+    confirm(resource.msg_confirm_delete, resource.confirm, () => {
       const arr: User[] = [];
       users.map(value => {
         const user = selectedUsers.find(v => v.userId === value.userId);
         if (!user) {
           arr.push(value);
         }
-        return null
+        return null;
       });
       users = arr;
       selectedUsers = [];

@@ -4,7 +4,7 @@ import { HttpRequest } from 'axios-core';
 import { PasswordClient, PasswordService } from 'password-client';
 import { Signup, SignupClient, SignupService} from 'signup-client';
 import { storage } from 'uione';
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 export interface Config {
   authentication_url: string;
@@ -22,7 +22,7 @@ class ApplicationContext {
     this.getConfig = this.getConfig.bind(this);
     this.getSignupService = this.getSignupService.bind(this);
     this.getAuthenticator = this.getAuthenticator.bind(this);
-    this.getPasswordServicer = this.getPasswordServicer.bind(this);
+    this.getPasswordService = this.getPasswordService.bind(this);
     this.getOAuth2Service = this.getOAuth2Service.bind(this);
   }
   getConfig(): Config {
@@ -42,7 +42,7 @@ class ApplicationContext {
     }
     return this.authenticator;
   }
-  getPasswordServicer(): PasswordService {
+  getPasswordService(): PasswordService {
     if (!this.passwordService) {
       const c = this.getConfig();
       this.passwordService = new PasswordClient(httpRequest, c.password_url);
@@ -62,16 +62,12 @@ export const context = new ApplicationContext();
 export function getAuthen(): AuthenService<User> {
   return context.getAuthenticator();
 }
-
-export function getPasswordServicer(): PasswordService {
-  return context.getPasswordServicer();
+export function getPasswordService(): PasswordService {
+  return context.getPasswordService();
 }
-
-
 export function getOAuth2Service(): OAuth2Service {
   return context.getOAuth2Service();
 }
-
 export function getSignupService(): SignupService<Signup> {
   return context.getSignupService();
 }

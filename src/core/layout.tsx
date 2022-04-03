@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { PageSizeSelect, useMergeState } from 'react-hook-core'
 import { useNavigate } from 'react-router';
-import { useLocation } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import { collapseAll, expandAll, Nav } from 'reactx-nav';
 import { options, Privilege, storage, StringMap } from 'uione';
 import logoTitle from '../assets/images/logo-title.png';
 import logo from '../assets/images/logo.png';
 import topBannerLogo from '../assets/images/top-banner-logo.png';
-import { collapseAll, expandAll, Nav } from './menu';
 
 interface InternalState {
   pageSizes: number[];
@@ -149,7 +148,6 @@ export const LayoutComponent = () => {
       setState({ forms, pinnedModules });
     }
   }
-
 
   useEffect(() => {
     setUser(storage.user())
