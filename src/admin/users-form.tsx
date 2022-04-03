@@ -1,12 +1,11 @@
 import { Item } from 'onecore';
 import * as React from 'react';
-import { checked, OnClick, SearchComponentState, useSearch, value } from 'react-hook-core';
+import { checked, OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Pagination } from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
-import { Search } from './search';
 import { getUserService, User, UserFilter } from './service';
 
 interface UserSearch extends SearchComponentState<User, UserFilter> {
@@ -55,10 +54,12 @@ export const UsersForm = () => {
       <div>
         <form id='usersForm' name='usersForm' noValidate={true} ref={refForm as any}>
           <section className='row search-group'>
-            <Search size={component.pageSize} sizes={component.pageSizes} pageSizeChanged={pageSizeChanged}
-              inputChange={updateState} placeholder={resource.keyword}
-              toggleFilter={toggleFilter} value={filter.q || ''}
-              search={search} />
+            <label className='col s12 m4 search-input'>
+              <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
+              <input type='text' id='q' name='q' value={filter.q || ''} onChange={updateState} maxLength={255} placeholder={resource.keyword}/>
+              <button type='button' className='btn-filter' onClick={toggleFilter}/>
+              <button type='submit' className='btn-search' onClick={search}/>
+            </label>
             <Pagination className='col s12 m8' total={component.total} size={component.pageSize} max={component.pageMaxSize} page={component.pageIndex} onChange={pageChanged} />
           </section>
           <section className='row search-group inline' hidden={component.hideFilter}>
