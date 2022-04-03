@@ -1,7 +1,7 @@
 import * as csv from 'csvtojson';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { currency, locale } from 'locale-service';
 import { phonecodes } from 'phonecodes';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
@@ -9,22 +9,23 @@ import { toast } from 'ui-toast';
 import { storage } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
-import AboutPage from './core/About';
-import HomePage from './core/Home';
-import LayoutComponent from './core/layout';
-import { SigninForm } from './authentication/signin-form';
-import { SignupForm } from './authentication/signup-form';
+import { RoleAssignmentForm } from './admin/role-assignment-form';
+import { RoleForm } from './admin/role-form';
+import { RolesForm } from './admin/roles-form';
+import { UserForm } from './admin/user-form';
+import { UsersForm } from './admin/users-form';
 import { ChangePasswordForm } from './authentication/change-password-form';
 import { ForgotPasswordForm } from './authentication/forgot-password-form';
 import { ResetPasswordForm } from './authentication/reset-password-form';
-import { UsersForm } from './admin/users-form';
-import { UserForm } from './admin/user-form';
-import { RolesForm } from './admin/roles-form';
-import { RoleForm } from './admin/role-form';
-import { RoleAssignmentForm } from './admin/role-assignment-form';
+import { SigninForm } from './authentication/signin-form';
+import { SignupForm } from './authentication/signup-form';
 import { config } from './config';
+import AboutPage from './core/about';
+import HomePage from './core/home';
+import LayoutComponent from './core/layout';
 import { resources as locales } from './core/resources';
 
+// tslint:disable:ordered-imports
 import './assets/css/reset.css';
 import './App.css';
 import './assets/fonts/material-icon/css/material-icons.css';
@@ -98,11 +99,11 @@ function App() {
         <Route path='reset-password' element={<ResetPasswordForm />} />
         <Route path='forgot-password' element={<ForgotPasswordForm />} />
         <Route path='about'>
-          <Route index element={<AboutPage />} />
+          <Route index={true} element={<AboutPage />} />
           <Route path=':number' element={<AboutPage />} />
         </Route>
         <Route path='' element={<LayoutComponent />}>
-          <Route index element={<AboutPage />} />
+          <Route index={true} element={<AboutPage />} />
           <Route path=':number' element={<AboutPage />} />
           <Route path='admin/users' element={<UsersForm />} />
           <Route path='admin/users/add' element={<UserForm />} />

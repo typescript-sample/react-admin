@@ -2,7 +2,7 @@ import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { PageSizeSelect, useMergeState } from 'react-hook-core'
+import { PageSizeSelect, useMergeState } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Outlet, useLocation } from 'react-router-dom';
 import { collapseAll, expandAll, Nav } from 'reactx-nav';
@@ -55,12 +55,12 @@ export const LayoutComponent = () => {
   const { pathname } = useLocation();
   console.log('path:' + pathname);
   const [state, setState] = useMergeState<InternalState>(initialState);
-  const [resource] = useState<StringMap>(storage.resource().resource())
-  const [pageSize] = useState<number>(20)
-  const [pageSizes] = useState<number[]>([10, 20, 40, 60, 100, 200, 400, 10000])
-  const [topClass, setTopClass] = useState('')
-  console.log('user',storage.user())
-  const [user, setUser] = useState(storage.user())
+  const [resource] = useState<StringMap>(storage.resource().resource());
+  const [pageSize] = useState<number>(20);
+  const [pageSizes] = useState<number[]>([10, 20, 40, 60, 100, 200, 400, 10000]);
+  const [topClass, setTopClass] = useState('');
+  console.log('user', storage.user());
+  const [user, setUser] = useState(storage.user());
 
   useEffect(() => {
     const forms = storage.privileges();
@@ -78,18 +78,18 @@ export const LayoutComponent = () => {
     if (username || storageRole) {
       setState({ username, userType: storageRole });
     }
-  }, [])// eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const clearKeyworkOnClick = () => {
     setState({
       keyword: '',
     });
-  }
+  };
 
   const searchOnClick = () => { };
   const toggleSearch = () => {
     setState({ isToggleSearch: !state.isToggleSearch });
-  }
+  };
 
   const toggleMenu = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     /*
@@ -98,7 +98,7 @@ export const LayoutComponent = () => {
     }
     */
     setState({ isToggleMenu: !state.isToggleMenu });
-  }
+  };
 
   function toggleProfile() {
     setState({ classProfile: state.classProfile === 'show' ? '' : 'show' });
@@ -114,7 +114,7 @@ export const LayoutComponent = () => {
     sessionStorage.clear();
     storage.setUser(null);
     navigate('/signin');
-  }
+  };
 
   // const viewMyprofile = (e: { preventDefault: () => void; }) => {
   //   e.preventDefault();
@@ -147,11 +147,11 @@ export const LayoutComponent = () => {
       pinnedModules.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
       setState({ forms, pinnedModules });
     }
-  }
+  };
 
   useEffect(() => {
-    setUser(storage.user())
-  }, [storage.user()])// eslint-disable-line react-hooks/exhaustive-deps
+    setUser(storage.user());
+  }, [storage.user()]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const { isToggleMenu, isToggleSearch } = state;
     const topClassList = ['sidebar-parent'];
@@ -162,7 +162,7 @@ export const LayoutComponent = () => {
       topClassList.push('search');
     }
     setTopClass(topClassList.join(' '));
-  }, [state])
+  }, [state]);
 
   return (
     <div className={topClass}>
@@ -250,5 +250,5 @@ export const LayoutComponent = () => {
       </div>
     </div>
   );
-}
+};
 export default LayoutComponent;
