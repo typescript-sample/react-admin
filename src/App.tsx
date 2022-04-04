@@ -1,7 +1,7 @@
 import * as csv from 'csvtojson';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { currency, locale } from 'locale-service';
 import { phonecodes } from 'phonecodes';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
@@ -9,22 +9,23 @@ import { toast } from 'ui-toast';
 import { storage } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
-import LayoutComponent from './core/layout';
-import AboutPage from './pages/About';
-import HomePage from './pages/Home';
-import { SigninForm } from './authentication/signin-form';
-import { SignupForm } from './authentication/signup-form';
+import { RoleAssignmentForm } from './admin/role-assignment-form';
+import { RoleForm } from './admin/role-form';
+import { RolesForm } from './admin/roles-form';
+import { UserForm } from './admin/user-form';
+import { UsersForm } from './admin/users-form';
 import { ChangePasswordForm } from './authentication/change-password-form';
 import { ForgotPasswordForm } from './authentication/forgot-password-form';
 import { ResetPasswordForm } from './authentication/reset-password-form';
-import { UsersForm } from './admin/users-form';
-import { UserForm } from './admin/user-form';
-import { RolesForm } from './admin/roles-form';
-import { RoleForm } from './admin/role-form';
-import { RoleAssignmentForm } from './admin/role-assignment-form';
+import { SigninForm } from './authentication/signin-form';
+import { SignupForm } from './authentication/signup-form';
 import { config } from './config';
+import AboutPage from './core/about';
+import HomePage from './core/home';
+import LayoutComponent from './core/layout';
 import { resources as locales } from './core/resources';
 
+// tslint:disable:ordered-imports
 import './assets/css/reset.css';
 import './App.css';
 import './assets/fonts/material-icon/css/material-icons.css';
@@ -91,44 +92,44 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="home" element={<HomePage />} />
-        <Route path="signin" element={<SigninForm />} />
-        <Route path="signup" element={<SignupForm />} />
-        <Route path="change-password" element={<ChangePasswordForm />} />
-        <Route path="reset-password" element={<ResetPasswordForm />} />
-        <Route path="forgot-password" element={<ForgotPasswordForm />} />
-        <Route path="about">
-          <Route index element={<AboutPage />} />
-          <Route path=":number" element={<AboutPage />} />
+        <Route path='home' element={<HomePage />} />
+        <Route path='signin' element={<SigninForm />} />
+        <Route path='signup' element={<SignupForm />} />
+        <Route path='change-password' element={<ChangePasswordForm />} />
+        <Route path='reset-password' element={<ResetPasswordForm />} />
+        <Route path='forgot-password' element={<ForgotPasswordForm />} />
+        <Route path='about'>
+          <Route index={true} element={<AboutPage />} />
+          <Route path=':number' element={<AboutPage />} />
         </Route>
-        <Route path="" element={<LayoutComponent />}>
-          <Route index element={<AboutPage />} />
-          <Route path=":number" element={<AboutPage />} />
-          <Route path="admin/users" element={<UsersForm />} />
-          <Route path="admin/users/add" element={<UserForm />} />
-          <Route path="admin/users/edit/:id" element={<UserForm />} />
-          <Route path="admin/roles" element={<RolesForm />} />
-          <Route path="admin/roles/add" element={<RoleForm />} />
-          <Route path="admin/roles/edit/:id" element={<RoleForm />} />
-          <Route path="admin/roles/assign/:id" element={<RoleAssignmentForm />} />
+        <Route path='' element={<LayoutComponent />}>
+          <Route index={true} element={<AboutPage />} />
+          <Route path=':number' element={<AboutPage />} />
+          <Route path='admin/users' element={<UsersForm />} />
+          <Route path='admin/users/add' element={<UserForm />} />
+          <Route path='admin/users/edit/:id' element={<UserForm />} />
+          <Route path='admin/roles' element={<RolesForm />} />
+          <Route path='admin/roles/add' element={<RoleForm />} />
+          <Route path='admin/roles/edit/:id' element={<RoleForm />} />
+          <Route path='admin/roles/assign/:id' element={<RoleAssignmentForm />} />
         </Route>
-        <Route path="/" element={<HomePage />} />
+        <Route path='/' element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );
   /*
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className='App'>
+      <header className='App-header'>
+        <img src={logo} className='App-logo' alt='logo' />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+          className='App-link'
+          href='https://reactjs.org'
+          target='_blank'
+          rel='noopener noreferrer'
         >
           Learn React
         </a>

@@ -1,10 +1,10 @@
 import { email, validateAndForgotPassword, validateContact } from 'password-client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { OnClick, useMessage, useUpdate } from 'react-hook-core';
 import { Link } from 'react-router-dom';
-import { handleError, initForm, registerEvents, storage, message } from 'uione';
+import { handleError, initForm, message, registerEvents, storage, useResource } from 'uione';
 import logo from '../assets/images/logo.png';
-import { getPasswordServicer } from './service';
+import { getPasswordService } from './service';
 
 interface ContactInternalState {
   contact: {
@@ -24,24 +24,23 @@ const msgData = {
 };
 
 export const ForgotPasswordForm = () => {
-
+  const resource = useResource();
   const { msg, showError, hideMessage } = useMessage(msgData);
   const { state, updateState } = useUpdate<ContactInternalState>(forgotPasswordData, 'contact');
   const form = useRef();
-  const [resource] = useState(storage.getResource())
   useEffect(() => {
     if (form && form.current) {
       initForm(form.current, registerEvents);
     }
-  }, [])
+  }, []);
 
   const forgotPassword = (event: OnClick) => {
     event.preventDefault();
-    const passwordServicer = getPasswordServicer();
+    const passwordServicer = getPasswordService();
     validateAndForgotPassword(
       passwordServicer.forgotPassword, state.contact.contact, 'email', storage.resource(),
       message, showError, hideMessage, validateContact, handleError, email, storage.loading());
-  }
+  };
 
   return (
     <div className='view-container central-full'>
@@ -71,4 +70,4 @@ export const ForgotPasswordForm = () => {
       </form>
     </div>
   );
-}
+};
