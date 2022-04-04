@@ -23,6 +23,7 @@ interface InternalState {
   username?: string;
   userType?: string;
   pinnedModules: Privilege[];
+  isToggleSidebar: boolean;
 }
 export function sub(n1?: number, n2?: number): number {
   if (!n1 && !n2) {
@@ -44,6 +45,7 @@ const initialState: InternalState = {
   classProfile: '',
   isToggleMenu: false,
   isToggleSearch: false,
+  isToggleSidebar: false,
   forms: [],
   username: '',
   userType: '',
@@ -97,7 +99,7 @@ export const LayoutComponent = () => {
       e.preventDetault();
     }
     */
-    setState({ isToggleMenu: !state.isToggleMenu });
+    setState({ isToggleMenu: !state.isToggleMenu, isToggleSidebar: !state.isToggleSidebar });
   };
 
   function toggleProfile() {
@@ -153,8 +155,11 @@ export const LayoutComponent = () => {
     setUser(storage.user());
   }, [storage.user()]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
-    const { isToggleMenu, isToggleSearch } = state;
+    const { isToggleMenu, isToggleSearch, isToggleSidebar } = state;
     const topClassList = ['sidebar-parent'];
+    if (isToggleSidebar) {
+      topClassList.push('sidebar-off');
+    }
     if (isToggleMenu) {
       topClassList.push('menu-on');
     }
@@ -180,8 +185,9 @@ export const LayoutComponent = () => {
           items={state.forms}
           resource={resource}
           pin={pin}
+          toggle={toggleMenu}
           expand={expandAll}
-          collapse={collapseAll}/>
+          collapse={collapseAll} />
         {/*
         <nav className='expanded-all'>
           <ul>
