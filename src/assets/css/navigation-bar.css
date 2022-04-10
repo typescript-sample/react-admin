@@ -456,7 +456,7 @@
   .top-menu nav > ul > li:hover > div.menu-item:hover > span,
   .top-menu nav > ul > li:hover > .menu-item:hover > span,
   .top-menu nav > ul > li > .menu-item > span {
-    padding-right: 12px;
+    padding-right: 15px;
   }
 
   .top-menu div.menu-item > i.entity-icon.down,
@@ -465,7 +465,6 @@
   }
   .top-menu .menu.sidebar > nav > ul > li {
     display: inline-block;
-    padding-right: 4px;
   }
 
   .top-menu .menu.sidebar > nav > ul > li > .menu-item {
