@@ -103,6 +103,7 @@
 .sidebar > nav > ul > li > ul.list-child > li:hover {
   transition: 0.3s;
 }
+.sidebar > nav > ul > li > div.menu-item:hover > span,
 .sidebar > nav > ul > li:hover > .menu-item > i > span,
 .sidebar > nav > ul > li:hover > a > span,
 .sidebar > nav > ul > li > ul.list-child > li:hover > a > span {
@@ -114,6 +115,7 @@
   height: 38px;
   background-color: inherit;
 }
+.menu-on .sidebar > nav > ul > li > div.menu-item:hover > span,
 .menu-on .sidebar > nav > ul > li:hover > .menu-item > i > span,
 .menu-on .sidebar > nav > ul > li:hover > a > span,
 .menu-on .sidebar > nav > ul > li > ul.list-child > li:hover > a > span {
@@ -228,7 +230,12 @@
 .sidebar > nav > ul > li.open > ul {
   display: block;
 }
-
+.sidebar a:hover {
+  text-decoration: none;
+}
+.sidebar a:hover > span {
+  text-decoration: underline;
+}
 .menu-item > i.entity-icon {
   transform: rotate(90deg);
   margin-right: 10px;
