@@ -66,7 +66,8 @@
   left: 0;
   overflow-x: hidden;
   transition: 0.25s;
-  width: 246px;
+  width: 46px;
+  overflow-y: hidden;
 }
 
 .sidebar .toggle-menu {
@@ -75,10 +76,48 @@
 
 .page-container {
   height: 100%;
-  margin-left: 246px;
+  margin-left: 46px;
   transition: 0.25s;
 }
-
+.menu-on .sidebar {
+  width: 246px;
+  overflow-y: auto;
+}
+.sidebar .menu-item > i {
+  margin-left: 4px;
+  margin-right: 15px;
+}
+.sidebar ul.list-child > li {
+  padding-left: 0;
+  background-color: inherit;
+}
+.sidebar > nav > ul > li > ul.list-child > li:hover {
+  transition: 0.3s;
+}
+.sidebar > nav > ul > li:hover > .menu-item > i > span,
+.sidebar > nav > ul > li:hover > a > span,
+.sidebar > nav > ul > li > ul.list-child > li:hover > a > span {
+  position: fixed;
+  padding: 10px;
+  left: 40px;
+  margin-top: -10px;
+  min-width: 200px;
+  height: 38px;
+  background-color: inherit;
+}
+.sidebar .expand,
+.sidebar .collapse {
+  display: none;
+}
+.menu-on .sidebar .expand,
+.menu-on .sidebar .collapse {
+  display: inline-block;
+}
+@media screen and (min-width: 769px) {
+  .menu-on .page-container {
+    margin-left: 246px;
+  }
+}
 .icon-down,
 .icon-up {
   position: absolute;
@@ -130,6 +169,11 @@
 .sidebar > nav > ul > li > a.menu-item {
   padding-left: 14px;
 }*/
+.sidebar > nav, 
+.sidebar > nav > ul,
+.sidebar > nav > ul > li {
+  background-color: inherit;
+}
 .sidebar li > div.menu-i,
 .sidebar nav ul {
   white-space: normal;
@@ -185,10 +229,14 @@ ul.list-child > li {
 .menu-item > i.entity-icon.up {
   font-style: normal;
   font-weight: 800;
-  right: -14px;
+  right: -18px;
   top: 0;
   height: 100%;
   position: absolute;
+}
+.menu-on .menu-item > i.entity-icon.down,
+.menu-on .menu-item > i.entity-icon.up {
+  right: -13px;
 }
 .top-menu div.menu-item > span {
   padding-right: 12px;
@@ -197,7 +245,6 @@ ul.list-child > li {
 .top-menu div.menu-item > i.entity-icon.up {
   right: -16px;
 }
-.top-menu
 .menu-item > i.entity-icon.down:before {
   content: "\203A";
 }
@@ -221,16 +268,8 @@ ul.list-child > li {
   .menu-on .sidebar-off-menu > .collapse {
     display: inline-block;
   }
-  .page-container {
-    margin-left: 46px;
-  }
-  .sidebar .menu-item > i {
-    margin-left: 5px;
-    margin-right: 14px;
-  }
-  .sidebar ul.list-child > li {
-    padding-left: 0;
-  }
+
+  
 /*
   .sidebar nav ul li a i {
     margin-left: 6px;

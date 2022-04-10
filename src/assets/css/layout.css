@@ -218,12 +218,15 @@
 .menu.sidebar .btn-pin {
   display: none;
   font-style: normal;
-  right: 20px;
+  right: 25px;
   top: 0;
   height: 100%;
   position: absolute;
   background-color: transparent;
   border-color: transparent;
+}
+.menu-on .menu.sidebar .btn-pin {
+  right: 20px;
 }
 .menu.sidebar .btn-pin::after {
   font-size: 15px;
