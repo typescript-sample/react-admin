@@ -394,6 +394,10 @@
     overflow-y: hidden;
   }
 
+  .top-menu .sidebar > nav >ul > li > ul.list-child > li > .menu-item > i {
+    margin-left: -4px;
+    margin-right: 3px;
+  }
   .top-menu .menu.sidebar::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -439,8 +443,8 @@
     padding-right: unset;
   }
   .top-menu .sidebar > nav > ul > li > .menu-item > i {
-    margin-left: 6px;
-    margin-right: 6px;
+    margin-left: 4px;
+    margin-right: 4px;
   }
   .top-menu .list-child.expanded {
     max-height: 0;
@@ -449,11 +453,12 @@
   .top-menu .menu-item > i.entity-icon.up {
     display: none;
   }
-  /*
-  .top-menu div.menu-item > span {
+  .top-menu nav > ul > li:hover > div.menu-item:hover > span,
+  .top-menu nav > ul > li:hover > .menu-item:hover > span,
+  .top-menu nav > ul > li > .menu-item > span {
     padding-right: 12px;
   }
-  */
+
   .top-menu div.menu-item > i.entity-icon.down,
   .top-menu div.menu-item > i.entity-icon.up {
     right: -16px;
