@@ -265,59 +265,6 @@
     content: "\2039";
 }
 
-@media screen and (max-width: 768px) and (min-width: 601px) {
-  .sidebar {
-    width: 46px;
-    overflow-y: hidden;
-  }
-  .menu-on .sidebar {
-    width: 246px;
-  }
-  .sidebar-off-menu > .expand,
-  .sidebar-off-menu > .collapse {
-    display: none;
-  }
-  .menu-on .sidebar-off-menu > .expand,
-  .menu-on .sidebar-off-menu > .collapse {
-    display: inline-block;
-  }
-
-  
-/*
-  .sidebar nav ul li a i {
-    margin-left: 6px;
-    margin-right: 13px;
-  }
-
-  .sidebar > nav > ul > li > a {
-    padding-left: 9px;
-  }
-
-  .sidebar > nav > ul > li > ul > li {
-    padding-left: 0;
-  }
-*/
-  .sidebar > nav > ul > li > ul.list-child > li:hover {
-    transition: 0.3s;
-  }
-  .sidebar > nav > ul > li:hover > div.menu-item > i > span,
-  .sidebar > nav > ul > li:hover > a > span,
-  .sidebar > nav > ul > li > ul.list-child > li:hover > a > span {
-    position: fixed;
-    padding: 10px;
-    left: 40px;
-    margin-top: -10px;
-    min-width: 200px;
-    height: 38px;
-    background-color: inherit;
-  }
-
-  .entity-icon.down,
-  .entity-icon.up {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 600px) {
 /*
   .sidebar .toggle-menu {
@@ -342,45 +289,12 @@
 }
 
 @media screen and (min-width: 601px) {
-  .sidebar-off .sidebar {
-    width: 46px;
-    overflow-y: hidden;
-  }
-  .sidebar-off .page-container {
-    margin-left: 46px;
-  }
   .sidebar > nav > ul > li.open > ul {
     display: block;
   }
 }
 
 @media screen and (min-width: 769px) {
-  .sidebar-off ul.list-child > li {
-    padding-left: 5px;
-  }
-  .sidebar-off .sidebar ul.list-child > li .menu-item > i {
-    margin-right: 14px;
-  }
-  .sidebar-off .sidebar > nav > ul > li > .menu-item {
-    padding-left: 14px;
-  }
-  .sidebar-off .sidebar > nav > ul > li > .menu-item > i.material-icons {
-    margin-right: 14px;
-  }
-  .sidebar-off .sidebar > nav > ul > li > ul.list-child > li:hover {
-    transition: 0.3s;
-  }
-  .sidebar-off .sidebar > nav > ul > li:hover > div.menu-item > i > span,
-  .sidebar-off .sidebar > nav > ul > li:hover > a > span,
-  .sidebar-off .sidebar > nav > ul > li > ul.list-child > li:hover > a > span {
-    position: fixed;
-    padding: 10px;
-    left: 40px;
-    margin-top: -10px;
-    min-width: 200px;
-    height: 38px;
-    background-color: inherit;
-  }
   .top-menu .entity-icon.down,
   .top-menu .entity-icon.up,
   .top-menu .sidebar-off-menu {
