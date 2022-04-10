@@ -270,6 +270,7 @@ form.list-result > .table-responsive > table > tbody > tr > td,
 .view-subtitle,
 .subtitle,
 
+.profile.view-container > form > .row > .col > div.card > section > p,
 ul.list-view > li > section:first-child > div > h3.inactive {
   color: #999999;
 }
@@ -348,6 +349,7 @@ form.list-result > .table-responsive > table > thead > tr > th > a,
 .view-container > div > h4,
 .view-body > h4,
 section > h4,
+section > h4.title > a,
 section > a,
 .section-header,
 .section-subheader,
@@ -572,6 +574,8 @@ section > p > label,
 .view-container > header > .btn-back,
 .view-header > .btn-back,
 .btn-close,
+.btn-filter,
+.btn-remove-text,
 .btn-edit, .btn-transfer, .btn-divide {
   color: #808080;
 }
@@ -646,4 +650,3 @@ section > p > label,
 .highlight {
   color: #cdba11 !important;
 }
-
