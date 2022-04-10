@@ -163,10 +163,6 @@
   max-height: 500px;
   display: block;
 }
-.top-menu .list-child.expanded {
-  max-height: 0;
-}
-
 .sidebar .menu-item {
   position: relative;
   /*display: block;*/
@@ -262,13 +258,6 @@
 .menu-on .menu-item > i.entity-icon.up {
   right: -13px;
 }
-.top-menu div.menu-item > span {
-  padding-right: 12px;
-}
-.top-menu div.menu-item > i.entity-icon.down,
-.top-menu div.menu-item > i.entity-icon.up {
-  right: -16px;
-}
 .menu-item > i.entity-icon.down:before {
   content: "\203A";
 }
@@ -323,11 +312,8 @@
     background-color: inherit;
   }
 
-  .top-menu .entity-icon.down,
-  .top-menu .entity-icon.up,
-  .top-menu .sidebar-off-menu,
   .entity-icon.down,
-  .entity-icon.up{
+  .entity-icon.up {
     display: none;
   }
 }
@@ -395,6 +381,11 @@
     height: 38px;
     background-color: inherit;
   }
+  .top-menu .entity-icon.down,
+  .top-menu .entity-icon.up,
+  .top-menu .sidebar-off-menu {
+    display: none;
+  }
   .top-menu .menu.sidebar {
     top: 0;
     height: 46px;
@@ -433,7 +424,40 @@
   .top-menu .menu.sidebar .sidebar-off-menu {
     display: none;
   }
-
+  .top-menu .sidebar > nav > ul > li > div.menu-item:hover > span,
+  .top-menu .sidebar > nav > ul > li:hover > .menu-item > i > span,
+  .top-menu .sidebar > nav > ul > li:hover > a > span,
+  .top-menu .sidebar > nav > ul > li > ul.list-child > li:hover > a > span {
+    position: unset;
+    padding: unset;
+    left: unset;
+    margin-top: unset;
+    min-width: unset;
+  }
+  .top-menu .sidebar > nav > ul > li > .menu-item {
+    padding-left: unset;
+    padding-right: unset;
+  }
+  .top-menu .sidebar > nav > ul > li > .menu-item > i {
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+  .top-menu .list-child.expanded {
+    max-height: 0;
+  }
+  .top-menu .menu-item > i.entity-icon.down,
+  .top-menu .menu-item > i.entity-icon.up {
+    display: none;
+  }
+  /*
+  .top-menu div.menu-item > span {
+    padding-right: 12px;
+  }
+  */
+  .top-menu div.menu-item > i.entity-icon.down,
+  .top-menu div.menu-item > i.entity-icon.up {
+    right: -16px;
+  }
   .top-menu .menu.sidebar > nav > ul > li {
     display: inline-block;
     padding-right: 4px;
