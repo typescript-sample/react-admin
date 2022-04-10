@@ -17,7 +17,7 @@
   border: none;
   background-color: inherit;
   color: inherit;
-  margin-left: -6px;
+  margin-left: -7px;
   margin-right: 8px;
 }
 .sidebar-off-menu > .expand {
@@ -79,13 +79,22 @@
   margin-left: 46px;
   transition: 0.25s;
 }
+.sidebar .menu-item > i {
+  width: 28px;
+  font-size: 18px;
+  text-align: center;
+  margin-left: 4px;
+  margin-right: 15px;
+}
+.menu-on .sidebar > nav > ul > li > .menu-item {
+  padding-left: 4px;
+}
 .menu-on .sidebar {
   width: 246px;
   overflow-y: auto;
 }
-.sidebar .menu-item > i {
-  margin-left: 4px;
-  margin-right: 15px;
+.menu-on .menu-item > i {
+  margin-right: unset;
 }
 .sidebar ul.list-child > li {
   padding-left: 0;
@@ -104,6 +113,15 @@
   min-width: 200px;
   height: 38px;
   background-color: inherit;
+}
+.menu-on .sidebar > nav > ul > li:hover > .menu-item > i > span,
+.menu-on .sidebar > nav > ul > li:hover > a > span,
+.menu-on .sidebar > nav > ul > li > ul.list-child > li:hover > a > span {
+  position: unset;
+  padding: unset;
+  left: unset;
+  margin-top: unset;
+  min-width: unset;
 }
 .sidebar .expand,
 .sidebar .collapse {
@@ -190,13 +208,6 @@
 .sidebar nav ul li a.sidebar-off-menu > i {
   margin-right: 5px;
 }
-
-.sidebar .menu-item > i {
-  /*margin-right: 10px;*/
-  width: 28px;
-  font-size: 18px;
-  text-align: center;
-}
 /*
 .sidebar > nav > ul > li > ul > li > a,
 .sidebar > nav > ul > li > a {
@@ -211,8 +222,8 @@
   padding-left: 20px;
 }
 */
-ul.list-child > li {
-  padding-left: 20px;
+.menu-on .sidebar > nav > ul > li > ul.list-child > li {
+  padding-left: 8px;
 }
 .sidebar > nav > ul > li.open > ul {
   display: block;
@@ -563,5 +574,39 @@ nav.expanded-all .sidebar-off-menu > .expand {
   display: none;
 }
 nav.collapsed-all .sidebar-off-menu > .collapse {
+  display: none;
+}
+
+.top-menu .btn-pin {
+  display: none;
+}
+.menu.sidebar .btn-pin {
+  display: none;
+  font-style: normal;
+  right: 25px;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  background-color: transparent;
+  border-color: transparent;
+}
+.menu-on .menu.sidebar .btn-pin {
+  right: 20px;
+}
+.menu.sidebar .btn-pin::after {
+  font-size: 15px;
+  font-weight: 100;
+  font-family: FontAwesome;
+  content: "\f08d";
+  color: white;
+}
+.menu.sidebar nav ul li:hover button.btn-pin {
+  display: inline-block;
+}
+.menu.sidebar .btn-pin.pinned {
+  display: inline-block;
+  transform: rotate(45deg);
+}
+.top-menu .menu.sidebar nav ul li:hover button.btn-pin {
   display: none;
 }
