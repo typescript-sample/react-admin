@@ -2,14 +2,17 @@ import * as csv from 'csvtojson';
 import { currency, locale } from 'locale-service';
 import { phonecodes } from 'phonecodes';
 import { Groups } from 'react-groups';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useSearchParams } from 'react-router-dom';
 import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
 import { toast } from 'ui-toast';
-import { privileges as usePrivileges, storage, useResource } from 'uione';
+import { Privilege, privileges as usePrivileges, storage, useResource } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
+import { useState } from 'react';
+import { resources as locales } from './core/resources';
+
 import { RoleAssignmentForm } from './admin/role-assignment-form';
 import { RoleForm } from './admin/role-form';
 import { RolesForm } from './admin/roles-form';
@@ -24,7 +27,6 @@ import { config } from './config';
 import AboutPage from './core/about';
 import HomePage from './core/home';
 import LayoutComponent from './core/layout';
-import { resources as locales } from './core/resources';
 
 // tslint:disable:ordered-imports
 import './assets/css/reset.css';
@@ -145,11 +147,29 @@ export default App;
 export function Welcome() {
   const resource = useResource();
   const groups = usePrivileges();
+  const [items] = useState<Privilege[]>(groups);
+  const [searchParams] = useSearchParams();
+  const v = searchParams.get('q') as string || '';
+  const shownItems = buildShownItems(v, items);
   return <Groups title={resource.welcome_title}
-    groups={groups}
+    groups={shownItems}
     resource={resource}
     className='view-container menu'
     groupClass='row group hr-height-1'
     headerClass='col s12 m12'
     subClass='col s6 m6 l3 xl2 group-span'/>;
+}
+function buildShownItems(keyword: string, allPrivileges: Privilege[]): Privilege[] {
+  if (!keyword || keyword === '') {
+    return allPrivileges;
+  }
+  const w = keyword.toLowerCase();
+  const shownPrivileges = allPrivileges.map(parent => {
+    const parentCopy = Object.assign({}, parent);
+    if (parentCopy.children) {
+      parentCopy.children = parentCopy.children.filter(child => child.name.toLowerCase().includes(w));
+    }
+    return parentCopy;
+  }).filter(item => (item.children && item.children.length > 0) || item.name.toLowerCase().includes(w));
+  return shownPrivileges;
 }

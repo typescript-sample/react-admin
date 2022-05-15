@@ -360,6 +360,7 @@
 .dark .view-container > div > h4,
 .dark .view-body > h4,
 .dark section > h4,
+.dark section > h4 > .btn-group > button,
 .dark section > h4.title > a,
 .dark section > a,
 .dark .section-header,
@@ -377,6 +378,7 @@
 .dark label.radio-group,
 .dark .checkbox-group > label,
 .dark .radio-group > label,
+.dark .group label div,
 .dark .video-container > h4,
 .dark .video-container > h4 > a,
 .dark .video-container > h4 > i {

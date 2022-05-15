@@ -2,16 +2,14 @@ import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { pageSizes as sizes, PageSizeSelect, useMergeState } from 'react-hook-core';
+import { useMergeState } from 'react-hook-core';
 import { useNavigate } from 'react-router';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { collapseAll, expandAll, Nav, sub } from 'reactx-nav';
-import { options, Privilege, storage, StringMap } from 'uione';
+import { options, Privilege, storage, StringMap, useResource } from 'uione';
 import logo from '../assets/images/logo.png';
 
 interface InternalState {
-  pageSizes: number[];
-  pageSize: number;
   isToggleSearch?: boolean;
   isToggleMenu?: boolean;
   isMenu?: boolean;
@@ -98,8 +96,6 @@ export const renderMode = (resource: StringMap): any => {
   }
 };
 const initialState: InternalState = {
-  pageSizes: sizes,
-  pageSize: 12,
   isMenu: false,
   darkMode: false,
   keyword: '',
@@ -109,19 +105,14 @@ const initialState: InternalState = {
   userType: '',
   pinnedModules: []
 };
-// const httpRequest = new HttpRequest(axios, options);
+
 export const LayoutComponent = () => {
+  const resource = useResource();
   const navigate = useNavigate();
   const location = useLocation();
-  /*
-  const { pathname } = useLocation();*/
-  console.log('path:' + location.pathname);
+  const [searchParams] = useSearchParams();
   const [state, setState] = useMergeState<InternalState>(initialState);
-  const [resource] = useState<StringMap>(storage.resource().resource());
-  const [pageSize] = useState<number>(20);
-  const [pageSizes] = useState<number[]>([10, 20, 40, 60, 100, 200, 400, 10000]);
   const [topClass, setTopClass] = useState('');
-  console.log('user', storage.user());
   const [user, setUser] = useState(storage.user());
 
   useEffect(() => {
@@ -142,13 +133,17 @@ export const LayoutComponent = () => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const clearKeyworkOnClick = () => {
-    setState({
-      keyword: '',
-    });
+  const clearQ = () => {
+    setState({keyword: ''});
   };
-
-  const searchOnClick = () => { };
+  const search = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault();
+  };
+  const handleInput = (e: { target: { value: string } }) => {
+    const v = e.target.value;
+    setState({ keyword: v });
+    navigate(`welcome?q=${v}`);
+  };
   const toggleSearch = () => {
     setState({ isToggleSearch: !state.isToggleSearch });
   };
@@ -238,10 +233,13 @@ export const LayoutComponent = () => {
       setState({ forms, pinnedModules });
     }
   };
-
   useEffect(() => {
     setUser(storage.user());
   }, [storage.user()]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setState({ keyword: searchParams.get('q') as string });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   useEffect(() => {
     const { isToggleMenu, isToggleSearch } = state;
     const topClassList = ['sidebar-parent'];
@@ -287,10 +285,9 @@ export const LayoutComponent = () => {
                 <img className='logo' src={logo} alt='Logo of The Company' />
               </div>
               <label className='search-input'>
-                <PageSizeSelect size={pageSize} sizes={pageSizes} />
-                <input type='text' id='keyword' name='keyword' maxLength={1000} placeholder={resource['keyword']} />
-                <button type='button' hidden={!state.keyword} className='btn-remove-text' onClick={clearKeyworkOnClick} />
-                <button type='submit' className='btn-search' onClick={searchOnClick} />
+                <input type='text' id='q' name='q' maxLength={1000} placeholder={resource.keyword} value={state.keyword || ''} style={{ paddingLeft: '12px' }} onChange={handleInput}/>
+                <button type='button' hidden={!state.keyword} className='btn-remove-text' onClick={clearQ} />
+                <button type='button' className='btn-search' onClick={search} />
               </label>
               <section className='quick-nav'>
                 {/*<button type='button' className='notifications'><i className='material-icons'>notifications</i></button>
