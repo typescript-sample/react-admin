@@ -60,7 +60,9 @@ ul.list-view.row>li.col.video {
   margin-top: 5px;
   margin-bottom: 5px;
 }
-
+ul.list-view.row>li.col.card {
+  margin-bottom: 10px;
+}
 ul.list-view.row>li.col>h3,
 ul.list-view.row>li.col>h4,
 ul.list-view.row>li.col>p,
@@ -204,7 +206,7 @@ ul.list-view>li>h4 {
   justify-content: space-between;
   margin: 0;
   padding-top: 2px;
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 500;
 }
 
@@ -413,6 +415,6 @@ ul.list-view>li>section:first-child>.title:hover{
   font-style: normal;
   font-weight: 600;
   opacity: 0.78;
-  background: black;
-  color: white;
+  background: #000;
+  color: #fff;
 }

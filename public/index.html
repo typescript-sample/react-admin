@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <style>
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+}
+    </style>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -42,17 +50,6 @@
           <h4 id="sysMessageHeader"></h4>
           <p id="sysMessage"></p>
         </div>
-        <!--
-        <div class="sa-error-detail-caret" style="display: none">
-          <a href="javascript:void(0)" onclick="toggleErrorDetail()">Detail
-            <span id="sysErrorDetailCaret" class="fa fa-caret-up"></span>
-          </a>
-        </div>
-        <div id="sysErrorDetail" class="sa-error-container">
-          <div class="icon"></div>
-          <p id="sysErrorDetailText"></p>
-        </div>
-        -->
         <footer>
           <button type='button' class='btn-cancel' id='sysNo' name='btnCancel' onclick="noOnClick()" />
           <button type='submit' class='btn-accept' id='sysYes' name='btnAccept' onclick="yesOnClick()" />

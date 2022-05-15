@@ -1,3 +1,16 @@
+.profile.view-container {
+  max-height: calc(100vh - 44px);
+  overflow-x: auto;
+}
+@media screen and (min-width: 769px) {
+  .top-menu .profile.view-container {
+    max-height: calc(100vh - 44px - 46px);
+  }
+  .classic.top-menu .profile.view-container {
+    max-height: auto;
+    overflow-x: unset;
+  }
+}
 @media only screen and (min-width: 601px) {
   .profile.view-container {
     padding: 10px 5%;
@@ -21,6 +34,7 @@
 }
 
 @media screen and (max-width: 600px) {
+  .dark .page-body > .profile.view-container > form > header,
   .page-body > .profile.view-container > form > header {
     background-image: none;
   }
@@ -92,6 +106,8 @@
 .profile.view-container > form > header > .cover-image {
   position: relative;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
   padding: 0px;
 }
 .profile.view-container > form > header > .cover-image > img {
@@ -119,6 +135,11 @@
   top: 85px;
   width: 30px;
   height: 30px;
+}
+.avatar-wrapper .btn-camera {
+  position: absolute;
+  top: -10px;
+  right: -15px;
 }
 
 .profile-followers {
@@ -153,15 +174,15 @@ header.nav > .profile-followers {
   color: #999999;
 }
 
-.profile-followers > a {
+.profile-followers > p {
   display: flex;
   margin-left: 16px;
   margin-right: 16px;
 }
-.profile-followers > a > i {
+.profile-followers > p > i {
   margin-right: 8px;
 }
-.profile-followers > a > i.material-icons {
+.profile-followers > p > i.material-icons {
   font-size: 19px;
 }
 
@@ -381,4 +402,16 @@ header.nav > .profile-followers {
   .profile.view-container > form > div > *:last-child {
     margin-bottom: 64px; /* 44px + 20px - 20px */
   }
+}
+
+.dropdown-upload-cover {
+  display: none;
+  position: absolute;
+  top: 39px;
+  right: 12px;
+  color: #999999;
+}
+
+.show-upload-cover {
+  display: inline-block
 }

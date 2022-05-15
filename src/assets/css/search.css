@@ -27,15 +27,12 @@
   border-bottom: 1px solid !important;
   border-left: none;
   border-right: none;
-  outline: none;
   background: transparent;
   border-color: #b3b3b3 !important;
-
   -webkit-box-shadow: none !important;
 	-moz-box-shadow: none !important;
   box-shadow: none !important;
 }
-
 .row > label.col.search-input input:not([type="checkbox"]):not([type="radio"]):first-child,
 .view-container > form > div > label.search-input > *:first-child,
 .view-container > div > label.search-input > *:first-child,
@@ -83,7 +80,8 @@ h4 > label.search-input > i:first-child.btn-search,
 .view-container > form > div > label.search-input > select,
 .view-container > div > label.search-input > select,
 .row > .col > label.search-input > select,
-.row > label.search-input > select {
+.row > label.search-input > select,
+label.search-input > select {
   width: 51px;
 }
 
@@ -91,6 +89,7 @@ label.search-input.focused > input,
 label.search-input > input {
   flex: 1 1 auto;
   width: 1% !important;
+  outline: none;
 }
 label.search-input > button.btn-search {
   width: 30px;
@@ -127,6 +126,7 @@ label.search-input > button.btn-search {
 .search-input > .btn-filter::before {
   font-size: 17px;
   font-weight: 100;
+  padding-top: 1px;
   content: "\279E";
 }
 .search-input > .btn-filter.on::before {
@@ -159,9 +159,12 @@ label.search-input > button.btn-search {
 .toggle-search::before {
   top: 1px;
 }
+.btn-remove-text {
+  width: 17px;
+}
 .search-input > .btn-remove-text::before {
   margin-top: 2px;
-  margin-right: 2px;
+  margin-left: 2px;
   font-size: 16px;
   content: "\2716";
 }
