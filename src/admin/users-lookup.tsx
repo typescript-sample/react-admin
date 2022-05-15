@@ -12,7 +12,6 @@ interface Props {
   users: User[];
   onModelClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
   onModelSave: (e: User[]) => void;
-  props?: any;
 }
 
 interface UserSearch extends SearchComponentState<User, UserFilter> {
