@@ -1,12 +1,13 @@
 import * as csv from 'csvtojson';
 import { currency, locale } from 'locale-service';
 import { phonecodes } from 'phonecodes';
+import { Groups } from 'react-groups';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
 import { toast } from 'ui-toast';
-import { storage } from 'uione';
+import { privileges as usePrivileges, storage, useResource } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
 import { RoleAssignmentForm } from './admin/role-assignment-form';
@@ -68,9 +69,9 @@ export function init() {
     list: 'list'
   };
   if (storage.home == null || storage.home === undefined) {
-    storage.home = '/admin/users';
+    storage.home = '/welcome';
   }
-  storage.home = '/admin/users';
+  storage.home = '/welcome';
   // storage.token = getToken;
   storage.moment = true;
   storage.setResources(locales);
@@ -105,6 +106,7 @@ function App() {
         </Route>
         <Route path='' element={<LayoutComponent />}>
           <Route index={true} element={<AboutPage />} />
+          <Route path='/welcome' element={<Welcome />} />
           <Route path=':number' element={<AboutPage />} />
           <Route path='admin/users' element={<UsersForm />} />
           <Route path='admin/users/add' element={<UserForm />} />
@@ -140,3 +142,14 @@ function App() {
   */
 }
 export default App;
+export function Welcome() {
+  const resource = useResource();
+  const groups = usePrivileges();
+  return <Groups title={resource.welcome_title}
+    groups={groups}
+    resource={resource}
+    className='view-container menu'
+    groupClass='row group hr-height-1'
+    headerClass='col s12 m12'
+    subClass='col s6 m6 l3 xl2 group-span'/>;
+}

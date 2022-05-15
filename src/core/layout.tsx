@@ -112,8 +112,10 @@ const initialState: InternalState = {
 // const httpRequest = new HttpRequest(axios, options);
 export const LayoutComponent = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  console.log('path:' + pathname);
+  const location = useLocation();
+  /*
+  const { pathname } = useLocation();*/
+  console.log('path:' + location.pathname);
   const [state, setState] = useMergeState<InternalState>(initialState);
   const [resource] = useState<StringMap>(storage.resource().resource());
   const [pageSize] = useState<number>(20);
@@ -263,7 +265,7 @@ export const LayoutComponent = () => {
       <div className='menu sidebar'>
         <Nav className='expanded-all'
           iconClass='material-icons'
-          path={pathname}
+          path={location.pathname}
           pins={state.pinnedModules}
           items={state.forms}
           resource={resource}
@@ -293,6 +295,7 @@ export const LayoutComponent = () => {
               <section className='quick-nav'>
                 {/*<button type='button' className='notifications'><i className='material-icons'>notifications</i></button>
                 <button type='button' className='mail'><i className='material-icons'>mail</i></button>*/}
+                {location.pathname !== '/welcome' && <Link to='welcome'><i className='material-icons'>home</i></Link>}
                 <div className='dropdown-menu-profile'>
                 {(!user || !user.imageURL) && (
                     <i className='material-icons' onClick={toggleProfile}>
