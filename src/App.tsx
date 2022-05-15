@@ -159,17 +159,17 @@ export function Welcome() {
     headerClass='col s12 m12'
     subClass='col s6 m6 l3 xl2 group-span'/>;
 }
-function buildShownItems(keyword: string, allPrivileges: Privilege[]): Privilege[] {
+function buildShownItems(keyword: string, items: Privilege[]): Privilege[] {
   if (!keyword || keyword === '') {
-    return allPrivileges;
+    return items;
   }
   const w = keyword.toLowerCase();
-  const shownPrivileges = allPrivileges.map(parent => {
+  const shownItems = items.map(parent => {
     const parentCopy = Object.assign({}, parent);
     if (parentCopy.children) {
       parentCopy.children = parentCopy.children.filter(child => child.name.toLowerCase().includes(w));
     }
     return parentCopy;
   }).filter(item => (item.children && item.children.length > 0) || item.name.toLowerCase().includes(w));
-  return shownPrivileges;
+  return shownItems;
 }
