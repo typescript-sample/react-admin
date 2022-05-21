@@ -49,11 +49,6 @@
 .dark .sidebar > nav > ul > li > ul > li > ul {
   background-color: #00574b;
 }
-@media screen and (max-width: 768px) and (min-width: 601px) {
-  .dark .sidebar > nav > ul > li > ul.sub-list > li:hover > a > span {
-    background: #00574b;
-  }
-}
 .dark .sidebar ul.sub-list > li.active,
 .dark .sub-list .active,
 .dark .open.active {

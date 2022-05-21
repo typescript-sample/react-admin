@@ -54,7 +54,6 @@ input[type=radio]:checked:before{
   border-color: #00574b;
   color: #fff;
 }
-
 .sidebar > nav > ul > li > ul,
 .sidebar > nav > ul > li > ul > li > ul {
   background-color: #00574b;
