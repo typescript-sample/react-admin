@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-export interface IAboutPageProps { }
-
-const AboutPage: React.FunctionComponent<IAboutPageProps> = (props) => {
+const AboutPage: React.FunctionComponent = () => {
   const [message, setMessage] = useState('');
-  const { number } = useParams();
+  const { param } = useParams();
 
   useEffect(() => {
-    if (number) {
-      setMessage('The number is ' + number);
+    if (param) {
+      setMessage('The parameter is ' + param);
     } else {
-      setMessage('No number was provided');
+      setMessage('No parameter was provided');
     }
-  }, [number]);
+  }, [param]);
 
   return (
     <div>

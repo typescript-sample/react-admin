@@ -111,7 +111,7 @@ export const LayoutComponent = () => {
   const handleInput = (e: { target: { value: string } }) => {
     const v = e.target.value;
     setState({ keyword: v });
-    navigate(`welcome?q=${v}`);
+    navigate(`home?q=${v}`);
   };
   const toggleSearch = () => {
     setState({ isToggleSearch: !state.isToggleSearch });

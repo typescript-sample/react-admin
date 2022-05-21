@@ -1,16 +1,14 @@
 import * as csv from 'csvtojson';
 import { currency, locale } from 'locale-service';
 import { phonecodes } from 'phonecodes';
-import { buildShownItems, Groups } from 'react-groups';
-import { BrowserRouter, Route, Routes, useSearchParams } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
 import { toast } from 'ui-toast';
-import { Privilege, storage, usePrivileges, useResource } from 'uione';
+import { storage } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
-import { useState } from 'react';
 import { resources as locales } from './core/resources';
 
 import { RoleAssignmentForm } from './admin/role-assignment-form';
@@ -40,9 +38,7 @@ import './assets/css/loader.css';
 import './assets/css/main.css';
 import './assets/css/modal.css';
 import './assets/css/multi-select.css';
-import './assets/css/date-picker.css';
 import './assets/css/form.css';
-import './assets/css/diff.css';
 import './assets/css/article.css';
 import './assets/css/list-view.css';
 import './assets/css/table.css';
@@ -57,6 +53,36 @@ import './assets/css/theme.css';
 import './assets/css/dark.css';
 // import "./assets/fonts/Roboto/font.css";
 
+function parseDate(value: string, format: string): Date | null | undefined {
+  if (!format || format.length === 0) {
+    format = 'MM/DD/YYYY';
+  } else {
+    format = format.toUpperCase();
+  }
+  const dateItems = format.split(/\.| |-/);
+  const valueItems = value.split(/\.| |-/);
+  let monthIndex  = dateItems.indexOf('M');
+  let dayIndex    = dateItems.indexOf('D');
+  let yearIndex   = dateItems.indexOf('YYYY');
+  if (monthIndex === -1) {
+    monthIndex  = dateItems.indexOf('MM');
+  }
+  if (dayIndex === -1) {
+    dayIndex  = dateItems.indexOf('DD');
+  }
+  if (yearIndex === -1) {
+    yearIndex  = dateItems.indexOf('YY');
+  }
+  const month = parseInt(valueItems[monthIndex], 10) - 1;
+  let year = parseInt(valueItems[yearIndex], 10);
+  if (year < 100) {
+    year += 2000;
+  }
+  const day = parseInt(valueItems[dayIndex], 10);
+  const date = new Date(year, month, day);
+  return date;
+}
+
 let isInit = false;
 export function init() {
   if (isInit) {
@@ -69,9 +95,9 @@ export function init() {
     list: 'list'
   };
   if (storage.home == null || storage.home === undefined) {
-    storage.home = '/welcome';
+    storage.home = '/home';
   }
-  storage.home = '/welcome';
+  storage.home = '/home';
   // storage.token = getToken;
   storage.moment = true;
   storage.setResources(locales);
@@ -85,7 +111,7 @@ export function init() {
 
   const resource = storage.resource();
   vresources.phonecodes = phonecodes;
-  // uiresources.date = parseDate;
+  uiresources.date = parseDate;
   uiresources.currency = currency;
   uiresources.resource = resource;
 }
@@ -94,7 +120,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='home' element={<HomePage />} />
+        <Route index={true} element={<SigninForm />} />
         <Route path='signin' element={<SigninForm />} />
         <Route path='signup' element={<SignupForm />} />
         <Route path='change-password' element={<ChangePasswordForm />} />
@@ -105,8 +131,7 @@ function App() {
           <Route path=':number' element={<AboutPage />} />
         </Route>
         <Route path='' element={<LayoutComponent />}>
-          <Route index={true} element={<AboutPage />} />
-          <Route path='/welcome' element={<Welcome />} />
+          <Route path='/home' element={<HomePage />} />
           <Route path=':number' element={<AboutPage />} />
           <Route path='admin/users' element={<UsersForm />} />
           <Route path='admin/users/add' element={<UserForm />} />
@@ -116,44 +141,8 @@ function App() {
           <Route path='admin/roles/edit/:id' element={<RoleForm />} />
           <Route path='admin/roles/assign/:id' element={<RoleAssignmentForm />} />
         </Route>
-        <Route path='/' element={<HomePage />} />
       </Routes>
     </BrowserRouter>
   );
-  /*
-  return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-  */
 }
 export default App;
-export function Welcome() {
-  const resource = useResource();
-  const groups = usePrivileges();
-  const [items] = useState<Privilege[]>(groups);
-  const [searchParams] = useSearchParams();
-  const v = searchParams.get('q') as string || '';
-  const shownItems = buildShownItems(v, items);
-  return <Groups title={resource.welcome_title}
-    groups={shownItems}
-    resource={resource}
-    className='view-container menu'
-    groupClass='row group hr-height-1'
-    headerClass='col s12 m12'
-    subClass='col s6 m6 l3 xl2 group-span'/>;
-}

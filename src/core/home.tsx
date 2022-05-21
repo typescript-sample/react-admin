@@ -1,21 +1,20 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { buildShownItems, Groups, Item } from 'react-groups';
+import { useSearchParams } from 'react-router-dom';
+import { usePrivileges, useResource } from 'uione';
 
-export interface IHomePageProps { }
-
-const HomePage: React.FunctionComponent<IHomePageProps> = (props) => {
-  const navigate = useNavigate();
-
-  return (
-    <div>
-      <p>This is the home page.</p>
-      <Link to="/about">Go to the About Page!</Link>
-      <Link to="/auth">Go to the Login Page!</Link>
-      <Link to="/signin">Go to the sign in Page!</Link>
-      <br />
-      <button onClick={() => navigate('/layout/55')}>Go to layout, with a number</button>
-    </div>
-  );
-};
-
-export default HomePage;
+export default function HomePage() {
+  const resource = useResource();
+  const groups = usePrivileges();
+  const [items] = useState<Item[]>(groups);
+  const [searchParams] = useSearchParams();
+  const v = searchParams.get('q') as string || '';
+  const shownItems = buildShownItems(v, items);
+  return <Groups title={resource.welcome_title}
+    groups={shownItems}
+    resource={resource}
+    className='view-container menu'
+    groupClass='row group hr-height-1'
+    headerClass='col s12 m12'
+    subClass='col s6 m6 l3 xl2 group-span'/>;
+}
