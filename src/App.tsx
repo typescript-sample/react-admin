@@ -1,13 +1,13 @@
 import * as csv from 'csvtojson';
 import { currency, locale } from 'locale-service';
 import { phonecodes } from 'phonecodes';
-import { Groups } from 'react-groups';
+import { buildShownItems, Groups } from 'react-groups';
 import { BrowserRouter, Route, Routes, useSearchParams } from 'react-router-dom';
 import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
 import { toast } from 'ui-toast';
-import { Privilege, privileges as usePrivileges, storage, useResource } from 'uione';
+import { Privilege, storage, usePrivileges, useResource } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
 import { useState } from 'react';
@@ -43,7 +43,6 @@ import './assets/css/multi-select.css';
 import './assets/css/date-picker.css';
 import './assets/css/form.css';
 import './assets/css/diff.css';
-import './assets/css/group.css';
 import './assets/css/article.css';
 import './assets/css/list-view.css';
 import './assets/css/table.css';
@@ -159,17 +158,4 @@ export function Welcome() {
     headerClass='col s12 m12'
     subClass='col s6 m6 l3 xl2 group-span'/>;
 }
-function buildShownItems(keyword: string, items: Privilege[]): Privilege[] {
-  if (!keyword || keyword === '') {
-    return items;
-  }
-  const w = keyword.toLowerCase();
-  const shownItems = items.map(parent => {
-    const parentCopy = Object.assign({}, parent);
-    if (parentCopy.children) {
-      parentCopy.children = parentCopy.children.filter(child => child.name.toLowerCase().includes(w));
-    }
-    return parentCopy;
-  }).filter(item => (item.children && item.children.length > 0) || item.name.toLowerCase().includes(w));
-  return shownItems;
-}
+

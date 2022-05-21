@@ -6,7 +6,7 @@ import { useMergeState } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link, Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { collapseAll, expandAll, Nav, sub } from 'reactx-nav';
-import { options, Privilege, storage, StringMap, useResource } from 'uione';
+import { hasClass, options, parentHasClass, Privilege, storage, StringMap } from 'uione';
 import logo from '../assets/images/logo.png';
 
 interface InternalState {
@@ -28,21 +28,6 @@ function getBody(): HTMLElement | null | undefined {
     sysBody = document.getElementById('sysBody');
   }
   return sysBody;
-}
-function hasClass(className: string, ele: HTMLElement | null | undefined): boolean {
-  if (ele && ele.classList.contains(className)) {
-    return true;
-  }
-  return false;
-}
-function parentHasClass(className: string, ele: HTMLElement | null | undefined): boolean {
-  if (ele) {
-    const parent = ele.parentElement;
-    if (parent && parent.classList.contains(className)) {
-      return true;
-    }
-  }
-  return false;
 }
 export const renderItem = (resource: StringMap): any => {
   const top = hasClass('top-menu', getBody());
@@ -91,7 +76,7 @@ const initialState: InternalState = {
   pinnedModules: []
 };
 export const LayoutComponent = () => {
-  const resource = useResource();
+  const resource = storage.getResource();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
@@ -193,7 +178,7 @@ export const LayoutComponent = () => {
     const request = new HttpRequest(axios, options);
     const config: any = storage.config();
     const url = config.authentication_url + '/authentication/signout/' + storage.username();
-    request.get(url).catch(err => { });
+    request.get(url).catch(() => { });
     sessionStorage.removeItem('authService');
     sessionStorage.clear();
     storage.setUser(null);
