@@ -29,7 +29,7 @@
     "react-modal": "^3.15.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.1",
-    "reactx-nav": "^0.1.2",
+    "reactx-nav": "^0.1.4",
     "reactx-pagination": "^0.0.1",
     "sass": "^1.51.0",
     "signup-client": "^0.1.1",
@@ -44,7 +44,6 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@types/js-base64": "^2.3.2",
     "@types/react-google-recaptcha": "^2.1.5",
     "@types/react-modal": "^3.13.1"
   },

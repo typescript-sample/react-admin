@@ -30,6 +30,7 @@ import LayoutComponent from './core/layout';
 import './assets/css/reset.css';
 import './App.css';
 import './assets/fonts/material-icon/css/material-icons.css';
+// import "./assets/fonts/Roboto/font.css";
 import './assets/css/checkbox.css';
 import './assets/css/radio.css';
 import './assets/css/grid.css';
@@ -43,7 +44,6 @@ import './assets/css/article.css';
 import './assets/css/list-view.css';
 import './assets/css/table.css';
 import './assets/css/list-detail.css';
-import './assets/css/navigation.css';
 import './assets/css/solid-container.css';
 import './assets/css/button.css';
 import './assets/css/search.css';
@@ -51,7 +51,6 @@ import './assets/css/layout.css';
 import './assets/css/profile.css';
 import './assets/css/theme.css';
 import './assets/css/dark.css';
-// import "./assets/fonts/Roboto/font.css";
 
 function parseDate(value: string, format: string): Date | null | undefined {
   if (!format || format.length === 0) {
@@ -61,26 +60,25 @@ function parseDate(value: string, format: string): Date | null | undefined {
   }
   const dateItems = format.split(/\.| |-/);
   const valueItems = value.split(/\.| |-/);
-  let monthIndex  = dateItems.indexOf('M');
-  let dayIndex    = dateItems.indexOf('D');
-  let yearIndex   = dateItems.indexOf('YYYY');
-  if (monthIndex === -1) {
-    monthIndex  = dateItems.indexOf('MM');
+  let imonth  = dateItems.indexOf('M');
+  let iday    = dateItems.indexOf('D');
+  let iyear   = dateItems.indexOf('YYYY');
+  if (imonth === -1) {
+    imonth  = dateItems.indexOf('MM');
   }
-  if (dayIndex === -1) {
-    dayIndex  = dateItems.indexOf('DD');
+  if (iday === -1) {
+    iday  = dateItems.indexOf('DD');
   }
-  if (yearIndex === -1) {
-    yearIndex  = dateItems.indexOf('YY');
+  if (iyear === -1) {
+    iyear  = dateItems.indexOf('YY');
   }
-  const month = parseInt(valueItems[monthIndex], 10) - 1;
-  let year = parseInt(valueItems[yearIndex], 10);
+  const month = parseInt(valueItems[imonth], 10) - 1;
+  let year = parseInt(valueItems[iyear], 10);
   if (year < 100) {
     year += 2000;
   }
-  const day = parseInt(valueItems[dayIndex], 10);
-  const date = new Date(year, month, day);
-  return date;
+  const day = parseInt(valueItems[iday], 10);
+  return new Date(year, month, day);
 }
 
 let isInit = false;

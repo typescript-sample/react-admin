@@ -59,6 +59,11 @@ input[type=radio]:checked:before{
 .sidebar > nav > ul > li > ul > li > ul {
   background-color: #00574b;
 }
+.sidebar ul.sub-list > li.active,
+.sub-list .active,
+.open.active {
+  background: #01a090; /* #07843b */
+}
 
 .view-container.solid {
   background-image: linear-gradient(90deg, #008577, #00574b);
@@ -190,10 +195,6 @@ form.list-result > div > table > tfoot > tr.active > th,
 .table > tfoot > tr.active > th {
   border-color: #428bca;
   background-color: #4f5352;
-}
-.sidebar ul.sub-list > li.active,
-.sub-list .active, .open.active {
-  background: #7f888d; /* #07843b */
 }
 
 .detail .table-responsive > table > tbody > tr:hover,

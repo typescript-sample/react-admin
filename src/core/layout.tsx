@@ -96,9 +96,9 @@ export const LayoutComponent = () => {
     setState({ forms });
 
     const username = storage.username();
-    const storageRole = storage.getUserType();
-    if (username || storageRole) {
-      setState({ username, userType: storageRole });
+    const userType = storage.getUserType();
+    if (username || userType) {
+      setState({ username, userType });
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -129,39 +129,33 @@ export const LayoutComponent = () => {
     }
   }
   const changeClassicMenu = () => {
-    if (!sysBody) {
-      sysBody = document.getElementById('sysBody');
-    }
-    if (sysBody) {
-      if (sysBody.classList.contains('classic')) {
-        sysBody.classList.remove('classic');
+    const body = getBody();
+    if (body) {
+      if (body.classList.contains('classic')) {
+        body.classList.remove('classic');
         setState({ classicMenu: true });
       } else {
-        sysBody.classList.add('classic');
+        body.classList.add('classic');
         setState({ classicMenu: false });
       }
     }
   };
   const changeMenu = () => {
-    if (!sysBody) {
-      sysBody = document.getElementById('sysBody');
-    }
-    if (sysBody) {
-      if (sysBody.classList.contains('top-menu')) {
-        sysBody.classList.remove('top-menu');
+    const body = getBody();
+    if (body) {
+      if (body.classList.contains('top-menu')) {
+        body.classList.remove('top-menu');
         setState({ isMenu: true });
       } else {
-        sysBody.classList.add('top-menu');
+        body.classList.add('top-menu');
         setState({ isMenu: false });
       }
     }
   };
   const changeMode = () => {
-    if (!sysBody) {
-      sysBody = document.getElementById('sysBody');
-    }
-    if (sysBody) {
-      const parent = sysBody.parentElement;
+    const body = getBody();
+    if (body) {
+      const parent = body.parentElement;
       if (parent) {
         if (parent.classList.contains('dark')) {
           parent.classList.remove('dark');
@@ -254,7 +248,7 @@ export const LayoutComponent = () => {
                 <img className='logo' src={logo} alt='Logo of The Company' />
               </div>
               <label className='search-input'>
-                <input type='text' id='q' name='q' maxLength={1000} placeholder={resource.keyword} value={state.keyword || ''} style={{ paddingLeft: '12px' }} onChange={handleInput}/>
+                <input type='text' id='q' name='q' maxLength={1000} placeholder={resource.keyword} value={state.keyword || ''} style={{ paddingLeft: '12px' }} onChange={handleInput} autoComplete='off'/>
                 <button type='button' hidden={!state.keyword} className='btn-remove-text' onClick={clearQ} />
                 <button type='button' className='btn-search' onClick={search} />
               </label>
