@@ -86,6 +86,13 @@ export const en = {
   msg_search_result_sequence: 'Items {0} to {1}.',
   msg_search_result_page_sequence: 'Items {0} to {1} of {2}. Page {3} of {4}.',
   page_size: 'Page Size',
+  search_type: 'Search Type',
+  duration: 'Duration',
+  order: 'Order',
+  sort: 'Sort',
+  sort_relevance: 'Relevance',
+  sort_date: 'Date',
+  sort_rating: 'Rank',
 
   error_system_error: 'System Error.',
   error_required: '{0} is required.',
@@ -220,11 +227,12 @@ export const en = {
   timestamp: 'Timestamp',
   ip: 'IP',
 
-  filter_playlists: 'Filter Playlists...',
-  filter_videos: 'Filter Videos...',
-  filter_items: 'Filter Items...',
-  videos: 'Videos',
-  playlists: 'Playlists',
-  channels: 'Channels',
-  subscriptions: 'Subscriptions'
+  like: 'Like',
+  useful: 'Useful',
+  comments: 'Comments',
+  top_comments: 'Top Comments',
+  newest_first: 'Newest First',
+  view_replies: 'View {0} replies',
+  hide_replies: 'Hide {0} replies',
+  view_more_replies: 'View more replies'
 };

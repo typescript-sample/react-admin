@@ -48,7 +48,6 @@ import './assets/css/solid-container.css';
 import './assets/css/button.css';
 import './assets/css/search.css';
 import './assets/css/layout.css';
-import './assets/css/profile.css';
 import './assets/css/theme.css';
 import './assets/css/dark.css';
 
