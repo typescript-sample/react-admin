@@ -17,10 +17,10 @@ interface InternalState {
   darkMode?: boolean;
   keyword: string;
   showProfile: string;
-  forms: Privilege[];
+  items: Privilege[];
   username?: string;
   userType?: string;
-  pinnedModules: Privilege[];
+  pinnedItems: Privilege[];
 }
 let sysBody: HTMLElement | null | undefined;
 function getBody(): HTMLElement | null | undefined {
@@ -70,12 +70,12 @@ const initialState: InternalState = {
   darkMode: false,
   keyword: '',
   showProfile: '',
-  forms: [],
+  items: [],
   username: '',
   userType: '',
-  pinnedModules: []
+  pinnedItems: []
 };
-export const LayoutComponent = () => {
+export const LayoutPage = () => {
   const resource = storage.getResource();
   const navigate = useNavigate();
   const location = useLocation();
@@ -85,15 +85,15 @@ export const LayoutComponent = () => {
   const [user, setUser] = useState(storage.user());
 
   useEffect(() => {
-    const forms = storage.privileges();
-    if (forms && forms.length > 0) {
-      for (let i = 0; i <= forms.length; i++) {
-        if (forms[i]) {
-          forms[i].sequence = i + 1;
+    const items = storage.privileges();
+    if (items && items.length > 0) {
+      for (let i = 0; i <= items.length; i++) {
+        if (items[i]) {
+          items[i].sequence = i + 1;
         }
       }
     }
-    setState({ forms });
+    setState({ items });
 
     const username = storage.username();
     const userType = storage.getUserType();
@@ -104,6 +104,7 @@ export const LayoutComponent = () => {
 
   const clearQ = () => {
     setState({keyword: ''});
+    navigate(`home?q=`);
   };
   const search = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault();
@@ -179,21 +180,21 @@ export const LayoutComponent = () => {
     navigate('/signin');
   };
 
-  const pin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, m: Privilege) => {
+  const pin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, item: Privilege) => {
     event.stopPropagation();
-    const { forms, pinnedModules } = state;
-    if (forms.find((module) => module === m)) {
-      const removedModule = forms.splice(index, 1);
-      pinnedModules.push(removedModule[0]);
-      forms.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
-      pinnedModules.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
-      setState({ forms, pinnedModules });
+    const { items, pinnedItems } = state;
+    if (items.find((i) => i === item)) {
+      const removedItem = items.splice(index, 1);
+      pinnedItems.push(removedItem[0]);
+      items.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
+      pinnedItems.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
+      setState({ items: items, pinnedItems: pinnedItems });
     } else {
-      const removedModule = pinnedModules.splice(index, 1);
-      forms.push(removedModule[0]);
-      forms.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
-      pinnedModules.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
-      setState({ forms, pinnedModules });
+      const removedModule = pinnedItems.splice(index, 1);
+      items.push(removedModule[0]);
+      items.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
+      pinnedItems.sort((moduleA, moduleB) => sub(moduleA.sequence, moduleB.sequence));
+      setState({ items: items, pinnedItems: pinnedItems });
     }
   };
   useEffect(() => {
@@ -227,8 +228,8 @@ export const LayoutComponent = () => {
         <Nav className='expanded-all'
           iconClass='material-icons'
           path={location.pathname}
-          pins={state.pinnedModules}
-          items={state.forms}
+          pins={state.pinnedItems}
+          items={state.items}
           resource={resource}
           pin={pin}
           toggle={toggleMenu}
@@ -300,4 +301,4 @@ export const LayoutComponent = () => {
     </div>
   );
 };
-export default LayoutComponent;
+export default LayoutPage;

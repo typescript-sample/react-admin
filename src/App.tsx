@@ -24,7 +24,7 @@ import { SignupForm } from './authentication/signup-form';
 import { config } from './config';
 import AboutPage from './core/about';
 import HomePage from './core/home';
-import LayoutComponent from './core/layout';
+import LayoutPage from './core/layout';
 
 // tslint:disable:ordered-imports
 import './assets/css/reset.css';
@@ -127,7 +127,7 @@ function App() {
           <Route index={true} element={<AboutPage />} />
           <Route path=':number' element={<AboutPage />} />
         </Route>
-        <Route path='' element={<LayoutComponent />}>
+        <Route path='' element={<LayoutPage />}>
           <Route path='/home' element={<HomePage />} />
           <Route path=':number' element={<AboutPage />} />
           <Route path='admin/users' element={<UsersForm />} />
