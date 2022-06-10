@@ -17,6 +17,10 @@ import { ChangePasswordForm } from './authentication/change-password-form';
 import { ForgotPasswordForm } from './authentication/forgot-password-form';
 import { ResetPasswordForm } from './authentication/reset-password-form';
 import { UsersForm } from './admin/users-form';
+import { ItemsForm } from './admin/items-form';
+import { ItemForm } from './admin/item-form';
+import { ArticlesForm } from "./admin/articles-form";
+import { ArticleForm } from "./admin/article-form";
 import { UserForm } from './admin/user-form';
 import { RolesForm } from './admin/roles-form';
 import { RoleForm } from './admin/role-form';
@@ -109,6 +113,10 @@ function App() {
           <Route path="admin/roles" element={<RolesForm />} />
           <Route path="admin/roles/:id" element={<RoleForm />} />
           <Route path='admin/roles/assign/:id' element={<RoleAssignmentForm />} />
+          <Route path="admin/items" element={<ItemsForm />} />
+          <Route path="admin/items/:id" element={<ItemForm />} />
+          <Route path="/admin/articles" element={<ArticlesForm />} />
+          <Route path="/admin/articles/:id" element={<ArticleForm />} />
         </Route>
         <Route path="/" element={<HomePage />} />
       </Routes>

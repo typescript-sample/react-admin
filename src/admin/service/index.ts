@@ -6,22 +6,30 @@ import { AuditLogService } from './audit-log/audit-log';
 import { MasterDataClient, MasterDataService } from './master-data';
 import { RoleClient, RoleService } from './role';
 import { UserClient, UserService } from './user';
+import { ItemClient, ItemService } from './item';
+import { ArticleClient, ArticleService } from './article';
 
 export * from './role';
 export * from './user';
 export * from './audit-log';
+export * from './item';
+export * from './article';
 axios.defaults.withCredentials = true;
 
 const httpRequest = new HttpRequest(axios, options);
 export interface Config {
   user_url: string;
   role_url: string;
+  item_url: string;
+  article_url: string;
   privilege_url: string;
   audit_log_url: string;
 }
 class ApplicationContext {
   roleService?: RoleClient;
   userService?: UserService;
+  itemService?: ItemService;
+  articleService?: ArticleService;
   masterDataService?: MasterDataService;
   private auditService?: AuditClient;
   constructor() {
@@ -60,6 +68,23 @@ class ApplicationContext {
     }
     return this.auditService;
   }
+
+  getItemService(): ItemService {
+    if (!this.itemService) {
+      const c = this.getConfig();
+      this.itemService = new ItemClient(httpRequest, c.item_url);
+    }
+    return this.itemService;
+  }
+
+  getArticleService(): ArticleService {
+    if (!this.articleService) {
+      const c = this.getConfig();
+      this.articleService = new ArticleClient(httpRequest, c.article_url);
+    }
+    return this.articleService;
+  }
+
 }
 
 export const context = new ApplicationContext();
@@ -74,4 +99,13 @@ export function getMasterData(): MasterDataService {
 }
 export function useAuditLog(): AuditLogService {
   return context.getAuditService();
+}
+
+export function getItemService(): ItemService {
+  return context.getItemService();
+}
+
+
+export function getArticleService(): ArticleService {
+  return context.getArticleService();
 }

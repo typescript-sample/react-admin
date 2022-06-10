@@ -5,6 +5,10 @@ import { RoleForm } from "./role-form";
 import { RolesForm } from "./roles-form";
 import { UserForm } from "./user-form";
 import { UsersForm } from "./users-form";
+import { ItemsForm } from "./items-form";
+import { ItemForm } from "./item-form";
+import { ArticlesForm } from "./articles-form";
+import { ArticleForm } from "./article-form";
 
 export default function Admin() {
   return (
@@ -14,6 +18,10 @@ export default function Admin() {
       <Route path="/admin/roles" element={<RolesForm />} />
       <Route path="/admin/roles/:id" element={<RoleForm />} />
       <Route path="/admin/roles/assign/:id" element={<RoleAssignmentForm />} />
+      <Route path="/admin/items" element={<ItemsForm />} />
+      <Route path="/admin/items/:id" element={<ItemForm />} />
+      <Route path="/admin/articles" element={<ArticlesForm />} />
+      <Route path="/admin/articles/:id" element={<ArticleForm />} />
     </React.Fragment>
   );
 }

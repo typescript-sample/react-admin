@@ -14,4 +14,8 @@ export class UserClient extends Client<User, string, UserFilter> implements User
     const url = `${this.serviceUrl}?roleId=${id}`;
     return this.http.get<User[]>(url);
   }
+
+  postOnly(s: UserFilter): boolean {
+    return true;
+  }
 }
