@@ -14,6 +14,11 @@ export const en = {
   classic_menu: 'Classic menu',
   modern_menu: 'Modern menu',
 
+  read: 'Read',
+  write: 'Write',
+  delete: 'Delete',
+  approve: 'Approve',
+  reject: 'Reject',
   confirm: 'Confirm',
   create: 'Create',
   add: 'Add',
@@ -22,9 +27,6 @@ export const en = {
   search: 'Search',
   save: 'Save',
   cancel: 'Cancel',
-  approve: 'Approve',
-  reject: 'Reject',
-  delete: 'Delete',
   select: 'Select',
   deselect: 'Deselect',
   check_all: 'Check All',
@@ -94,6 +96,8 @@ export const en = {
   sort_date: 'Date',
   sort_rating: 'Rank',
 
+  error_not_found: 'Not found.',
+  error_internal: 'System Error.',
   error_system_error: 'System Error.',
   error_required: '{0} is required.',
   error_invalid: 'You have inserted invalid {0}. Please try again',
@@ -147,6 +151,7 @@ export const en = {
   error_503: 'Service Unavailable',
   error_504: 'Gateway Timeout',
 
+  error_400: 'Bad request',
   error_401: 'You have not logged in or the session was expired. Please log in.', /* error_unauthorized */
   error_404: 'Item was not found.', /* error_not_found  */
   error_403: 'You do not have permission for this page or for this action.', /* error_forbidden */
@@ -226,13 +231,4 @@ export const en = {
   resource: 'Resource',
   timestamp: 'Timestamp',
   ip: 'IP',
-
-  like: 'Like',
-  useful: 'Useful',
-  comments: 'Comments',
-  top_comments: 'Top Comments',
-  newest_first: 'Newest First',
-  view_replies: 'View {0} replies',
-  hide_replies: 'Hide {0} replies',
-  view_more_replies: 'View more replies'
 };

@@ -1,4 +1,4 @@
-import { Attributes, Filter, ViewSearchService } from 'onecore';
+import {Attributes, Filter, TimeRange, ViewSearchService} from 'onecore';
 
 export interface AuditLog {
   id: string;
@@ -6,7 +6,8 @@ export interface AuditLog {
   userId: string;
   ip: string;
   action: string;
-  timestamp: string;
+  time: Date;
+  email: string;
   status: string;
   remark?: string;
 }
@@ -16,7 +17,7 @@ export interface AuditLogFilter extends Filter {
   userId?: string;
   ip?: string;
   action?: string;
-  timestamp?: string;
+  time?: TimeRange;
   status?: string;
 }
 export interface AuditLogService extends ViewSearchService<AuditLog, string, AuditLogFilter> {

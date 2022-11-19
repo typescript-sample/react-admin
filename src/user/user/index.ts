@@ -15,3 +15,21 @@ export class UserClient extends Client<User, string, UserFilter> implements User
     return this.http.get<User[]>(url);
   }
 }
+
+export interface Role {
+  roleId: string;
+  roleName: string;
+  status: string;
+  remark: string;
+}
+export interface RoleService {
+  all(): Promise<Role[]>;
+}
+export class RoleClient implements RoleService {
+  constructor(protected http: HttpRequest, protected url: string) {
+    this.all = this.all.bind(this);
+  }
+  all(): Promise<Role[]> {
+    return this.http.get<Role[]>(this.url);
+  }
+}

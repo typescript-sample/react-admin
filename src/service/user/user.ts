@@ -1,13 +1,13 @@
-import { Attributes, Filter, Service, Tracking } from 'onecore';
+import { Attributes, Filter, SearchService } from 'onecore';
 
 export interface UserFilter extends Filter {
   userId: string;
   username: string;
   email: string;
   displayName: string;
-  status: string[];
+  status: string[] | string;
 }
-export interface User extends Tracking {
+export interface User {
   userId: string;
   username: string;
   email: string;
@@ -18,9 +18,8 @@ export interface User extends Tracking {
   phone?: string;
   title?: string;
   position?: string;
-  roles?: string[];
 }
-export interface UserService extends Service<User, string, UserFilter> {
+export interface UserService extends SearchService<User, UserFilter> {
   getUsersByRole(id: string): Promise<User[]>;
 }
 

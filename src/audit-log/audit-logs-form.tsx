@@ -1,10 +1,12 @@
 import { Item } from 'onecore';
 import * as React from 'react';
 import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { AuditLog, AuditLogFilter, useAuditLog} from './service';
+import {formatDateTimeToString, formatDate} from "../App";
+import { useEffect } from "react";
 
 interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> {
   statusList: Item[];
@@ -13,6 +15,7 @@ interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> 
 const auditLogfilter: AuditLogFilter = {
   id: '',
   action: '',
+  time: undefined
 };
 
 const AuditSearch: AuditLogSearch = {
@@ -21,21 +24,36 @@ const AuditSearch: AuditLogSearch = {
   filter: auditLogfilter
 };
 
+const mapStyleStatus: Map<string, string> =  new Map ([
+  ['success',  'badge-outline-success'],
+  ['fail',  'badge-outline-danger '],
+]);
+
 export const AuditLogsForm = () => {
   const navigate = useNavigate();
   const refForm = React.useRef();
   const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch());
-  const { state, resource, component, updateState, pageSizeChanged, pageChanged } = hooks;
+  const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, sort } = hooks;
+
 
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
+    return
     navigate('audit-logs/' + id);
   };
+  useEffect(() => {
+    component.viewable = true;
+    component.editable = true;
+  }, [])
   const filter = value(state.filter);
   return (
     <div className='view-container'>
       <header>
-        <h2>{resource.role_list}</h2>
+        <h2>{resource.audit_logs}</h2>
+        <div className='btn-group float-left'>
+          {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
+          {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
+        </div>
       </header>
       <div>
         <form id='rolesForm' name='rolesForm' noValidate={true} ref={refForm as any}>
@@ -51,6 +69,11 @@ export const AuditLogsForm = () => {
                 maxLength={240}
               />
             </label>
+            <label className='col s12 m4 l4'>
+              {resource.audit_log_time}
+              <input type='datetime-local' step='.010' id='time_min' name='time_min' data-field='time.min' value={formatDateTimeToString(filter?.time?.min || '')} onChange={updateState} />
+              <input type='datetime-local' step='.010' id='time_max' name='time_max' data-field='time.max'  value={formatDateTimeToString(filter?.time?.max || '')} onChange={updateState} />
+            </label>
           </section>
           <section className='btn-group'>
             <label>
@@ -59,23 +82,88 @@ export const AuditLogsForm = () => {
             </label>
             <button type='submit' className='btn-search' onClick={hooks.search}>{resource.search}</button>
           </section>
+
         </form>
         <form className='list-result'>
-          <ul className='row list-view'>
+          {component.view === 'table' && (
+              <div className='table-responsive'>
+                <table>
+                  <thead>
+                  <tr>
+                    <th>{resource.sequence}</th>
+                    <th data-field='time'>
+                      <button type='button' id='sortTime' onClick={sort}>
+                        {resource.audit_log_time}
+                      </button>
+                    </th>
+                    <th data-field='resource'>
+                      <button type='button' id='sortResource' onClick={sort}>
+                        {resource.audit_log_resource_type}
+                      </button>
+                    </th>
+                    <th data-field='action'>
+                      <button type='button' id='sortAction' onClick={sort}>
+                        {resource.audit_log_action}
+                      </button>
+                    </th>
+                    <th data-field='status'>
+                      <button type='button' id='sortStatus' onClick={sort}>
+                        {resource.status}
+                      </button>
+                    </th>
+                    <th data-field='userId'>
+                        {resource.audit_log_created_by}
+                    </th>
+                    <th data-field='ip'>
+                      <button type='button' id='sortIp' onClick={sort}>
+                        {resource.ip}
+                      </button>
+                    </th>
+                    <th data-field='remark'>
+                      <button type='button' id='sortRemark' onClick={sort}>
+                        {resource.remark}
+                      </button>
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {state.list &&
+                      state.list.length > 0 &&
+                      state.list.map((item: any, i: number) => {
+                        return (
+                            <tr key={i} onClick={(e) => edit(e, item.id)}>
+                              <td className='text-right'>{(item as any).sequenceNo}</td>
+                              {/*<td><Link to={`edit/${item.id}`}>{item.id}</Link></td>*/}
+                              <td>{formatDate(item.time, 'YYYY-MM-DD HH:mm:ss')}</td>
+                              <td>{item.resource}</td>
+                              <td>{item.action}</td>
+                              <td><span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></td>
+                              <td>{item.email}</td>
+                              <td>{item.ip}</td>
+                              <td>{item.remark}</td>
+                            </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+          )}
+          {component.view !== 'table' && (<ul className='row list-view'>
             {state.list && state.list.length > 0 && state.list.map((item, i) => {
               return (
                 <li key={i} className='col s12 m6 l4 xl3' onClick={e => edit(e, item.userId)}>
                   <section>
                     <div>
-                      <h3>{item.userId}</h3>
-                      <h4>{item.action}</h4>
+                      <h3>{item.email}</h3>
+                      <h4>{item.action} <span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></h4>
                       <p>{item.remark}</p>
+                      <p>{formatDate(item.time, 'YYYY-MM-DD HH:mm:ss')}</p>
                     </div>
                   </section>
                 </li>
               );
             })}
-          </ul>
+          </ul> )}
           <Pagination className='col s12 m6' total={component.total} size={component.pageSize} max={component.pageMaxSize} page={component.pageIndex} onChange={pageChanged} />
         </form>
       </div>

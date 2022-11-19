@@ -213,41 +213,25 @@ export const UsersLookup = (props: Props) => {
                     <tr>
                       <th>{resource.sequence}</th>
                       <th data-field='userId'>
-                        <button type='button' id='sortUserId' onClick={sort}>
-                          {resource.user_id}
-                        </button>
+                        <button type='button' id='sortUserId' onClick={sort}>{resource.user_id}</button>
                       </th>
                       <th data-field='username'>
-                        <button type='button' id='sortUsername' onClick={sort}>
-                          {resource.username}
-                        </button>
+                        <button type='button' id='sortUsername' onClick={sort}>{resource.username}</button>
                       </th>
                       <th data-field='email'>
-                        <button type='button' id='sortEmail' onClick={sort}>
-                          {resource.email}
-                        </button>
+                        <button type='button' id='sortEmail' onClick={sort}>{resource.email}</button>
                       </th>
                       <th data-field='displayname'>
-                        <button
-                          type='button'
-                          id='sortDisplayName'
-                          onClick={sort}
-                        >
-                          {resource.display_name}
-                        </button>
+                        <button type='button' id='sortDisplayName' onClick={sort}>{resource.display_name}</button>
                       </th>
                       <th data-field='status'>
-                        <button type='button' id='sortStatus' onClick={sort}>
-                          {resource.status}
-                        </button>
+                        <button type='button' id='sortStatus' onClick={sort}>{resource.status}</button>
                       </th>
                       <th>{resource.action}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {state &&
-                      list &&
-                      list.map((user: any, i: number) => {
+                    {state && list && list.map((user: any, i: number) => {
                         const result = users.find(
                           (v) => v.userId === user.userId
                         );
@@ -262,12 +246,7 @@ export const UsersLookup = (props: Props) => {
                               <td>{user.displayName}</td>
                               <td>{user.status}</td>
                               <td>
-                                <input
-                                  type='checkbox'
-                                  id={`chkSelect${i}`}
-                                  value={user.userId}
-                                  onClick={onCheckUser}
-                                />
+                                <input type='checkbox' id={`chkSelect${i}`} value={user.userId} onClick={onCheckUser}/>
                               </td>
                             </tr>
                           );
@@ -280,18 +259,12 @@ export const UsersLookup = (props: Props) => {
             )}
             {component.view !== 'table' && (
               <ul className='row list-view'>
-                {state &&
-                  list &&
-                  list.map((user: any, i: number) => {
+                {state && list && list.map((user: any, i: number) => {
                     const result = users.find((v) => v.userId === user.userId);
                     if (!result) {
                       index++;
                       return (
-                        <li
-                          key={i}
-                          className='col s12 m6 l4 xl3'
-                          // onClick={(e) => edit(e, user.userId)}
-                        >
+                        <li key={i} className='col s12 m6 l4 xl3'>
                           <section>
                             <input
                               type='checkbox'
@@ -300,22 +273,12 @@ export const UsersLookup = (props: Props) => {
                               onClick={onCheckUser}
                             />
                             <img
-                              src={
-                                user.imageURL && user.imageURL.length > 0
-                                  ? user.imageURL
-                                  : ''
-                              }
+                              src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : ''}
                               alt='user'
                               className='round-border'
                             />
                             <div>
-                              <h3
-                                className={
-                                  user.status === 'I' ? 'inactive' : ''
-                                }
-                              >
-                                {user.displayName}
-                              </h3>
+                              <h3 className={user.status === 'I' ? 'inactive' : ''}>{user.displayName}</h3>
                               <p>{user.email}</p>
                             </div>
                           </section>

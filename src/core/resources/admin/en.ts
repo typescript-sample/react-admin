@@ -9,12 +9,6 @@ export const en = {
   position_manager: 'Manager',
   position_director: 'Director',
 
-  // Group
-  group_list: 'Search Group',
-  group: 'Group',
-  group_id: 'Group ID',
-  group_name: 'Group Name',
-
   // Access Role
   role_list: 'Search Roles',
   role: 'Role',
@@ -25,10 +19,17 @@ export const en = {
   role_id: 'Role Id',
   role_name: 'Role Name',
   role_system_role: 'System Role',
+  module: 'Module',
 
   all_privileges: 'All Privileges',
 
   role_assigned_users: 'Assigned Users',
   role_roles_assign_to_groups: 'Role Assign To Group(s)',
-};
 
+  // Audit log
+  audit_logs: 'Audit logs',
+  audit_log_time: 'Date time',
+  audit_log_resource_type : 'Resource type',
+  audit_log_action : 'Action',
+  audit_log_created_by : 'Performed by',
+};

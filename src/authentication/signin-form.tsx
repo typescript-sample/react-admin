@@ -66,7 +66,7 @@ export const SigninForm = () => {
     }
     const usr = init(cookie.get);
     setState(usr);
-  }, [setState]);
+  }, []);
   const updateRemember = (e: any) => {
     e.preventDefault();
     state.remember = !state.remember;

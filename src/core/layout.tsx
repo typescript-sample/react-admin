@@ -256,7 +256,7 @@ export const LayoutPage = () => {
               <section className='quick-nav'>
                 {/*<button type='button' className='notifications'><i className='material-icons'>notifications</i></button>
                 <button type='button' className='mail'><i className='material-icons'>mail</i></button>*/}
-                {location.pathname !== '/welcome' && <Link to='welcome'><i className='material-icons'>home</i></Link>}
+                {location.pathname !== '/home' && <Link to='home'><i className='material-icons'>home</i></Link>}
                 <div className='dropdown-menu-profile'>
                 {(!user || !user.imageURL) && (
                     <i className='material-icons' onClick={toggleProfile}>

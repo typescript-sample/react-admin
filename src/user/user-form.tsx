@@ -1,5 +1,6 @@
 import { Item } from 'onecore';
 import * as React from 'react';
+import { useNavigate } from "react-router-dom";
 import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from 'react-hook-core';
 import { formatPhone } from 'ui-plus';
 import { emailOnBlur, Gender, handleError, handleSelect, inputEdit, phoneOnBlur, requiredOnBlur, Status } from 'uione';
@@ -44,15 +45,22 @@ const param: EditComponentParam<User, string, InternalState> = {
   initialize
 };
 export const UserForm = () => {
+  const navigate = useNavigate();
   const refForm = React.useRef();
   const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(refForm, initialState, getUserService(), inputEdit(), param);
+  const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+    e.preventDefault();
+    navigate(`/users/assign/${id}`);
+    return;
+  };
   const user = state.user;
   return (
     <div className='view-container'>
       <form id='userForm' name='userForm' model-name='user' ref={refForm as any}>
-        <header>
+        <header className='view-header'>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
-          <h2>{flag.newMode ? resource.create : resource.edit} {resource.user}</h2>
+          <h2 className='view-title'>{flag.newMode ? resource.create : resource.edit} {resource.user}</h2>
+          <button className='btn-group btn-right'><i onClick={e => assign(e, user.userId)} className='material-icons'>group</i></button>
         </header>
         <div className='row'>
           <label className='col s12 m6'>
@@ -61,6 +69,7 @@ export const UserForm = () => {
               type='text'
               id='userId'
               name='userId'
+              className='form-control'
               value={user.userId || ''}
               readOnly={!flag.newMode}
               onChange={updateState}
@@ -73,6 +82,7 @@ export const UserForm = () => {
               type='text'
               id='displayName'
               name='displayName'
+              className='form-control'
               value={user.displayName || ''}
               onChange={updateState}
               onBlur={requiredOnBlur}
@@ -85,6 +95,7 @@ export const UserForm = () => {
               id='title'
               name='title'
               value={user.title || ''}
+              className='form-control'
               data-value
               onChange={e => updateTitle(e.target, state.user, setState)}>
               <option value=''>{resource.please_select}</option>
@@ -99,6 +110,7 @@ export const UserForm = () => {
             <select style={{ width: '99%' }}
               id='position'
               name='position'
+              className='form-control'
               value={user.position || ''}
               data-value
               onChange={updateState}>
@@ -114,6 +126,7 @@ export const UserForm = () => {
               type='tel'
               id='phone'
               name='phone'
+              className='form-control'
               value={formatPhone(user.phone) || ''}
               onChange={updatePhoneState}
               onBlur={phoneOnBlur}
@@ -182,7 +195,7 @@ export const UserForm = () => {
             </div>
           </div>
         </div>
-        <footer>
+        <footer className='view-footer'>
           {!flag.readOnly &&
             <button type='submit' id='btnSave' name='btnSave' onClick={save}>
               {resource.save}
