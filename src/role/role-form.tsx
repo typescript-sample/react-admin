@@ -1,8 +1,8 @@
 import * as React from "react";
-import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from "react-hook-core";
-import { useNavigate } from "react-router-dom";
-import { checkPatternOnBlur, handleError, inputEdit, Status } from "uione";
-import { getRoleService, Privilege, Role } from "./service";
+import {createModel, DispatchWithCallback, EditComponentParam, useEdit} from "react-hook-core";
+import {useNavigate} from "react-router-dom";
+import {checkPatternOnBlur, handleError, inputEdit, Status} from "uione";
+import {getRoleService, Privilege, Role} from "./service";
 import "./style.css";
 
 const regexId = "^(?=.*[a-z])[a-z0-9_]{1,100}$"; // lowercase letters, numbers and underscores
@@ -12,10 +12,12 @@ interface Permission {
   actions: number;
   permissions: number;
 }
+
 interface ShownItem {
   action: number;
   shown: boolean;
 }
+
 interface InternalState {
   role: Role;
   allPrivileges: Privilege[];
@@ -106,12 +108,13 @@ function mergeArray(dest: Permission[], src: Permission[], allowPermission0?: Bo
     }
   }
 }
+
 function filterPermission(parentId: string | undefined, mapPermissions: Permission[], all: Privilege[], actions: Map<string, number>): Permission[] {
   const parent = getPrivilege(parentId || "", all)
   const childrenIds = parent?.children?.map(item => item.id) || [];
   const hasChild = mapPermissions.some(i => childrenIds.includes(i.id) && i.permissions > 0)
   if (hasChild && parentId) {
-    mergeArray(mapPermissions, [{ id: parentId, actions: actions.get(parentId) || 0, permissions: 0 }], true)
+    mergeArray(mapPermissions, [{id: parentId, actions: actions.get(parentId) || 0, permissions: 0}], true)
     return mapPermissions;
   }
   return mapPermissions.filter(i => i.id !== parentId);
@@ -119,7 +122,7 @@ function filterPermission(parentId: string | undefined, mapPermissions: Permissi
 
 function isChecked(id: string, privileges: Permission[]): boolean {
   if (!privileges) return false;
-  return privileges && privileges.find((item) => item.id === id && item.permissions > 0)? true : false;
+  return privileges && privileges.find((item) => item.id === id && item.permissions > 0) ? true : false;
 };
 
 function checked(id: string, action: number, privileges: Permission[]): boolean {
@@ -134,6 +137,7 @@ function bitwiseAnd(numbers: number[], result: number): number {
   }
   return result;
 }
+
 function mapPermissionOfParent(id: string, childPermissions: Permission[], actions: Map<string, number>) {
   const groupActionAndPermission = new Map<number, number[]>();
   // check permission of parent
@@ -153,9 +157,10 @@ function mapPermissionOfParent(id: string, childPermissions: Permission[], actio
     });
   }
   const maxAction = actions.get(id) || 0;
-  childPermissions.push({ id: id, actions: maxAction, permissions: permission & maxAction })
+  childPermissions.push({id: id, actions: maxAction, permissions: permission & maxAction})
   return childPermissions
 }
+
 function mapPermission(actions: Map<string, number>, item: Permission, pCheckedValue: number, uChecked: boolean): Permission {
   const actionMax = actions.get(item.id) || 1;
   const id = item.id;
@@ -168,10 +173,11 @@ function mapPermission(actions: Map<string, number>, item: Permission, pCheckedV
     }
   }
   if (pCheckedValue > actionMax) {
-    return { id: item.id, actions: actionMax, permissions: actionMax };
+    return {id: item.id, actions: actionMax, permissions: actionMax};
   }
-  return { id: id, actions: actionMax, permissions: v };
+  return {id: id, actions: actionMax, permissions: v};
 }
+
 function getColumns(maxAction: number): number[] {
   let i = 0;
   let total = 0;
@@ -184,22 +190,50 @@ function getColumns(maxAction: number): number[] {
   }
   return rs;
 };
+
 function binaryStringToArray(binaryString: string): string[] {
   // Use the split method to convert the binary string to an array of characters
   return binaryString.split('');
 }
+
 function decimalToBinary(decimal: number): string {
   // Convert decimal to binary using the toString method with base 2
   return (decimal >>> 0).toString(2);
 }
+
 function padLeft(str: string, num: number) {
   return str.padStart(num, '0');
 }
 
 function isCheckedAll(privileges: string[] | undefined, all: string[], setState2: DispatchWithCallback<Partial<InternalState>>) {
   const checkedAll = privileges && all && privileges.length === all.length;
-  setState2({ checkedAll });
+  setState2({checkedAll});
+  return checkedAll
 }
+
+const handleCheckAllModule = (e: React.ChangeEvent<HTMLInputElement>, privileges: string[] | undefined, all: string[],
+                              actions: Map<String, number>, callback: (privileges: string[]) => void) => {
+  e.preventDefault();
+  const checked = e.target.checked;
+  console.log(checked, privileges)
+  if (!checked) {
+    callback([])
+    return
+  }
+
+  if (!privileges) {
+    privileges = [];
+  }
+  if (checked) {
+    privileges = []
+    for (const m of all) {
+      privileges.push(m + " " + actions.get(m))
+    }
+  }
+
+  callback(privileges || [])
+}
+
 
 function buildShownModules(q: string, all: Privilege[]): Privilege[] {
   if (!q || q === "") {
@@ -233,7 +267,7 @@ const initialize = async (roleId: string | null, load: (id: string | null) => vo
       const actions = new Map<string, number>();
       buildAll(all, allPrivileges);
       buildActionAll(actions, allPrivileges);
-      set({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions) }, () =>
+      set({all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions)}, () =>
         load(roleId)
       );
     })
@@ -247,7 +281,15 @@ const param: EditComponentParam<Role, string, InternalState> = {
 export function RoleForm() {
   const navigate = useNavigate();
   const refForm = React.useRef();
-  const { state, setState, back, flag, updateState, save, resource } = useEdit<Role, string, InternalState>(refForm, initialState, getRoleService(), inputEdit(), param);
+  const {
+    state,
+    setState,
+    back,
+    flag,
+    updateState,
+    save,
+    resource
+  } = useEdit<Role, string, InternalState>(refForm, initialState, getRoleService(), inputEdit(), param);
 
   let seq = 1;
   const [privileges, setPrivileges] = React.useState<Permission[]>([]);
@@ -255,7 +297,7 @@ export function RoleForm() {
   React.useEffect(() => {
     const obj = state.role;
     if (obj) {
-      const { all, actions } = state;
+      const {all, actions} = state;
       if (!obj.privileges) {
         obj.privileges = [];
       } else {
@@ -269,17 +311,17 @@ export function RoleForm() {
               permissions = 0;
             }
             const id = p[0];
-            return { id: id, actions: actions.get(id) || 0, permissions: permissions || 0 };
+            return {id: id, actions: actions.get(id) || 0, permissions: permissions || 0};
           })
         );
       }
-      setState({ role: obj }, () => isCheckedAll(obj.privileges, all, setState));
+      setState({role: obj}, () => isCheckedAll(obj.privileges, all, setState));
     }
   }, [state.role]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCheckParent = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
-    const { all, allPrivileges, actions } = state;
+    const {all, allPrivileges, actions} = state;
     const obj = state.role;
     const checked = e.target.checked;
     let mapPermissions = privileges;
@@ -299,16 +341,16 @@ export function RoleForm() {
     const mapToSavePrivileges = mapPermissions.map((p) => {
       return p.id + " " + p.permissions;
     });
-    setState({ role: { ...obj, privileges: mapToSavePrivileges } }, () =>
+    setState({role: {...obj, privileges: mapToSavePrivileges}}, () =>
       isCheckedAll(role.privileges, all, setState)
     );
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value;
-    const { allPrivileges } = state;
+    const {allPrivileges} = state;
     const shownPrivileges = buildShownModules(q, allPrivileges);
-    setState({ keyword: q, shownPrivileges });
+    setState({keyword: q, shownPrivileges});
   };
 
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
@@ -320,7 +362,7 @@ export function RoleForm() {
     event.preventDefault()
     const uChecked: boolean = event.target.checked;
     let pChecked: number = +event.target.value;
-    const { actions, allPrivileges } = state;
+    const {actions, allPrivileges} = state;
     let permissions = privileges;
 
     if (currentPrivilege === undefined) {
@@ -361,7 +403,7 @@ export function RoleForm() {
       permissions = permissions.map((p) => {
         if (p.id === currentPrivilege.id) {
           if (force) {
-            p.permissions = uChecked ? pChecked: 0;
+            p.permissions = uChecked ? pChecked : 0;
             return p;
           }
           if (pChecked > 1) {
@@ -409,7 +451,9 @@ export function RoleForm() {
       return p.id + " " + p.permissions;
     });
     setPrivileges(permissions);
-    setState({ role: { ...state.role, privileges: mapToSavePrivileges } });
+    setState({role: {...state.role, privileges: mapToSavePrivileges}}, function () {
+      isCheckedAll(mapToSavePrivileges, state.all, setState)
+    });
   };
 
   const isParentChecked = (id: string, child: Privilege[], privileges: Permission[]) => {
@@ -423,13 +467,13 @@ export function RoleForm() {
     if (privileges.length < ids.length) {
       return false
     }
-    const { actions } = state;
+    const {actions} = state;
     const checked = privileges.filter((item) => ids.includes(item.id) && item.permissions === actions.get(item.id))
     return checked.length === ids.length;
   };
 
   const getColumnsOfRow = (action: number): ShownItem[] => {
-    const { maxAction: maxActionAll } = state;
+    const {maxAction: maxActionAll} = state;
     let binaryString = decimalToBinary(action);
     let maxLen = decimalToBinary(maxActionAll);
     binaryString = padLeft(binaryString, maxLen.length)
@@ -437,7 +481,7 @@ export function RoleForm() {
     const cols = getColumns(action);
     binaryArray.reverse()
     return binaryArray.map((item, i) => {
-      return { shown: item === '1', action: cols[i] }
+      return {shown: item === '1', action: cols[i]}
     })
   };
 
@@ -473,7 +517,7 @@ export function RoleForm() {
     } else {
       return (
         <div className={`row ${isChild && "sub-menu-level-2"}`} key={p.id}>
-          <div className={`col s6 m4 inline flex-gap-2`}>
+          <div className={`col s6 m4 flex-gap2 inline flex-gap-2`}>
             {seq++} .
             <input
               type="checkbox"
@@ -495,7 +539,7 @@ export function RoleForm() {
                 checked={item.shown ? c : false}
                 disabled={disabled}
                 className="col s1 m2 center"
-                style={{ visibility: (item.shown ? "unset" : "hidden") }}
+                style={{visibility: (item.shown ? "unset" : "hidden")}}
                 onChange={(e) => handleCheckBox(e, p.id, parentId, p)}
               ></input>
             );
@@ -509,9 +553,10 @@ export function RoleForm() {
     <div className="view-container">
       <form id='roleForm' name='roleForm' model-name='role' ref={refForm as any}>
         <header>
-          <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
+          <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back}/>
           <h2>{flag.newMode ? resource.create : resource.edit} {resource.role}</h2>
-          <button className='btn-group btn-right'><i onClick={e => assign(e, role.roleId)} className='material-icons'>group</i></button>
+          <button className='btn-group btn-right'><i onClick={e => assign(e, role.roleId)}
+                                                     className='material-icons'>group</i></button>
         </header>
         <div>
           <section className="row">
@@ -567,7 +612,7 @@ export function RoleForm() {
                     name='status'
                     onChange={e => updateState(e, () => setState)}
                     value='A'
-                    checked={role.status === 'A'} />
+                    checked={role.status === 'A'}/>
                   {resource.active}
                 </label>
                 <label>
@@ -577,7 +622,7 @@ export function RoleForm() {
                     name='status'
                     onChange={(e) => updateState(e, () => setState)}
                     value='I'
-                    checked={role.status === 'I'} />
+                    checked={role.status === 'I'}/>
                   {resource.inactive}
                 </label>
               </div>
@@ -585,7 +630,7 @@ export function RoleForm() {
           </section>
           <section className="row">
             <label className="col s12 m6 search-input">
-              <i className="btn-search" />
+              <i className="btn-search"/>
               <input
                 type="text"
                 id="keyword"
@@ -599,7 +644,22 @@ export function RoleForm() {
           </section>
           <section className="tree-view">
             <div className="row">
-              <p className="col s6 m4">{resource.module}</p>
+              <div className="col s6 m4 flex-gap-2 col-module">
+                <input
+                  type="checkbox"
+                  onChange={e => handleCheckAllModule(e, state.role.privileges,
+                    state.all,
+                    state.actions,
+                    (privileges: string[]) => {
+                      setState({role: {...state.role, privileges: privileges}}, () => {
+                        isCheckedAll(privileges, state.all, setState)
+                      })
+                    })}
+                  checked={state.checkedAll}
+                />
+                <p>
+                  {resource.module}</p>
+              </div>
               <p className="col s1 m2 center">{resource.read}</p>
               <p className="col s1 m2 center">{resource.write}</p>
               <p className="col s1 m2 center">{resource.delete}</p>

@@ -8,6 +8,7 @@ input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 label.checkbox-container > input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*=lightbox-]),

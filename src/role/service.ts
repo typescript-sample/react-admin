@@ -6,7 +6,6 @@ import { UserClient, UserService } from '../service/user';
 
 export * from './role';
 export * from '../service/user';
-// axios.defaults.withCredentials = true;
 
 const httpRequest = new HttpRequest(axios, options);
 export interface Config {

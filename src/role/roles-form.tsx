@@ -31,6 +31,7 @@ export const RolesForm = () => {
     e.preventDefault();
     navigate(`edit/${id}`);
   };
+
   const filter = value(state.filter);
   return (
     <div className='view-container'>
