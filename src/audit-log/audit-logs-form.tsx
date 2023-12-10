@@ -1,12 +1,9 @@
 import { Item } from 'onecore';
 import * as React from 'react';
-import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
-import {Link, useNavigate} from 'react-router-dom';
+import { datetimeToString, formatDate, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
 import { AuditLog, AuditLogFilter, useAuditLog} from './service';
-import {formatDateTimeToString, formatDate} from "../App";
-import { useEffect } from "react";
 
 interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> {
   statusList: Item[];
@@ -30,21 +27,10 @@ const mapStyleStatus: Map<string, string> =  new Map ([
 ]);
 
 export const AuditLogsForm = () => {
-  const navigate = useNavigate();
   const refForm = React.useRef();
   const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch());
   const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, sort } = hooks;
 
-
-  const edit = (e: OnClick, id: string) => {
-    e.preventDefault();
-    return
-    navigate('audit-logs/' + id);
-  };
-  useEffect(() => {
-    component.viewable = true;
-    component.editable = true;
-  }, [])
   const filter = value(state.filter);
   return (
     <div className='view-container'>
@@ -71,8 +57,8 @@ export const AuditLogsForm = () => {
             </label>
             <label className='col s12 m4 l4'>
               {resource.audit_log_time}
-              <input type='datetime-local' step='.010' id='time_min' name='time_min' data-field='time.min' value={formatDateTimeToString(filter?.time?.min || '')} onChange={updateState} />
-              <input type='datetime-local' step='.010' id='time_max' name='time_max' data-field='time.max'  value={formatDateTimeToString(filter?.time?.max || '')} onChange={updateState} />
+              <input type='datetime-local' step='.010' id='time_min' name='time_min' data-field='time.min' value={datetimeToString(filter?.time?.min)} onChange={updateState} />
+              <input type='datetime-local' step='.010' id='time_max' name='time_max' data-field='time.max'  value={datetimeToString(filter?.time?.max)} onChange={updateState} />
             </label>
           </section>
           <section className='btn-group'>
@@ -131,9 +117,8 @@ export const AuditLogsForm = () => {
                       state.list.length > 0 &&
                       state.list.map((item: any, i: number) => {
                         return (
-                            <tr key={i} onClick={(e) => edit(e, item.id)}>
+                            <tr key={i}>
                               <td className='text-right'>{(item as any).sequenceNo}</td>
-                              {/*<td><Link to={`edit/${item.id}`}>{item.id}</Link></td>*/}
                               <td>{formatDate(item.time, 'YYYY-MM-DD HH:mm:ss')}</td>
                               <td>{item.resource}</td>
                               <td>{item.action}</td>
@@ -151,7 +136,7 @@ export const AuditLogsForm = () => {
           {component.view !== 'table' && (<ul className='row list-view'>
             {state.list && state.list.length > 0 && state.list.map((item, i) => {
               return (
-                <li key={i} className='col s12 m6 l4 xl3' onClick={e => edit(e, item.userId)}>
+                <li key={i} className='col s12 m6 l4 xl3'>
                   <section>
                     <div>
                       <h3>{item.email}</h3>

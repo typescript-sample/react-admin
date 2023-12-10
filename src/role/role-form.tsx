@@ -517,7 +517,7 @@ export function RoleForm() {
     } else {
       return (
         <div className={`row ${isChild && "sub-menu-level-2"}`} key={p.id}>
-          <div className={`col s6 m4 flex-gap2 inline flex-gap-2`}>
+          <div className={`col s6 m4 inline flex-gap-2`}>
             {seq++} .
             <input
               type="checkbox"
@@ -644,7 +644,7 @@ export function RoleForm() {
           </section>
           <section className="tree-view">
             <div className="row">
-              <div className="col s6 m4 flex-gap-2 col-module">
+              <div className="col s6 m4 inline flex-gap-2 col-header">
                 <input
                   type="checkbox"
                   onChange={e => handleCheckAllModule(e, state.role.privileges,

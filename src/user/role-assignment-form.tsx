@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { buildId, DispatchWithCallback, error, message } from 'react-hook-core';
+import { OnClick, buildId, error, message } from 'react-hook-core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirm, handleError, showMessage, storage, useResource } from 'uione';
 import { getUserService, User } from './service';
 import { getRoleService } from './service';
 import { Role } from './user';
+import "./style.css";
 
 interface InternalState {
   user: User;
@@ -24,22 +25,6 @@ const getRoles = (roles?: Role[]): string[] => {
   return roles ? roles.map(item => item.roleId) : [];
 };
 
-const initialize = (id: string, set: DispatchWithCallback<Partial<InternalState>>, state: Partial<InternalState>) => {
-  const userService = getUserService();
-  const roleService = getRoleService();
-  Promise.all([
-    roleService.all(),
-    userService.load(id),
-  ]).then(values => {
-    const [roles, user] = values;
-    const userRoles = roles.filter(role => user?.roles?.includes(role.roleId));
-    if (user) {
-      const checkedAll = roles.length === user?.roles?.length;
-      set({ ...state, roles, selectedRoles: userRoles, user, checkedAll });
-    }
-  }).catch(err => error(err, storage.resource().value, storage.alert));
-};
-
 export const RoleAssignmentForm = () => {
   const resource = useResource();
   const navigate = useNavigate();
@@ -52,7 +37,19 @@ export const RoleAssignmentForm = () => {
   useEffect(() => {
     const id = buildId<string>(params);
     if (id) {
-      initialize(id, setState as any, state);
+      const userService = getUserService();
+      const roleService = getRoleService();
+      Promise.all([
+        roleService.all(),
+        userService.load(id),
+      ]).then(values => {
+        const [roles, user] = values;
+        const userRoles = roles.filter(role => user?.roles?.includes(role.roleId));
+        if (user) {
+          const checkedAll = roles.length === user?.roles?.length;
+          setState({ ...state, roles, selectedRoles: userRoles, user, checkedAll });
+        }
+      }).catch(err => error(err, storage.resource().value, storage.alert));
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -97,7 +94,7 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedRoles, checkedAll });
   };
 
-  const back = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const back = (e: OnClick) => {
     if (e) {
       e.preventDefault();
     }
@@ -124,8 +121,7 @@ export const RoleAssignmentForm = () => {
           </section>
           <section className='list-container'>
             <ul className='row list-view'>
-            <li className="col">
-            <section>
+            <li className="col check-item header">
               <input
                 type='checkbox' 
                 id='checkAll'
@@ -133,24 +129,20 @@ export const RoleAssignmentForm = () => {
                 checked={checkedAll} 
                 onChange={e => onCheckAll(e)}
               />
-              <span>{resource.check_all}</span>
-            </section>
-            <hr></hr>
+              <p>{resource.check_all}</p>
             </li>
               {roles && roles?.map((item, i) => {
                 return (
-                  <li key={i} className='col'>
-                    <section>
-                      <input 
-                        type='checkbox' 
-                        name='selected' 
-                        checked={selectedRoles.includes(item)} 
-                        onChange={(e) => onCheck(e, item.roleId)}
-                      />
-                      <span>
-                        {item.roleName}
-                      </span>
-                    </section>
+                  <li key={i} className='col check-item'>
+                    <input 
+                      type='checkbox' 
+                      name='selected' 
+                      checked={selectedRoles.includes(item)} 
+                      onChange={(e) => onCheck(e, item.roleId)}
+                    />
+                    <p>
+                      {item.roleName}
+                    </p>
                   </li>
                 );
               })}

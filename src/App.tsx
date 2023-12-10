@@ -2,7 +2,7 @@ import * as csv from 'csvtojson';
 import { currency, locale } from 'locale-service';
 import { phonecodes } from 'phonecodes';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import {alert, alertError, alertSuccess, alertWarning, confirm} from 'ui-alert';
+import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
 import { toast } from 'ui-toast';
@@ -51,109 +51,6 @@ import UsersRoute from "./user";
 import RolesRoute from "./role";
 import AuditLogsRoute from "./audit-log";
 
-const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-function parseDate(value: string, format: string): Date | null | undefined {
-  if (!format || format.length === 0) {
-    format = 'MM/DD/YYYY';
-  } else {
-    format = format.toUpperCase();
-  }
-  const dateItems = format.split(/\.| |-/);
-  const valueItems = value.split(/\.| |-/);
-  let imonth  = dateItems.indexOf('M');
-  let iday    = dateItems.indexOf('D');
-  let iyear   = dateItems.indexOf('YYYY');
-  if (imonth === -1) {
-    imonth  = dateItems.indexOf('MM');
-  }
-  if (iday === -1) {
-    iday  = dateItems.indexOf('DD');
-  }
-  if (iyear === -1) {
-    iyear  = dateItems.indexOf('YY');
-  }
-  const month = parseInt(valueItems[imonth], 10) - 1;
-  let year = parseInt(valueItems[iyear], 10);
-  if (year < 100) {
-    year += 2000;
-  }
-  const day = parseInt(valueItems[iday], 10);
-  return new Date(year, month, day);
-}
-
-export const datetimeToString = (inputDate: Date) => {
-  const date = new Date(inputDate);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-
-  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-};
-
-export const dateToString = (inputDate: Date) => {
-  const year = inputDate.getFullYear();
-  const month = String(inputDate.getMonth() + 1).padStart(2, '0');
-  const day = String(inputDate.getDate()).padStart(2, '0');
-
-  return `${year}-${month}-${day}`;
-};
-
-export function formatDate(date: Date| null | undefined, format: string) {
-  if (!date) return ""
-  const options: any = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    timeZone: timezone,
-    hour12: false
-  };
-  const formattedDate = new Date(date).toLocaleString('en-US', options);
-  let formattedOutput = format.replace('YYYY', formattedDate.slice(6, 10));
-  formattedOutput = formattedOutput.replace('MM', formattedDate.slice(0, 2));
-  formattedOutput = formattedOutput.replace('DD', formattedDate.slice(3, 5));
-  formattedOutput = formattedOutput.replace('HH', formattedDate.slice(12, 14));
-  formattedOutput = formattedOutput.replace('mm', formattedDate.slice(15, 17));
-  formattedOutput = formattedOutput.replace('ss', formattedDate.slice(18, 20));
-  return formattedOutput;
-}
-
-
-export const formatDateTimeToString = (inputDate: Date | string| null) => {
-  const date = typeof inputDate !== 'string' ? inputDate : new Date(inputDate);
-  if (inputDate == "" || inputDate == null || date === null)
-  {
-    return ""
-  }
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-
-  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-};
-
-export const formatDateToString = (inputDate: Date | string | null) => {
-  const date = typeof inputDate !== 'string' ? inputDate : new Date(inputDate);
-  if ( inputDate == "" || inputDate == null || date === null)
-  {
-    return ""
-  }
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-
-  return `${year}-${month}-${day}`;
-};
-
 let isInit = false;
 export function init() {
   if (isInit) {
@@ -182,7 +79,6 @@ export function init() {
 
   const resource = storage.resource();
   vresources.phonecodes = phonecodes;
-  uiresources.date = parseDate;
   uiresources.currency = currency;
   uiresources.resource = resource;
 }
