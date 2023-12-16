@@ -10,7 +10,6 @@ import { storage } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
 import { resources as locales } from './core/resources';
-
 import { ChangePasswordForm } from './authentication/change-password-form';
 import { ForgotPasswordForm } from './authentication/forgot-password-form';
 import { ResetPasswordForm } from './authentication/reset-password-form';
@@ -20,6 +19,10 @@ import { config } from './config';
 import AboutPage from './core/about';
 import HomePage from './core/home';
 import LayoutPage from './core/layout';
+import UsersRoute from "./user";
+import RolesRoute from "./role";
+import { AuditLogsForm } from "./audit-log";
+import { SettingsForm } from './settings';
 
 // tslint:disable:ordered-imports
 import './assets/css/reset.css';
@@ -47,10 +50,6 @@ import './assets/css/layout.css';
 import './assets/css/theme.css';
 import './assets/css/dark.css';
 import './assets/css/grey.css';
-import UsersRoute from "./user";
-import RolesRoute from "./role";
-import { AuditLogsForm } from "./audit-log/audit-logs-form";
-import { SettingsForm } from './settings';
 
 let isInit = false;
 export function init() {
@@ -63,12 +62,9 @@ export function init() {
   resources.config = {
     list: 'list'
   };
-  if (storage.home == null || storage.home === undefined) {
-    storage.home = '/home';
-  }
   storage.home = '/home';
   // storage.token = getToken;
-  storage.moment = true;
+  // storage.moment = true;
   storage.setResources(locales);
   storage.setLoadingService(loading);
   storage.setUIService(new UIService());
@@ -104,7 +100,7 @@ function App() {
           <Route path='/settings' element={<SettingsForm />} />
           <Route path='users/*' element={<UsersRoute />} />
           <Route path='roles/*' element={<RolesRoute />} />
-          <Route path='audit-logs/*' element={<AuditLogsForm />} />
+          <Route path='audit-logs' element={<AuditLogsForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -4,7 +4,7 @@ import { datetimeToString, PageSizeSelect, SearchComponentState, useSearch, valu
 import Pagination from 'reactx-pagination';
 import { formatLongDateTime } from 'ui-plus';
 import { getDateFormat, inputSearch } from 'uione';
-import { AuditLog, AuditLogFilter, useAuditLog} from './service';
+import { AuditLog, AuditLogFilter, useAuditLog } from './service';
 import "./style.css";
 
 interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> {
@@ -23,9 +23,9 @@ const AuditSearch: AuditLogSearch = {
   filter: auditLogfilter
 };
 
-const mapStyleStatus: Map<string, string> =  new Map ([
-  ['success',  'badge-outline-success'],
-  ['fail',  'badge-outline-danger '],
+const mapStyleStatus: Map<string, string> = new Map([
+  ['success', 'badge-outline-success'],
+  ['fail', 'badge-outline-danger '],
 ]);
 
 export const AuditLogsForm = () => {
@@ -61,7 +61,7 @@ export const AuditLogsForm = () => {
             <label className='col s12 m4 l4'>
               {resource.audit_log_time}
               <input type='datetime-local' step='.010' id='time_min' name='time_min' data-field='time.min' value={datetimeToString(filter.time?.min)} onChange={updateState} />
-              <input type='datetime-local' step='.010' id='time_max' name='time_max' data-field='time.max'  value={datetimeToString(filter.time?.max)} onChange={updateState} />
+              <input type='datetime-local' step='.010' id='time_max' name='time_max' data-field='time.max' value={datetimeToString(filter.time?.max)} onChange={updateState} />
             </label>
           </section>
           <section className='btn-group'>
@@ -74,9 +74,9 @@ export const AuditLogsForm = () => {
         </form>
         <form className='list-result'>
           {component.view === 'table' && (
-              <div className='table-responsive'>
-                <table>
-                  <thead>
+            <div className='table-responsive'>
+              <table>
+                <thead>
                   <tr>
                     <th>{resource.sequence}</th>
                     <th data-field='time'>
@@ -100,7 +100,7 @@ export const AuditLogsForm = () => {
                       </button>
                     </th>
                     <th data-field='userId'>
-                        {resource.audit_log_user}
+                      {resource.audit_log_user}
                     </th>
                     <th data-field='ip'>
                       <button type='button' id='sortIp' onClick={sort}>
@@ -113,27 +113,27 @@ export const AuditLogsForm = () => {
                       </button>
                     </th>
                   </tr>
-                  </thead>
-                  <tbody>
+                </thead>
+                <tbody>
                   {state.list &&
-                      state.list.length > 0 &&
-                      state.list.map((item: any, i: number) => {
-                        return (
-                            <tr key={i}>
-                              <td className='text-right'>{(item as any).sequenceNo}</td>
-                              <td>{formatLongDateTime(item.time, dateFormat)}</td>
-                              <td>{item.resource}</td>
-                              <td>{item.action}</td>
-                              <td><span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></td>
-                              <td>{item.email}</td>
-                              <td>{item.ip}</td>
-                              <td>{item.remark}</td>
-                            </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
-              </div>
+                    state.list.length > 0 &&
+                    state.list.map((item: any, i: number) => {
+                      return (
+                        <tr key={i}>
+                          <td className='text-right'>{(item as any).sequenceNo}</td>
+                          <td>{formatLongDateTime(item.time, dateFormat)}</td>
+                          <td>{item.resource}</td>
+                          <td>{item.action}</td>
+                          <td><span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></td>
+                          <td>{item.email}</td>
+                          <td>{item.ip}</td>
+                          <td>{item.remark}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </table>
+            </div>
           )}
           {component.view !== 'table' && (<ul className='row list-view'>
             {state.list && state.list.length > 0 && state.list.map((item, i) => {
@@ -150,7 +150,7 @@ export const AuditLogsForm = () => {
                 </li>
               );
             })}
-          </ul> )}
+          </ul>)}
           <Pagination className='col s12 m6' total={component.total} size={component.pageSize} max={component.pageMaxSize} page={component.pageIndex} onChange={pageChanged} />
         </form>
       </div>

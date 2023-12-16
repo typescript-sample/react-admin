@@ -39,6 +39,4 @@ class ApplicationContext {
 }
 
 export const context = new ApplicationContext();
-export function useAuditLog(): AuditLogService {
-  return context.getAuditService();
-}
+export const useAuditLog = context.getAuditService;

@@ -1,15 +1,19 @@
+import { Item } from 'onecore';
 import React, { useEffect } from 'react';
 import { OnClick, initForm, message, useUpdate } from 'react-hook-core';
 import { confirm, getDateFormat, handleError, language, registerEvents, requiredOnBlur, showMessage, useResource } from 'uione';
-
-import { Settings, getSettingsService } from './service';
+import { Settings, getMasterDataService, getSettingsService } from './service';
 
 interface InternalState {
   settings: Settings;
+  languageList: Item[];
+  dateFormatList: Item[];
 }
 
 const initialState: InternalState = {
   settings: {} as any,
+  languageList: [],
+  dateFormatList: []
 };
 
 export const SettingsForm = () => {
@@ -20,10 +24,20 @@ export const SettingsForm = () => {
 
   useEffect(() => {
     initForm(refForm.current, registerEvents);
+    const masterDataService = getMasterDataService();
     const dateFormat = getDateFormat();
+    console.log('date format ' + dateFormat)
     const lang = language();
     const s: Settings = { dateFormat, language: lang };
-    setState({ settings: s })
+    setState({ settings: s }, () => {
+      Promise.all([
+        masterDataService.getLanguages(),
+        masterDataService.getDateFormats()
+      ]).then(values => {
+        const [languageList, dateFormatList] = values;
+        setState({ languageList, dateFormatList });
+      }).catch(handleError);
+    })
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const save = (e: OnClick) => {
@@ -41,32 +55,34 @@ export const SettingsForm = () => {
     <div className='view-container'>
       <form id='settingsForm' name='settingsForm' model-name='settings' ref={refForm as any}>
         <header>
-          <h2>{resource.role_assignment_subject}</h2>
+          <h2>{resource.settings}</h2>
         </header>
         <div className='row'>
           <label className='col s12 m6'>
             {resource.language}
-            <input
-              type='text'
+            <select
               id='language'
               name='language'
               value={settings.language}
               onChange={updateState}
-              maxLength={3} required={true}
-              onBlur={requiredOnBlur}
-              placeholder={resource.language} />
+              onBlur={requiredOnBlur}>
+              {
+                state.languageList.map((item, index) => (<option key={index} value={item.value}>{item.text}</option>))
+              }
+            </select>
           </label>
           <label className='col s12 m6'>
             {resource.date_format}
-            <input
-              type='text'
+            <select
               id='dateFormat'
               name='dateFormat'
               value={settings.dateFormat}
               onChange={updateState}
-              onBlur={requiredOnBlur}
-              maxLength={12} required={true}
-              placeholder={resource.date_format} />
+              onBlur={requiredOnBlur}>
+              {
+                state.dateFormatList.map((item, index) => (<option key={index} value={item.value}>{item.text}</option>))
+              }
+            </select>
           </label>
         </div>
         <footer>

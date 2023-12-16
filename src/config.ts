@@ -4,6 +4,7 @@ export const config = {
   password_url: 'http://localhost:8082/password',
   oauth2_url: 'http://localhost:8082/oauth2',
 
+  master_data_url: 'http://localhost:8083/code',
   user_url: 'http://localhost:8083/users',
   role_url: 'http://localhost:8083/roles',
   privilege_url: 'http://localhost:8083/privileges',

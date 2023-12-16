@@ -42,9 +42,5 @@ class ApplicationContext {
 }
 
 export const context = new ApplicationContext();
-export function getRoleService(): RoleService {
-  return context.getRoleService();
-}
-export function getUserService(): UserService {
-  return context.getUserService();
-}
+export const getRoleService = context.getRoleService;
+export const getUserService = context.getUserService;
