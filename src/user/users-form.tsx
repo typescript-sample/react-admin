@@ -33,7 +33,7 @@ export const UsersForm = () => {
   component.editable = true;
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
-    navigate(`edit/${id}`);
+    navigate(`${id}`);
   };
   const { list } = state;
   const filter = value(state.filter);
@@ -44,7 +44,7 @@ export const UsersForm = () => {
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
-          {component.addable && <Link id='btnNew' className='btn-new' to='add'/>}
+          {component.addable && <Link id='btnNew' className='btn-new' to='new'/>}
         </div>
       </header>
       <div>
@@ -121,7 +121,7 @@ export const UsersForm = () => {
                     <tr key={i} onClick={e => edit(e, user.userId)}>
                       <td className='text-right'>{(user as any).sequenceNo}</td>
                       <td>{user.userId}</td>
-                      <td><Link to={`edit/${user.userId}`}>{user.username}</Link></td>
+                      <td><Link to={`${user.userId}`}>{user.username}</Link></td>
                       <td>{user.email}</td>
                       <td>{user.displayName}</td>
                       <td>{user.status}</td>
@@ -138,7 +138,7 @@ export const UsersForm = () => {
                   <section>
                     <img src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : (user.gender === 'F' ? femaleIcon : maleIcon)} alt='user' className='round-border' />
                     <div>
-                      <h3 className={user.status === 'I' ? 'inactive' : ''}><Link to={`edit/${user.userId}`}>{user.displayName}</Link></h3>
+                      <h3 className={user.status === 'I' ? 'inactive' : ''}><Link to={`${user.userId}`}>{user.displayName}</Link></h3>
                       <p>{user.email}</p>
                     </div>
                     <button className='btn-detail' />

@@ -50,7 +50,7 @@ export const UserForm = () => {
   const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(refForm, initialState, getUserService(), inputEdit(), param);
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
-    navigate(`/users/assign/${id}`);
+    navigate(`/users/${id}/assign`);
     return;
   };
   const user = state.user;
@@ -60,7 +60,9 @@ export const UserForm = () => {
         <header className='view-header'>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
           <h2 className='view-title'>{flag.newMode ? resource.create : resource.edit} {resource.user}</h2>
-          <button className='btn-group btn-right'><i onClick={e => assign(e, user.userId)} className='material-icons'>group</i></button>
+          <button className='btn-group btn-right' hidden={flag.newMode}>
+            <i className='material-icons' onClick={e => assign(e, user.userId)}>group</i>
+          </button>
         </header>
         <div className='row'>
           <label className='col s12 m6'>

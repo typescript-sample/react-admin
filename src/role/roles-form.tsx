@@ -29,7 +29,7 @@ export const RolesForm = () => {
 
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
-    navigate(`edit/${id}`);
+    navigate(`${id}`);
   };
 
   const filter = value(state.filter);
@@ -40,7 +40,7 @@ export const RolesForm = () => {
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
-          {component.addable && <Link id='btnNew' className='btn-new' to='add'/>}
+          {component.addable && <Link id='btnNew' className='btn-new' to='new'/>}
         </div>
       </header>
       <div>
@@ -112,7 +112,7 @@ export const RolesForm = () => {
                     <tr key={i} onClick={e => edit(e, item.roleId)}>
                       <td className='text-right'>{(item as any).sequenceNo}</td>
                       <td>{item.roleId}</td>
-                      <td><Link to={`edit/${item.roleId}`}>{item.roleName}</Link></td>
+                      <td><Link to={`${item.roleId}`}>{item.roleName}</Link></td>
                       <td>{item.remark}</td>
                       <td>{item.status}</td>
                     </tr>
@@ -127,7 +127,7 @@ export const RolesForm = () => {
                 <li key={i} className='col s12 m6 l4 xl3' onClick={e => edit(e, item.roleId)}>
                   <section>
                     <div>
-                      <h3 className={item.status === 'I' ? 'inactive' : ''}><Link to={`edit/${item.roleId}`}>{item.roleName}</Link></h3>
+                      <h3 className={item.status === 'I' ? 'inactive' : ''}><Link to={`${item.roleId}`}>{item.roleName}</Link></h3>
                       <p>{item.remark}</p>
                     </div>
                     <button className='btn-detail' />

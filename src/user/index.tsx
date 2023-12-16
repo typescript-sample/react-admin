@@ -7,9 +7,9 @@ export default function UsersRoute() {
   return (
     <Routes>
       <Route path='' element={<UsersForm />} />
-      <Route path='/add' element={<UserForm />} />
-      <Route path='/edit/:id' element={<UserForm />} />
-      <Route path='/assign/:id' element={<RoleAssignmentForm />} />
+      <Route path='/new' element={<UserForm />} />
+      <Route path='/:id' element={<UserForm />} />
+      <Route path='/:id/assign' element={<RoleAssignmentForm />} />
     </Routes>
   );
 }

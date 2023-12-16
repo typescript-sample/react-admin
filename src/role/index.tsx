@@ -7,9 +7,9 @@ export default function RolesRoute() {
   return (
     <Routes >
       <Route path='' element={<RolesForm />} />
-      <Route path='/add' element={<RoleForm />} />
-      <Route path='/edit/:id' element={<RoleForm />} />
-      <Route path='/assign/:id' element={<RoleAssignmentForm />} />
+      <Route path='/new' element={<RoleForm />} />
+      <Route path='/:id' element={<RoleForm />} />
+      <Route path='/:id/assign' element={<RoleAssignmentForm />} />
     </Routes>
   );
 }

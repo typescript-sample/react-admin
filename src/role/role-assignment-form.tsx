@@ -35,7 +35,7 @@ const getIds = (users?: User[]): string[] => {
 const initialize = (id: string, set: DispatchWithCallback<Partial<InternalState>>, state: Partial<InternalState>) => {
   const userService = getUserService();
   const roleService = getRoleService();
-
+  debugger;
   Promise.all([
     userService.getUsersByRole(id),
     roleService.load(id),

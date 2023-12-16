@@ -26,7 +26,6 @@ export const SettingsForm = () => {
     initForm(refForm.current, registerEvents);
     const masterDataService = getMasterDataService();
     const dateFormat = getDateFormat();
-    console.log('date format ' + dateFormat)
     const lang = language();
     const s: Settings = { dateFormat, language: lang };
     setState({ settings: s }, () => {

@@ -215,7 +215,6 @@ const handleCheckAllModule = (e: React.ChangeEvent<HTMLInputElement>, privileges
                               actions: Map<String, number>, callback: (privileges: string[]) => void) => {
   e.preventDefault();
   const checked = e.target.checked;
-  console.log(checked, privileges)
   if (!checked) {
     callback([])
     return
@@ -355,7 +354,7 @@ export function RoleForm() {
 
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
-    navigate(`/roles/assign/${id}`);
+    navigate(`/roles/${id}/assign`);
     return;
   };
   const handleCheckBox = (event: React.ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
@@ -555,8 +554,9 @@ export function RoleForm() {
         <header>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back}/>
           <h2>{flag.newMode ? resource.create : resource.edit} {resource.role}</h2>
-          <button className='btn-group btn-right'><i onClick={e => assign(e, role.roleId)}
-                                                     className='material-icons'>group</i></button>
+          <button className='btn-group btn-right' hidden={flag.newMode}>
+            <i className='material-icons' onClick={e => assign(e, role.roleId)}>group</i>
+          </button>
         </header>
         <div>
           <section className="row">
