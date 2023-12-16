@@ -49,7 +49,8 @@ import './assets/css/dark.css';
 import './assets/css/grey.css';
 import UsersRoute from "./user";
 import RolesRoute from "./role";
-import AuditLogsRoute from "./audit-log";
+import { AuditLogsForm } from "./audit-log/audit-logs-form";
+import { SettingsForm } from './settings';
 
 let isInit = false;
 export function init() {
@@ -100,9 +101,10 @@ function App() {
         <Route path='' element={<LayoutPage />}>
           <Route path='/home' element={<HomePage />} />
           <Route path=':number' element={<AboutPage />} />
+          <Route path='/settings' element={<SettingsForm />} />
           <Route path='users/*' element={<UsersRoute />} />
           <Route path='roles/*' element={<RolesRoute />} />
-          <Route path='audit-logs/*' element={<AuditLogsRoute />} />
+          <Route path='audit-logs/*' element={<AuditLogsForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

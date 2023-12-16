@@ -29,7 +29,5 @@ export const en = {
   // Audit log
   audit_logs: 'Audit logs',
   audit_log_time: 'Date time',
-  audit_log_resource_type : 'Resource type',
-  audit_log_action : 'Action',
-  audit_log_created_by : 'Performed by',
+  audit_log_user : 'Performed by',
 };

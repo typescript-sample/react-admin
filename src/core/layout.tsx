@@ -280,7 +280,7 @@ export const LayoutPage = () => {
                       <hr style={{ margin: 0 }} />
                       <li onClick={changeMode}>{renderMode(resource)}</li>
                       <hr style={{ margin: 0 }} />
-                      <li><i className='material-icons'>account_circle</i><Link to={'my-profile'} >{state.username}</Link></li>
+                      <li><i className='material-icons'>account_circle</i><Link to={'settings'} >{state.username}</Link></li>
                       {/*<li><i className='material-icons'>settings</i><Link to={'my-profile/settings'}>{resource.my_settings}</Link></li>*/}
                       <hr style={{ margin: 0 }} />
                       <li>

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { datetimeToString, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import Pagination from 'reactx-pagination';
 import { formatLongDateTime } from 'ui-plus';
-import { getLocale, inputSearch } from 'uione';
+import { getDateFormat, inputSearch } from 'uione';
 import { AuditLog, AuditLogFilter, useAuditLog} from './service';
 import "./style.css";
 
@@ -29,7 +29,7 @@ const mapStyleStatus: Map<string, string> =  new Map ([
 ]);
 
 export const AuditLogsForm = () => {
-  const dateFormat = getLocale().dateFormat.toUpperCase();
+  const dateFormat = getDateFormat().toUpperCase();
   const refForm = React.useRef();
   const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch());
   const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, sort } = hooks;
@@ -48,7 +48,7 @@ export const AuditLogsForm = () => {
         <form id='rolesForm' name='rolesForm' noValidate={true} ref={refForm as any}>
           <section className='row search-group inline'>
             <label className='col s12 m6'>
-              Action
+              {resource.action}
               <input
                 type='text'
                 id='action'
@@ -60,8 +60,8 @@ export const AuditLogsForm = () => {
             </label>
             <label className='col s12 m4 l4'>
               {resource.audit_log_time}
-              <input type='datetime-local' step='.010' id='time_min' name='time_min' data-field='time.min' value={datetimeToString(filter?.time?.min)} onChange={updateState} />
-              <input type='datetime-local' step='.010' id='time_max' name='time_max' data-field='time.max'  value={datetimeToString(filter?.time?.max)} onChange={updateState} />
+              <input type='datetime-local' step='.010' id='time_min' name='time_min' data-field='time.min' value={datetimeToString(filter.time?.min)} onChange={updateState} />
+              <input type='datetime-local' step='.010' id='time_max' name='time_max' data-field='time.max'  value={datetimeToString(filter.time?.max)} onChange={updateState} />
             </label>
           </section>
           <section className='btn-group'>
@@ -71,7 +71,6 @@ export const AuditLogsForm = () => {
             </label>
             <button type='submit' className='btn-search' onClick={hooks.search}>{resource.search}</button>
           </section>
-
         </form>
         <form className='list-result'>
           {component.view === 'table' && (
@@ -87,12 +86,12 @@ export const AuditLogsForm = () => {
                     </th>
                     <th data-field='resource'>
                       <button type='button' id='sortResource' onClick={sort}>
-                        {resource.audit_log_resource_type}
+                        {resource.resource}
                       </button>
                     </th>
                     <th data-field='action'>
                       <button type='button' id='sortAction' onClick={sort}>
-                        {resource.audit_log_action}
+                        {resource.action}
                       </button>
                     </th>
                     <th data-field='status'>
@@ -101,7 +100,7 @@ export const AuditLogsForm = () => {
                       </button>
                     </th>
                     <th data-field='userId'>
-                        {resource.audit_log_created_by}
+                        {resource.audit_log_user}
                     </th>
                     <th data-field='ip'>
                       <button type='button' id='sortIp' onClick={sort}>
@@ -122,7 +121,7 @@ export const AuditLogsForm = () => {
                         return (
                             <tr key={i}>
                               <td className='text-right'>{(item as any).sequenceNo}</td>
-                              <td>{formatLongDateTime(item.time, 'MM-DD-YYYY HH:mm:ss')}</td>
+                              <td>{formatLongDateTime(item.time, dateFormat)}</td>
                               <td>{item.resource}</td>
                               <td>{item.action}</td>
                               <td><span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></td>

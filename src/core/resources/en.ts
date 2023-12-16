@@ -1,6 +1,8 @@
 export const en = {
   format_date: 'dd/mm/yyyy',
   format_momnent_date: 'DD/MM/YYYY, h:mm:ss a',
+  language: 'Language',
+  date_format: 'Date Format',
 
   home: 'Home',
   dashboard: 'Dashboard',
