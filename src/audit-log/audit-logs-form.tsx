@@ -1,9 +1,11 @@
 import { Item } from 'onecore';
 import * as React from 'react';
-import { datetimeToString, formatDate, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
+import { datetimeToString, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import Pagination from 'reactx-pagination';
-import { inputSearch } from 'uione';
+import { formatLongDateTime } from 'ui-plus';
+import { getLocale, inputSearch } from 'uione';
 import { AuditLog, AuditLogFilter, useAuditLog} from './service';
+import "./style.css";
 
 interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> {
   statusList: Item[];
@@ -27,6 +29,7 @@ const mapStyleStatus: Map<string, string> =  new Map ([
 ]);
 
 export const AuditLogsForm = () => {
+  const dateFormat = getLocale().dateFormat.toUpperCase();
   const refForm = React.useRef();
   const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch());
   const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, sort } = hooks;
@@ -119,7 +122,7 @@ export const AuditLogsForm = () => {
                         return (
                             <tr key={i}>
                               <td className='text-right'>{(item as any).sequenceNo}</td>
-                              <td>{formatDate(item.time, 'YYYY-MM-DD HH:mm:ss')}</td>
+                              <td>{formatLongDateTime(item.time, 'MM-DD-YYYY HH:mm:ss')}</td>
                               <td>{item.resource}</td>
                               <td>{item.action}</td>
                               <td><span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></td>
@@ -140,9 +143,9 @@ export const AuditLogsForm = () => {
                   <section>
                     <div>
                       <h3>{item.email}</h3>
-                      <h4>{item.action} <span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></h4>
+                      <h4 className='content'>{item.resource} <span>{item.action}</span></h4>
                       <p>{item.remark}</p>
-                      <p>{formatDate(item.time, 'YYYY-MM-DD HH:mm:ss')}</p>
+                      <p>{formatLongDateTime(item.time, dateFormat)} <span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></p>
                     </div>
                   </section>
                 </li>

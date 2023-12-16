@@ -40,7 +40,7 @@ export const auditLogModel: Attributes = {
   action: {
     match: 'equal'
   },
-  timestamp: {
+  time: {
     type: 'datetime'
   },
   status: {
