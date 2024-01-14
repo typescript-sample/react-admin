@@ -4,7 +4,7 @@ import { PageSizeSelect, SearchComponentState, useSearch, value } from 'react-ho
 import ReactModal from 'react-modal';
 import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
-import { getUserService, User, UserFilter } from './service';
+import { getUserService, User, UserFilter } from '../service';
 
 ReactModal.setAppElement('#root');
 interface Props {
@@ -25,7 +25,7 @@ interface UserSearch extends SearchComponentState<User, UserFilter> {
     userId: string;
     username: string;
     email: string;
-    status: any[];
+    status: string[];
   };
 }
 const userFilter: UserFilter = {
@@ -68,8 +68,6 @@ export const UsersLookup = (props: Props) => {
     getUserService(),
     inputSearch()
   );
-  component.viewable = true;
-  component.editable = true;
   const isOpenModel = props.isOpenModel;
   const users = props.users ? props.users : [];
   const { list } = state;

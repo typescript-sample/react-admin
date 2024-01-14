@@ -5,7 +5,7 @@ import { MasterDataClient, MasterDataService } from './master-data';
 import { RoleClient, UserClient, UserService } from './user';
 import { RoleService } from './user';
 
-export * from '../service/user';
+export * from './user';
 // axios.defaults.withCredentials = true;
 
 const httpRequest = new HttpRequest(axios, options);

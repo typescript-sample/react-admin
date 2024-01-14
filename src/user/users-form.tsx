@@ -29,8 +29,6 @@ export const UsersForm = () => {
   const navigate = useNavigate();
   const refForm = React.useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());
-  component.viewable = true;
-  component.editable = true;
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`${id}`);
@@ -44,7 +42,7 @@ export const UsersForm = () => {
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
-          {component.addable && <Link id='btnNew' className='btn-new' to='new'/>}
+          <Link id='btnNew' className='btn-new' to='new'/>
         </div>
       </header>
       <div>

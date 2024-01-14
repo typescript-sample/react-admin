@@ -7,7 +7,7 @@ import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
 import { getUserService, User } from './service';
 import { getRoleService, Role } from './service';
-import { UsersLookup } from '../users-lookup';
+import { UsersLookup } from '../components/users-lookup';
 
 interface InternalState {
   role: Role;

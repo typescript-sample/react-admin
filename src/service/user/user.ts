@@ -5,7 +5,7 @@ export interface UserFilter extends Filter {
   username: string;
   email: string;
   displayName: string;
-  status: string[] | string;
+  status: string[];
 }
 export interface User {
   userId: string;

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { buildShownItems, Groups, Item } from 'react-groups';
 import { useSearchParams } from 'react-router-dom';
-import { usePrivileges, useResource } from 'uione';
+import { getPrivileges, useResource } from 'uione';
 
 export default function HomePage() {
   const resource = useResource();
-  const groups = usePrivileges();
+  const groups = getPrivileges();
   const [items] = useState<Item[]>(groups);
   const [searchParams] = useSearchParams();
   const v = searchParams.get('q') as string || '';

@@ -1,7 +1,7 @@
 import { Item } from 'onecore';
 import React, { useEffect } from 'react';
 import { OnClick, initForm, message, useUpdate } from 'react-hook-core';
-import { confirm, getDateFormat, handleError, language, registerEvents, requiredOnBlur, showMessage, useResource } from 'uione';
+import { confirm, getDateFormat, getLanguage, handleError, registerEvents, requiredOnBlur, showMessage, useResource } from 'uione';
 import { Settings, getMasterDataService, getSettingsService } from './service';
 
 interface InternalState {
@@ -26,8 +26,8 @@ export const SettingsForm = () => {
     initForm(refForm.current, registerEvents);
     const masterDataService = getMasterDataService();
     const dateFormat = getDateFormat();
-    const lang = language();
-    const s: Settings = { dateFormat, language: lang };
+    const language = getLanguage();
+    const s: Settings = { dateFormat, language };
     setState({ settings: s }, () => {
       Promise.all([
         masterDataService.getLanguages(),
