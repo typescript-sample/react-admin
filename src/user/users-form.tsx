@@ -4,7 +4,7 @@ import { checked, OnClick, Search, SearchComponentState, useSearch, value } from
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'reactx-pagination';
-import { inputSearch } from 'uione';
+import { hasPermission, inputSearch, Permission } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
 import { getUserService, User, UserFilter } from './service';
@@ -29,6 +29,7 @@ export const UsersForm = () => {
   const navigate = useNavigate();
   const refForm = React.useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());
+  const canWrite = hasPermission(Permission.write);
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`${id}`);
@@ -42,7 +43,7 @@ export const UsersForm = () => {
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
-          <Link id='btnNew' className='btn-new' to='new'/>
+          {canWrite && <Link id='btnNew' className='btn-new' to='new'/>}
         </div>
       </header>
       <div>

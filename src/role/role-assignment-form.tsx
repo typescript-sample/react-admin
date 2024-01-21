@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { buildId, DispatchWithCallback, error, message } from 'react-hook-core';
 import { useNavigate, useParams } from 'react-router-dom';
-import { confirm, handleError, showMessage, storage, useResource } from 'uione';
+import { confirm, handleError, hasPermission, showMessage, storage, useResource, write } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
 import { getUserService, User } from './service';
@@ -32,21 +32,6 @@ const getIds = (users?: User[]): string[] => {
   return users ? users.map(item => item.userId) : [];
 };
 
-const initialize = (id: string, set: DispatchWithCallback<Partial<InternalState>>, state: Partial<InternalState>) => {
-  const userService = getUserService();
-  const roleService = getRoleService();
-  debugger;
-  Promise.all([
-    userService.getUsersByRole(id),
-    roleService.load(id),
-  ]).then(values => {
-    const [users, role] = values;
-    if (role) {
-      set({ ...state, users, shownUsers: users, role });
-    }
-  }).catch(err => error(err, storage.resource().value, storage.alert));
-};
-
 export const RoleAssignmentForm = () => {
   const resource = useResource();
   const navigate = useNavigate();
@@ -56,11 +41,22 @@ export const RoleAssignmentForm = () => {
   const { role, isOpenModel, q } = state;
   let { users, selectedUsers, isCheckboxShown } = state;
   const { shownUsers } = state;
+  const isReadOnly = !hasPermission(write, 2);
 
   useEffect(() => {
     const id = buildId<string>(params);
     if (id) {
-      initialize(id, setState as any, state);
+      const userService = getUserService();
+      const roleService = getRoleService();
+      Promise.all([
+        userService.getUsersByRole(id),
+        roleService.load(id),
+      ]).then(values => {
+        const [users, role] = values;
+        if (role) {
+          setState({ ...state, users, shownUsers: users, role });
+        }
+      }).catch(err => error(err, storage.resource().value, storage.alert));
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -186,18 +182,20 @@ export const RoleAssignmentForm = () => {
               {resource.user}
               <div className='btn-group'>
                 <button type='button'
+                  name='btnAdd'
+                  hidden={isReadOnly}
                   onClick={() => setState({
                     ...state,
                     isOpenModel: true
                   })}>{resource.add}</button>
                 <button type='button'
+                  name='btnSelect'
+                  hidden={isReadOnly}
                   onClick={onShowCheckBox}>{isCheckboxShown ? resource.deselect : resource.select}</button>
                 {isCheckboxShown ?
-                  <button type='button' onClick={onCheckAll}>{resource.check_all}</button> : ''}
-                {isCheckboxShown ? <button type='button'
-                  onClick={onUnCheckAll}>{resource.uncheck_all}</button> : ''}
-                {isCheckboxShown ? <button type='button'
-                  onClick={onDelete}>{resource.delete}</button> : ''}
+                  <button type='button' name='btnCheckAll' hidden={isReadOnly} onClick={onCheckAll}>{resource.check_all}</button> : ''}
+                {isCheckboxShown ? <button type='button' name='btnUncheckAll' hidden={isReadOnly} onClick={onUnCheckAll}>{resource.uncheck_all}</button> : ''}
+                {isCheckboxShown ? <button type='button' name='btnDelete' hidden={isReadOnly} onClick={onDelete}>{resource.delete}</button> : ''}
               </div>
             </h4>
             <label className='col s12 search-input'>
@@ -234,7 +232,7 @@ export const RoleAssignmentForm = () => {
           </section>
         </div>
         <footer>
-          <button type='submit' id='btnSave' name='btnSave' onClick={save}>{resource.save}</button>
+          <button type='submit' id='btnSave' name='btnSave' onClick={save} disabled={isReadOnly}>{resource.save}</button>
         </footer>
       </form>
       <UsersLookup

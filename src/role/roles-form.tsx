@@ -4,7 +4,7 @@ import { checked, OnClick,  PageSizeSelect, SearchComponentState, useSearch, val
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'reactx-pagination';
-import { inputSearch } from 'uione';
+import { hasPermission, inputSearch, write } from 'uione';
 import { getRoleService, Role, RoleFilter } from './service';
 
 interface RoleSearch extends SearchComponentState<Role, RoleFilter> {
@@ -26,7 +26,7 @@ export const RolesForm = () => {
   const navigate = useNavigate();
   const refForm = React.useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Role, RoleFilter, RoleSearch>(refForm, roleSearch, getRoleService(), inputSearch());
-
+  const canWrite = hasPermission(write);
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`${id}`);
@@ -40,7 +40,7 @@ export const RolesForm = () => {
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
-          <Link id='btnNew' className='btn-new' to='new'/>
+          {canWrite && <Link id='btnNew' className='btn-new' to='new'/>}
         </div>
       </header>
       <div>

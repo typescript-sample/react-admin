@@ -1,9 +1,9 @@
 import { Item } from 'onecore';
-import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import { createModel, DispatchWithCallback, EditComponentParam, useEdit } from 'react-hook-core';
+import { createModel, DispatchWithCallback, EditComponentParam, setReadOnly, useEdit } from 'react-hook-core';
 import { formatPhone } from 'ui-plus';
-import { emailOnBlur, Gender, handleError, handleSelect, inputEdit, phoneOnBlur, requiredOnBlur, Status } from 'uione';
+import { emailOnBlur, Gender, handleError, handleSelect, hasPermission, inputEdit, Permission, phoneOnBlur, requiredOnBlur, Status } from 'uione';
 import { getMasterData, getUserService, User } from './service';
 
 interface InternalState {
@@ -46,8 +46,14 @@ const param: EditComponentParam<User, string, InternalState> = {
 };
 export const UserForm = () => {
   const navigate = useNavigate();
-  const refForm = React.useRef();
+  const refForm = useRef();
   const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(refForm, initialState, getUserService(), inputEdit(), param);
+  useEffect(() => {
+    const isReadOnly = !hasPermission(Permission.write, 1);
+    if (isReadOnly) {
+      setReadOnly(refForm.current as any)
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
     navigate(`/users/${id}/assign`);

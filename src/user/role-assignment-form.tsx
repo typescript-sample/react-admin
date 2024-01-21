@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { OnClick, buildId, error, message } from 'react-hook-core';
 import { useNavigate, useParams } from 'react-router-dom';
-import { confirm, handleError, showMessage, storage, useResource } from 'uione';
+import { Permission, confirm, handleError, hasPermission, showMessage, storage, useResource } from 'uione';
 import { getUserService, User } from './service';
 import { getRoleService } from './service';
 import { Role } from './user';
@@ -33,6 +33,7 @@ export const RoleAssignmentForm = () => {
   const [state, setState] = useState(initialState);
   const { user } = state;
   let { roles, selectedRoles, checkedAll } = state;
+  const disabled = !hasPermission(Permission.write, 2);
 
   useEffect(() => {
     const id = buildId<string>(params);
@@ -126,6 +127,7 @@ export const RoleAssignmentForm = () => {
                 type='checkbox' 
                 id='checkAll'
                 name='checkAll'
+                disabled={disabled}
                 checked={checkedAll} 
                 onChange={e => onCheckAll(e)}
               />
@@ -136,7 +138,8 @@ export const RoleAssignmentForm = () => {
                   <li key={i} className='col check-item'>
                     <input 
                       type='checkbox' 
-                      name='selected' 
+                      name='selected'
+                      disabled={disabled}
                       checked={selectedRoles.includes(item)} 
                       onChange={(e) => onCheck(e, item.roleId)}
                     />
@@ -150,7 +153,7 @@ export const RoleAssignmentForm = () => {
           </section>
         </div>
         <footer>
-          <button type='submit' id='btnSave' name='btnSave' onClick={save}>{resource.save}</button>
+          <button type='submit' id='btnSave' name='btnSave' onClick={save} disabled={disabled}>{resource.save}</button>
         </footer>
       </form>
     </div>

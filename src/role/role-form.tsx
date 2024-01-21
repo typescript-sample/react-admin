@@ -1,7 +1,7 @@
 import * as React from "react";
-import {createModel, DispatchWithCallback, EditComponentParam, useEdit} from "react-hook-core";
+import {createModel, DispatchWithCallback, EditComponentParam, setReadOnly, useEdit} from "react-hook-core";
 import {useNavigate} from "react-router-dom";
-import {checkPatternOnBlur, handleError, inputEdit, Status} from "uione";
+import {checkPatternOnBlur, handleError, hasPermission, inputEdit, Status, write} from "uione";
 import {getRoleService, Privilege, Role} from "./service";
 import "./style.css";
 
@@ -289,7 +289,7 @@ export function RoleForm() {
     save,
     resource
   } = useEdit<Role, string, InternalState>(refForm, initialState, getRoleService(), inputEdit(), param);
-
+  const isReadOnly = !hasPermission(write, 1);
   let seq = 1;
   const [privileges, setPrivileges] = React.useState<Permission[]>([]);
 
@@ -314,9 +314,12 @@ export function RoleForm() {
           })
         );
       }
+      if (isReadOnly) {
+        setReadOnly(refForm.current as any, 'keyword', 'btnSave');
+      }
       setState({role: obj}, () => isCheckedAll(obj.privileges, all, setState));
     }
-  }, [state.role]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.role]);
 
   const handleCheckParent = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
@@ -656,6 +659,7 @@ export function RoleForm() {
                       })
                     })}
                   checked={state.checkedAll}
+                  disabled={isReadOnly || state.keyword !== ""}
                 />
                 <p>
                   {resource.module}</p>
@@ -664,7 +668,7 @@ export function RoleForm() {
               <p className="col s1 m2 center">{resource.write}</p>
               <p className="col s1 m2 center">{resource.delete}</p>
             </div>
-            {renderForms(state.shownPrivileges, "", state.keyword !== "")}
+            {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
           </section>
         </div>
         <footer>
