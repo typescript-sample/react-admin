@@ -1,9 +1,9 @@
 import { Item } from 'onecore';
-import * as React from 'react';
+import { useRef } from 'react';
 import { datetimeToString, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import Pagination from 'reactx-pagination';
-import { formatLongDateTime } from 'ui-plus';
-import { getDateFormat, inputSearch } from 'uione';
+import { formatFullDateTime } from 'ui-plus';
+import { getDateFormat, inputSearch, useLocale } from 'uione';
 import { AuditLog, AuditLogFilter, useAuditLog } from './service';
 import "./style.css";
 
@@ -30,7 +30,8 @@ const mapStyleStatus: Map<string, string> = new Map([
 
 export const AuditLogsForm = () => {
   const dateFormat = getDateFormat().toUpperCase();
-  const refForm = React.useRef();
+  const locale = useLocale();
+  const refForm = useRef();
   const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch());
   const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, sort } = hooks;
 
@@ -121,7 +122,7 @@ export const AuditLogsForm = () => {
                       return (
                         <tr key={i}>
                           <td className='text-right'>{(item as any).sequenceNo}</td>
-                          <td>{formatLongDateTime(item.time, dateFormat)}</td>
+                          <td>{formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}</td>
                           <td>{item.resource}</td>
                           <td>{item.action}</td>
                           <td><span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></td>
@@ -144,7 +145,7 @@ export const AuditLogsForm = () => {
                       <h3>{item.email}</h3>
                       <h4 className='content'>{item.resource} <span>{item.action}</span></h4>
                       <p>{item.remark}</p>
-                      <p>{formatLongDateTime(item.time, dateFormat)} <span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></p>
+                      <p>{formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)} <span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></p>
                     </div>
                   </section>
                 </li>

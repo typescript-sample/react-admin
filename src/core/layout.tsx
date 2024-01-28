@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import { useEffect, useState } from 'react';
-import * as React from 'react';
-import { useMergeState } from 'react-hook-core';
+import { OnClick, useMergeState } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link, Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { collapseAll, expandAll, Nav, sub } from 'reactx-nav';
-import { hasClass, options, parentHasClass, Privilege, storage, StringMap } from 'uione';
+import { getPrivileges, getUsername, getUserType, hasClass, options, parentHasClass, Privilege, storage, StringMap, useResource, useUser } from 'uione';
 import logo from '../assets/images/logo.png';
 
 interface InternalState {
@@ -76,16 +75,17 @@ const initialState: InternalState = {
   pinnedItems: []
 };
 export const LayoutPage = () => {
-  const resource = storage.getResource();
+  const resource = useResource();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [state, setState] = useMergeState<InternalState>(initialState);
   const [topClass, setTopClass] = useState('');
-  const [user, setUser] = useState(storage.user());
+  const loginUser = useUser();
+  const [user, setUser] = useState(loginUser);
 
   useEffect(() => {
-    const items = storage.privileges();
+    const items = getPrivileges();
     if (items && items.length > 0) {
       for (let i = 0; i <= items.length; i++) {
         if (items[i]) {
@@ -95,8 +95,8 @@ export const LayoutPage = () => {
     }
     setState({ items });
 
-    const username = storage.username();
-    const userType = storage.getUserType();
+    const username = getUsername();
+    const userType = getUserType();
     if (username || userType) {
       setState({ username, userType });
     }
@@ -106,7 +106,7 @@ export const LayoutPage = () => {
     setState({keyword: ''});
     navigate(`home?q=`);
   };
-  const search = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const search = (event: OnClick) => {
     event.preventDefault();
   };
   const handleInput = (e: { target: { value: string } }) => {
@@ -118,7 +118,7 @@ export const LayoutPage = () => {
     setState({ isToggleSearch: !state.isToggleSearch });
   };
 
-  const toggleMenu = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const toggleMenu = (e: OnClick) => {
     setState({ isToggleMenu: !state.isToggleMenu });
   };
 
@@ -180,7 +180,7 @@ export const LayoutPage = () => {
     navigate('/signin');
   };
 
-  const pin = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, index: number, item: Privilege) => {
+  const pin = (event: OnClick, index: number, item: Privilege) => {
     event.stopPropagation();
     const { items, pinnedItems } = state;
     if (items.find((i) => i === item)) {
@@ -198,11 +198,10 @@ export const LayoutPage = () => {
     }
   };
   useEffect(() => {
-    setUser(storage.user());
-  }, [storage.user()]); // eslint-disable-line react-hooks/exhaustive-deps
+    setUser(loginUser);
+  }, [loginUser]);
   useEffect(() => {
     setState({ keyword: searchParams.get('q') as string });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
   useEffect(() => {
     const { isToggleMenu, isToggleSearch } = state;

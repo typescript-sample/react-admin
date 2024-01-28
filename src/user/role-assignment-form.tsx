@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-import { OnClick, buildId, error, message } from 'react-hook-core';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { buildId, error, message, OnClick } from 'react-hook-core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Permission, confirm, handleError, hasPermission, showMessage, storage, useResource } from 'uione';
 import { getUserService, User } from './service';
@@ -54,7 +53,7 @@ export const RoleAssignmentForm = () => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const save = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const save = (e: OnClick) => {
     e.preventDefault();
     const userRoles = getRoles(selectedRoles);
     const msg = message(resource, 'msg_confirm_save', 'confirm', 'yes', 'no');
@@ -68,7 +67,7 @@ export const RoleAssignmentForm = () => {
     }, msg.no, msg.yes);
   };
 
-  const onCheck = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+  const onCheck = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     if (roles) {
       const role = roles.find(v => v.roleId === id);
       if (role) {
@@ -84,7 +83,7 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedRoles, checkedAll });
   };
 
-  const onCheckAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onCheckAll = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked && roles) {
       selectedRoles = roles;
       checkedAll = true;

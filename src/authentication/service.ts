@@ -2,7 +2,7 @@ import { AuthenClient, AuthenService, OAuth2Client, OAuth2Service, User } from '
 import axios from 'axios';
 import { HttpRequest } from 'axios-core';
 import { PasswordClient, PasswordService } from 'password-client';
-import { Signup, SignupClient, SignupService} from 'signup-client';
+import { Signup, SignupClient, SignupService } from 'signup-client';
 import { storage } from 'uione';
 // axios.defaults.withCredentials = true;
 

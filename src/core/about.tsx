@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-const AboutPage: React.FunctionComponent = () => {
+const AboutPage: FunctionComponent = () => {
   const [message, setMessage] = useState('');
   const { param } = useParams();
 

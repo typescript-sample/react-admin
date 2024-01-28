@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { OnClick, buildId, error, message } from 'react-hook-core';
+import { buildId, error, message, OnClick } from 'react-hook-core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirm, handleError, hasPermission, showMessage, storage, useResource, write } from 'uione';
 import femaleIcon from '../assets/images/female.png';
@@ -35,7 +35,6 @@ export const RoleAssignmentForm = () => {
   const resource = useResource();
   const navigate = useNavigate();
   const params = useParams();
-  const roleService = getRoleService();
   const [state, setState] = useState(initialState);
   const { role, isOpenModel, q } = state;
   let { users, selectedUsers, isCheckboxShown } = state;
@@ -72,6 +71,7 @@ export const RoleAssignmentForm = () => {
     const userIDs = getIds(users);
     const msg = message(resource, 'msg_confirm_save', 'confirm', 'yes', 'no');
     confirm(msg.message, msg.title, () => {
+      const roleService = getRoleService();
       roleService.assign(role.roleId, userIDs).then(result => {
         showMessage(resource.msg_save_success);
       }).catch(handleError);

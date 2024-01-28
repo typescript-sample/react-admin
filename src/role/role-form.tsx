@@ -311,7 +311,7 @@ export function RoleForm() {
       }
       setState({role: obj}, () => isCheckedAll(obj.privileges, all, setState));
     }
-  }, [state.role]);
+  }, [state.role, isReadOnly]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()

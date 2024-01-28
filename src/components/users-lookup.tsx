@@ -1,6 +1,6 @@
 import { Item } from 'onecore';
-import * as React from 'react';
-import { PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
+import { ChangeEvent, KeyboardEvent, MouseEvent, useRef } from 'react';
+import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import ReactModal from 'react-modal';
 import Pagination from 'reactx-pagination';
 import { inputSearch } from 'uione';
@@ -10,7 +10,7 @@ ReactModal.setAppElement('#root');
 interface Props {
   isOpenModel: boolean;
   users: User[];
-  onModelClose?: (e: React.MouseEvent | React.KeyboardEvent) => void;
+  onModelClose?: (e: MouseEvent | KeyboardEvent) => void;
   onModelSave: (e: User[]) => void;
 }
 
@@ -51,18 +51,8 @@ const initialState: UserSearch = {
 };
 // props onModelSave onModelClose isOpenModel users?=[]
 export const UsersLookup = (props: Props) => {
-  const refForm = React.useRef();
-  const {
-    state,
-    setState,
-    resource,
-    component,
-    search,
-    sort,
-    pageChanged,
-    pageSizeChanged,
-    changeView,
-  } = useSearch<User, UserFilter, UserSearch>(
+  const refForm = useRef();
+  const { state, setState, resource, component, search, sort, pageChanged, pageSizeChanged, changeView } = useSearch<User, UserFilter, UserSearch> (
     refForm,
     initialState,
     getUserService(),
@@ -74,7 +64,7 @@ export const UsersLookup = (props: Props) => {
   const filter = value(state.model);
   let index = 0;
 
-  const onCheckUser = (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+  const onCheckUser = (e: OnClick) => {
     const listState = state.list;
     const usersState = state.users;
     const target: HTMLInputElement = e.target as HTMLInputElement;
@@ -101,7 +91,7 @@ export const UsersLookup = (props: Props) => {
     props.onModelSave(state.users);
   };
 
-  const onModelClose = (e: React.MouseEvent | React.KeyboardEvent) => {
+  const onModelClose = (e: MouseEvent | KeyboardEvent) => {
     setState({
       users: [],
       availableUsers: [],
@@ -120,14 +110,14 @@ export const UsersLookup = (props: Props) => {
     }
   };
 
-  const onChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
     const { model } = state;
     setState({
       model: { ...model, ...({ [e.target.name]: e.target.value } as any) },
     });
   };
 
-  const onSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onSearch = (e: OnClick) => {
     setState({ list: [] });
     search(e);
   };
@@ -149,49 +139,16 @@ export const UsersLookup = (props: Props) => {
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}
           </div>
-          <button
-            type='button'
-            id='btnClose'
-            name='btnClose'
-            className='btn-close'
-            onClick={onModelClose}
-          />
+          <button type='button' id='btnClose' name='btnClose' className='btn-close' onClick={onModelClose}/>
         </header>
         <div>
-          <form
-            id='usersLookupForm'
-            name='usersLookupForm'
-            className='usersLookupForm'
-            noValidate={true}
-            ref={refForm as any}
-          >
+          <form id='usersLookupForm' name='usersLookupForm' className='usersLookupForm' noValidate={true} ref={refForm as any}>
             <section className='row search-group'>
               <label className='col s12 m6 search-input'>
-                <PageSizeSelect
-                  size={component.pageSize}
-                  sizes={component.pageSizes}
-                  onChange={pageSizeChanged}
-                />
-                <input
-                  type='text'
-                  id='q'
-                  name='q'
-                  onChange={onChangeText}
-                  value={filter.q}
-                  maxLength={40}
-                  placeholder={resource.user_lookup}
-                />
-                <button
-                  type='button'
-                  hidden={!filter.userId}
-                  className='btn-remove-text'
-                  onClick={clearUserId}
-                />
-                <button
-                  type='submit'
-                  className='btn-search'
-                  onClick={onSearch}
-                />
+                <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged}/>
+                <input type='text' id='q' name='q' onChange={onChangeText} value={filter.q} maxLength={40} placeholder={resource.user_lookup}/>
+                <button type='button' hidden={!filter.userId} className='btn-remove-text' onClick={clearUserId}/>
+                <button type='submit' className='btn-search' onClick={onSearch}/>
               </label>
               <Pagination
                 className='col s6 m3'
@@ -264,17 +221,8 @@ export const UsersLookup = (props: Props) => {
                       return (
                         <li key={i} className='col s12 m6 l4 xl3'>
                           <section>
-                            <input
-                              type='checkbox'
-                              name='selected'
-                              value={user.userId}
-                              onClick={onCheckUser}
-                            />
-                            <img
-                              src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : ''}
-                              alt='user'
-                              className='round-border'
-                            />
+                            <input type='checkbox' name='selected' value={user.userId} onClick={onCheckUser}/>
+                            <img src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : ''} alt='user' className='round-border'/>
                             <div>
                               <h3 className={user.status === 'I' ? 'inactive' : ''}>{user.displayName}</h3>
                               <p>{user.email}</p>

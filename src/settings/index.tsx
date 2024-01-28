@@ -1,6 +1,6 @@
 import { Item } from 'onecore';
-import React, { useEffect } from 'react';
-import { OnClick, initForm, message, useUpdate } from 'react-hook-core';
+import { useEffect, useRef } from 'react';
+import { initForm, message, OnClick, useUpdate } from 'react-hook-core';
 import { confirm, getDateFormat, getLanguage, handleError, registerEvents, requiredOnBlur, showMessage, useResource } from 'uione';
 import { Settings, getMasterDataService, getSettingsService } from './service';
 
@@ -18,7 +18,7 @@ const initialState: InternalState = {
 
 export const SettingsForm = () => {
   const resource = useResource();
-  const refForm = React.useRef();
+  const refForm = useRef();
   const { state, setState, updateState } = useUpdate<InternalState>(initialState);
   const { settings } = state;
 
@@ -27,8 +27,8 @@ export const SettingsForm = () => {
     const masterDataService = getMasterDataService();
     const dateFormat = getDateFormat();
     const language = getLanguage();
-    const s: Settings = { dateFormat, language };
-    setState({ settings: s }, () => {
+    const settings: Settings = { dateFormat, language };
+    setState({ settings }, () => {
       Promise.all([
         masterDataService.getLanguages(),
         masterDataService.getDateFormats()
