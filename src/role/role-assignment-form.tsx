@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import * as React from 'react';
-import { buildId, error, message } from 'react-hook-core';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { OnClick, buildId, error, message } from 'react-hook-core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirm, handleError, hasPermission, showMessage, storage, useResource, write } from 'uione';
 import femaleIcon from '../assets/images/female.png';
@@ -60,7 +59,7 @@ export const RoleAssignmentForm = () => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
     if (users) {
       const v = e.target.value;
       const result = users.filter(u => (u.username && u.username.includes(v)) || (u.displayName && u.displayName.includes(v)) || (u.email && u.email.includes(v)));
@@ -68,7 +67,7 @@ export const RoleAssignmentForm = () => {
       setState({ ...state, ...obj });
     }
   };
-  const save = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const save = (e: OnClick) => {
     e.preventDefault();
     const userIDs = getIds(users);
     const msg = message(resource, 'msg_confirm_save', 'confirm', 'yes', 'no');
@@ -139,13 +138,13 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedUsers: [] });
   };
 
-  const back = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const back = (e: OnClick) => {
     if (e) {
       e.preventDefault();
     }
     navigate(-1);
   };
-  const clearQ = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const clearQ = (e: OnClick) => {
     e.preventDefault();
     setState({ ...state, q: ''});
   };
@@ -180,23 +179,13 @@ export const RoleAssignmentForm = () => {
           <section className='row detail'>
             <h4>
               {resource.user}
-              <div className='btn-group'>
-                <button type='button'
-                  name='btnAdd'
-                  hidden={isReadOnly}
-                  onClick={() => setState({
-                    ...state,
-                    isOpenModel: true
-                  })}>{resource.add}</button>
-                <button type='button'
-                  name='btnSelect'
-                  hidden={isReadOnly}
-                  onClick={onShowCheckBox}>{isCheckboxShown ? resource.deselect : resource.select}</button>
-                {isCheckboxShown ?
-                  <button type='button' name='btnCheckAll' hidden={isReadOnly} onClick={onCheckAll}>{resource.check_all}</button> : ''}
-                {isCheckboxShown ? <button type='button' name='btnUncheckAll' hidden={isReadOnly} onClick={onUnCheckAll}>{resource.uncheck_all}</button> : ''}
-                {isCheckboxShown ? <button type='button' name='btnDelete' hidden={isReadOnly} onClick={onDelete}>{resource.delete}</button> : ''}
-              </div>
+              {!isReadOnly && <div className='btn-group'>
+                <button type='button' name='btnAdd' onClick={() => setState({...state, isOpenModel: true})}>{resource.add}</button>
+                <button type='button' name='btnSelect' onClick={onShowCheckBox}>{isCheckboxShown ? resource.deselect : resource.select}</button>
+                {isCheckboxShown && <button type='button' name='btnCheckAll' onClick={onCheckAll}>{resource.check_all}</button>}
+                {isCheckboxShown && <button type='button' name='btnUncheckAll' onClick={onUnCheckAll}>{resource.uncheck_all}</button>}
+                {isCheckboxShown && <button type='button' name='btnDelete' onClick={onDelete}>{resource.delete}</button>}
+              </div>}
             </h4>
             <label className='col s12 search-input'>
               <i className='btn-search' />

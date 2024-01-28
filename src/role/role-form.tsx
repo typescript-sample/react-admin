@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState, useRef } from 'react';
-import {createModel, DispatchWithCallback, EditComponentParam, setReadOnly, useEdit} from "react-hook-core";
+import {createModel, DispatchWithCallback, EditComponentParam, OnClick, setReadOnly, useEdit} from "react-hook-core";
 import {useNavigate} from "react-router-dom";
 import {checkPatternOnBlur, handleError, hasPermission, inputEdit, Status, write} from "uione";
 import {getRoleService, Privilege, Role} from "./service";
@@ -347,7 +347,7 @@ export function RoleForm() {
     setState({keyword: q, shownPrivileges});
   };
 
-  const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+  const assign = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`/roles/${id}/assign`);
     return;

@@ -1,5 +1,5 @@
 import { Item } from 'onecore';
-import * as React from 'react';
+import { useRef } from 'react';
 import { checked, OnClick, Search, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ const initialState: UserSearch = {
 };
 export const UsersForm = () => {
   const navigate = useNavigate();
-  const refForm = React.useRef();
+  const refForm = useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());
   const canWrite = hasPermission(Permission.write);
   const edit = (e: OnClick, id: string) => {

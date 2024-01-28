@@ -1,5 +1,5 @@
 import { Item } from 'onecore';
-import * as React from 'react';
+import { useRef } from 'react';
 import { checked, OnClick,  PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ const roleSearch: RoleSearch = {
 };
 export const RolesForm = () => {
   const navigate = useNavigate();
-  const refForm = React.useRef();
+  const refForm = useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Role, RoleFilter, RoleSearch>(refForm, roleSearch, getRoleService(), inputSearch());
   const canWrite = hasPermission(write);
   const edit = (e: OnClick, id: string) => {
