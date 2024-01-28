@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { buildId, DispatchWithCallback, error, message } from 'react-hook-core';
+import { buildId, error, message } from 'react-hook-core';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirm, handleError, hasPermission, showMessage, storage, useResource, write } from 'uione';
 import femaleIcon from '../assets/images/female.png';

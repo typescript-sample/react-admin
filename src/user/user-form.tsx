@@ -57,7 +57,6 @@ export const UserForm = () => {
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
     navigate(`/users/${id}/assign`);
-    return;
   };
   const user = state.user;
   return (

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { ChangeEvent, useEffect, useState, useRef } from 'react';
 import {createModel, DispatchWithCallback, EditComponentParam, setReadOnly, useEdit} from "react-hook-core";
 import {useNavigate} from "react-router-dom";
 import {checkPatternOnBlur, handleError, hasPermission, inputEdit, Status, write} from "uione";
@@ -211,7 +211,7 @@ function isCheckedAll(privileges: string[] | undefined, all: string[], setState2
   return checkedAll
 }
 
-const handleCheckAllModule = (e: React.ChangeEvent<HTMLInputElement>, privileges: string[] | undefined, all: string[],
+const handleCheckAllModule = (e: ChangeEvent<HTMLInputElement>, privileges: string[] | undefined, all: string[],
                               actions: Map<String, number>, callback: (privileges: string[]) => void) => {
   e.preventDefault();
   const checked = e.target.checked;
@@ -279,21 +279,13 @@ const param: EditComponentParam<Role, string, InternalState> = {
 
 export function RoleForm() {
   const navigate = useNavigate();
-  const refForm = React.useRef();
-  const {
-    state,
-    setState,
-    back,
-    flag,
-    updateState,
-    save,
-    resource
-  } = useEdit<Role, string, InternalState>(refForm, initialState, getRoleService(), inputEdit(), param);
+  const refForm = useRef();
+  const { state, setState, back, flag, updateState, save, resource } = useEdit<Role, string, InternalState>(refForm, initialState, getRoleService(), inputEdit(), param);
   const isReadOnly = !hasPermission(write, 1);
   let seq = 1;
-  const [privileges, setPrivileges] = React.useState<Permission[]>([]);
+  const [privileges, setPrivileges] = useState<Permission[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const obj = state.role;
     if (obj) {
       const {all, actions} = state;
@@ -321,7 +313,7 @@ export function RoleForm() {
     }
   }, [state.role]);
 
-  const handleCheckParent = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
+  const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
     const {all, allPrivileges, actions} = state;
     const obj = state.role;
@@ -348,7 +340,7 @@ export function RoleForm() {
     );
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value;
     const {allPrivileges} = state;
     const shownPrivileges = buildShownModules(q, allPrivileges);
@@ -360,7 +352,7 @@ export function RoleForm() {
     navigate(`/roles/${id}/assign`);
     return;
   };
-  const handleCheckBox = (event: React.ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
+  const handleCheckBox = (event: ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
     event.preventDefault()
     const uChecked: boolean = event.target.checked;
     let pChecked: number = +event.target.value;
