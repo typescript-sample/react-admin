@@ -10,6 +10,9 @@ export const config = {
   privilege_url: 'http://localhost:8083/privileges',
   audit_log_url: 'http://localhost:8083/audit-logs',
   settings_url: 'http://localhost:8083/settings',
+
+  currency_url: 'http://localhost:8083/currencies',
+  locale_url: 'http://localhost:8083/locales',
 };
 
 export const env = {

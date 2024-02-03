@@ -21,6 +21,8 @@ import HomePage from './core/home';
 import LayoutPage from './core/layout';
 import UsersRoute from "./user";
 import RolesRoute from "./role";
+import CurrenciesRoute from "./currency";
+import LocalesRoute from "./locale";
 import { AuditLogsForm } from "./audit-log";
 import { SettingsForm } from './settings';
 
@@ -100,6 +102,8 @@ function App() {
           <Route path='/settings' element={<SettingsForm />} />
           <Route path='users/*' element={<UsersRoute />} />
           <Route path='roles/*' element={<RolesRoute />} />
+          <Route path='currencies/*' element={<CurrenciesRoute />} />
+          <Route path='locales/*' element={<LocalesRoute />} />
           <Route path='audit-logs' element={<AuditLogsForm />} />
         </Route>
       </Routes>

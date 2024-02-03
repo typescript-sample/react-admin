@@ -143,7 +143,7 @@ export const AuditLogsForm = () => {
                   <section>
                     <div>
                       <h3>{item.email}</h3>
-                      <h4 className='content'>{item.resource} <span>{item.action}</span></h4>
+                      <h4 className='space-between'>{item.resource} <span>{item.action}</span></h4>
                       <p>{item.remark}</p>
                       <p>{formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)} <span className={'badge badge-sm ' + mapStyleStatus.get(item.status)}>{item.status || ''}</span></p>
                     </div>
