@@ -4,7 +4,7 @@ import { options, storage } from 'uione';
 import { UserClient, UserService } from './user';
 
 export * from './user';
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 const httpRequest = new HttpRequest(axios, options);
 export interface Config {

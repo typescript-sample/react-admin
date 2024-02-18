@@ -15,7 +15,7 @@ export class AuditClient extends ViewSearchClient<AuditLog, string, AuditLogFilt
   }
 }
 
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 const httpRequest = new HttpRequest(axios, options);
 export interface Config {
   audit_log_url: string;

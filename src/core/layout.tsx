@@ -172,7 +172,7 @@ export const LayoutPage = () => {
     event.preventDefault();
     const request = new HttpRequest(axios, options);
     const config: any = storage.config();
-    const url = config.authentication_url + '/authentication/signout/' + storage.username();
+    const url = config.authentication_url + '/authentication/signout';
     request.get(url).catch(() => { });
     sessionStorage.removeItem('authService');
     sessionStorage.clear();

@@ -4,7 +4,7 @@ import { HttpRequest } from 'axios-core';
 import { PasswordClient, PasswordService } from 'password-client';
 import { Signup, SignupClient, SignupService } from 'signup-client';
 import { storage } from 'uione';
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 export interface Config {
   authentication_url: string;

@@ -5,6 +5,7 @@ import { SettingsClient } from "./settings";
 import { MasterDataClient, MasterDataService } from "./master-data";
 
 export * from "./settings";
+axios.defaults.withCredentials = true;
 
 const httpRequest = new HttpRequest(axios, options);
 export interface Config {
