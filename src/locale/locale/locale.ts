@@ -7,7 +7,7 @@ export interface LocaleFilter extends Filter {
   countryCode?: string;
   countryName?: string;
   nativeCountryName?: string;
-  dateFormat?: string;
+  dateFormat: string;
   firstDayOfWeek?: number;
   decimalSeparator?: string;
   groupSeparator?: string;

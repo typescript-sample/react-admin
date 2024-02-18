@@ -14,6 +14,7 @@ const localeFilter: LocaleFilter = {
   q: '',
   code: '',
   name: '',
+  dateFormat: '',
 };
 const localeSearch: LocaleSearch = {
   statusList: [],
@@ -48,9 +49,58 @@ export const LocalesForm = () => {
               <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
               <input type='text' id='q' name='q' value={filter.q || ''} onChange={updateState} maxLength={255} placeholder={resource.keyword}/>
               <button type='button' hidden={!filter.q} className='btn-remove-text' onClick={clearQ}/>
+              <button type='button' className='btn-filter' onClick={toggleFilter}/>
               <button type='submit' className='btn-search' onClick={search}/>
             </label>
             <Pagination className='col s12 m6' total={component.total} size={component.pageSize} max={component.pageMaxSize} page={component.pageIndex} onChange={pageChanged} />
+          </section>
+          <section className='row search-group' hidden={component.hideFilter}>
+          <label className='col s6 l3'>
+              {resource.date_format}
+              <input type='text'
+                id='dateFormat'
+                name='dateFormat'
+                value={filter.dateFormat}
+                onChange={updateState}
+                maxLength={12}
+                placeholder={resource.date_format} />
+            </label>
+            <label className='col s6 l3'>
+              {resource.currency_decimal_digits}
+              <input type='text'
+                id='currencyDecimalDigits'
+                name='currencyDecimalDigits'
+                className='text-right'
+                data-type='integer'
+                value={filter.currencyDecimalDigits || ''}
+                onChange={updateState}
+                maxLength={1}
+                placeholder={resource.currency_decimal_digits} />
+            </label>
+            <label className='col s6 l3'>
+              {resource.currency_pattern}
+              <input type='text'
+                id='currencyPattern'
+                name='currencyPattern'
+                className='text-right'
+                data-type='integer'
+                value={filter.currencyPattern || ''}
+                onChange={updateState}
+                maxLength={1}
+                placeholder={resource.currency_pattern} />
+            </label>
+            <label className='col s6 l3'>
+              {resource.first_day_of_week}
+              <input type='text'
+                id='firstDayOfWeek'
+                name='firstDayOfWeek'
+                className='text-right'
+                data-type='integer'
+                value={filter.firstDayOfWeek || ''}
+                onChange={updateState}
+                maxLength={1}
+                placeholder={resource.first_day_of_week} />
+            </label>
           </section>
         </form>
         <form className='list-result'>
@@ -64,7 +114,8 @@ export const LocalesForm = () => {
                   <th data-field='nativeName'><button type='button' id='sortNativeName' onClick={sort}>{resource.locale_native_name}</button></th>
                   <th data-field='countryName'><button type='button' id='sortCountryName' onClick={sort}>{resource.country_name}</button></th>
                   <th data-field='nativeCountryName'><button type='button' id='sortNativeCountryName' onClick={sort}>{resource.country_native_name}</button></th>
-                  <th data-field='dateFormat'><button type='button' id='sortDateFormat' onClick={sort}>{resource.country_native_name}</button></th>
+                  <th data-field='dateFormat'><button type='button' id='sortDateFormat' onClick={sort}>{resource.date_format}</button></th>
+                  <th data-field='firstDayOfWeek'><button type='button' id='sortFirstDayOfWeek' onClick={sort}>{resource.first_day_of_week}</button></th>
                   <th data-field='decimalSeparator'><button type='button' id='sortDecimalSeparator' onClick={sort}>{resource.decimal_separator}</button></th>
                   <th data-field='groupSeparator'><button type='button' id='sortGroupSeparator' onClick={sort}>{resource.group_separator}</button></th>
                   <th data-field='currencyCode'><button type='button' id='sortCurrencyCode' onClick={sort}>{resource.currency_code}</button></th>
@@ -85,6 +136,7 @@ export const LocalesForm = () => {
                       <td>{item.countryName}</td>
                       <td>{item.nativeCountryName}</td>
                       <td>{item.dateFormat}</td>
+                      <td>{item.firstDayOfWeek}</td>
                       <td>{item.decimalSeparator}</td>
                       <td>{item.groupSeparator}</td>
                       <td>{item.currencyCode}</td>
@@ -101,11 +153,11 @@ export const LocalesForm = () => {
           {component.view !== 'table' && <ul className='row list-view'>
             {state.list && state.list.length > 0 && state.list.map((item, i) => {
               return (
-                <li key={i} className='col s6 m4 l3 xl2' onClick={e => edit(e, item.code)}>
+                <li key={i} className='col s12 m6 l3 xl4' onClick={e => edit(e, item.code)}>
                   <section>
                     <div>
-                      <h3><Link to={`${item.code}`}>{item.code} {item.name} ({item.nativeName}</Link></h3>
-                      <p className='space-between'>{item.countryName} <span>{item.dateFormat} {item.currencyCode}</span></p>
+                      <h4><Link to={`${item.code}`}>{item.code} - {item.name}</Link></h4>
+                      <p className='space-between'>{item.nativeName} <span>{item.dateFormat} {item.currencyCode}</span></p>
                     </div>
                     <button className='btn-detail' />
                   </section>

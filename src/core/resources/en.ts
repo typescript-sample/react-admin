@@ -13,6 +13,8 @@ export const en = {
   sidebar: 'Sidebar',
   dark_mode: 'Dark mode',
   light_mode: 'Light mode',
+  default_mode: 'Default mode',
+  grey_mode: 'Grey mode',
   classic_menu: 'Classic menu',
   modern_menu: 'Modern menu',
 
@@ -72,6 +74,7 @@ export const en = {
   button_basic_search: 'Basic Search',
   button_back: 'Back',
 
+  msg_confirm_back: 'Data has been changed. Your changes will be lost if you do not save them. Are you sure you want to go back?',
   msg_confirm_save: 'Are you sure you want to save?',
   msg_save_success: 'Data have been saved successfully',
   msg_approve_success: 'Data have been approved successfully',
@@ -234,16 +237,18 @@ export const en = {
   timestamp: 'Timestamp',
   ip: 'IP',
 
+  currency: 'Currency',
   currency_code: 'Currency Code',
   currency_symbol: 'Currency Symbol',
   currency_decimal_digits: 'Currency Decimal Digits',
 
+  locale: 'Locale',
   locale_code: 'Locale Code',
   locale_name: 'Locale Name',
-  locale_native_name: 'Locale Native Name',
+  locale_native_name: 'Native Locale Name',
   country_code: 'Country Code',
   country_name: 'Country Name',
-  country_native_name: 'Country Native Name',
+  country_native_name: 'Native Country Name',
   first_day_of_week: 'First Day Of Week',
   decimal_separator: 'Decimal Separator',
   group_separator: 'Group Separator',

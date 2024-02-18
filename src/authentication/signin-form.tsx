@@ -1,7 +1,7 @@
 import { AuthResult, dayDiff, getMessage, handleCookie, initFromCookie, Status, store, User, validate } from 'authen-client';
 import { CookieService } from 'cookie-core';
 import { Base64 } from 'js-base64';
-import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import { initForm, OnClick, useMessage, useUpdate } from 'react-hook-core';
 import { Link, useNavigate } from 'react-router-dom';
 import { alertInfo } from 'ui-alert';
@@ -59,13 +59,14 @@ export const SigninForm = () => {
   const navigate = useNavigate();
   const { msg, showError, hideMessage} = useMessage(msgData);
   const { state, setState, updateState } = useUpdate<SigninState>(signinData, 'user');
-  const form = React.useRef();
-  React.useEffect(() => {
+  const form = useRef();
+  useEffect(() => {
     if (form) {
       initForm(form.current, registerEvents);
     }
     const usr = init(cookie.get);
     setState(usr);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const updateRemember = (e: any) => {
     e.preventDefault();

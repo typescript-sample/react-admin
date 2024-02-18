@@ -17,15 +17,15 @@ const userFilter: UserFilter = {
   username: '',
   displayName: '',
   email: '',
-  status: [],
+  status: ['A'],
   q: ''
 };
-const initialState: UserSearch = {
-  statusList: [],
-  list: [],
-  filter: userFilter
-};
 export const UsersForm = () => {
+  const initialState: UserSearch = {
+    statusList: [],
+    list: [],
+    filter: userFilter
+  };
   const navigate = useNavigate();
   const refForm = useRef();
   const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());

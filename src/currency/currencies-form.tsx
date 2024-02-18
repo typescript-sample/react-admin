@@ -55,7 +55,7 @@ export const CurrenciesForm = () => {
             <Pagination className='col s12 m6' total={component.total} size={component.pageSize} max={component.pageMaxSize} page={component.pageIndex} onChange={pageChanged} />
           </section>
           <section className='row search-group inline' hidden={component.hideFilter}>
-          <label className='col s12 m6'>
+            <label className='col s12 m6'>
               {resource.currency_decimal_digits}
               <input type='text'
                 id='decimalDigits'
@@ -127,7 +127,7 @@ export const CurrenciesForm = () => {
                 <li key={i} className='col s6 m4 l3 xl2' onClick={e => edit(e, item.code)}>
                   <section>
                     <div>
-                      <h3 className={item.status === 'I' ? 'inactive' : ''}><Link to={`${item.code}`}>{item.code}</Link></h3>
+                      <h4><Link to={`${item.code}`}>{item.code}</Link></h4>
                       <p>{item.symbol} <span>{item.decimalDigits}</span></p>
                     </div>
                     <button className='btn-detail' />

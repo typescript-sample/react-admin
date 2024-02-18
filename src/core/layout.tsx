@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { HttpRequest } from 'axios-core';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { OnClick, useMergeState } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link, Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { collapseAll, expandAll, Nav, sub } from 'reactx-nav';
 import { getPrivileges, getUsername, getUserType, hasClass, options, parentHasClass, Privilege, storage, StringMap, useResource, useUser } from 'uione';
 import logo from '../assets/images/logo.png';
+import './layout.css';
 
 interface InternalState {
   isToggleSearch?: boolean;
@@ -64,6 +65,18 @@ export const renderMode = (resource: StringMap): any => {
     );
   }
 };
+export const renderTheme = (resource: StringMap): any => {
+  const dark = parentHasClass('grey', getBody());
+  if (dark) {
+    return (
+      <><i className='material-icons default-theme'>radio_button_checked</i><span>{resource.default_mode}</span></>
+    );
+  } else {
+    return (
+      <><i className='material-icons grey-theme'>radio_button_checked</i><span>{resource.grey_mode}</span></>
+    );
+  }
+};
 const initialState: InternalState = {
   isMenu: false,
   darkMode: false,
@@ -109,7 +122,7 @@ export const LayoutPage = () => {
   const search = (event: OnClick) => {
     event.preventDefault();
   };
-  const handleInput = (e: { target: { value: string } }) => {
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
     setState({ keyword: v });
     navigate(`home?q=${v}`);
@@ -168,6 +181,21 @@ export const LayoutPage = () => {
       }
     }
   };
+  const changeTheme = () => {
+    const body = getBody();
+    if (body) {
+      const parent = body.parentElement;
+      if (parent) {
+        if (parent.classList.contains('grey')) {
+          parent.classList.remove('grey');
+          setState({ darkMode: false });
+        } else {
+          parent.classList.add('grey');
+          setState({ darkMode: true });
+        }
+      }
+    }
+  };
   const signout = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     const request = new HttpRequest(axios, options);
@@ -201,7 +229,7 @@ export const LayoutPage = () => {
     setUser(loginUser);
   }, [loginUser]);
   useEffect(() => {
-    setState({ keyword: searchParams.get('q') as string });
+    setState({ keyword: searchParams.get('q') as string }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
   useEffect(() => {
     const { isToggleMenu, isToggleSearch } = state;
@@ -268,6 +296,7 @@ export const LayoutPage = () => {
                       <li className='classic-menu' onClick={changeClassicMenu}>{renderClassicMenu(resource)}</li>
                       <hr style={{ margin: 0 }} />
                       <li onClick={changeMode}>{renderMode(resource)}</li>
+                      <li onClick={changeTheme}>{renderTheme(resource)}</li>
                       <hr style={{ margin: 0 }} />
                       <li><i className='material-icons'>account_circle</i><Link to={'signin'} >{resource.signin}</Link></li>
                     </ul>
@@ -278,6 +307,7 @@ export const LayoutPage = () => {
                       <li className='classic-menu' onClick={changeClassicMenu}>{renderClassicMenu(resource)}</li>
                       <hr style={{ margin: 0 }} />
                       <li onClick={changeMode}>{renderMode(resource)}</li>
+                      <li onClick={changeTheme}>{renderTheme(resource)}</li>
                       <hr style={{ margin: 0 }} />
                       <li><i className='material-icons'>account_circle</i><Link to={'settings'} >{state.username}</Link></li>
                       {/*<li><i className='material-icons'>settings</i><Link to={'my-profile/settings'}>{resource.my_settings}</Link></li>*/}
