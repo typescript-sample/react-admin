@@ -31,6 +31,7 @@ export const vi = {
   search: 'Search',
   save: 'Save',
   cancel: 'Cancel',
+  close: 'Close',
   select: 'Select',
   deselect: 'Deselect',
   check_all: 'Check All',

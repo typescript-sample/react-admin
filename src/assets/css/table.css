@@ -152,7 +152,7 @@ form.list-result > .table-responsive > table > thead > tr > th > button {
 
 /* move from main.css */
 th.action {
-  width: 80px;
+  width: 96px;
 }
 
 form.list-result > .table-responsive > table > tbody > tr > td > button {

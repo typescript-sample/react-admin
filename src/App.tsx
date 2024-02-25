@@ -45,6 +45,7 @@ import './assets/css/article.css';
 import './assets/css/list-view.css';
 import './assets/css/table.css';
 import './assets/css/list-detail.css';
+import './assets/css/data-list.css';
 import './assets/css/solid-container.css';
 import './assets/css/button.css';
 import './assets/css/search.css';

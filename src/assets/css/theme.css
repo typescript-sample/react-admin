@@ -158,6 +158,7 @@ footer > button:hover {
 section.footer > button#btnReject,
 footer > button#btnReject {
   background-color: #d74738;
+  color: #fff;
 }
 
 form.list-result > div > table tbody tr.active:hover td,
@@ -339,6 +340,7 @@ ul.list-view > li.highlight,
 }
 
 article,
+.data-list dd,
 .view-container > form > div > section > p,
 .section-body > p,
 .brand,
@@ -556,16 +558,18 @@ label.inline-input > input:focus,
 
 input:read-only,
 input:disabled,
+textarea:disabled,
 select:disabled {
   color: #b3b3b3 !important;
 }
 
 button:disabled {
-  color: #4d4d4d !important;
-  background-color: #b3b3b3 !important;
+  /* color: #4d4d4d !important; */
+  color: #b3b3b3 !important;
 }
 
 .form-group .form-control,
+.form-textarea,
 .inline-input > input,
 .row > .col > label input,
 .row > label input,
@@ -589,6 +593,7 @@ button:disabled {
 
 .diff .row .col p > span,
 div.card > div > p,
+.data-list dt,
 article > address > label,
 article > p > label,
 section > p > label,
@@ -607,6 +612,9 @@ section > p > label,
 .btn-filter,
 .btn-remove-text,
 .btn-edit,
+.btn-approve,
+.btn-copy,
+.btn-history,
 .btn-transfer,
 .btn-divide,
 .view-container > form > footer > button.btn-secondary,

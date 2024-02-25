@@ -54,6 +54,11 @@ export const UserForm = () => {
       setReadOnly(refForm.current as any)
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const view = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+    e.preventDefault();
+    navigate(`/users/${id}/view`);
+  };
   const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
     e.preventDefault();
     navigate(`/users/${id}/assign`);
@@ -65,9 +70,14 @@ export const UserForm = () => {
         <header className='view-header'>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
           <h2 className='view-title'>{flag.newMode ? resource.create : resource.edit} {resource.user}</h2>
-          <button className='btn-group btn-right' hidden={flag.newMode}>
-            <i className='material-icons' onClick={e => assign(e, user.userId)}>group</i>
-          </button>
+          <div className='btn-group'>
+            <button className='btn-group btn-right' hidden={flag.newMode}>
+              <i className='material-icons' onClick={e => view(e, user.userId)}>group</i>
+            </button>
+            <button className='btn-group btn-right' hidden={flag.newMode}>
+              <i className='material-icons' onClick={e => assign(e, user.userId)}>group</i>
+            </button>
+          </div>
         </header>
         <div className='row'>
           <label className='col s12 m6'>
