@@ -1,5 +1,5 @@
 import { Item } from 'onecore';
-import { useRef } from 'react';
+import { ChangeEvent, useEffect, useRef } from 'react';
 import { checked, OnClick, Search, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -28,12 +28,21 @@ export const UsersForm = () => {
   };
   const navigate = useNavigate();
   const refForm = useRef();
-  const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());
+  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<User, UserFilter, UserSearch>(refForm, initialState, getUserService(), inputSearch());
   const canWrite = hasPermission(Permission.write);
+  useEffect (() => {
+    search(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`${id}`);
   };
+  const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateState(event, (newState) => {
+      component.pageIndex = 1;
+      doSearch({ ...component, ...newState.filter});
+    });
+  }
   const { list } = state;
   const filter = value(state.filter);
   return (
@@ -84,7 +93,7 @@ export const UsersForm = () => {
                     name='status'
                     value='A'
                     checked={checked(filter.status, 'A')}
-                    onChange={updateState} />
+                    onChange={checkboxOnChange} />
                   {resource.active}
                 </label>
                 <label>
@@ -94,7 +103,7 @@ export const UsersForm = () => {
                     name='status'
                     value='I'
                     checked={checked(filter.status, 'I')}
-                    onChange={updateState} />
+                    onChange={checkboxOnChange} />
                   {resource.inactive}
                 </label>
               </section>
