@@ -12,6 +12,7 @@ export const config = {
   settings_url: 'http://localhost:8083/settings',
 
   currency_url: 'http://localhost:8083/currencies',
+  country_url: 'http://localhost:8083/countries',
   locale_url: 'http://localhost:8083/locales',
 };
 

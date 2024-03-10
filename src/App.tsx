@@ -53,6 +53,7 @@ import './assets/css/layout.css';
 import './assets/css/theme.css';
 import './assets/css/dark.css';
 import './assets/css/grey.css';
+import CountriesRoute from './country';
 
 let isInit = false;
 export function init() {
@@ -105,6 +106,7 @@ function App() {
           <Route path='roles/*' element={<RolesRoute />} />
           <Route path='currencies/*' element={<CurrenciesRoute />} />
           <Route path='locales/*' element={<LocalesRoute />} />
+          <Route path='countries/*' element={<CountriesRoute />} />
           <Route path='audit-logs' element={<AuditLogsForm />} />
         </Route>
       </Routes>

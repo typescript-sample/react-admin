@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router';
-// import { LocaleForm } from './locale-form';
 import { LocalesForm } from './locales-form';
 import { LocaleForm } from './locale-form';
 
