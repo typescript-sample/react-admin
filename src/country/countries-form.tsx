@@ -1,10 +1,10 @@
 import { Item } from 'onecore';
-import { useRef } from 'react';
-import { OnClick,  PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
+import { ChangeEvent, useRef } from 'react';
+import { OnClick,  PageSizeSelect, SearchComponentState, checked, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'reactx-pagination';
-import { hasPermission, inputSearch, write } from 'uione';
+import { getStatusName, hasPermission, inputSearch, write } from 'uione';
 import { getCountryService, Country, CountryFilter } from './service';
 
 interface CountrySearch extends SearchComponentState<Country, CountryFilter> {
@@ -21,13 +21,18 @@ const countrySearch: CountrySearch = {
 export const CountriesForm = () => {
   const navigate = useNavigate();
   const refForm = useRef();
-  const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Country, CountryFilter, CountrySearch>(refForm, countrySearch, getCountryService(), inputSearch());
+  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Country, CountryFilter, CountrySearch>(refForm, countrySearch, getCountryService(), inputSearch());
   const canWrite = hasPermission(write);
   const edit = (e: OnClick, code: string) => {
     e.preventDefault();
     navigate(`${code}`);
   };
-
+  const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateState(event, (newState) => {
+      component.pageIndex = 1;
+      doSearch({ ...component, ...newState.filter});
+    });
+  }
   const filter = value(state.filter);
   return (
     <div className='view-container'>
@@ -76,6 +81,31 @@ export const CountriesForm = () => {
                 maxLength={1}
                 placeholder={resource.currency_pattern} />
             </label>
+            <label className='col s12 m6'>
+              {resource.status}
+              <section className='checkbox-group'>
+                <label>
+                  <input
+                    type='checkbox'
+                    id='active'
+                    name='status'
+                    value='A'
+                    checked={checked(filter.status, 'A')}
+                    onChange={checkboxOnChange} />
+                  {resource.active}
+                </label>
+                <label>
+                  <input
+                    type='checkbox'
+                    id='inactive'
+                    name='status'
+                    value='I'
+                    checked={checked(filter.status, 'I')}
+                    onChange={checkboxOnChange} />
+                  {resource.inactive}
+                </label>
+              </section>
+            </label>
           </section>
         </form>
         <form className='list-result'>
@@ -94,6 +124,7 @@ export const CountriesForm = () => {
                   <th data-field='currencyDecimalDigits'><button type='button' id='sortCurrencyDecimalDigits' onClick={sort}>{resource.currency_decimal_digits}</button></th>
                   <th data-field='currencyPattern'><button type='button' id='sortCurrencyPattern' onClick={sort}>{resource.currency_pattern}</button></th>
                   <th data-field='currencySample'><button type='button' id='sortCurrencySample' onClick={sort}>{resource.currency_sample}</button></th>
+                  <th data-field='status'><button type='button' id='sortStatus' onClick={sort}>{resource.status}</button></th>
                 </tr>
               </thead>
               <tbody>
@@ -111,6 +142,7 @@ export const CountriesForm = () => {
                       <td>{item.currencyDecimalDigits}</td>
                       <td>{item.currencyPattern}</td>
                       <td>{item.currencySample}</td>
+                      <td>{getStatusName(item.status)}</td>
                     </tr>
                   );
                 })}

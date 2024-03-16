@@ -1,10 +1,10 @@
 import { Item } from 'onecore';
-import { useRef } from 'react';
+import { ChangeEvent, useRef } from 'react';
 import { checked, OnClick,  PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'reactx-pagination';
-import { hasPermission, inputSearch, write } from 'uione';
+import { getStatusName, hasPermission, inputSearch, write } from 'uione';
 import { getRoleService, Role, RoleFilter } from './service';
 
 interface RoleSearch extends SearchComponentState<Role, RoleFilter> {
@@ -25,13 +25,18 @@ const roleSearch: RoleSearch = {
 export const RolesForm = () => {
   const navigate = useNavigate();
   const refForm = useRef();
-  const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Role, RoleFilter, RoleSearch>(refForm, roleSearch, getRoleService(), inputSearch());
+  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Role, RoleFilter, RoleSearch>(refForm, roleSearch, getRoleService(), inputSearch());
   const canWrite = hasPermission(write);
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`${id}`);
   };
-
+  const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateState(event, (newState) => {
+      component.pageIndex = 1;
+      doSearch({ ...component, ...newState.filter});
+    });
+  }
   const filter = value(state.filter);
   return (
     <div className='view-container'>
@@ -57,17 +62,6 @@ export const RolesForm = () => {
           </section>
           <section className='row search-group inline' hidden={component.hideFilter}>
             <label className='col s12 m6'>
-              {resource.role_name}
-              <input
-                type='text'
-                id='roleName'
-                name='roleName'
-                value={filter.roleName || ''}
-                onChange={updateState}
-                maxLength={240}
-                placeholder={resource.roleName} />
-            </label>
-            <label className='col s12 m6'>
               {resource.status}
               <section className='checkbox-group'>
                 <label>
@@ -77,7 +71,7 @@ export const RolesForm = () => {
                     name='status'
                     value='A'
                     checked={checked(filter.status, 'A')}
-                    onChange={updateState} />
+                    onChange={checkboxOnChange} />
                   {resource.active}
                 </label>
                 <label>
@@ -87,7 +81,7 @@ export const RolesForm = () => {
                     name='status'
                     value='I'
                     checked={checked(filter.status, 'I')}
-                    onChange={updateState} />
+                    onChange={checkboxOnChange} />
                   {resource.inactive}
                 </label>
               </section>
@@ -114,7 +108,7 @@ export const RolesForm = () => {
                       <td>{item.roleId}</td>
                       <td><Link to={`${item.roleId}`}>{item.roleName}</Link></td>
                       <td>{item.remark}</td>
-                      <td>{item.status}</td>
+                      <td>{getStatusName(item.status, resource)}</td>
                     </tr>
                   );
                 })}

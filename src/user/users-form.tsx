@@ -4,7 +4,7 @@ import { checked, OnClick, Search, SearchComponentState, useSearch, value } from
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'reactx-pagination';
-import { hasPermission, inputSearch, Permission } from 'uione';
+import { getStatusName, hasPermission, inputSearch, Permission } from 'uione';
 import femaleIcon from '../assets/images/female.png';
 import maleIcon from '../assets/images/male.png';
 import { getUserService, User, UserFilter } from './service';
@@ -36,6 +36,10 @@ export const UsersForm = () => {
   const edit = (e: OnClick, id: string) => {
     e.preventDefault();
     navigate(`${id}`);
+  };
+  const view = (e: OnClick, id: string) => {
+    e.preventDefault();
+    navigate(`${id}/view`);
   };
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
     updateState(event, (newState) => {
@@ -121,6 +125,7 @@ export const UsersForm = () => {
                   <th data-field='email'><button type='button' id='sortEmail' onClick={sort}>{resource.email}</button></th>
                   <th data-field='displayname'><button type='button' id='sortDisplayName' onClick={sort}>{resource.display_name}</button></th>
                   <th data-field='status'><button type='button' id='sortStatus' onClick={sort}>{resource.status}</button></th>
+                  <th className='action'>{resource.action}</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,7 +137,13 @@ export const UsersForm = () => {
                       <td><Link to={`${user.userId}`}>{user.username}</Link></td>
                       <td>{user.email}</td>
                       <td>{user.displayName}</td>
-                      <td>{user.status}</td>
+                      <td>{getStatusName(user.status, resource)}</td>
+                      <td>
+                        <div className='btn-group'>
+                          <button type='button' className='btn-edit' onClick={e => edit(e, user.userId)}></button>
+                          <button type='button' className='btn-history' onClick={e => view(e, user.userId)}></button>
+                        </div>
+                      </td>
                     </tr>
                 );
               })}

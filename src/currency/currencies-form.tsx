@@ -1,10 +1,10 @@
 import { Item } from 'onecore';
-import { useRef } from 'react';
+import { ChangeEvent, useRef } from 'react';
 import { checked, OnClick,  PageSizeSelect, SearchComponentState, useSearch, value } from 'react-hook-core';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'reactx-pagination';
-import { hasPermission, inputSearch, write } from 'uione';
+import { getStatusName, hasPermission, inputSearch, write } from 'uione';
 import { getCurrencyService, Currency, CurrencyFilter } from './service';
 
 interface CurrencySearch extends SearchComponentState<Currency, CurrencyFilter> {
@@ -24,13 +24,18 @@ const currencySearch: CurrencySearch = {
 export const CurrenciesForm = () => {
   const navigate = useNavigate();
   const refForm = useRef();
-  const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Currency, CurrencyFilter, CurrencySearch>(refForm, currencySearch, getCurrencyService(), inputSearch());
+  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<Currency, CurrencyFilter, CurrencySearch>(refForm, currencySearch, getCurrencyService(), inputSearch());
   const canWrite = hasPermission(write);
   const edit = (e: OnClick, code: string) => {
     e.preventDefault();
     navigate(`${code}`);
   };
-
+  const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
+    updateState(event, (newState) => {
+      component.pageIndex = 1;
+      doSearch({ ...component, ...newState.filter});
+    });
+  }
   const filter = value(state.filter);
   return (
     <div className='view-container'>
@@ -77,7 +82,7 @@ export const CurrenciesForm = () => {
                     name='status'
                     value='A'
                     checked={checked(filter.status, 'A')}
-                    onChange={updateState} />
+                    onChange={checkboxOnChange} />
                   {resource.active}
                 </label>
                 <label>
@@ -87,7 +92,7 @@ export const CurrenciesForm = () => {
                     name='status'
                     value='I'
                     checked={checked(filter.status, 'I')}
-                    onChange={updateState} />
+                    onChange={checkboxOnChange} />
                   {resource.inactive}
                 </label>
               </section>
@@ -114,7 +119,7 @@ export const CurrenciesForm = () => {
                       <td><Link to={`${item.code}`}>{item.code}</Link></td>
                       <td>{item.symbol}</td>
                       <td className='text-right'>{item.decimalDigits}</td>
-                      <td>{item.status}</td>
+                      <td>{getStatusName(item.status)}</td>
                     </tr>
                   );
                 })}

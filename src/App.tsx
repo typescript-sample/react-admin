@@ -6,7 +6,7 @@ import { alert, confirm } from 'ui-alert';
 import { loading } from 'ui-loading';
 import { resources as uiresources, UIService } from 'ui-plus';
 import { toast } from 'ui-toast';
-import { storage } from 'uione';
+import { StringMap, storage } from 'uione';
 import { resources as vresources } from 'validation-core';
 import { DefaultCsvService, resources } from 'web-clients';
 import { resources as locales } from './core/resources';
@@ -25,6 +25,7 @@ import CurrenciesRoute from "./currency";
 import LocalesRoute from "./locale";
 import { AuditLogsForm } from "./audit-log";
 import { SettingsForm } from './settings';
+import CountriesRoute from './country';
 
 // tslint:disable:ordered-imports
 import './assets/css/reset.css';
@@ -53,8 +54,17 @@ import './assets/css/layout.css';
 import './assets/css/theme.css';
 import './assets/css/dark.css';
 import './assets/css/grey.css';
-import CountriesRoute from './country';
 
+export const statusNames: Map<string, string> = new Map([
+  ["A", "Active"],
+  ["I", "Inactive"]
+])
+function getStatusName(status?: string, map?: StringMap): string|undefined {
+  if (!status) {
+    return "";
+  }
+  return statusNames.get(status);
+}
 let isInit = false;
 export function init() {
   if (isInit) {
@@ -77,6 +87,7 @@ export function init() {
   storage.alert = alert;
   storage.confirm = confirm;
   storage.message = toast;
+  storage.getStatusName = getStatusName;
 
   const resource = storage.resource();
   vresources.phonecodes = phonecodes;

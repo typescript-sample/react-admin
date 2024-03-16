@@ -11,6 +11,7 @@ export interface CountryFilter extends Filter {
   currencyDecimalDigits?: number;
   currencyPattern?: number;
   currencySample?: string;
+  status?: string;
 }
 export interface Country {
   countryCode: string;
@@ -23,6 +24,7 @@ export interface Country {
   currencyDecimalDigits?: number;
   currencyPattern?: number;
   currencySample?: string;
+  status?: string;
 }
 export interface CountryRepository extends Repository<Country, string> {
 }
