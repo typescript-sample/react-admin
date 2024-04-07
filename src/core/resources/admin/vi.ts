@@ -10,7 +10,7 @@ export const vi = {
   position_director: 'Director',
 
   // Access Role
-  role_list: 'Search Roles',
+  roles: 'Roles',
   role: 'Role',
   role_assignment_list: 'Administrator Role Assignment Summary',
   role_assignment_subject: 'Administrator Role Assignment',
@@ -30,5 +30,5 @@ export const vi = {
   audit_logs: 'Audit logs',
   audit_log_time_from: 'Date time from',
   audit_log_time_to: 'Date time to',
-  audit_log_user : 'Performed by',
+  audit_log_user: 'Performed by',
 };

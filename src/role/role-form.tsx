@@ -548,7 +548,7 @@ export function RoleForm() {
       <form id='roleForm' name='roleForm' model-name='role' ref={refForm as any}>
         <header>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back}/>
-          <h2>{flag.newMode ? resource.create : resource.edit} {resource.role}</h2>
+          <h2>{resource.role}</h2>
           <button className='btn-group btn-right' hidden={flag.newMode}>
             <i className='material-icons' onClick={e => assign(e, role.roleId)}>group</i>
           </button>

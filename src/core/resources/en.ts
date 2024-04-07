@@ -238,15 +238,18 @@ export const en = {
   timestamp: 'Timestamp',
   ip: 'IP',
 
+  currencies: 'Currencies',
   currency: 'Currency',
   currency_code: 'Currency Code',
   currency_symbol: 'Currency Symbol',
   currency_decimal_digits: 'Currency Decimal Digits',
 
+  locales: 'Locales',
   locale: 'Locale',
   locale_code: 'Locale Code',
   locale_name: 'Locale Name',
   locale_native_name: 'Native Locale Name',
+  countries: 'Countries',
   country_code: 'Country Code',
   country_name: 'Country Name',
   country_native_name: 'Native Country Name',

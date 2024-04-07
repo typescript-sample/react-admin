@@ -35,7 +35,7 @@ export const LocalesForm = () => {
   return (
     <div className='view-container'>
       <header>
-        <h2>{resource.locale_list}</h2>
+        <h2>{resource.locales}</h2>
         <div className='btn-group'>
           {component.view !== 'table' && <button type='button' id='btnTable' name='btnTable' className='btn-table' data-view='table' onClick={changeView} />}
           {component.view === 'table' && <button type='button' id='btnListView' name='btnListView' className='btn-list-view' data-view='listview' onClick={changeView} />}

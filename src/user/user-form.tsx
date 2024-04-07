@@ -69,7 +69,7 @@ export const UserForm = () => {
       <form id='userForm' name='userForm' model-name='user' ref={refForm as any}>
         <header className='view-header'>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
-          <h2 className='view-title'>{flag.newMode ? resource.create : resource.edit} {resource.user}</h2>
+          <h2 className='view-title'>{resource.user}</h2>
           <div className='btn-group'>
             <button className='btn-group btn-right' hidden={flag.newMode}>
               <i className='material-icons' onClick={e => view(e, user.userId)}>group</i>

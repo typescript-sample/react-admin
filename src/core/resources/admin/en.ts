@@ -10,7 +10,7 @@ export const en = {
   position_director: 'Director',
 
   // Access Role
-  role_list: 'Search Roles',
+  roles: 'Roles',
   role: 'Role',
   role_assignment_list: 'Administrator Role Assignment Summary',
   role_assignment_subject: 'Administrator Role Assignment',

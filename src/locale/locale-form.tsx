@@ -39,7 +39,7 @@ export const LocaleForm = () => {
       <form id='localeForm' name='localeForm' model-name='locale' ref={refForm as any}>
         <header className='view-header'>
           <button type='button' id='btnBack' name='btnBack' className='btn-back' onClick={back} />
-          <h2 className='view-title'>{flag.newMode ? resource.create : resource.edit} {resource.locale}</h2>
+          <h2 className='view-title'>{resource.locale}</h2>
         </header>
         <div className='row'>
           <label className='col s12 m6'>
