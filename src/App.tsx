@@ -54,6 +54,9 @@ import './assets/css/layout.css';
 import './assets/css/theme.css';
 import './assets/css/dark.css';
 import './assets/css/grey.css';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 export const statusNames: Map<string, string> = new Map([
   ["A", "Active"],
