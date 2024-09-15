@@ -257,6 +257,23 @@ function buildShownModules(q: string, all: Privilege[]): Privilege[] {
   return shownPrivileges;
 }
 
+function buildPermissions(actions: Map<string, number>, privileges?: string[]): Permission[] {
+  if (!privileges || privileges.length === 0) {
+    return [];
+  }
+  return privileges.map((privilege) => {
+    let permissions: number = 1;
+    const p = privilege.split(" ");
+    if (p.length > 1) {
+      permissions = +p[1]; // convert string to number
+    } else {
+      permissions = 0
+    }
+    const id = p[0]
+    return {id: id, actions: actions.get(id) || 0, permissions: permissions || 0}
+  })
+}
+
 const initialize = async (roleId: string | null, load: (id: string | null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
   const roleService = getRoleService();
   roleService
@@ -292,19 +309,7 @@ export function RoleForm() {
       if (!obj.privileges) {
         obj.privileges = [];
       } else {
-        setPrivileges(
-          obj.privileges.map((privilege) => {
-            let permissions: number = 1;
-            const p = privilege.split(" ");
-            if (p.length > 1) {
-              permissions = +p[1]; // convert string to number
-            } else {
-              permissions = 0;
-            }
-            const id = p[0];
-            return {id: id, actions: actions.get(id) || 0, permissions: permissions || 0};
-          })
-        );
+        setPrivileges(buildPermissions(actions, obj.privileges))
       }
       if (isReadOnly) {
         setReadOnly(refForm.current as any, 'keyword', 'btnSave');
