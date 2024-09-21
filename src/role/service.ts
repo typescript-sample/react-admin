@@ -1,46 +1,45 @@
-import axios from 'axios';
-import { HttpRequest } from 'axios-core';
-import { options, storage } from 'uione';
-import { RoleClient, RoleService } from './role';
-import { UserClient, UserService } from '../service/user';
+import axios from "axios"
+import { HttpRequest } from "axios-core"
+import { options, storage } from "uione"
+import { UserClient, UserService } from "../service/user"
+import { RoleClient, RoleService } from "./role"
 
-export * from './role';
-export * from '../service/user';
+export * from "../service/user"
+export * from "./role"
 
-const httpRequest = new HttpRequest(axios, options);
+const httpRequest = new HttpRequest(axios, options)
 export interface Config {
-  user_url: string;
-  role_url: string;
-  privilege_url: string;
+  user_url: string
+  role_url: string
+  privilege_url: string
 }
 class ApplicationContext {
-  roleService?: RoleClient;
-  userService?: UserService;
+  roleService?: RoleClient
+  userService?: UserService
   constructor() {
-    this.getConfig = this.getConfig.bind(this);
-    this.getRoleService = this.getRoleService.bind(this);
-    this.getUserService = this.getUserService.bind(this);
-
+    this.getConfig = this.getConfig.bind(this)
+    this.getRoleService = this.getRoleService.bind(this)
+    this.getUserService = this.getUserService.bind(this)
   }
   getConfig(): Config {
-    return storage.config();
+    return storage.config()
   }
   getRoleService(): RoleService {
     if (!this.roleService) {
-      const c = this.getConfig();
-      this.roleService = new RoleClient(httpRequest, c.role_url, c.privilege_url);
+      const c = this.getConfig()
+      this.roleService = new RoleClient(httpRequest, c.role_url, c.privilege_url)
     }
-    return this.roleService;
+    return this.roleService
   }
   getUserService(): UserService {
     if (!this.userService) {
-      const c = this.getConfig();
-      this.userService = new UserClient(httpRequest, c.user_url);
+      const c = this.getConfig()
+      this.userService = new UserClient(httpRequest, c.user_url)
     }
-    return this.userService;
+    return this.userService
   }
 }
 
-export const context = new ApplicationContext();
-export const getRoleService = context.getRoleService;
-export const getUserService = context.getUserService;
+export const context = new ApplicationContext()
+export const getRoleService = context.getRoleService
+export const getUserService = context.getUserService

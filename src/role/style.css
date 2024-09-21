@@ -25,7 +25,7 @@
   margin-top: 0;
   margin-bottom: 0;
 }
-.tree-view>.row {
+.tree-view > .row {
   border-bottom: 1px solid #c0bfbf;
 }
 

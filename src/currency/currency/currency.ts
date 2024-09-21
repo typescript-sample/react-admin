@@ -1,21 +1,19 @@
-import { Attributes, Filter, Repository, Service } from 'onecore';
+import { Attributes, Filter, Repository, Service } from "onecore"
 
 export interface CurrencyFilter extends Filter {
-  code?: string;
-  symbol?: string;
-  decimalDigits?: number;
-  status?: string[];
+  code?: string
+  symbol?: string
+  decimalDigits?: number
+  status?: string[]
 }
 export interface Currency {
-  code: string;
-  symbol?: string;
-  decimalDigits?: number;
-  status?: string;
+  code: string
+  symbol?: string
+  decimalDigits?: number
+  status?: string
 }
-export interface CurrencyRepository extends Repository<Currency, string> {
-}
-export interface CurrencyService extends Service<Currency, string, CurrencyFilter> {
-}
+export interface CurrencyRepository extends Repository<Currency, string> {}
+export interface CurrencyService extends Service<Currency, string, CurrencyFilter> {}
 
 export const currencyModel: Attributes = {
   code: {
@@ -26,7 +24,7 @@ export const currencyModel: Attributes = {
     length: 6,
   },
   decimalDigits: {
-    column: 'decimal_digits',
-    type: 'integer',
+    column: "decimal_digits",
+    type: "integer",
   },
-};
+}

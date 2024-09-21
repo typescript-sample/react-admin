@@ -1,32 +1,31 @@
-import axios from 'axios';
-import { HttpRequest } from 'axios-core';
-import { options, storage } from 'uione';
-import { CountryClient, CountryService } from './country';
+import axios from "axios"
+import { HttpRequest } from "axios-core"
+import { options, storage } from "uione"
+import { CountryClient, CountryService } from "./country"
 
-export * from './country';
+export * from "./country"
 
-const httpRequest = new HttpRequest(axios, options);
+const httpRequest = new HttpRequest(axios, options)
 export interface Config {
-  country_url: string;
+  country_url: string
 }
 class ApplicationContext {
-  countryService?: CountryClient;
+  countryService?: CountryClient
   constructor() {
-    this.getConfig = this.getConfig.bind(this);
-    this.getCountryService = this.getCountryService.bind(this);
-
+    this.getConfig = this.getConfig.bind(this)
+    this.getCountryService = this.getCountryService.bind(this)
   }
   getConfig(): Config {
-    return storage.config();
+    return storage.config()
   }
   getCountryService(): CountryService {
     if (!this.countryService) {
-      const c = this.getConfig();
-      this.countryService = new CountryClient(httpRequest, c.country_url);
+      const c = this.getConfig()
+      this.countryService = new CountryClient(httpRequest, c.country_url)
     }
-    return this.countryService;
+    return this.countryService
   }
 }
 
-export const context = new ApplicationContext();
-export const getCountryService = context.getCountryService;
+export const context = new ApplicationContext()
+export const getCountryService = context.getCountryService

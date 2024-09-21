@@ -1,24 +1,24 @@
-import { FunctionComponent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { FunctionComponent, useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 
 const AboutPage: FunctionComponent = () => {
-  const [message, setMessage] = useState('');
-  const { param } = useParams();
+  const [message, setMessage] = useState("")
+  const { param } = useParams()
 
   useEffect(() => {
     if (param) {
-      setMessage('The parameter is ' + param);
+      setMessage("The parameter is " + param)
     } else {
-      setMessage('No parameter was provided');
+      setMessage("No parameter was provided")
     }
-  }, [param]);
+  }, [param])
 
   return (
     <div>
       <p>This is the about page.</p>
       <p>{message}</p>
     </div>
-  );
-};
+  )
+}
 
-export default AboutPage;
+export default AboutPage
