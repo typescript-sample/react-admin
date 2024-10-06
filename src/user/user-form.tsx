@@ -1,74 +1,149 @@
-import { Item } from "onecore"
-import React, { useEffect, useRef } from "react"
-import { createModel, DispatchWithCallback, EditComponentParam, setReadOnly, useEdit } from "react-hook-core"
-import { useNavigate } from "react-router-dom"
-import { formatPhone } from "ui-plus"
-import { emailOnBlur, Gender, handleError, handleSelect, hasPermission, inputEdit, Permission, phoneOnBlur, requiredOnBlur, Status } from "uione"
+import { Item, Result } from "onecore"
+import React, { useEffect, useRef, useState } from "react"
+import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, setReadOnly, useUpdate } from "react-hook-core"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { alert, alertSuccess, confirm } from "ui-alert"
+import { hideLoading, showLoading } from "ui-loading"
+import { emailOnBlur, formatPhone, phoneOnBlur, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
+import { Gender, getLocale, getParam, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
 import { getMasterData, getUserService, User } from "./service"
-
-interface InternalState {
-  user: User
-  titleList: Item[]
-  positionList: Item[]
-}
 
 const createUser = (): User => {
   const user = createModel<User>()
   user.status = Status.Active
   return user
 }
-const initialize = (id: string | null, load: (id: string | null) => void, set: DispatchWithCallback<Partial<InternalState>>) => {
-  const masterDataService = getMasterData()
-  Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
-    .then((values) => {
-      const [titleList, positionList] = values
-      set({ titleList, positionList }, () => load(id))
-    })
-    .catch(handleError)
-}
-const updateTitle = (ele: HTMLSelectElement, user: User, set: DispatchWithCallback<Partial<InternalState>>) => {
-  handleSelect(ele)
-  user.title = ele.value
-  user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
-  set({ user })
-}
 
+interface InternalState {
+  user: User
+  titleList: Item[]
+  positionList: Item[]
+}
 const initialState: InternalState = {
   user: {} as User,
   titleList: [],
   positionList: [],
 }
 
-const param: EditComponentParam<User, string, InternalState> = {
-  createModel: createUser,
-  initialize,
-}
 export const UserForm = () => {
+  const path = getParam(useLocation().pathname)
+  const newMode = path === "new"
+  const isReadOnly = !hasPermission(Permission.write, 1)
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef()
-  const { resource, state, setState, updateState, flag, save, updatePhoneState, back } = useEdit<User, string, InternalState>(
-    refForm,
-    initialState,
-    getUserService(),
-    inputEdit(),
-    param,
-  )
+  const [initialUser, setInitialUser] = useState<User>(createUser())
+  const { state, setState, updateState, updatePhoneState } = useUpdate<InternalState>(initialState)
+  const { id } = useParams()
   useEffect(() => {
-    const isReadOnly = !hasPermission(Permission.write, 1)
-    if (isReadOnly) {
-      setReadOnly(refForm.current as any)
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    initForm(refForm?.current as any, registerEvents)
+    const masterDataService = getMasterData()
+    Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
+      .then((values) => {
+        const [titleList, positionList] = values
+        setState({ titleList, positionList }, () => {
+          if (!id) {
+            const user = createUser()
+            setInitialUser(clone(user))
+            setState({ user })
+          } else {
+            showLoading()
+            getUserService()
+              .load(id)
+              .then((user) => {
+                if (!user) {
+                  alert(resource.error_404, resource.error, "", () => navigate(-1))
+                } else {
+                  setInitialUser(clone(user))
+                  setState({ user })
+                  if (isReadOnly) {
+                    setReadOnly(refForm.current as any)
+                  }
+                }
+              })
+              .catch(handleError)
+              .finally(hideLoading)
+          }
+        })
+      })
+      .catch(handleError)
+  }, [isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const view = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+  const view = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
     e.preventDefault()
-    navigate(`/users/${id}/view`)
+    navigate(`/users/${userId}/view`)
   }
-  const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) => {
+  const assign = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
     e.preventDefault()
-    navigate(`/users/${id}/assign`)
+    navigate(`/users/${userId}/assign`)
   }
+  const updateTitle = (ele: HTMLSelectElement, user: User) => {
+    handleSelect(ele)
+    user.title = ele.value
+    user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
+    setState({ user })
+  }
+  const validate = (user: User): boolean => {
+    const valid = validateForm(refForm?.current as any, getLocale())
+    return valid
+  }
+
   const user = state.user
+  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    const diff = makeDiff(initialUser, user)
+    if (isEmptyObject(diff)) {
+      navigate(-1)
+    } else {
+      confirm(resource.msg_confirm_back, resource.confirm, () => navigate(-1), resource.no, resource.yes)
+    }
+  }
+  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    const valid = validate(user)
+    if (valid) {
+      const service = getUserService()
+      confirm(
+        resource.msg_confirm_save,
+        resource.confirm,
+        () => {
+          if (newMode) {
+            showLoading()
+            service
+              .create(user)
+              .then((res) => afterSaved(res))
+              .catch(handleError)
+              .finally(hideLoading)
+          } else {
+            const diff = makeDiff(initialUser, user, ["userId"])
+            if (isEmptyObject(diff)) {
+              alert(resource.msg_no_change, resource.warning)
+            } else {
+              showLoading()
+              service
+                .patch(user)
+                .then((res) => afterSaved(res))
+                .catch(handleError)
+                .finally(hideLoading)
+            }
+          }
+        },
+        resource.no,
+        resource.yes,
+      )
+    }
+  }
+  const afterSaved = (res: Result<User>) => {
+    if (Array.isArray(res)) {
+      showFormError(refForm?.current as any, res)
+    } else if (isSuccessful(res)) {
+      alertSuccess(resource.msg_save_success, "", () => navigate(-1))
+    } else if (res === 0) {
+      alert(resource.error_not_found, resource.error)
+    } else {
+      alert(resource.error_conflict, resource.error)
+    }
+  }
   return (
     <div className="view-container">
       <form id="userForm" name="userForm" model-name="user" ref={refForm as any}>
@@ -76,12 +151,12 @@ export const UserForm = () => {
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2 className="view-title">{resource.user}</h2>
           <div className="btn-group">
-            <button className="btn-group btn-right" hidden={flag.newMode}>
+            <button className="btn-group btn-right" hidden={newMode}>
               <i className="material-icons" onClick={(e) => view(e, user.userId)}>
                 group
               </i>
             </button>
-            <button className="btn-group btn-right" hidden={flag.newMode}>
+            <button className="btn-group btn-right" hidden={newMode}>
               <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
                 group
               </i>
@@ -97,7 +172,7 @@ export const UserForm = () => {
               name="userId"
               className="form-control"
               value={user.userId || ""}
-              readOnly={!flag.newMode}
+              readOnly={!newMode}
               onChange={updateState}
               maxLength={20}
               required={true}
@@ -112,7 +187,7 @@ export const UserForm = () => {
               name="username"
               className="form-control"
               value={user.username || ""}
-              readOnly={!flag.newMode}
+              readOnly={!newMode}
               onChange={updateState}
               onBlur={requiredOnBlur}
               maxLength={40}
@@ -137,14 +212,7 @@ export const UserForm = () => {
           </label>
           <label className="col s12 m6 flying">
             {resource.person_title}
-            <select
-              id="title"
-              name="title"
-              value={user.title || ""}
-              className="form-control"
-              data-value
-              onChange={(e) => updateTitle(e.target, state.user, setState)}
-            >
+            <select id="title" name="title" value={user.title || ""} className="form-control" data-value onChange={(e) => updateTitle(e.target, state.user)}>
               <option value="">{resource.please_select}</option>)
               {state.titleList.map((item, index) => (
                 <option key={index} value={item.value}>
@@ -244,7 +312,7 @@ export const UserForm = () => {
           </div>
         </div>
         <footer className="view-footer">
-          {!flag.readOnly && (
+          {!isReadOnly && (
             <button type="submit" id="btnSave" name="btnSave" onClick={save}>
               {resource.save}
             </button>

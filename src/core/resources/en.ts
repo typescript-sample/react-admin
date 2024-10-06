@@ -164,6 +164,7 @@ export const en = {
   error_403: "You do not have permission for this page or for this action." /* error_forbidden */,
 
   error_version: "Data has been changed by someone. Please refresh screen and continue.",
+  error_conflict: "Data has been changed by someone. Please refresh screen and continue.",
   error_data_corrupt: "Data has been corrupt. You cannot proceed this business.",
   error_required_id: "You must input id.",
   error_duplicate_key: "The id is duplicated.",
