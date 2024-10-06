@@ -1,7 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react"
-import { buildId, error, message, OnClick } from "react-hook-core"
+import { OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
-import { confirm, handleError, hasPermission, showMessage, storage, useResource, write } from "uione"
+import { hideLoading, showLoading } from "ui-loading"
+import { confirm, handleError, hasPermission, showMessage, useResource, write } from "uione"
 import femaleIcon from "../assets/images/female.png"
 import maleIcon from "../assets/images/male.png"
 import { UsersLookup } from "../components/users-lookup"
@@ -33,18 +34,17 @@ const getIds = (users?: User[]): string[] => {
 export const RoleAssignmentForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
-  const params = useParams()
   const [state, setState] = useState(initialState)
   const { role, isOpenModel, q } = state
   let { users, selectedUsers, isCheckboxShown } = state
   const { shownUsers } = state
   const isReadOnly = !hasPermission(write, 2)
-
+  const { id } = useParams()
   useEffect(() => {
-    const id = buildId<string>(params)
     if (id) {
       const userService = getUserService()
       const roleService = getRoleService()
+      showLoading()
       Promise.all([userService.getUsersByRole(id), roleService.load(id)])
         .then((values) => {
           const [users, role] = values
@@ -52,9 +52,10 @@ export const RoleAssignmentForm = () => {
             setState({ ...state, users, shownUsers: users, role })
           }
         })
-        .catch((err) => error(err, storage.resource().value, storage.alert))
+        .catch(handleError)
+        .finally(hideLoading)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
     if (users) {
@@ -69,21 +70,19 @@ export const RoleAssignmentForm = () => {
   const save = (e: OnClick) => {
     e.preventDefault()
     const userIDs = getIds(users)
-    const msg = message(resource, "msg_confirm_save", "confirm", "yes", "no")
     confirm(
-      msg.message,
-      msg.title,
+      resource.msg_confirm_save,
+      resource.confirm,
       () => {
-        const roleService = getRoleService()
-        roleService
+        showLoading()
+        getRoleService()
           .assign(role.roleId, userIDs)
-          .then((res) => {
-            showMessage(resource.msg_save_success)
-          })
+          .then((res) => showMessage(resource.msg_save_success))
           .catch(handleError)
+          .finally(hideLoading)
       },
-      msg.no,
-      msg.yes,
+      resource.no,
+      resource.yes,
     )
   }
 
@@ -147,10 +146,8 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedUsers: [] })
   }
 
-  const back = (e: OnClick) => {
-    if (e) {
-      e.preventDefault()
-    }
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     navigate(-1)
   }
   const clearQ = (e: OnClick) => {

@@ -41,9 +41,10 @@ const initialState: InternalState = {
 }
 
 const createRole = (): Role => {
-  const user = createModel<Role>()
-  user.status = Status.Active
-  return user
+  const role = createModel<Role>()
+  role.privileges = []
+  role.status = Status.Active
+  return role
 }
 
 function getPrivilege(id: string, all: Privilege[]): Privilege | undefined {
@@ -205,12 +206,6 @@ function padLeft(str: string, num: number) {
   return str.padStart(num, "0")
 }
 
-function isCheckedAll(privileges: string[] | undefined, all: string[], setState2: DispatchWithCallback<Partial<InternalState>>) {
-  const checkedAll = privileges && all && privileges.length === all.length
-  setState2({ checkedAll })
-  return checkedAll
-}
-
 const handleCheckAllModule = (
   e: ChangeEvent<HTMLInputElement>,
   privileges: string[] | undefined,
@@ -301,8 +296,8 @@ export function RoleForm() {
     param,
   )
   const isReadOnly = !hasPermission(write, 1)
-  let seq = 1
   const [privileges, setPrivileges] = useState<Permission[]>([])
+  let seq = 1
 
   useEffect(() => {
     const obj = state.role
@@ -316,9 +311,15 @@ export function RoleForm() {
       if (isReadOnly) {
         setReadOnly(refForm.current as any, "keyword", "btnSave")
       }
-      setState({ role: obj }, () => isCheckedAll(obj.privileges, all, setState))
+      setState({ role: obj }, () => isCheckedAll(obj.privileges, all))
     }
   }, [state.role, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const isCheckedAll = (privileges: string[] | undefined, all: string[]) => {
+    const checkedAll = privileges && all && privileges.length === all.length
+    setState({ checkedAll })
+    return checkedAll
+  }
 
   const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
@@ -343,7 +344,7 @@ export function RoleForm() {
     const mapToSavePrivileges = mapPermissions.map((p) => {
       return p.id + " " + p.permissions
     })
-    setState({ role: { ...obj, privileges: mapToSavePrivileges } }, () => isCheckedAll(role.privileges, all, setState))
+    setState({ role: { ...obj, privileges: mapToSavePrivileges } }, () => isCheckedAll(role.privileges, all))
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -455,7 +456,7 @@ export function RoleForm() {
     })
     setPrivileges(permissions)
     setState({ role: { ...state.role, privileges: mapToSavePrivileges } }, function () {
-      isCheckedAll(mapToSavePrivileges, state.all, setState)
+      isCheckedAll(mapToSavePrivileges, state.all)
     })
   }
 
@@ -629,7 +630,7 @@ export function RoleForm() {
                   onChange={(e) =>
                     handleCheckAllModule(e, state.role.privileges, state.all, state.actions, (privileges: string[]) => {
                       setState({ role: { ...state.role, privileges: privileges } }, () => {
-                        isCheckedAll(privileges, state.all, setState)
+                        isCheckedAll(privileges, state.all)
                       })
                     })
                   }

@@ -105,6 +105,22 @@ export const UserForm = () => {
             />
           </label>
           <label className="col s12 m6">
+            {resource.username}
+            <input
+              type="text"
+              id="username"
+              name="username"
+              className="form-control"
+              value={user.username || ""}
+              readOnly={!flag.newMode}
+              onChange={updateState}
+              onBlur={requiredOnBlur}
+              maxLength={40}
+              required={true}
+              placeholder={resource.username}
+            />
+          </label>
+          <label className="col s12 m6">
             {resource.display_name}
             <input
               type="text"

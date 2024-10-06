@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react"
-import { OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
+import { hideLoading, showLoading } from "ui-loading"
 import { formatPhone } from "ui-plus"
 import { handleError, useResource } from "uione"
 import { getUserService, User } from "./service"
@@ -13,8 +13,8 @@ export const UserView = () => {
   const { id } = useParams()
   useLayoutEffect(() => {
     if (id) {
-      const service = getUserService()
-      service
+      showLoading()
+      getUserService()
         .load(id)
         .then((tmpUser) => {
           if (tmpUser) {
@@ -22,12 +22,11 @@ export const UserView = () => {
           }
         })
         .catch(handleError)
+        .finally(hideLoading)
     }
   }, [id])
-  const back = (event?: OnClick) => {
-    if (event) {
-      event.preventDefault()
-    }
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     navigate(-1)
   }
   return (
@@ -47,8 +46,8 @@ export const UserView = () => {
             <dd className="col s6 l9">{user?.title}</dd>
             <dt className="col s6 l3">{resource.display_name}</dt>
             <dd className="col s6 l9">{user?.displayName}</dd>
-            <dt className="col s6 l3">{formatPhone(resource.phone)}</dt>
-            <dd className="col s6 l9">{user?.phone}</dd>
+            <dt className="col s6 l3">{resource.phone}</dt>
+            <dd className="col s6 l9">{formatPhone(user?.phone)}</dd>
             <dt className="col s6 l3">{resource.email}</dt>
             <dd className="col s6 l9">{user?.email}</dd>
           </dl>

@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react"
-import { buildId, error, message, OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
-import { confirm, handleError, hasPermission, Permission, showMessage, storage, useResource } from "uione"
+import { hideLoading, showLoading } from "ui-loading"
+import { confirm, handleError, hasPermission, Permission, showMessage, useResource } from "uione"
 import { getRoleService, getUserService, User } from "./service"
 import "./style.css"
 import { Role } from "./user"
@@ -26,18 +26,17 @@ const getRoles = (roles?: Role[]): string[] => {
 export const RoleAssignmentForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
-  const params = useParams()
   const userService = getUserService()
   const [state, setState] = useState(initialState)
   const { user } = state
   let { roles, selectedRoles, checkedAll } = state
   const disabled = !hasPermission(Permission.write, 2)
-
+  const { id } = useParams()
   useEffect(() => {
-    const id = buildId<string>(params)
     if (id) {
       const userService = getUserService()
       const roleService = getRoleService()
+      showLoading()
       Promise.all([roleService.all(), userService.load(id)])
         .then((values) => {
           const [roles, user] = values
@@ -47,18 +46,19 @@ export const RoleAssignmentForm = () => {
             setState({ ...state, roles, selectedRoles: userRoles, user, checkedAll })
           }
         })
-        .catch((err) => error(err, storage.resource().value, storage.alert))
+        .catch(handleError)
+        .finally(hideLoading)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const save = (e: OnClick) => {
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     const userRoles = getRoles(selectedRoles)
-    const msg = message(resource, "msg_confirm_save", "confirm", "yes", "no")
     confirm(
-      msg.message,
-      msg.title,
+      resource.msg_confirm_save,
+      resource.confirm,
       () => {
+        showLoading()
         userService
           .patch({
             userId: user.userId,
@@ -68,9 +68,10 @@ export const RoleAssignmentForm = () => {
             showMessage(resource.msg_save_success)
           })
           .catch(handleError)
+          .finally(hideLoading)
       },
-      msg.no,
-      msg.yes,
+      resource.no,
+      resource.yes,
     )
   }
 
@@ -101,10 +102,8 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, selectedRoles, checkedAll })
   }
 
-  const back = (e: OnClick) => {
-    if (e) {
-      e.preventDefault()
-    }
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     navigate(-1)
   }
   return (
