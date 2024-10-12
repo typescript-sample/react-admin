@@ -54,25 +54,19 @@ export const RoleAssignmentForm = () => {
   const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     const userRoles = getRoles(selectedRoles)
-    confirm(
-      resource.msg_confirm_save,
-      resource.confirm,
-      () => {
-        showLoading()
-        userService
-          .patch({
-            userId: user.userId,
-            roles: userRoles,
-          })
-          .then((res) => {
-            showMessage(resource.msg_save_success)
-          })
-          .catch(handleError)
-          .finally(hideLoading)
-      },
-      resource.no,
-      resource.yes,
-    )
+    confirm(resource.msg_confirm_save, () => {
+      showLoading()
+      userService
+        .patch({
+          userId: user.userId,
+          roles: userRoles,
+        })
+        .then((res) => {
+          showMessage(resource.msg_save_success)
+        })
+        .catch(handleError)
+        .finally(hideLoading)
+    })
   }
 
   const onCheck = (e: ChangeEvent<HTMLInputElement>, id: string) => {

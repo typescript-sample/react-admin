@@ -110,9 +110,7 @@ export const SigninForm = () => {
         if (s === status.success) {
           succeed(result)
         } else {
-          alertInfo(resource.msg_account_reactivated, resource.info, () => {
-            succeed(result)
-          })
+          alertInfo(resource.msg_account_reactivated, () => succeed(result))
         }
       } else {
         store(undefined, setUser, setPrivileges)

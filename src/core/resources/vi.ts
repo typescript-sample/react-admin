@@ -217,6 +217,7 @@ export const vi = {
   error: "Error",
   info: "Info",
   warning: "Warning",
+  success: "Success",
 
   keyword: "Keyword",
   remark: "Remark",

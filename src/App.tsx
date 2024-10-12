@@ -1,8 +1,9 @@
+import axios from "axios"
 import * as csv from "csvtojson"
 import { currency, locale } from "locale-service"
 import { phonecodes } from "phonecodes"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { alert, confirm } from "ui-alert"
+import { alertError, confirm, resources as uiplusResources } from "ui-alert"
 import { loading } from "ui-loading"
 import { resources as uiresources, UIService } from "ui-plus"
 import { toast } from "ui-toast"
@@ -26,13 +27,11 @@ import LocalesRoute from "./locale"
 import RolesRoute from "./role"
 import { SettingsForm } from "./settings"
 import UsersRoute from "./user"
-
 // tslint:disable:ordered-imports
 import "./App.css"
 import "./assets/css/reset.css"
 import "./assets/fonts/material-icon/css/material-icons.css"
 // import "./assets/fonts/Roboto/font.css";
-import axios from "axios"
 import "./assets/css/alert.css"
 import "./assets/css/article.css"
 import "./assets/css/badge.css"
@@ -87,7 +86,7 @@ export function init() {
   storage.setUIService(new UIService())
   storage.currency = currency
   storage.locale = locale
-  storage.alert = alert
+  storage.alert = alertError
   storage.confirm = confirm
   storage.message = toast
   storage.getStatusName = getStatusName
@@ -96,6 +95,16 @@ export function init() {
   vresources.phonecodes = phonecodes
   uiresources.currency = currency
   uiresources.resource = resource
+
+  const res = storage.getResource()
+
+  uiplusResources.confirmHeader = res.confirm
+  uiplusResources.leftText = res.no
+  uiplusResources.rightText = res.yes
+  uiplusResources.errorHeader = res.error
+  uiplusResources.warningHeader = res.warning
+  uiplusResources.infoHeader = res.info
+  uiplusResources.successHeader = res.success
 }
 function App() {
   init()

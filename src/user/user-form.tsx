@@ -2,10 +2,10 @@ import { Item, Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
 import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, setReadOnly, useUpdate } from "react-hook-core"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { alert, alertSuccess, confirm } from "ui-alert"
+import { alertError, alertSuccess, alertWarning } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { emailOnBlur, formatPhone, phoneOnBlur, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { Gender, getLocale, getParam, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
+import { confirm, Gender, getLocale, getParam, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
 import { getMasterData, getUserService, User } from "./service"
 
 const createUser = (): User => {
@@ -36,7 +36,7 @@ export const UserForm = () => {
   const { state, setState, updateState, updatePhoneState } = useUpdate<InternalState>(initialState)
   const { id } = useParams()
   useEffect(() => {
-    initForm(refForm?.current as any, registerEvents)
+    initForm(refForm?.current, registerEvents)
     const masterDataService = getMasterData()
     Promise.all([masterDataService.getTitles(), masterDataService.getPositions()])
       .then((values) => {
@@ -52,12 +52,12 @@ export const UserForm = () => {
               .load(id)
               .then((user) => {
                 if (!user) {
-                  alert(resource.error_404, resource.error, "", () => navigate(-1))
+                  alertError(resource.error_404, () => navigate(-1))
                 } else {
                   setInitialUser(clone(user))
                   setState({ user })
                   if (isReadOnly) {
-                    setReadOnly(refForm.current as any)
+                    setReadOnly(refForm?.current)
                   }
                 }
               })
@@ -84,7 +84,7 @@ export const UserForm = () => {
     setState({ user })
   }
   const validate = (user: User): boolean => {
-    const valid = validateForm(refForm?.current as any, getLocale())
+    const valid = validateForm(refForm?.current, getLocale())
     return valid
   }
 
@@ -95,7 +95,7 @@ export const UserForm = () => {
     if (isEmptyObject(diff)) {
       navigate(-1)
     } else {
-      confirm(resource.msg_confirm_back, resource.confirm, () => navigate(-1), resource.no, resource.yes)
+      confirm(resource.msg_confirm_back, () => navigate(-1))
     }
   }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -103,45 +103,40 @@ export const UserForm = () => {
     const valid = validate(user)
     if (valid) {
       const service = getUserService()
-      confirm(
-        resource.msg_confirm_save,
-        resource.confirm,
-        () => {
-          if (newMode) {
+      confirm(resource.msg_confirm_save, () => {
+        if (newMode) {
+          showLoading()
+          service
+            .create(user)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        } else {
+          const diff = makeDiff(initialUser, user, ["userId"])
+          if (isEmptyObject(diff)) {
+            alertWarning(resource.msg_no_change)
+          } else {
             showLoading()
             service
-              .create(user)
+              .patch(user)
               .then((res) => afterSaved(res))
               .catch(handleError)
               .finally(hideLoading)
-          } else {
-            const diff = makeDiff(initialUser, user, ["userId"])
-            if (isEmptyObject(diff)) {
-              alert(resource.msg_no_change, resource.warning)
-            } else {
-              showLoading()
-              service
-                .patch(user)
-                .then((res) => afterSaved(res))
-                .catch(handleError)
-                .finally(hideLoading)
-            }
           }
-        },
-        resource.no,
-        resource.yes,
-      )
+        }
+      })
     }
   }
   const afterSaved = (res: Result<User>) => {
     if (Array.isArray(res)) {
-      showFormError(refForm?.current as any, res)
+      showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, "", () => navigate(-1))
+      debugger
+      alertSuccess(resource.msg_save_success, () => navigate(-1))
     } else if (res === 0) {
-      alert(resource.error_not_found, resource.error)
+      alertError(resource.error_not_found)
     } else {
-      alert(resource.error_conflict, resource.error)
+      alertError(resource.error_conflict)
     }
   }
   return (

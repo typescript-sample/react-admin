@@ -217,6 +217,7 @@ export const en = {
   error: "Error",
   info: "Info",
   warning: "Warning",
+  success: "Success",
 
   keyword: "Keyword",
   remark: "Remark",

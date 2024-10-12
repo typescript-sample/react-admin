@@ -2,10 +2,10 @@ import { Result } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, OnClick, setReadOnly, useUpdate } from "react-hook-core"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { alert, alertSuccess, confirm } from "ui-alert"
+import { alertError, alertSuccess, alertWarning } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { registerEvents, showFormError, validateForm } from "ui-plus"
-import { checkPatternOnBlur, getLocale, getParam, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
+import { checkPatternOnBlur, confirm, getLocale, getParam, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
 import { getRoleService, Privilege, Role } from "./service"
 import "./style.css"
 
@@ -285,7 +285,7 @@ export function RoleForm() {
 
   const { id } = useParams()
   useEffect(() => {
-    initForm(refForm?.current as any, registerEvents)
+    initForm(refForm?.current, registerEvents)
     const service = getRoleService()
     service
       .getPrivileges()
@@ -306,7 +306,7 @@ export function RoleForm() {
               .load(id)
               .then((role) => {
                 if (!role) {
-                  alert(resource.error_404, resource.error, "", () => navigate(-1))
+                  alertError(resource.error_404, () => navigate(-1))
                 } else {
                   if (!role.privileges) {
                     role.privileges = []
@@ -573,7 +573,7 @@ export function RoleForm() {
     }
   }
   const validate = (role: Role): boolean => {
-    const valid = validateForm(refForm?.current as any, getLocale())
+    const valid = validateForm(refForm?.current, getLocale())
     return valid
   }
 
@@ -584,7 +584,7 @@ export function RoleForm() {
     if (isEmptyObject(diff)) {
       navigate(-1)
     } else {
-      confirm(resource.msg_confirm_back, resource.confirm, () => navigate(-1), resource.no, resource.yes)
+      confirm(resource.msg_confirm_back, () => navigate(-1))
     }
   }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -592,45 +592,40 @@ export function RoleForm() {
     const valid = validate(role)
     if (valid) {
       const service = getRoleService()
-      confirm(
-        resource.msg_confirm_save,
-        resource.confirm,
-        () => {
-          if (newMode) {
+      confirm(resource.msg_confirm_save, () => {
+        if (newMode) {
+          showLoading()
+          service
+            .create(role)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        } else {
+          const diff = makeDiff(initialRole, role, ["roleId"])
+          if (isEmptyObject(diff)) {
+            alertWarning(resource.msg_no_change)
+          } else {
             showLoading()
             service
-              .create(role)
+              .patch(role)
               .then((res) => afterSaved(res))
               .catch(handleError)
               .finally(hideLoading)
-          } else {
-            const diff = makeDiff(initialRole, role, ["roleId"])
-            if (isEmptyObject(diff)) {
-              alert(resource.msg_no_change, resource.warning)
-            } else {
-              showLoading()
-              service
-                .patch(role)
-                .then((res) => afterSaved(res))
-                .catch(handleError)
-                .finally(hideLoading)
-            }
           }
-        },
-        resource.no,
-        resource.yes,
-      )
+        }
+      })
     }
   }
   const afterSaved = (res: Result<Role>) => {
     if (Array.isArray(res)) {
-      showFormError(refForm?.current as any, res)
+      showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, "", () => navigate(-1))
+      debugger
+      alertSuccess(resource.msg_save_success, () => navigate(-1))
     } else if (res === 0) {
-      alert(resource.error_not_found, resource.error)
+      alertError(resource.error_not_found)
     } else {
-      alert(resource.error_conflict, resource.error)
+      alertError(resource.error_conflict)
     }
   }
   return (

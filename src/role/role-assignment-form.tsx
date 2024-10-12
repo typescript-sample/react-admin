@@ -70,20 +70,14 @@ export const RoleAssignmentForm = () => {
   const save = (e: OnClick) => {
     e.preventDefault()
     const userIDs = getIds(users)
-    confirm(
-      resource.msg_confirm_save,
-      resource.confirm,
-      () => {
-        showLoading()
-        getRoleService()
-          .assign(role.roleId, userIDs)
-          .then((res) => showMessage(resource.msg_save_success))
-          .catch(handleError)
-          .finally(hideLoading)
-      },
-      resource.no,
-      resource.yes,
-    )
+    confirm(resource.msg_confirm_save, () => {
+      showLoading()
+      getRoleService()
+        .assign(role.roleId, userIDs)
+        .then((res) => showMessage(resource.msg_save_success))
+        .catch(handleError)
+        .finally(hideLoading)
+    })
   }
 
   const onModelSave = (arr: User[]) => {
@@ -120,7 +114,7 @@ export const RoleAssignmentForm = () => {
   }
 
   const onDelete = () => {
-    confirm(resource.msg_confirm_delete, resource.confirm, () => {
+    confirm(resource.msg_confirm_delete, () => {
       const arr: User[] = []
       users.map((value) => {
         const user = selectedUsers.find((v) => v.userId === value.userId)
