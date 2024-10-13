@@ -1,6 +1,6 @@
 .alert-info {
   color: white;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   border-color: #c3e6cb;
 }
 
@@ -136,7 +136,7 @@
 }
 
 .confirm-icon .alert-icon {
-  color: #007BFF;
+  color: #007bff;
 }
 
 .alert .devide {
@@ -186,7 +186,6 @@ alert b {
 }
 
 @media all and (max-width: 540px) {
-
   .alert {
     background-color: white;
     width: 100%;

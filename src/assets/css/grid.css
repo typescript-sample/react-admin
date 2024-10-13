@@ -10,7 +10,8 @@
   text-align: right;
 }
 
-.center, .center-align {
+.center,
+.center-align {
   text-align: center;
 }
 
@@ -24,8 +25,8 @@
 }
 
 .no-select,
-input[type=range],
-input[type=range]+.thumb {
+input[type="range"],
+input[type="range"] + .thumb {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -1026,7 +1027,7 @@ input[type=range]+.thumb {
   border: 1px solid;
 }
 
-.chip>img {
+.chip > img {
   float: left;
   margin: 0 8px 0 -12px;
   height: 32px;
@@ -1056,8 +1057,8 @@ input[type=range]+.thumb {
   margin: 0 0 8px 0;
   min-height: 45px;
   outline: none;
-  -webkit-transition: all .3s;
-  transition: all .3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 .chips:hover {
@@ -1089,13 +1090,13 @@ input[type=range]+.thumb {
   margin-bottom: 0;
 }
 
-.prefix~.chips {
+.prefix ~ .chips {
   margin-left: 3rem;
   width: 92%;
   width: calc(100% - 3rem);
 }
 
-.chips:empty~label {
+.chips:empty ~ label {
   font-size: 0.8rem;
   -webkit-transform: translateY(-140%);
   transform: translateY(-140%);

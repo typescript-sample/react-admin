@@ -6,35 +6,35 @@
     background: #747979;
   }
 }
-.grey .switch-container > input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*=lightbox-]):before,
-.grey input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*=lightbox-]).switch:before {
+.grey .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
   border-color: #393f48;
   color: #b3b3b3;
-  background:#fff;
+  background: #fff;
 }
-.grey .switch-container > input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*=lightbox-]):after,
-.grey input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*=lightbox-]).switch:after {
+.grey .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after,
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:after {
   border-color: #7f7f7f;
   color: #fff;
-  background:#657181;
+  background: #657181;
 }
-.grey input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*=lightbox-]):before {
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before {
   border-color: #393f48;
   background: #fff;
 }
-.grey input[type=checkbox]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*=lightbox-]):after {
+.grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):after {
   color: #fff;
   background: #657181;
 }
 
-.grey input[type=radio]:before{
+.grey input[type="radio"]:before {
   border-color: #393f48;
-  background-image:radial-gradient(circle,#657181 40%, inherit 50%);
+  background-image: radial-gradient(circle, #657181 40%, inherit 50%);
 }
 
-.grey input[type=radio]:checked:before{
+.grey input[type="radio"]:checked:before {
   background-color: #657181;
-  background-image: radial-gradient(circle,#657181 40%,#657181 50%);
+  background-image: radial-gradient(circle, #657181 40%, #657181 50%);
   border-color: #657181;
 }
 
@@ -49,7 +49,6 @@
 .grey .sidebar > nav > ul > li > ul > li > ul {
   /* background-color: #00574b; */
   background-color: #fff;
-
 }
 .grey .sidebar ul.sub-list > li.active,
 .grey .sub-list .active,
@@ -146,7 +145,7 @@
 }
 .grey .btn-more:hover,
 .grey footer > button:hover {
-  box-shadow:  #565656;
+  box-shadow: #565656;
 }
 .grey section.footer > button#btnReject,
 .grey footer > button#btnReject {
@@ -231,8 +230,8 @@
   border-color: #d1d9e2;
 }
 
-.grey .detail .table-responsive > table > tbody >tr:nth-of-type(odd),
-.grey form.list-result > .table-responsive > table > tbody >tr:nth-of-type(odd),
+.grey .detail .table-responsive > table > tbody > tr:nth-of-type(odd),
+.grey form.list-result > .table-responsive > table > tbody > tr:nth-of-type(odd),
 .grey .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #fff;
 }
@@ -265,13 +264,10 @@
 .grey form.list-result > .table-responsive > table > tbody > tr > td,
 .grey .table > tbody > tr > td,
 .grey .row .form-group label,
-
 .grey .pagination > li > a,
 .grey .pagination > li > span,
-
 .grey .card > footer > button.btn-cancel,
 .grey .view-container.central-full > form > div > button.btn-cancel,
-
 .grey .view-container > form > header > h5,
 .grey .view-container > header > h5,
 .grey .view-header > h5,
@@ -285,14 +281,14 @@
 
 .grey .view-container > form > div > h3,
 .grey .view-container > div > h3,
-.grey .view-body > h3
+.grey .view-body > h3,
 .grey .subheader {
   color: #181b1f;
 }
 
 .grey .mobile .view-container > form > div > h3,
 .grey .mobile .view-container > div > h3,
-.grey .mobile .view-body > h3
+.grey .mobile .view-body > h3,
 .grey .mobile .subheader {
   background-color: #e1ebe9;
 }
@@ -300,7 +296,7 @@
 @media screen and (max-width: 600px) {
   .grey .view-container > form > div > h3,
   .grey .view-container > div > h3,
-  .grey .view-body > h3
+  .grey .view-body > h3,
   .grey .subheader {
     background-color: #e2e2e2;
   }
@@ -326,7 +322,7 @@
 }
 
 .grey .pagination > li > a,
-.grey .pagination > li > span  {
+.grey .pagination > li > span {
   border-color: #666666;
   background-color: inherit;
 }
@@ -436,13 +432,13 @@
 
 .grey .backgound-color-container {
   background-color: #04463c !important;
-  background: linear-gradient(transparent,rgb(0,0,0));
+  background: linear-gradient(transparent, rgb(0, 0, 0));
 }
 
 .grey .chips.focus {
   border-bottom: 1px solid #657181;
   -webkit-box-shadow: 0 1px 0 0 #657181;
-          box-shadow: 0 1px 0 0 #657181;
+  box-shadow: 0 1px 0 0 #657181;
 }
 
 @media screen and (max-width: 600px) {
@@ -468,7 +464,6 @@
 .grey .view-container > form > div > label.invalid,
 .grey .view-container > div > label.invalid,
 .grey .view-body > label.invalid,
-
 .grey .btn-remove,
 .grey label.required:before,
 .grey .span-error,
@@ -527,9 +522,10 @@
 }
 
 .grey .form-group .form-control.invalid,
-.grey .row > .col > label input.invalid
+.grey .form-group .form-control.invalid,
+.grey .row > .col > label input.invalid,
 .grey .row > label input.invalid,
-.grey .row > .col > label select.invalid
+.grey .row > .col > label select.invalid,
 .grey .row > label select.invalid,
 .grey .view-container > form > div > section > label > input.invalid,
 .grey .view-container > form > div > section > label > select.invalid,
@@ -539,10 +535,8 @@
 .grey .view-container > div > label > select.invalid,
 .grey .view-body > label > input.invalid,
 .grey .view-body > label > select.invalid,
-
 .grey .row > .col > label input:not([type="checkbox"]):not([type="radio"]).invalid,
 .grey .row > label input:not([type="checkbox"]):not([type="radio"]).invalid,
-
 .grey .row > .col > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
 .grey .row > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
 .grey .view-container > form > div > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
@@ -586,16 +580,15 @@
 .grey .view-container > form > div > section > label > select,
 .grey .view-container > form > div > label > select,
 .grey .view-container > div > label > select,
-.grey .view-body > label > select
+.grey .view-body > label > select,
 .grey .row > .col > label select,
 .grey .row > label select:not([multiple]),
 .grey .row > label select[multiple] {
   color: #000;
   border-color: #4e4e4e;
-  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, .075);
-  box-shadow: inset 0 0px 0px rgba(0, 0, 0, .075);
+  -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
 }
-
 
 .grey .diff .row .col p > span,
 .grey div.card > div > p,
@@ -607,7 +600,6 @@
 .grey .remark,
 .grey .article-notice,
 .grey .btn-detail,
-
 .grey .quick-nav,
 .grey .detail-content > form > header > .btn-back,
 .grey .view-container > form > header > .btn-back,
@@ -645,7 +637,6 @@
 .grey .mobile .view-container > header > .btn-close,
 .grey .mobile .view-header > .btn-back,
 .grey .mobile .view-header > .btn-close,
-
 .grey .view-container.solid > form > div > p,
 .grey .view-container.solid > div > p,
 .grey .view-container.solid > .view-body > p,
@@ -703,17 +694,17 @@
 .grey .search-input > * {
   border-color: #d1d9e1 !important;
 }
-.grey .cover>i:first-child {
+.grey .cover > i:first-child {
   background: #fff;
   color: #fff;
 }
-.grey ul.list-view>li,
-.grey ul.list-view.row>li.col>*:last-child,
-.grey ul.list-view>li.section-container>section:first-child,
+.grey ul.list-view > li,
+.grey ul.list-view.row > li.col > *:last-child,
+.grey ul.list-view > li.section-container > section:first-child,
 .grey div.card,
-.grey .card>section,
-.grey .video>section,
-.grey ul.list-view.horizon>li.video {
+.grey .card > section,
+.grey .video > section,
+.grey ul.list-view.horizon > li.video {
   border-color: #e0e0e0;
 }
 

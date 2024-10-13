@@ -1,11 +1,11 @@
 import { Item, Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
 import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, setReadOnly, useUpdate } from "react-hook-core"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { emailOnBlur, formatPhone, phoneOnBlur, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { confirm, Gender, getLocale, getParam, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
+import { confirm, Gender, getLocale, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
 import { getMasterData, getUserService, User } from "./service"
 
 const createUser = (): User => {
@@ -26,8 +26,6 @@ const initialState: InternalState = {
 }
 
 export const UserForm = () => {
-  const path = getParam(useLocation().pathname)
-  const newMode = path === "new"
   const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
@@ -35,6 +33,7 @@ export const UserForm = () => {
   const [initialUser, setInitialUser] = useState<User>(createUser())
   const { state, setState, updateState, updatePhoneState } = useUpdate<InternalState>(initialState)
   const { id } = useParams()
+  const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
     const masterDataService = getMasterData()
@@ -67,7 +66,7 @@ export const UserForm = () => {
         })
       })
       .catch(handleError)
-  }, [isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const view = (e: React.MouseEvent<HTMLElement, MouseEvent>, userId: string) => {
     e.preventDefault()

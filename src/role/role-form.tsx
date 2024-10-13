@@ -1,11 +1,11 @@
 import { Result } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, OnClick, setReadOnly, useUpdate } from "react-hook-core"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { registerEvents, showFormError, validateForm } from "ui-plus"
-import { checkPatternOnBlur, confirm, getLocale, getParam, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
+import { checkPatternOnBlur, confirm, getLocale, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
 import { getRoleService, Privilege, Role } from "./service"
 import "./style.css"
 
@@ -272,8 +272,6 @@ function buildPermissions(actions: Map<string, number>, privileges?: string[]): 
 }
 
 export function RoleForm() {
-  const path = getParam(useLocation().pathname)
-  const newMode = path === "new"
   const isReadOnly = !hasPermission(write, 1)
   const resource = useResource()
   const navigate = useNavigate()
@@ -284,6 +282,7 @@ export function RoleForm() {
   let seq = 1
 
   const { id } = useParams()
+  const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
     const service = getRoleService()
@@ -325,7 +324,7 @@ export function RoleForm() {
         })
       })
       .catch(handleError)
-  }, [id, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const obj = state.role
     if (obj) {
