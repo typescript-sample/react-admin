@@ -1,6 +1,7 @@
 import { Item } from "onecore"
 import { useEffect, useRef, useState } from "react"
-import { confirm, getDateFormat, getLanguage, handleError, initForm, registerEvents, requiredOnBlur, showMessage, useResource } from "uione"
+import { confirm } from "ui-alert"
+import { getDateFormat, getLanguage, handleError, initForm, registerEvents, requiredOnBlur, showMessage, useResource } from "uione"
 import { getMasterDataService, getSettingsService, Settings } from "./service"
 
 interface InternalState {

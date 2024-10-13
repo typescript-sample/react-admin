@@ -2,10 +2,10 @@ import { Item, Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
 import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, setReadOnly, useUpdate } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
-import { alertError, alertSuccess, alertWarning } from "ui-alert"
+import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { emailOnBlur, formatPhone, phoneOnBlur, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
-import { confirm, Gender, getLocale, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
+import { Gender, getLocale, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
 import { getMasterData, getUserService, User } from "./service"
 
 const createUser = (): User => {
