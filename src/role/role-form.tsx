@@ -619,7 +619,6 @@ export function RoleForm() {
     if (Array.isArray(res)) {
       showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
-      debugger
       alertSuccess(resource.msg_save_success, () => navigate(-1))
     } else if (res === 0) {
       alertError(resource.error_not_found)
