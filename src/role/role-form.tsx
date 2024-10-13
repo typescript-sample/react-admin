@@ -129,6 +129,10 @@ function isChecked(id: string, privileges: Permission[]): boolean {
   if (!privileges) return false
   return privileges && privileges.find((item) => item.id === id && item.permissions > 0) ? true : false
 }
+function isCheckedAll(privileges: string[] | undefined, all: string[]): boolean|undefined {
+  const checkedAll = privileges && all && privileges.length === all.length
+  return checkedAll
+}
 
 function checked(id: string, action: number, privileges: Permission[]): boolean {
   const privilege = privileges.find((item) => item.id === id)
@@ -293,35 +297,33 @@ export function RoleForm() {
         const actions = new Map<string, number>()
         buildAll(all, allPrivileges)
         buildActionAll(actions, allPrivileges)
-        setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions) }, () => {
-          if (!id) {
-            const role = createRole()
-            setPrivileges(buildPermissions(actions, role.privileges))
-            setInitialRole(clone(role))
-            setState({ role })
-          } else {
-            showLoading()
-            service
-              .load(id)
-              .then((role) => {
-                if (!role) {
-                  alertError(resource.error_404, () => navigate(-1))
-                } else {
-                  if (!role.privileges) {
-                    role.privileges = []
-                  }
-                  setPrivileges(buildPermissions(actions, role.privileges))
-                  setInitialRole(clone(role))
-                  setState({ role })
-                  if (isReadOnly) {
-                    setReadOnly(refForm.current as any)
-                  }
+        if (!id) {
+          const role = createRole()
+          setPrivileges(buildPermissions(actions, role.privileges))
+          setInitialRole(clone(role))
+          setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+        } else {
+          showLoading()
+          service
+            .load(id)
+            .then((role) => {
+              if (!role) {
+                alertError(resource.error_404, () => navigate(-1))
+              } else {
+                if (!role.privileges) {
+                  role.privileges = []
                 }
-              })
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        })
+                setPrivileges(buildPermissions(actions, role.privileges))
+                setInitialRole(clone(role))
+                setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+                if (isReadOnly) {
+                  setReadOnly(refForm.current as any)
+                }
+              }
+            })
+            .catch(handleError)
+            .finally(hideLoading)
+        }
       })
       .catch(handleError)
   }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -337,15 +339,10 @@ export function RoleForm() {
       if (isReadOnly) {
         setReadOnly(refForm.current as any, "keyword", "btnSave")
       }
-      setState({ role: obj }, () => isCheckedAll(obj.privileges, all))
+      const checkedAll = isCheckedAll(obj.privileges, all)
+      setState({ checkedAll, role: obj })
     }
   }, [state.role, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const isCheckedAll = (privileges: string[] | undefined, all: string[]) => {
-    const checkedAll = privileges && all && privileges.length === all.length
-    setState({ checkedAll })
-    return checkedAll
-  }
 
   const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
@@ -370,7 +367,8 @@ export function RoleForm() {
     const mapToSavePrivileges = mapPermissions.map((p) => {
       return p.id + " " + p.permissions
     })
-    setState({ role: { ...obj, privileges: mapToSavePrivileges } }, () => isCheckedAll(role.privileges, all))
+    const checkedAll = isCheckedAll(role.privileges, all)
+    setState({ checkedAll, role: { ...obj, privileges: mapToSavePrivileges } })
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -481,9 +479,8 @@ export function RoleForm() {
       return p.id + " " + p.permissions
     })
     setPrivileges(permissions)
-    setState({ role: { ...state.role, privileges: mapToSavePrivileges } }, function () {
-      isCheckedAll(mapToSavePrivileges, state.all)
-    })
+    const checkedAll = isCheckedAll(mapToSavePrivileges, state.all)
+    setState({ checkedAll, role: { ...state.role, privileges: mapToSavePrivileges } })
   }
 
   const isParentChecked = (id: string, child: Privilege[], privileges: Permission[]) => {
@@ -709,9 +706,8 @@ export function RoleForm() {
                   type="checkbox"
                   onChange={(e) =>
                     handleCheckAllModule(e, state.role.privileges, state.all, state.actions, (privileges: string[]) => {
-                      setState({ role: { ...state.role, privileges: privileges } }, () => {
-                        isCheckedAll(privileges, state.all)
-                      })
+                      const checkedAll = isCheckedAll(privileges, state.all)
+                      setState({ checkedAll, role: { ...state.role, privileges: privileges } })
                     })
                   }
                   checked={state.checkedAll}

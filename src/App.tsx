@@ -32,7 +32,7 @@ import UsersRoute from "./user"
 import "./App.css"
 import "./assets/css/reset.css"
 import "./assets/fonts/material-icon/css/material-icons.css"
-// import "./assets/fonts/Roboto/font.css";
+import "./assets/fonts/Roboto/font.css";
 import "./assets/css/checkbox.css"
 import "./assets/css/radio.css"
 import "./assets/css/grid.css"
