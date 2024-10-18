@@ -683,10 +683,6 @@
   color: #4db6ac !important;
 }
 
-.dark .view-container > form > div > label.search-input > *,
-.dark .view-container > div > label.search-input > *,
-.dark .view-body > label.search-input > *,
-.dark .row > .col > label.search-input > *,
 .dark .row > label.search-input > *,
 .dark .search-input > * {
   border-color: #b2b2b2 !important;

@@ -686,10 +686,6 @@ section > p > label,
   color: #4db6ac !important;
 }
 
-.view-container > form > div > label.search-input > *,
-.view-container > div > label.search-input > *,
-.view-body > label.search-input > *,
-.row > .col > label.search-input > *,
 .row > label.search-input > *,
 .search-input > * {
   border-color: #b3b3b3 !important;
