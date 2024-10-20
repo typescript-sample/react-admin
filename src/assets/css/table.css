@@ -151,6 +151,9 @@ form.list-result > .table-responsive > table > thead > tr > th > button {
 }
 
 /* move from main.css */
+th.datetime {
+  width: 124px;
+}
 th.action {
   width: 96px;
 }
