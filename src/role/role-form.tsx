@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, OnClick, setReadOnly, useUpdate } from "react-hook-core"
+import { clone, isEmptyObject, isSuccessful, makeDiff, OnClick, setReadOnly } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -45,7 +45,7 @@ const initialState: InternalState = {
 }
 
 const createRole = (): Role => {
-  const role = createModel<Role>()
+  const role = {} as Role
   role.privileges = []
   role.status = Status.Active
   return role
@@ -129,7 +129,7 @@ function isChecked(id: string, privileges: Permission[]): boolean {
   if (!privileges) return false
   return privileges && privileges.find((item) => item.id === id && item.permissions > 0) ? true : false
 }
-function isCheckedAll(privileges: string[] | undefined, all: string[]): boolean|undefined {
+function isCheckedAll(privileges: string[] | undefined, all: string[]): boolean | undefined {
   const checkedAll = privileges && all && privileges.length === all.length
   return checkedAll
 }
@@ -281,7 +281,7 @@ export function RoleForm() {
   const navigate = useNavigate()
   const refForm = useRef()
   const [initialRole, setInitialRole] = useState<Role>(createRole())
-  const { state, setState, updateState } = useUpdate<InternalState>(initialState)
+  const [state, setState] = useState<InternalState>(initialState)
   const [privileges, setPrivileges] = useState<Permission[]>([])
   let seq = 1
 
@@ -301,7 +301,7 @@ export function RoleForm() {
           const role = createRole()
           setPrivileges(buildPermissions(actions, role.privileges))
           setInitialRole(clone(role))
-          setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+          setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
         } else {
           showLoading()
           service
@@ -315,7 +315,7 @@ export function RoleForm() {
                 }
                 setPrivileges(buildPermissions(actions, role.privileges))
                 setInitialRole(clone(role))
-                setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+                setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
                 if (isReadOnly) {
                   setReadOnly(refForm.current as any)
                 }
@@ -340,7 +340,7 @@ export function RoleForm() {
         setReadOnly(refForm.current as any, "keyword", "btnSave")
       }
       const checkedAll = isCheckedAll(obj.privileges, all)
-      setState({ checkedAll, role: obj })
+      setState({ ...state, checkedAll, role: obj })
     }
   }, [state.role, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -368,14 +368,14 @@ export function RoleForm() {
       return p.id + " " + p.permissions
     })
     const checkedAll = isCheckedAll(role.privileges, all)
-    setState({ checkedAll, role: { ...obj, privileges: mapToSavePrivileges } })
+    setState({ ...state, checkedAll, role: { ...obj, privileges: mapToSavePrivileges } })
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value
     const { allPrivileges } = state
     const shownPrivileges = buildShownModules(q, allPrivileges)
-    setState({ keyword: q, shownPrivileges })
+    setState({ ...state, keyword: q, shownPrivileges })
   }
 
   const assign = (e: OnClick, id: string) => {
@@ -480,7 +480,7 @@ export function RoleForm() {
     })
     setPrivileges(permissions)
     const checkedAll = isCheckedAll(mapToSavePrivileges, state.all)
-    setState({ checkedAll, role: { ...state.role, privileges: mapToSavePrivileges } })
+    setState({ ...state, checkedAll, role: { ...state.role, privileges: mapToSavePrivileges } })
   }
 
   const isParentChecked = (id: string, child: Privilege[], privileges: Permission[]) => {
@@ -568,12 +568,16 @@ export function RoleForm() {
       )
     }
   }
+
   const validate = (role: Role): boolean => {
     const valid = validateForm(refForm?.current, getLocale())
     return valid
   }
-
   const role = state.role
+  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    role.status = e.target.value
+    setState({ ...state, role })
+  }
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     const diff = makeDiff(initialRole, role)
@@ -647,7 +651,10 @@ export function RoleForm() {
                 onBlur={checkPatternOnBlur}
                 pattern={regexId}
                 config-pattern-error-key={"invalid_pattern_id"}
-                onChange={updateState}
+                onChange={(e) => {
+                  role.roleId = e.target.value
+                  setState({ ...state, role })
+                }}
                 maxLength={20}
                 required={true}
                 readOnly={!newMode}
@@ -661,7 +668,10 @@ export function RoleForm() {
                 id="roleName"
                 name="roleName"
                 value={role.roleName || ""}
-                onChange={updateState}
+                onChange={(e) => {
+                  role.roleName = e.target.value
+                  setState({ ...state, role })
+                }}
                 maxLength={255}
                 required={true}
                 placeholder={resource.role_name}
@@ -669,17 +679,28 @@ export function RoleForm() {
             </label>
             <label className="col s12 m6">
               {resource.remark}
-              <input type="text" id="remark" name="remark" value={role.remark || ""} onChange={updateState} maxLength={255} placeholder={resource.remark} />
+              <input
+                type="text"
+                id="remark"
+                name="remark"
+                value={role.remark || ""}
+                onChange={(e) => {
+                  role.remark = e.target.value
+                  setState({ ...state, role })
+                }}
+                maxLength={255}
+                placeholder={resource.remark}
+              />
             </label>
             <div className="col s12 m6 radio-section">
               {resource.status}
               <div className="radio-group">
                 <label>
-                  <input type="radio" id="active" name="status" onChange={(e) => updateState(e, () => setState)} value="A" checked={role.status === "A"} />
+                  <input type="radio" id="active" name="status" onChange={statusOnChange} value="A" checked={role.status === "A"} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, () => setState)} value="I" checked={role.status === "I"} />
+                  <input type="radio" id="inactive" name="status" onChange={statusOnChange} value="I" checked={role.status === "I"} />
                   {resource.inactive}
                 </label>
               </div>
@@ -707,7 +728,7 @@ export function RoleForm() {
                   onChange={(e) =>
                     handleCheckAllModule(e, state.role.privileges, state.all, state.actions, (privileges: string[]) => {
                       const checkedAll = isCheckedAll(privileges, state.all)
-                      setState({ checkedAll, role: { ...state.role, privileges: privileges } })
+                      setState({ ...state, checkedAll, role: { ...state.role, privileges: privileges } })
                     })
                   }
                   checked={state.checkedAll}

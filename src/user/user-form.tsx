@@ -1,6 +1,6 @@
 import { Item, Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, setReadOnly, useUpdate } from "react-hook-core"
+import { clone, isEmptyObject, isSuccessful, makeDiff, setReadOnly } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -9,7 +9,7 @@ import { Gender, getLocale, handleError, handleSelect, hasPermission, initForm, 
 import { getMasterData, getUserService, User } from "./service"
 
 const createUser = (): User => {
-  const user = createModel<User>()
+  const user = {} as User
   user.status = Status.Active
   return user
 }
@@ -31,7 +31,7 @@ export const UserForm = () => {
   const navigate = useNavigate()
   const refForm = useRef()
   const [initialUser, setInitialUser] = useState<User>(createUser())
-  const { state, setState, updateState, updatePhoneState } = useUpdate<InternalState>(initialState)
+  const [state, setState] = useState<InternalState>(initialState)
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -78,7 +78,7 @@ export const UserForm = () => {
     handleSelect(ele)
     user.title = ele.value
     user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
-    setState({ user })
+    setState({ ...state, user })
   }
   const validate = (user: User): boolean => {
     const valid = validateForm(refForm?.current, getLocale())
@@ -94,6 +94,14 @@ export const UserForm = () => {
     } else {
       confirm(resource.msg_confirm_back, () => navigate(-1))
     }
+  }
+  const genderOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    user.gender = e.target.value
+    setState({ ...state, user })
+  }
+  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    user.status = e.target.value
+    setState({ ...state, user })
   }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
@@ -164,7 +172,10 @@ export const UserForm = () => {
               className="form-control"
               value={user.userId || ""}
               readOnly={!newMode}
-              onChange={updateState}
+              onChange={(e) => {
+                user.userId = e.target.value
+                setState({ ...state, user })
+              }}
               maxLength={20}
               required={true}
               placeholder={resource.user_id}
@@ -179,7 +190,10 @@ export const UserForm = () => {
               className="form-control"
               value={user.username || ""}
               readOnly={!newMode}
-              onChange={updateState}
+              onChange={(e) => {
+                user.username = e.target.value
+                setState({ ...state, user })
+              }}
               onBlur={requiredOnBlur}
               maxLength={40}
               required={true}
@@ -194,7 +208,10 @@ export const UserForm = () => {
               name="displayName"
               className="form-control"
               value={user.displayName || ""}
-              onChange={updateState}
+              onChange={(e) => {
+                user.displayName = e.target.value
+                setState({ ...state, user })
+              }}
               onBlur={requiredOnBlur}
               maxLength={40}
               required={true}
@@ -221,7 +238,10 @@ export const UserForm = () => {
               className="form-control"
               value={user.position || ""}
               data-value
-              onChange={updateState}
+              onChange={(e) => {
+                user.position = e.target.value
+                setState({ ...state, user })
+              }}
             >
               <option value="">{resource.please_select}</option>
               {state.positionList.map((item, index) => (
@@ -239,7 +259,10 @@ export const UserForm = () => {
               name="phone"
               className="form-control"
               value={formatPhone(user.phone) || ""}
-              onChange={updatePhoneState}
+              onChange={(e) => {
+                user.phone = e.target.value
+                setState({ ...state, user })
+              }}
               onBlur={phoneOnBlur}
               maxLength={17}
               placeholder={resource.phone}
@@ -253,7 +276,10 @@ export const UserForm = () => {
               name="email"
               data-type="email"
               value={user.email || ""}
-              onChange={updateState}
+              onChange={(e) => {
+                user.email = e.target.value
+                setState({ ...state, user })
+              }}
               onBlur={emailOnBlur}
               maxLength={100}
               placeholder={resource.email}
@@ -267,7 +293,7 @@ export const UserForm = () => {
                   type="radio"
                   id="gender"
                   name="gender"
-                  onChange={updateState}
+                  onChange={genderOnChange}
                   disabled={user.title !== "Dr"}
                   value={Gender.Male}
                   checked={user.gender === Gender.Male}
@@ -279,7 +305,7 @@ export const UserForm = () => {
                   type="radio"
                   id="gender"
                   name="gender"
-                  onChange={updateState}
+                  onChange={genderOnChange}
                   disabled={user.title !== "Dr"}
                   value={Gender.Female}
                   checked={user.gender === Gender.Female}
@@ -292,11 +318,11 @@ export const UserForm = () => {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={updateState} value={Status.Active} checked={user.status === Status.Active} />
+                <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={user.status === Status.Active} />
                 {resource.yes}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={updateState} value={Status.Inactive} checked={user.status === Status.Inactive} />
+                <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={user.status === Status.Inactive} />
                 {resource.no}
               </label>
             </div>
