@@ -151,19 +151,19 @@
     left: 0;
     bottom: 0;
     right: 0;
-    height: 44px;
+    height: 52px;
     padding-top: 5px;
     z-index: 10;
   }
 
   .page-body {
-    margin-bottom: 44px;
+    margin-bottom: 52px;
   }
 */
 }
 
 .page-header {
-  height: 44px;
+  height: 52px;
   margin: 0;
   padding-top: 5px;
   position: relative;
@@ -189,21 +189,21 @@
 
 .view-container.fixed-search > div > form:nth-child(2) > ul.list-view {
   overflow-y: auto;
-  max-height: calc(100vh - 64px - 44px - 13px);
+  max-height: calc(100vh - 64px - 52px - 13px);
 }
 
 .page-body .view-container > form,
 .page-body .view-container > div {
-  max-height: calc(100vh - 44px); /* - page-header */
-  height: calc(100vh - 44px);
+  max-height: calc(100vh - 52px); /* - page-header */
+  height: calc(100vh - 52px);
 }
 .page-body .view-container > form > div {
-  max-height: calc(100vh - 64px - 44px); /* - view-footer - page-header */
+  max-height: calc(100vh - 64px - 52px); /* - view-footer - page-header */
 }
 .page-header > .view-container > form > div,
 .page-header > .view-container > div,
 .page-header > .view-body {
-  max-height: calc(100vh - 64px - 44px);
+  max-height: calc(100vh - 64px - 52px);
 }
 
 .detail-content > form > div,
@@ -211,7 +211,7 @@
 .view-container > div,
 .view-body {
   padding: 0;
-  padding-top: 44px;
+  padding-top: 52px;
   padding-bottom: 20px;
   right: 0;
   top: 0px;
@@ -234,14 +234,14 @@
 .page-body .view-container > div.list-detail-container {
   overflow-y: unset;
   padding-bottom: 0;
-  max-height: calc(100vh - 64px - 44px + 20px);
-  height: calc(100vh - 64px - 44px + 20px);
+  max-height: calc(100vh - 64px - 52px + 20px);
+  height: calc(100vh - 64px - 52px + 20px);
 }
 .page-body .view-container > div.list-detail-container > div.list-content,
 .page-body .view-container > div.list-detail-container > div.detail-content {
   overflow-y: auto;
-  max-height: calc(100vh - 64px - 44px + 20px);
-  height: calc(100vh - 64px - 44px + 20px);
+  max-height: calc(100vh - 64px - 52px + 20px);
+  height: calc(100vh - 64px - 52px + 20px);
 }
 
 .modal-portal-content > .view-container > div {
@@ -270,24 +270,24 @@
   left: 0;
   bottom: 0;
   right: 0;
-  height: 44px;
+  height: 52px;
   padding-top: 5px;
   z-index: 10;
 }
 
 .mobile .page-body {
-  margin-bottom: 44px;
+  margin-bottom: 52px;
 }
 
 .page-body > .full {
-  max-height: calc(100vh - 44px);
-  height: calc(100vh - 44px);
+  max-height: calc(100vh - 52px);
+  height: calc(100vh - 52px);
   overflow-x: auto;
 }
 @media screen and (min-width: 769px) {
   .top-menu .page-body > .full {
-    max-height: calc(100vh - 44px - 46px);
-    height: calc(100vh - 44px - 46px);
+    max-height: calc(100vh - 52px - 46px);
+    height: calc(100vh - 52px - 46px);
   }
   .classic.top-menu .page-body > .full {
     max-height: auto;
@@ -296,16 +296,16 @@
   }
 
   .top-menu .page-container > .page-body .view-container > form > div {
-    max-height: calc(100vh - 46px - 44px - 64px);
+    max-height: calc(100vh - 46px - 52px - 64px);
   }
   .top-menu .page-container > .page-body .profile.view-container > form > div {
     max-height: unset;
   }
   .top-menu .page-container > .page-body .view-container > form {
-    max-height: calc(100vh - 46px - 44px);
+    max-height: calc(100vh - 46px - 52px);
   }
   .top-menu .page-container > .page-body .view-container > div {
-    max-height: calc(100vh - 46px - 44px);
+    max-height: calc(100vh - 46px - 52px);
   }
   /* Set height for table container, prevent the parent scroll of whole page  */
   /*

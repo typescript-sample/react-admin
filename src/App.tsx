@@ -56,6 +56,7 @@ import "./assets/css/theme.css"
 import "./assets/css/dark.css"
 import "./assets/css/grey.css"
 import "./assets/css/badge.css"
+import "./assets/css/override.css"
 
 axios.defaults.withCredentials = true
 
