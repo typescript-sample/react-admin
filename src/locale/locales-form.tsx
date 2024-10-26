@@ -127,7 +127,7 @@ export const LocalesForm = () => {
         <form className="list-result">
           {component.view === "table" && (
             <div className="table-responsive">
-              <table>
+              <table className="table">
                 <thead>
                   <tr>
                     <th>{resource.sequence}</th>

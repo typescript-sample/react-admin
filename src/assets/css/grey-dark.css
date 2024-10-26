@@ -82,20 +82,6 @@
 .grey.dark .pagination > .active,
 .grey.dark .pagination-page.active,*/
 
-.grey.dark form.list-result > div > table tbody tr.active:nth-child(odd) td,
-.grey.dark form.list-result > div > table tbody tr.active:nth-child(odd) th,
-.grey.dark form.list-result > div > table > thead > tr > td.active,
-.grey.dark form.list-result > div > table > tbody > tr > td.active,
-.grey.dark form.list-result > div > table > tfoot > tr > td.active,
-.grey.dark form.list-result > div > table > thead > tr > th.active,
-.grey.dark form.list-result > div > table > tbody > tr > th.active,
-.grey.dark form.list-result > div > table > tfoot > tr > th.active,
-.grey.dark form.list-result > div > table > thead > tr.active > td,
-.grey.dark form.list-result > div > table > tbody > tr.active > td,
-.grey.dark form.list-result > div > table > tfoot > tr.active > td,
-.grey.dark form.list-result > div > table > thead > tr.active > th,
-.grey.dark form.list-result > div > table > tbody > tr.active > th,
-.grey.dark form.list-result > div > table > tfoot > tr.active > th,
 .grey.dark .table-striped tbody tr.active:nth-child(odd) td,
 .grey.dark .table-striped tbody tr.active:nth-child(odd) th,
 .grey.dark .table > thead > tr > td.active,
@@ -152,22 +138,6 @@
   background-color: #d74738;
 }
 
-.grey.dark form.list-result > div > table tbody tr.active:hover td,
-.grey.dark form.list-result > div > table tbody tr.active:hover th,
-.grey.dark form.list-result > div > table tbody tr.active:nth-child(odd) td,
-.grey.dark form.list-result > div > table tbody tr.active:nth-child(odd) th,
-.grey.dark form.list-result > div > table > thead > tr > td.active,
-.grey.dark form.list-result > div > table > tbody > tr > td.active,
-.grey.dark form.list-result > div > table > tfoot > tr > td.active,
-.grey.dark form.list-result > div > table > thead > tr > th.active,
-.grey.dark form.list-result > div > table > tbody > tr > th.active,
-.grey.dark form.list-result > div > table > tfoot > tr > th.active,
-.grey.dark form.list-result > div > table > thead > tr.active > td,
-.grey.dark form.list-result > div > table > tbody > tr.active > td,
-.grey.dark form.list-result > div > table > tfoot > tr.active > td,
-.grey.dark form.list-result > div > table > thead > tr.active > th,
-.grey.dark form.list-result > div > table > tbody > tr.active > th,
-.grey.dark form.list-result > div > table > tfoot > tr.active > th,
 .grey.dark .table-hover tbody tr.active:hover td,
 .grey.dark .table-hover tbody tr.active:hover th,
 .grey.dark .table-striped tbody tr.active:nth-child(odd) td,
@@ -188,38 +158,25 @@
   background-color: #4f5352;
 }
 
-.grey.dark .detail .table-responsive > table > tbody > tr:hover,
-.grey.dark .detail .table-responsive > table > tbody > tr:nth-of-type(odd):hover,
-.grey.dark form.list-result > .table-responsive > table > tbody > tr:hover,
-.grey.dark form.list-result > .table-responsive > table > tbody > tr:nth-of-type(odd):hover,
+.grey.dark .table > tbody > tr:hover,
+.grey.dark .table > tbody > tr:nth-of-type(odd):hover,
 .grey.dark .table-hover > tbody > tr:hover,
 .grey.dark .table-striped > tbody > tr:nth-of-type(odd):hover {
   background-color: #111;
 }
 
-.grey.dark .detail .table-responsive > table > thead > tr > th,
-.grey.dark .detail .table-responsive > table > tbody > tr > td,
-.grey.dark form.list-result > .table-responsive > table > thead > tr > th,
-.grey.dark form.list-result > .table-responsive > table > tbody > tr > td,
 .grey.dark .table > thead > tr > th,
 .grey.dark .table > tbody > tr > td {
   border-bottom-color: #222;
 }
 
-.grey.dark .detail .table-responsive > table,
-.grey.dark .detail .table-responsive > table > tbody > tr > td,
-.grey.dark .detail .table-responsive > table > tbody > tr > th,
-.grey.dark .detail .table-responsive > table > tfoot > tr > td,
-.grey.dark .detail .table-responsive > table > tfoot > tr > th,
-.grey.dark .detail .table-responsive > table > thead > tr > td,
-.grey.dark .detail .table-responsive > table > thead > tr > th,
-.grey.dark form.list-result > .table-responsive > table,
-.grey.dark form.list-result > .table-responsive > table > tbody > tr > td,
-.grey.dark form.list-result > .table-responsive > table > tbody > tr > th,
-.grey.dark form.list-result > .table-responsive > table > tfoot > tr > td,
-.grey.dark form.list-result > .table-responsive > table > tfoot > tr > th,
-.grey.dark form.list-result > .table-responsive > table > thead > tr > td,
-.grey.dark form.list-result > .table-responsive > table > thead > tr > th,
+.grey.dark .table,
+.grey.dark .table > tbody > tr > td,
+.grey.dark .table > tbody > tr > th,
+.grey.dark .table > tfoot > tr > td,
+.grey.dark .table > tfoot > tr > th,
+.grey.dark .table > thead > tr > td,
+.grey.dark .table > thead > tr > th,
 .grey.dark .table-bordered,
 .grey.dark .table-bordered > tbody > tr > td,
 .grey.dark .table-bordered > tbody > tr > th,
@@ -230,8 +187,7 @@
   border-color: #313335;
 }
 
-.grey.dark .detail .table-responsive > table > tbody > tr:nth-of-type(odd),
-.grey.dark form.list-result > .table-responsive > table > tbody > tr:nth-of-type(odd),
+.grey.dark .table > tbody > tr:nth-of-type(odd),
 .grey.dark .table-striped > tbody > tr:nth-of-type(odd) {
   background-color: #000;
 }
@@ -257,11 +213,7 @@
   border-color: #242424;
 }
 .grey.dark body,
-.grey.dark .detail .table-responsive > table > tbody > tr > td > a,
-.grey.dark form.list-result > .table-responsive > table > tbody > tr > td > a,
 .grey.dark .table > tbody > tr > td > a,
-.grey.dark .detail .table-responsive > table > tbody > tr > td,
-.grey.dark form.list-result > .table-responsive > table > tbody > tr > td,
 .grey.dark .table > tbody > tr > td,
 .grey.dark .row .form-group label,
 .grey.dark .pagination > li > a,
@@ -349,9 +301,7 @@
 .grey.dark ul.list-view > li > p > a,
 .grey.dark .table > thead > tr > th,
 .grey.dark .table > thead > tr > th > a,
-.grey.dark form.list-result > .table-responsive > table > thead > tr > th,
-.grey.dark form.list-result > .table-responsive > table > thead > tr > th > button,
-.grey.dark form.list-result > .table-responsive > table > thead > tr > th > a,
+.grey.dark .table > thead > tr > th > button,
 .grey.dark .view-container > form > div > h4,
 .grey.dark .view-container > div > h4,
 .grey.dark .view-body > h4,
@@ -385,7 +335,7 @@
   color: #778497 !important;
 }
 /*
-.grey.dark form.list-result > .table-responsive > table > thead > tr,
+.grey.dark .table > thead > tr,
 .grey.dark div.card {
   background-color: #1f1f1f;
 }
