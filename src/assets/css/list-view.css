@@ -417,9 +417,10 @@ ul.list-view > li > section:first-child > .title:hover {
   background: #000;
   color: #fff;
 }
-
+ul.list-view > li.img-card > img,
 .img-card > img {
-  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 .img-card > h4.center,
 .img-card > p.center {
