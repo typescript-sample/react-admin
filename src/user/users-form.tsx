@@ -7,7 +7,6 @@ import {
   addParametersIntoUrl,
   buildFromUrl,
   buildMessage,
-  buildSort,
   buildSortFilter,
   checked,
   getFields,
@@ -18,6 +17,7 @@ import {
   mergeFilter,
   pageSizes,
   removeSortStatus,
+  setSort,
   value,
 } from "react-hook-core"
 import { useNavigate } from "react-router"
@@ -63,9 +63,7 @@ export const UsersForm = () => {
   const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<UserFilter>(), state.filter, sizes, ["status", "userType"])
-    const sort = buildSort<UserFilter>(filter)
-    state.sortField = sort.field
-    state.sortType = sort.type
+    setSort(state, filter.sort)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
