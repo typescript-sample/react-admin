@@ -10,6 +10,7 @@ import {
   buildSortFilter,
   checked,
   getFields,
+  getNumber,
   getOffset,
   getSortElement,
   handleSort,
@@ -76,7 +77,7 @@ export const UsersForm = () => {
   }
   const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
     state.filter.page = 1
-    state.filter.limit = parseInt(event.currentTarget.value, 10)
+    state.filter.limit = getNumber(event)
     search()
   }
   const pageChanged = (data: PageChange) => {
@@ -95,14 +96,13 @@ export const UsersForm = () => {
   }
   const limit = state.filter.limit
   const page = state.filter.page
-  const offset = getOffset(limit, page)
   const search = (isFirstLoad?: boolean) => {
     showLoading()
     const filter = buildSortFilter(state.filter, state)
     addParametersIntoUrl(filter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
     getUserService()
-      .search(filter, limit, offset, fields)
+      .search(filter, limit, page, fields)
       .then((res) => {
         setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
         toast(buildMessage(resource, res.list, limit, page, res.total))
@@ -124,6 +124,7 @@ export const UsersForm = () => {
   }
   const { list } = state
   const filter = value(state.filter)
+  const offset = getOffset(limit, page)
   return (
     <div className="view-container">
       <header>

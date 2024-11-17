@@ -18,7 +18,7 @@
     "react-dom": "^18.3.1",
     "react-google-recaptcha": "^3.1.0",
     "react-groups": "^0.0.6",
-    "react-hook-core": "^0.3.7",
+    "react-hook-core": "^0.4.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
@@ -31,7 +31,7 @@
     "ui-toast": "^0.0.5",
     "uione": "^0.2.5",
     "validation-core": "^1.0.0",
-    "web-clients": "^0.2.4",
+    "web-clients": "^0.3.0",
     "web-vitals": "^3.5.0"
   },
   "devDependencies": {
