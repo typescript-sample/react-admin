@@ -1,45 +1,167 @@
 import { Item } from "onecore"
-import { ChangeEvent, useRef } from "react"
-import { checked, OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
+import { ChangeEvent, useEffect, useRef } from "react"
+import {
+  OnClick,
+  PageChange,
+  PageSizeSelect,
+  SearchComponentState,
+  addParametersIntoUrl,
+  buildFromUrl,
+  buildMessage,
+  checked,
+  getFieldsFromForm,
+  getOffset,
+  handleSort,
+  handleToggle,
+  initFilter,
+  mergeFilter,
+  removeSortStatus,
+  resources,
+  showPaging,
+  useMergeState,
+  value,
+} from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
-import { getStatusName, hasPermission, inputSearch, write } from "uione"
-import { getRoleService, Role, RoleFilter } from "./service"
+import { hideLoading, showLoading } from "ui-loading"
+import { getStatusName, handleError, hasPermission, inputSearch, showMessage, write } from "uione"
+import { Role, RoleFilter, getRoleService } from "./service"
 
 interface RoleSearch extends SearchComponentState<Role, RoleFilter> {
   statusList: Item[]
 }
 const roleFilter: RoleFilter = {
+  limit: resources.limit,
   q: "",
   roleId: "",
   roleName: "",
   status: [],
   remark: "",
 }
-const roleSearch: RoleSearch = {
-  statusList: [],
-  list: [],
-  filter: roleFilter,
-}
+
 export const RolesForm = () => {
+  const initialState: RoleSearch = {
+    pageSize: resources.limit,
+    statusList: [],
+    list: [],
+    filter: roleFilter,
+  }
   const navigate = useNavigate()
   const refForm = useRef()
-  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
-    Role,
-    RoleFilter,
-    RoleSearch
-  >(refForm, roleSearch, getRoleService(), inputSearch())
+  const sp = inputSearch()
+  const resource = sp.resource.resource()
+  const [state, setState] = useMergeState<SearchComponentState<Role, RoleFilter>>(initialState)
   const canWrite = hasPermission(write)
+  useEffect(() => {
+    const filter = mergeFilter(buildFromUrl<RoleFilter>(), state.filter, state.pageSizes, ["status", "userType"])
+    initFilter(filter, state)
+    search() // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault()
+    if (event && event.target) {
+      const target = event.target as any
+      const s = handleSort(target, state.sortTarget, state.sortField, state.sortType)
+      setState({
+        sortField: s.field,
+        sortType: s.type,
+        sortTarget: target,
+      })
+      state.sortField = s.field
+      state.sortType = s.type
+      state.sortTarget = target
+    }
+    search()
+  }
+  const pageSizeChanged = (event: any) => {
+    const size = parseInt(event.currentTarget.value, 10)
+    state.pageSize = size
+    state.pageIndex = 1
+    state.tmpPageIndex = 1
+    // setState({
+    //   pageSize: size,
+    //   pageIndex: 1,
+    //   tmpPageIndex: 1
+    // });
+    search()
+  }
+  const pageChanged = (data: PageChange) => {
+    const { page, size } = data
+    // setState({ pageIndex: page, pageSize: size, append: false });
+    state.pageIndex = page
+    state.pageSize = size
+    state.append = false
+    search()
+  }
+  const searchOnClick = (event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.MouseEvent<HTMLElement, MouseEvent>): void => {
+    if (event) {
+      event.preventDefault()
+    }
+    setState({ pageIndex: 1, tmpPageIndex: 1 })
+    removeSortStatus(state.sortTarget)
+    setState({
+      sortTarget: undefined,
+      sortField: undefined,
+      append: false,
+      pageIndex: 1,
+    })
+    state.sortTarget = undefined
+    state.sortField = undefined
+    state.append = false
+    state.pageIndex = 1
+    search()
+  }
+  const search = (isFirstLoad?: boolean) => {
+    showLoading()
+    const filter = value(state.filter)
+    state.fields = getFieldsFromForm(state.fields, state.initFields, refForm.current)
+    const offset = getOffset(value(state.pageSize), state.pageIndex)
+    // buildSort(filter, state)
+    addParametersIntoUrl(filter, isFirstLoad)
+    getRoleService()
+      .search(filter, state.pageSize, offset, state.fields)
+      .then((res) => {
+        setState({ list: res.list })
+        showPaging(state, res.list, state.pageSize, res.total)
+        showMessage(buildMessage(resource, res.list, filter.limit, filter.page, res.total))
+      })
+      .catch(handleError)
+      .finally(hideLoading)
+  }
   const edit = (e: OnClick, id: string) => {
     e.preventDefault()
     navigate(`${id}`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    updateState(event, (newState) => {
-      component.pageIndex = 1
-      doSearch({ ...component, ...newState.filter })
-    })
+    state.pageIndex = 1
+    search()
+  }
+  const changeView = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (event && event.target) {
+      const target = event.target as any
+      const v: string = target.getAttribute("data-view")
+      if (v && v.length > 0) {
+        setState({ view: v })
+      }
+    }
+  }
+  const toggleFilter = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    const x = !state.hideFilter
+    handleToggle(event.target as HTMLInputElement, !x)
+    setState({ hideFilter: x })
+  }
+  const updateQ = (event: ChangeEvent<HTMLInputElement>) => {
+    filter.q = event.target.value
+    setState({ ...state, filter })
+  }
+  const clearQ = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if (e) {
+      e.preventDefault()
+    }
+    let f = value(state.filter)
+    f.q = ""
+    setState({ filter: f })
   }
   const filter = value(state.filter)
   return (
@@ -47,8 +169,8 @@ export const RolesForm = () => {
       <header>
         <h2>{resource.roles}</h2>
         <div className="btn-group">
-          {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
-          {component.view === "table" && (
+          {state.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
+          {state.view === "table" && (
             <button type="button" id="btnListView" name="btnListView" className="btn-list-view" data-view="listview" onClick={changeView} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
@@ -58,22 +180,22 @@ export const RolesForm = () => {
         <form id="rolesForm" name="rolesForm" noValidate={true} ref={refForm as any}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
-              <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q || ""} onChange={updateState} maxLength={255} placeholder={resource.keyword} />
+              <PageSizeSelect size={state.pageSize} sizes={state.pageSizes} onChange={pageSizeChanged} />
+              <input type="text" id="q" name="q" value={filter.q || ""} onChange={updateQ} maxLength={255} placeholder={resource.keyword} />
               <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
               <button type="button" className="btn-filter" onClick={toggleFilter} />
-              <button type="submit" className="btn-search" onClick={search} />
+              <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination
               className="col s12 m6"
-              total={component.total}
-              size={component.pageSize}
-              max={component.pageMaxSize}
-              page={component.pageIndex}
+              total={state.total}
+              size={state.pageSize}
+              max={state.pageMaxSize}
+              page={state.pageIndex}
               onChange={pageChanged}
             />
           </section>
-          <section className="row search-group inline" hidden={component.hideFilter}>
+          <section className="row search-group inline" hidden={state.hideFilter}>
             <label className="col s12 m6">
               {resource.status}
               <section className="checkbox-group">
@@ -90,7 +212,7 @@ export const RolesForm = () => {
           </section>
         </form>
         <form className="list-result">
-          {component.view === "table" && (
+          {state.view === "table" && (
             <div className="table-responsive">
               <table className="table">
                 <thead>
@@ -138,7 +260,7 @@ export const RolesForm = () => {
               </table>
             </div>
           )}
-          {component.view !== "table" && (
+          {state.view !== "table" && (
             <ul className="row list-view">
               {state.list &&
                 state.list.length > 0 &&

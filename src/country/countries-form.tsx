@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, useRef } from "react"
-import { OnClick, PageSizeSelect, SearchComponentState, checked, useSearch, value } from "react-hook-core"
+import { OnClick, PageSizeSelect, SearchComponentState, checked, resources, useSearch, value } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -11,9 +11,11 @@ interface CountrySearch extends SearchComponentState<Country, CountryFilter> {
   statusList: Item[]
 }
 const countryFilter: CountryFilter = {
+  limit: resources.limit,
   q: "",
 }
 const countrySearch: CountrySearch = {
+  pageSize: resources.limit,
   statusList: [],
   list: [],
   filter: countryFilter,

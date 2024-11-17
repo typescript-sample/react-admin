@@ -1,25 +1,53 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef } from "react"
-import { checked, OnClick, Search, SearchComponentState, useSearch, value } from "react-hook-core"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
+import {
+  OnClick,
+  PageChange,
+  Sortable,
+  addParametersIntoUrl,
+  buildFromUrl,
+  buildMessage,
+  buildSort,
+  buildSortFilter,
+  checked,
+  getFields,
+  getOffset,
+  getSortElement,
+  handleSort,
+  handleToggle,
+  mergeFilter,
+  pageSizes,
+  removeSortStatus,
+  value,
+} from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
-import { getStatusName, hasPermission, inputSearch, Permission } from "uione"
+import { hideLoading, showLoading } from "ui-loading"
+import { toast } from "ui-toast"
+import { Permission, getStatusName, handleError, hasPermission, inputSearch } from "uione"
 import femaleIcon from "../assets/images/female.png"
 import maleIcon from "../assets/images/male.png"
-import { getUserService, User, UserFilter } from "./service"
+import { User, UserFilter, getUserService } from "./service"
 
-interface UserSearch extends SearchComponentState<User, UserFilter> {
+interface UserSearch extends Sortable {
   statusList: Item[]
+  filter: UserFilter
+  list: User[]
+  total?: number
+  view?: string
+  hideFilter?: boolean
+  fields?: string[]
 }
 const userFilter: UserFilter = {
-  userId: "",
+  limit: 24,
   username: "",
   displayName: "",
-  email: "",
   status: ["A"],
   q: "",
 }
+
+const sizes = pageSizes
 export const UsersForm = () => {
   const initialState: UserSearch = {
     statusList: [],
@@ -28,15 +56,62 @@ export const UsersForm = () => {
   }
   const navigate = useNavigate()
   const refForm = useRef()
-  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
-    User,
-    UserFilter,
-    UserSearch
-  >(refForm, initialState, getUserService(), inputSearch())
+  const sp = inputSearch()
+  const resource = sp.resource.resource()
+  const [state, setState] = useState<UserSearch>(initialState)
+
   const canWrite = hasPermission(Permission.write)
   useEffect(() => {
+    const filter = mergeFilter(buildFromUrl<UserFilter>(), state.filter, sizes, ["status", "userType"])
+    const sort = buildSort<UserFilter>(filter)
+    state.sortField = sort.field
+    state.sortType = sort.type
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const target = getSortElement(event.target as HTMLElement)
+    const sort = handleSort(target, state.sortTarget, state.sortField, state.sortType)
+    state.sortField = sort.field
+    state.sortType = sort.type
+    state.sortTarget = target
+    search()
+  }
+  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
+    state.filter.page = 1
+    state.filter.limit = parseInt(event.currentTarget.value, 10)
+    search()
+  }
+  const pageChanged = (data: PageChange) => {
+    const { page, size } = data
+    state.filter.page = page
+    state.filter.limit = size
+    search()
+  }
+  const searchOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    event.preventDefault()
+    removeSortStatus(state.sortTarget)
+    state.filter.page = 1
+    state.sortTarget = undefined
+    state.sortField = undefined
+    search()
+  }
+  const limit = state.filter.limit
+  const page = state.filter.page
+  const offset = getOffset(limit, page)
+  const search = (isFirstLoad?: boolean) => {
+    showLoading()
+    const filter = buildSortFilter(state.filter, state)
+    addParametersIntoUrl(filter, isFirstLoad)
+    const fields = getFields(refForm.current, state.fields)
+    getUserService()
+      .search(filter, limit, offset, fields)
+      .then((res) => {
+        setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
+        toast(buildMessage(resource, res.list, limit, page, res.total))
+      })
+      .catch(handleError)
+      .finally(hideLoading)
+  }
   const edit = (e: OnClick, id: string) => {
     e.preventDefault()
     navigate(`${id}`)
@@ -46,10 +121,8 @@ export const UsersForm = () => {
     navigate(`${id}/view`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    updateState(event, (newState) => {
-      component.pageIndex = 1
-      doSearch({ ...component, ...newState.filter })
-    })
+    state.filter.page = 1
+    search()
   }
   const { list } = state
   const filter = value(state.filter)
@@ -58,9 +131,11 @@ export const UsersForm = () => {
       <header>
         <h2>{resource.users}</h2>
         <div className="btn-group">
-          {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
-          {component.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list-view" data-view="listview" onClick={changeView} />
+          {state.view !== "table" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          )}
+          {state.view === "table" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list-view" onClick={(e) => setState({ ...state, view: "" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -68,28 +143,50 @@ export const UsersForm = () => {
       <div>
         <form id="usersForm" name="usersForm" noValidate={true} ref={refForm as any}>
           <section className="row search-group">
-            <Search
-              className="col s12 m6 search-input"
-              size={component.pageSize}
-              sizes={component.pageSizes}
-              pageSizeChanged={pageSizeChanged}
-              onChange={updateState}
-              placeholder={resource.keyword}
-              toggle={toggleFilter}
-              value={filter.q || ""}
-              search={search}
-              clear={clearQ}
-            />
-            <Pagination
-              className="col s12 m6"
-              total={component.total}
-              size={component.pageSize}
-              max={component.pageMaxSize}
-              page={component.pageIndex}
-              onChange={pageChanged}
-            />
+            <label className="col s12 m6 search-input">
+              <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
+                {sizes.map((item, i) => {
+                  return (
+                    <option key={i} value={item}>
+                      {item}
+                    </option>
+                  )
+                })}
+              </select>
+              <input
+                type="text"
+                id="q"
+                name="q"
+                value={filter.q || ""}
+                maxLength={255}
+                onChange={(e) => {
+                  filter.q = e.target.value
+                  setState({ ...state, filter })
+                }}
+                placeholder={resource.keyword}
+              />
+              <button
+                type="button"
+                hidden={!filter.q}
+                className="btn-remove-text"
+                onClick={(e) => {
+                  filter.q = ""
+                  setState({ ...state, filter })
+                }}
+              />
+              <button
+                type="button"
+                className="btn-filter"
+                onClick={(e) => {
+                  const hideFilter = handleToggle(e.target as HTMLElement, state.hideFilter)
+                  setState({ ...state, hideFilter })
+                }}
+              />
+              <button type="submit" className="btn-search" onClick={searchOnClick} />
+            </label>
+            <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
           </section>
-          <section className="row search-group inline" hidden={component.hideFilter}>
+          <section className="row search-group inline" hidden={state.hideFilter}>
             <label className="col s12 m4 l4">
               {resource.username}
               <input
@@ -97,7 +194,10 @@ export const UsersForm = () => {
                 id="username"
                 name="username"
                 value={filter.username || ""}
-                onChange={updateState}
+                onChange={(e) => {
+                  filter.username = e.target.value
+                  setState({ ...state, filter })
+                }}
                 maxLength={255}
                 placeholder={resource.username}
               />
@@ -109,7 +209,10 @@ export const UsersForm = () => {
                 id="displayName"
                 name="displayName"
                 value={filter.displayName || ""}
-                onChange={updateState}
+                onChange={(e) => {
+                  filter.displayName = e.target.value
+                  setState({ ...state, filter })
+                }}
                 maxLength={255}
                 placeholder={resource.display_name}
               />
@@ -130,7 +233,7 @@ export const UsersForm = () => {
           </section>
         </form>
         <form className="list-result">
-          {component.view === "table" && (
+          {state.view === "table" && (
             <div className="table-responsive">
               <table className="table">
                 <thead>
@@ -151,7 +254,7 @@ export const UsersForm = () => {
                         {resource.email}
                       </button>
                     </th>
-                    <th data-field="displayname">
+                    <th data-field="displayName">
                       <button type="button" id="sortDisplayName" onClick={sort}>
                         {resource.display_name}
                       </button>
@@ -170,7 +273,7 @@ export const UsersForm = () => {
                     list.map((user, i) => {
                       return (
                         <tr key={i} onClick={(e) => edit(e, user.userId)}>
-                          <td className="text-right">{(user as any).sequenceNo}</td>
+                          <td className="text-right">{offset + i + 1}</td>
                           <td>{user.userId}</td>
                           <td>
                             <Link to={`${user.userId}`}>{user.username}</Link>
@@ -191,7 +294,7 @@ export const UsersForm = () => {
               </table>
             </div>
           )}
-          {component.view !== "table" && (
+          {state.view !== "table" && (
             <ul className="row list-view">
               {list &&
                 list.length > 0 &&

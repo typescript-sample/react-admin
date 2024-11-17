@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, useRef } from "react"
-import { checked, OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
+import { checked, OnClick, PageSizeSelect, resources, SearchComponentState, useSearch, value } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -11,12 +11,14 @@ interface CurrencySearch extends SearchComponentState<Currency, CurrencyFilter> 
   statusList: Item[]
 }
 const currencyFilter: CurrencyFilter = {
+  limit: resources.limit,
   q: "",
   code: "",
   symbol: "",
   status: [],
 }
 const currencySearch: CurrencySearch = {
+  pageSize: resources.limit,
   statusList: [],
   list: [],
   filter: currencyFilter,

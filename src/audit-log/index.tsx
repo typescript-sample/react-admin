@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { useEffect, useRef } from "react"
-import { datetimeToString, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
+import { datetimeToString, PageSizeSelect, resources, SearchComponentState, useSearch, value } from "react-hook-core"
 import Pagination from "reactx-pagination"
 import { addDays, addSeconds, formatFullDateTime } from "ui-plus"
 import { getDateFormat, inputSearch, useLocale } from "uione"
@@ -14,6 +14,7 @@ interface AuditLogSearch extends SearchComponentState<AuditLog, AuditLogFilter> 
 const now = new Date()
 
 const auditLogfilter: AuditLogFilter = {
+  limit: resources.limit,
   id: "",
   action: "",
   time: {
@@ -23,6 +24,7 @@ const auditLogfilter: AuditLogFilter = {
 }
 
 const AuditSearch: AuditLogSearch = {
+  pageSize: resources.limit,
   statusList: [],
   list: [],
   filter: auditLogfilter,

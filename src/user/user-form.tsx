@@ -1,6 +1,6 @@
-import { Item, Result } from "onecore"
+import { Item } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, isEmptyObject, isSuccessful, makeDiff, setReadOnly } from "react-hook-core"
+import { afterSaved, clone, goBack, isEmptyObject, makeDiff, setReadOnly } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -87,13 +87,13 @@ export const UserForm = () => {
 
   const user = state.user
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
-    const diff = makeDiff(initialUser, user)
-    if (isEmptyObject(diff)) {
+    goBack(navigate, confirm, resource, initialUser, user)
+    /*
+    if (!hasDiff(initialUser, user)) {
       navigate(-1)
     } else {
       confirm(resource.msg_confirm_back, () => navigate(-1))
-    }
+    }*/
   }
   const genderOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     user.gender = e.target.value
@@ -113,7 +113,7 @@ export const UserForm = () => {
           showLoading()
           service
             .create(user)
-            .then((res) => afterSaved(res))
+            .then((res) => afterSaved(res, refForm?.current, resource, showFormError, alertSuccess, alertError, navigate))
             .catch(handleError)
             .finally(hideLoading)
         } else {
@@ -124,7 +124,7 @@ export const UserForm = () => {
             showLoading()
             service
               .patch(user)
-              .then((res) => afterSaved(res))
+              .then((res) => afterSaved(res, refForm?.current, resource, showFormError, alertSuccess, alertError, navigate))
               .catch(handleError)
               .finally(hideLoading)
           }
@@ -132,6 +132,7 @@ export const UserForm = () => {
       })
     }
   }
+  /*
   const afterSaved = (res: Result<User>) => {
     if (Array.isArray(res)) {
       showFormError(refForm?.current, res)
@@ -142,7 +143,7 @@ export const UserForm = () => {
     } else {
       alertError(resource.error_conflict)
     }
-  }
+  }*/
   return (
     <div className="view-container">
       <form id="userForm" name="userForm" model-name="user" ref={refForm as any}>

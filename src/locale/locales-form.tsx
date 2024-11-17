@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { useRef } from "react"
-import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
+import { OnClick, PageSizeSelect, resources, SearchComponentState, useSearch, value } from "react-hook-core"
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -11,12 +11,14 @@ interface LocaleSearch extends SearchComponentState<Locale, LocaleFilter> {
   statusList: Item[]
 }
 const localeFilter: LocaleFilter = {
+  limit: resources.limit,
   q: "",
   code: "",
   name: "",
   dateFormat: "",
 }
 const localeSearch: LocaleSearch = {
+  pageSize: resources.limit,
   statusList: [],
   list: [],
   filter: localeFilter,

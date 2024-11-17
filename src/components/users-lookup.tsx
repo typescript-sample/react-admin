@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, KeyboardEvent, MouseEvent, useRef } from "react"
-import { OnClick, PageSizeSelect, SearchComponentState, useSearch, value } from "react-hook-core"
+import { OnClick, PageSizeSelect, resources, SearchComponentState, useSearch, value } from "react-hook-core"
 import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
 import { inputSearch } from "uione"
@@ -29,6 +29,7 @@ interface UserSearch extends SearchComponentState<User, UserFilter> {
   }
 }
 const userFilter: UserFilter = {
+  limit: resources.limit,
   userId: "",
   username: "",
   displayName: "",
@@ -36,6 +37,7 @@ const userFilter: UserFilter = {
   status: [],
 }
 const initialState: UserSearch = {
+  pageSize: resources.limit,
   statusList: [],
   list: [],
   filter: userFilter,
