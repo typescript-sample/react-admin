@@ -1,9 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-  OnClick,
-  PageChange,
-  Sortable,
   addParametersIntoUrl,
   buildFromUrl,
   buildMessage,
@@ -16,9 +13,12 @@ import {
   handleSort,
   handleToggle,
   mergeFilter,
+  OnClick,
+  PageChange,
   pageSizes,
   removeSortStatus,
   setSort,
+  Sortable,
   value,
 } from "react-hook-core"
 import { useNavigate } from "react-router"
@@ -26,10 +26,10 @@ import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
-import { Permission, getStatusName, handleError, hasPermission, inputSearch } from "uione"
+import { getStatusName, handleError, hasPermission, inputSearch, Permission } from "uione"
 import femaleIcon from "../assets/images/female.png"
 import maleIcon from "../assets/images/male.png"
-import { User, UserFilter, getUserService } from "./service"
+import { getUserService, User, UserFilter } from "./service"
 
 interface UserSearch extends Sortable {
   statusList: Item[]
@@ -119,7 +119,15 @@ export const UsersForm = () => {
     navigate(`${id}/view`)
   }
   const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    state.filter.page = 1
+    const { filter } = state
+    const value = event.target.value
+    if (event.target.checked) {
+      filter.status.push(value)
+    } else {
+      filter.status = filter.status.filter((i) => i !== value)
+    }
+    filter.page = 1
+    setState({ ...state, filter })
     search()
   }
   const { list } = state
