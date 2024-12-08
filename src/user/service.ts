@@ -12,42 +12,28 @@ export interface Config {
   user_url: string
   role_url: string
 }
-class ApplicationContext {
-  masterDataService?: MasterDataService
-  userService?: UserService
-  roleService?: RoleService
-  constructor() {
-    this.getConfig = this.getConfig.bind(this)
-    this.getMasterDataService = this.getMasterDataService.bind(this)
-    this.getUserService = this.getUserService.bind(this)
-    this.getRoleService = this.getRoleService.bind(this)
-  }
-  getConfig(): Config {
-    return storage.config()
-  }
-  getMasterDataService(): MasterDataService {
-    if (!this.masterDataService) {
-      this.masterDataService = new MasterDataClient()
-    }
-    return this.masterDataService
-  }
-  getUserService(): UserService {
-    if (!this.userService) {
-      const c = this.getConfig()
-      this.userService = new UserClient(httpRequest, c.user_url)
-    }
-    return this.userService
-  }
-  getRoleService(): RoleService {
-    if (!this.roleService) {
-      const c = this.getConfig()
-      this.roleService = new RoleClient(httpRequest, c.role_url)
-    }
-    return this.roleService
-  }
-}
+let masterDataService: MasterDataService | undefined
+let userService: UserService | undefined
+let roleService: RoleService | undefined
 
-export const context = new ApplicationContext()
-export const getUserService = context.getUserService
-export const getMasterData = context.getMasterDataService
-export const getRoleService = context.getRoleService
+// export const getUserService = context.getUserService
+export function getMasterData(): MasterDataService {
+  if (!masterDataService) {
+    masterDataService = new MasterDataClient()
+  }
+  return masterDataService
+}
+export function getUserService(): UserService {
+  if (!userService) {
+    const c = storage.config()
+    userService = new UserClient(httpRequest, c.user_url)
+  }
+  return userService
+}
+export function getRoleService(): RoleService {
+  if (!roleService) {
+    const c = storage.config()
+    roleService = new RoleClient(httpRequest, c.role_url)
+  }
+  return roleService
+}
