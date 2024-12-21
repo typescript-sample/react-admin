@@ -265,22 +265,31 @@ export const RolesForm = () => {
               </table>
             </div>
           )}
-          {state.view !== "table" && (
+          {/* state.view !== "table" && (
             <ul className="row list-view">
               {state.list &&
                 state.list.length > 0 &&
                 state.list.map((item, i) => {
                   return (
                     <li key={i} className="col s12 m6 l4 xl3" onClick={(e) => edit(e, item.roleId)}>
-                      <section>
-                        <div>
-                          <h4 className={item.status === "I" ? "inactive" : ""}>
-                            <Link to={`${item.roleId}`}>{item.roleName}</Link>
-                          </h4>
-                          <p>{item.remark}</p>
-                        </div>
-                        <button className="btn-detail" />
-                      </section>
+                      <h4 className={item.status === "I" ? "inactive" : ""}>{item.roleName}</h4>
+                      <Link to={`${item.roleId}`}>{item.roleName}</Link>
+                      <p>{item.remark}</p>
+                    </li>
+                  )
+                })}
+            </ul>
+          ) */}
+          {state.view !== "table" && (
+            <ul className="row list-view">
+              {state.list &&
+                state.list.length > 0 &&
+                state.list.map((item, i) => {
+                  return (
+                    <li key={i} className="col s12 m6 l4 xl3 list-item">
+                      <Link to={`${item.roleId}`}>{item.roleName}</Link>
+                      <button className="btn-detail"></button>
+                      <p>{item.remark}</p>
                     </li>
                   )
                 })}

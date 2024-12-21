@@ -168,19 +168,15 @@ export const AuditLogsForm = () => {
                 state.list.map((item, i) => {
                   return (
                     <li key={i} className="col s12 m6 l4 xl3">
-                      <section>
-                        <div>
-                          <h3>{item.email}</h3>
-                          <h4 className="space-between">
-                            {item.resource} <span>{item.action}</span>
-                          </h4>
-                          <p>{item.remark}</p>
-                          <p>
-                            {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
-                            <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
-                          </p>
-                        </div>
-                      </section>
+                      <h4>{item.email}</h4>
+                      <p className="space-between">
+                        {item.resource} <span>{item.action}</span>
+                      </p>
+                      <p>{item.remark}</p>
+                      <p>
+                        {formatFullDateTime(item.time, dateFormat, locale.decimalSeparator)}{" "}
+                        <span className={"badge badge-sm " + mapStyleStatus.get(item.status)}>{item.status || ""}</span>
+                      </p>
                     </li>
                   )
                 })}

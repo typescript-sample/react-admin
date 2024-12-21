@@ -215,19 +215,15 @@ export const RoleAssignmentForm = () => {
                 shownUsers?.map((user, i) => {
                   const result = selectedUsers.find((v) => v.userId === user.userId)
                   return (
-                    <li key={i} className="col s12 m6 l4 xl3" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => {}}>
-                      <section>
-                        {isCheckboxShown === true ? <input type="checkbox" name="selected" checked={result ? true : false} /> : ""}
-                        <img
-                          alt=""
-                          src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
-                          className="round-border"
-                        />
-                        <div>
-                          <h3>{user.displayName}</h3>
-                          <p>{user.email}</p>
-                        </div>
-                      </section>
+                    <li key={i} className="col s12 m6 l4 xl3 img-item" onClick={isCheckboxShown === true ? () => onCheck(user.userId) : () => {}}>
+                      <img
+                        alt=""
+                        src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
+                        className="round-border"
+                      />
+                      {isCheckboxShown === true ? <input type="checkbox" name="selected" checked={result ? true : false} /> : ""}
+                      <h4>{user.displayName}</h4>
+                      <p>{user.email}</p>
                     </li>
                   )
                 })}
