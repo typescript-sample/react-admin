@@ -167,7 +167,7 @@ export const AuditLogsForm = () => {
                 state.list.length > 0 &&
                 state.list.map((item, i) => {
                   return (
-                    <li key={i} className="col s12 m6 l4 xl3">
+                    <li key={i} className="col s12 m6 l4 xl3 list-item">
                       <h4>{item.email}</h4>
                       <p className="space-between">
                         {item.resource} <span>{item.action}</span>

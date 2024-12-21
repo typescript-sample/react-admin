@@ -241,23 +241,17 @@ export const LocalesForm = () => {
                 state.list.length > 0 &&
                 state.list.map((item, i) => {
                   return (
-                    <li key={i} className="col s12 m6 l3 xl4" onClick={(e) => edit(e, item.code)}>
-                      <section>
-                        <div>
-                          <h4>
-                            <Link to={`${item.code}`}>
-                              {item.code} - {item.name}
-                            </Link>
-                          </h4>
-                          <p className="space-between">
-                            {item.nativeName}{" "}
-                            <span>
-                              {item.dateFormat} {item.currencyCode}
-                            </span>
-                          </p>
-                        </div>
-                        <button className="btn-detail" />
-                      </section>
+                    <li key={i} className="col s12 m6 l3 xl4 list-item" onClick={(e) => edit(e, item.code)}>
+                      <Link to={`${item.code}`}>
+                        {item.code} - {item.name}
+                      </Link>
+                      <button className="btn-detail" />
+                      <p className="space-between">
+                        {item.nativeName}{" "}
+                        <span>
+                          {item.dateFormat} {item.currencyCode}
+                        </span>
+                      </p>
                     </li>
                   )
                 })}

@@ -159,18 +159,12 @@ export const CurrenciesForm = () => {
                 state.list.length > 0 &&
                 state.list.map((item, i) => {
                   return (
-                    <li key={i} className="col s6 m4 l3 xl2" onClick={(e) => edit(e, item.code)}>
-                      <section>
-                        <div>
-                          <h4>
-                            <Link to={`${item.code}`}>{item.code}</Link>
-                          </h4>
-                          <p>
-                            {item.symbol} <span>{item.decimalDigits}</span>
-                          </p>
-                        </div>
-                        <button className="btn-detail" />
-                      </section>
+                    <li key={i} className="col s6 m4 l3 xl2 list-item" onClick={(e) => edit(e, item.code)}>
+                      <Link to={`${item.code}`}>{item.code}</Link>
+                      <button className="btn-detail" />
+                      <p>
+                        {item.symbol} <span>{item.decimalDigits}</span>
+                      </p>
                     </li>
                   )
                 })}
