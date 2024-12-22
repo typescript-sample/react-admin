@@ -220,52 +220,28 @@
 .grey.dark .pagination > li > span,
 .grey.dark .card > footer > button.btn-cancel,
 .grey.dark .view-container.central-full > form > div > button.btn-cancel,
-.grey.dark .view-container > form > header > h5,
-.grey.dark .view-container > header > h5,
-.grey.dark .view-header > h5,
+.grey.dark header > h5,
 .grey.dark .view-subtitle,
 .grey.dark .subtitle {
   color: #657181;
 }
 
-.grey.dark .view-container > form > div > h3,
-.grey.dark .view-container > div > h3,
-.grey.dark .view-body > h3,
-.grey.dark .subheader {
+.grey.dark h3 {
   color: #7b8b9f;
 }
 
-.grey.dark .mobile .view-container > form > div > h3,
-.grey.dark .mobile .view-container > div > h3,
-.grey.dark .mobile .view-body > h3,
-.grey.dark .mobile .subheader {
-  background-color: #e1ebe9;
-}
-
 @media screen and (max-width: 600px) {
-  .grey.dark .view-container > form > div > h3,
-  .grey.dark .view-container > div > h3,
-  .grey.dark .view-body > h3,
-  .grey.dark .subheader {
+  .grey.dark h3 {
     background-color: #414040;
   }
 }
 
-.grey.dark ul.list > li.highlight,
-.grey.dark .mobile .view-container > form > div > h4,
-.grey.dark .mobile .view-container > div > h4,
-.grey.dark .mobile .view-body > h4,
-.grey.dark .mobile section > h4,
-.grey.dark .mobile .section-header {
+.grey.dark ul.list > li.highlight {
   background-color: #f2f2f2;
 }
 
 @media screen and (max-width: 600px) {
-  .grey.dark .view-container > form > div > h4,
-  .grey.dark .view-container > div > h4,
-  .grey.dark .view-body > h4,
-  .grey.dark section > h4,
-  .grey.dark .section-header {
+  .grey.dark h4 {
     background-color: #0d0d0d;
   }
 }
@@ -280,13 +256,10 @@
 .grey.dark .view-container > form > div > section > p,
 .grey.dark .section-body > p,
 .grey.dark .brand,
-.grey.dark .img-card > h4,
 .grey.dark .card > section > p,
 .grey.dark .card > section > p > a,
 .grey.dark .video > section > p,
 .grey.dark .video > section > p > a,
-.grey.dark .video > p,
-.grey.dark .video > h4 > a,
 .grey.dark .video > p,
 .grey.dark .video > h4 > a,
 .grey.dark .img-card > p,
@@ -296,10 +269,7 @@
 .grey.dark .table > thead > tr > th,
 .grey.dark .table > thead > tr > th > a,
 .grey.dark .table > thead > tr > th > button,
-.grey.dark .view-container > form > div > h4,
-.grey.dark .view-container > div > h4,
-.grey.dark .view-body > h4,
-.grey.dark section > h4,
+.grey.dark h4,
 .grey.dark section > h4 > .btn-group > button,
 .grey.dark section > h4.title > a,
 .grey.dark section > a,
@@ -310,7 +280,6 @@
 .grey.dark .btn-accept,
 .grey.dark .btn-cancel,
 .grey.dark .btn-group,
-.grey.dark .alert h4,
 .grey.dark .alert p,
 .grey.dark label.switch-container,
 .grey.dark label.checkbox-container,
@@ -319,7 +288,6 @@
 .grey.dark .checkbox-group > label,
 .grey.dark .radio-group > label,
 .grey.dark .group label div,
-.grey.dark .video-container > h4,
 .grey.dark .video-container > h4 > a,
 .grey.dark .video-container > h4 > i {
   color: #778497;
@@ -335,7 +303,7 @@
 }
 */
 .grey.dark .btn-more,
-.grey.dark .video-container > h3,
+h3,
 .grey.dark .row .form-group.focused label,
 .grey.dark .row > label.focused,
 .grey.dark .row > .col label.focused,
@@ -343,7 +311,6 @@
 .grey.dark .view-container > div > label.focused,
 .grey.dark .view-body > label.focused,
 .grey.dark .view-container > form > div > h2,
-.grey.dark .card > section > h3,
 .grey.dark .card > footer > button,
 .grey.dark .btn-select,
 .grey.dark .btn-add,

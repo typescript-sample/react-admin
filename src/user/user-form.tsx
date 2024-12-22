@@ -163,171 +163,177 @@ export const UserForm = () => {
             </button>
           </div>
         </header>
-        <div className="row">
-          <label className="col s12 m6">
-            {resource.user_id}
-            <input
-              type="text"
-              id="userId"
-              name="userId"
-              className="form-control"
-              value={user.userId || ""}
-              readOnly={!newMode}
-              onChange={(e) => {
-                user.userId = e.target.value
-                setState({ ...state, user })
-              }}
-              maxLength={20}
-              required={true}
-              placeholder={resource.user_id}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.username}
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="form-control"
-              value={user.username || ""}
-              readOnly={!newMode}
-              onChange={(e) => {
-                user.username = e.target.value
-                setState({ ...state, user })
-              }}
-              onBlur={requiredOnBlur}
-              maxLength={40}
-              required={true}
-              placeholder={resource.username}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.display_name}
-            <input
-              type="text"
-              id="displayName"
-              name="displayName"
-              className="form-control"
-              value={user.displayName || ""}
-              onChange={(e) => {
-                user.displayName = e.target.value
-                setState({ ...state, user })
-              }}
-              onBlur={requiredOnBlur}
-              maxLength={40}
-              required={true}
-              placeholder={resource.display_name}
-            />
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.person_title}
-            <select id="title" name="title" value={user.title || ""} className="form-control" data-value onChange={(e) => updateTitle(e.target, state.user)}>
-              <option value="">{resource.please_select}</option>)
-              {state.titleList.map((item, index) => (
-                <option key={index} value={item.value}>
-                  {item.text}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.position}
-            <select
-              style={{ width: "99%" }}
-              id="position"
-              name="position"
-              className="form-control"
-              value={user.position || ""}
-              data-value
-              onChange={(e) => {
-                user.position = e.target.value
-                setState({ ...state, user })
-              }}
-            >
-              <option value="">{resource.please_select}</option>
-              {state.positionList.map((item, index) => (
-                <option key={index} value={item.value}>
-                  {item.text}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.phone}
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              className="form-control"
-              value={formatPhone(user.phone) || ""}
-              onChange={(e) => {
-                user.phone = e.target.value
-                setState({ ...state, user })
-              }}
-              onBlur={phoneOnBlur}
-              maxLength={17}
-              placeholder={resource.phone}
-            />
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.email}
-            <input
-              type="text"
-              id="email"
-              name="email"
-              data-type="email"
-              value={user.email || ""}
-              onChange={(e) => {
-                user.email = e.target.value
-                setState({ ...state, user })
-              }}
-              onBlur={emailOnBlur}
-              maxLength={100}
-              placeholder={resource.email}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.gender}
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  id="gender"
-                  name="gender"
-                  onChange={genderOnChange}
-                  disabled={user.title !== "Dr"}
-                  value={Gender.Male}
-                  checked={user.gender === Gender.Male}
-                />
-                {resource.male}
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  id="gender"
-                  name="gender"
-                  onChange={genderOnChange}
-                  disabled={user.title !== "Dr"}
-                  value={Gender.Female}
-                  checked={user.gender === Gender.Female}
-                />
-                {resource.female}
-              </label>
+        <div>
+          <h3>User Information</h3>
+          <section className="row">
+            <label className="col s12 m6">
+              {resource.user_id}
+              <input
+                type="text"
+                id="userId"
+                name="userId"
+                className="form-control"
+                value={user.userId || ""}
+                readOnly={!newMode}
+                onChange={(e) => {
+                  user.userId = e.target.value
+                  setState({ ...state, user })
+                }}
+                maxLength={20}
+                required={true}
+                placeholder={resource.user_id}
+              />
+            </label>
+            <label className="col s12 m6">
+              {resource.username}
+              <input
+                type="text"
+                id="username"
+                name="username"
+                className="form-control"
+                value={user.username || ""}
+                readOnly={!newMode}
+                onChange={(e) => {
+                  user.username = e.target.value
+                  setState({ ...state, user })
+                }}
+                onBlur={requiredOnBlur}
+                maxLength={40}
+                required={true}
+                placeholder={resource.username}
+              />
+            </label>
+            <label className="col s12 m6">
+              {resource.display_name}
+              <input
+                type="text"
+                id="displayName"
+                name="displayName"
+                className="form-control"
+                value={user.displayName || ""}
+                onChange={(e) => {
+                  user.displayName = e.target.value
+                  setState({ ...state, user })
+                }}
+                onBlur={requiredOnBlur}
+                maxLength={40}
+                required={true}
+                placeholder={resource.display_name}
+              />
+            </label>
+            <label className="col s12 m6">
+              {resource.gender}
+              <div className="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    id="gender"
+                    name="gender"
+                    onChange={genderOnChange}
+                    disabled={user.title !== "Dr"}
+                    value={Gender.Male}
+                    checked={user.gender === Gender.Male}
+                  />
+                  {resource.male}
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    id="gender"
+                    name="gender"
+                    onChange={genderOnChange}
+                    disabled={user.title !== "Dr"}
+                    value={Gender.Female}
+                    checked={user.gender === Gender.Female}
+                  />
+                  {resource.female}
+                </label>
+              </div>
+            </label>
+            <div className="col s12 m6 radio-section">
+              {resource.status}
+              <div className="radio-group">
+                <label>
+                  <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={user.status === Status.Active} />
+                  {resource.yes}
+                </label>
+                <label>
+                  <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={user.status === Status.Inactive} />
+                  {resource.no}
+                </label>
+              </div>
             </div>
-          </label>
-          <div className="col s12 m6 radio-section">
-            {resource.status}
-            <div className="radio-group">
-              <label>
-                <input type="radio" id="active" name="status" onChange={statusOnChange} value={Status.Active} checked={user.status === Status.Active} />
-                {resource.yes}
-              </label>
-              <label>
-                <input type="radio" id="inactive" name="status" onChange={statusOnChange} value={Status.Inactive} checked={user.status === Status.Inactive} />
-                {resource.no}
-              </label>
-            </div>
-          </div>
+          </section>
+          <h4>Contact Information</h4>
+          <section className="row">
+            <label className="col s12 m6 flying">
+              {resource.person_title}
+              <select id="title" name="title" value={user.title || ""} className="form-control" data-value onChange={(e) => updateTitle(e.target, state.user)}>
+                <option value="">{resource.please_select}</option>)
+                {state.titleList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.text}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="col s12 m6 flying">
+              {resource.position}
+              <select
+                style={{ width: "99%" }}
+                id="position"
+                name="position"
+                className="form-control"
+                value={user.position || ""}
+                data-value
+                onChange={(e) => {
+                  user.position = e.target.value
+                  setState({ ...state, user })
+                }}
+              >
+                <option value="">{resource.please_select}</option>
+                {state.positionList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.text}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="col s12 m6 flying">
+              {resource.phone}
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                className="form-control"
+                value={formatPhone(user.phone) || ""}
+                onChange={(e) => {
+                  user.phone = e.target.value
+                  setState({ ...state, user })
+                }}
+                onBlur={phoneOnBlur}
+                maxLength={17}
+                placeholder={resource.phone}
+              />
+            </label>
+            <label className="col s12 m6 flying">
+              {resource.email}
+              <input
+                type="text"
+                id="email"
+                name="email"
+                data-type="email"
+                value={user.email || ""}
+                onChange={(e) => {
+                  user.email = e.target.value
+                  setState({ ...state, user })
+                }}
+                onBlur={emailOnBlur}
+                maxLength={100}
+                placeholder={resource.email}
+              />
+            </label>
+          </section>
         </div>
         <footer className="view-footer">
           {!isReadOnly && (

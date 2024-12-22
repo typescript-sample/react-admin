@@ -321,32 +321,6 @@ export const UsersForm = () => {
                 })}
             </ul>
           )}
-          {state.view !== "table" && (
-            <ul className="row list">
-              {list &&
-                list.length > 0 &&
-                list.map((user, i) => {
-                  return (
-                    <li key={i} className="col s12 m6 l4 xl3" onClick={(e) => edit(e, user.userId)}>
-                      <section>
-                        <img
-                          src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
-                          alt="user"
-                          className="round-border"
-                        />
-                        <div>
-                          <h4 className={user.status === "I" ? "inactive" : ""}>
-                            <Link to={`${user.userId}`}>{user.displayName}</Link>
-                          </h4>
-                          <p>{user.email}</p>
-                        </div>
-                        <button className="btn-detail" />
-                      </section>
-                    </li>
-                  )
-                })}
-            </ul>
-          )}
         </form>
       </div>
     </div>

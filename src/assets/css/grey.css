@@ -220,52 +220,28 @@
 .grey .pagination > li > span,
 .grey .card > footer > button.btn-cancel,
 .grey .view-container.central-full > form > div > button.btn-cancel,
-.grey .view-container > form > header > h5,
-.grey .view-container > header > h5,
-.grey .view-header > h5,
+.grey header > h5,
 .grey .view-subtitle,
 .grey .subtitle {
   color: #657181;
 }
 
-.grey .view-container > form > div > h3,
-.grey .view-container > div > h3,
-.grey .view-body > h3,
-.grey .subheader {
+.grey h3 {
   color: #181b1f;
 }
 
-.grey .mobile .view-container > form > div > h3,
-.grey .mobile .view-container > div > h3,
-.grey .mobile .view-body > h3,
-.grey .mobile .subheader {
-  background-color: #e1ebe9;
-}
-
 @media screen and (max-width: 600px) {
-  .grey .view-container > form > div > h3,
-  .grey .view-container > div > h3,
-  .grey .view-body > h3,
-  .grey .subheader {
+  .grey h3 {
     background-color: #e2e2e2;
   }
 }
 
-.grey ul.list > li.highlight,
-.grey .mobile .view-container > form > div > h4,
-.grey .mobile .view-container > div > h4,
-.grey .mobile .view-body > h4,
-.grey .mobile section > h4,
-.grey .mobile .section-header {
+.grey ul.list > li.highlight {
   background-color: #f2f2f2;
 }
 
 @media screen and (max-width: 600px) {
-  .grey .view-container > form > div > h4,
-  .grey .view-container > div > h4,
-  .grey .view-body > h4,
-  .grey section > h4,
-  .grey .section-header {
+  .grey h4 {
     background-color: #f2f2f2;
   }
 }
@@ -280,7 +256,6 @@
 .grey .view-container > form > div > section > p,
 .grey .section-body > p,
 .grey .brand,
-.grey .img-card > h4,
 .grey .card > section > p,
 .grey .card > section > p > a,
 .grey .video > section > p,
@@ -294,10 +269,7 @@
 .grey .table > thead > tr > th,
 .grey .table > thead > tr > th > a,
 .grey .table > thead > tr > th > button,
-.grey .view-container > form > div > h4,
-.grey .view-container > div > h4,
-.grey .view-body > h4,
-.grey section > h4,
+.grey h4,
 .grey section > h4 > .btn-group > button,
 .grey section > h4.title > a,
 .grey section > a,
@@ -308,7 +280,6 @@
 .grey .btn-accept,
 .grey .btn-cancel,
 .grey .btn-group,
-.grey .alert h4,
 .grey .alert p,
 .grey label.switch-container,
 .grey label.checkbox-container,
@@ -317,7 +288,6 @@
 .grey .checkbox-group > label,
 .grey .radio-group > label,
 .grey .group label div,
-.grey .video-container > h4,
 .grey .video-container > h4 > a,
 .grey .video-container > h4 > i {
   color: #393f48;
@@ -333,7 +303,7 @@
 }
 */
 .grey .btn-more,
-.grey .video-container > h3,
+h3,
 .grey .row .form-group.focused label,
 .grey .row > label.focused,
 .grey .row > .col label.focused,
@@ -341,7 +311,6 @@
 .grey .view-container > div > label.focused,
 .grey .view-body > label.focused,
 .grey .view-container > form > div > h2,
-.grey .card > section > h3,
 .grey .card > footer > button,
 .grey .btn-select,
 .grey .btn-add,

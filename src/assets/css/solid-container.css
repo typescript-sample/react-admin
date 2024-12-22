@@ -98,9 +98,6 @@
   margin-bottom: 10px;
 }
 
-.view-container.full > form > div > section > a,
-.view-container.full .view-body > section > a,
-.view-container.solid .view-body > section > a,
 .view-container.central-full > form > div > a {
   width: 100%;
   margin-top: 8px;
