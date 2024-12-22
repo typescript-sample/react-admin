@@ -251,7 +251,7 @@
   }
 }
 
-.dark ul.list-view > li.highlight,
+.dark ul.list > li.highlight,
 .dark .mobile .view-container > form > div > h4,
 .dark .mobile .view-container > div > h4,
 .dark .mobile .view-body > h4,
@@ -347,7 +347,7 @@
 .dark .btn-new,
 .dark a.btn-new,
 .dark .btn-table,
-.dark .btn-list-view,
+.dark .btn-list,
 .dark .btn-search,
 .dark .btn-lookup,
 .dark .chip:focus,

@@ -142,7 +142,7 @@ export const UsersForm = () => {
             <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
           {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list-view" onClick={(e) => setState({ ...state, view: "" })} />
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -302,7 +302,7 @@ export const UsersForm = () => {
             </div>
           )}
           {state.view !== "table" && (
-            <ul className="row list-view">
+            <ul className="row list">
               {list &&
                 list.length > 0 &&
                 list.map((user, i) => {
@@ -322,7 +322,7 @@ export const UsersForm = () => {
             </ul>
           )}
           {state.view !== "table" && (
-            <ul className="row list-view">
+            <ul className="row list">
               {list &&
                 list.length > 0 &&
                 list.map((user, i) => {

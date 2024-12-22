@@ -1,13 +1,13 @@
-ul.list-view .check-item {
+ul.list .check-item {
   display: flex;
   flex-direction: row;
 }
-ul.list-view > .check-item > p {
+ul.list > .check-item > p {
   margin-left: 24px;
   padding-top: 8px;
   font-weight: 200;
 }
-ul.list-view > .check-item.header > p {
+ul.list > .check-item.header > p {
   margin-left: 14px;
   font-weight: 600;
 }

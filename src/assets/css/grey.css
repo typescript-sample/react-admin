@@ -251,7 +251,7 @@
   }
 }
 
-.grey ul.list-view > li.highlight,
+.grey ul.list > li.highlight,
 .grey .mobile .view-container > form > div > h4,
 .grey .mobile .view-container > div > h4,
 .grey .mobile .view-body > h4,
@@ -348,7 +348,7 @@
 .grey .btn-new,
 .grey a.btn-new,
 .grey .btn-table,
-.grey .btn-list-view,
+.grey .btn-list,
 .grey .btn-search,
 .grey .btn-lookup,
 .grey .chip:focus,

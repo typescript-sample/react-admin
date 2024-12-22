@@ -116,7 +116,7 @@ export const RoleAssignmentForm = () => {
             </label>
           </section>
           <section className="list-container">
-            <ul className="row list-view">
+            <ul className="row list">
               <li className="col check-item header">
                 <input type="checkbox" id="checkAll" name="checkAll" disabled={disabled} checked={checkedAll} onChange={(e) => onCheckAll(e)} />
                 <p>{resource.check_all}</p>

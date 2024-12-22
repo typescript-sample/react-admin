@@ -188,7 +188,7 @@ export const UsersLookup = (props: Props) => {
                 type="button"
                 id="btnListView"
                 name="btnListView"
-                className="btn-list-view"
+                className="btn-list"
                 data-view="listview"
                 onClick={(e) => setState({ ...state, view: "" })}
               />
@@ -306,7 +306,7 @@ export const UsersLookup = (props: Props) => {
               </div>
             )}
             {state.view !== "table" && (
-              <ul className="row list-view">
+              <ul className="row list">
                 {state &&
                   list &&
                   list.map((user: any, i: number) => {

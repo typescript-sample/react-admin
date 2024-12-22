@@ -47,7 +47,7 @@ export const CountriesForm = () => {
         <div className="btn-group">
           {component.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
           {component.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list-view" data-view="listview" onClick={changeView} />
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -207,25 +207,19 @@ export const CountriesForm = () => {
             </div>
           )}
           {component.view !== "table" && (
-            <ul className="row list-view">
+            <ul className="row list">
               {state.list &&
                 state.list.length > 0 &&
                 state.list.map((item, i) => {
                   return (
-                    <li key={i} className="col s12 m6 l3 xl4" onClick={(e) => edit(e, item.countryCode)}>
-                      <section>
-                        <div>
-                          <h4>
-                            <Link to={`${item.countryCode}`}>
-                              {item.countryCode} - {item.currencyCode}
-                            </Link>
-                          </h4>
-                          <p className="space-between">
-                            {item.countryName} <span>{item.currencySymbol}</span>
-                          </p>
-                        </div>
-                        <button className="btn-detail" />
-                      </section>
+                    <li key={i} className="col s12 m6 l3 xl4 list-item" onClick={(e) => edit(e, item.countryCode)}>
+                      <Link to={`${item.countryCode}`}>
+                        {item.countryCode} - {item.currencyCode}
+                      </Link>
+                      <button className="btn-detail" />
+                      <p className="space-between">
+                        {item.countryName} <span>{item.currencySymbol}</span>
+                      </p>
                     </li>
                   )
                 })}
