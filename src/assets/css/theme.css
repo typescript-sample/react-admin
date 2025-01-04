@@ -132,6 +132,8 @@ section.btn-group > .btn-search,
 .detail-content > form > footer > button,
 .view-container > form > footer > button,
 .view-container > footer > button,
+.page-body > .form > footer > button,
+.page-body > .form > footer > section.footer > button,
 .view-footer > button,
 section.footer > button {
   color: #fff;
@@ -483,6 +485,7 @@ section > p > label,
 .btn-detail,
 .quick-nav,
 .detail-content > form > header > .btn-back,
+.page-body > .form > header > .btn-back,
 .view-container > form > header > .btn-back,
 .view-container > header > .btn-back,
 .view-header > .btn-back,
@@ -502,6 +505,7 @@ section > p > label,
 
 @media screen and (max-width: 600px) {
   .detail-content > form > header > .btn-back,
+  .page-body > .form > header > .btn-back,
   .view-container > form > header > .btn-back,
   .view-container > header > .btn-back,
   .view-container > form > header > .btn-close,
@@ -541,18 +545,20 @@ section > p > label,
 
 .page-body > .list-detail-container > .list-content > header,
 .page-body > .list-detail-container > .detail-content > form > header,
+.page-body > .form > header,
 .page-body .view-container > form > header,
 .page-body .view-container > header,
-.page-body > .view-header {
+.view-header {
   color: #4db6ac;
   background-color: #fff;
   background-image: none;
 }
 
 @media screen and (max-width: 600px) {
+  .page-body > .form > header,
   .page-body .view-container > form > header,
   .page-body .view-container > header,
-  .page-body > .view-header {
+  .view-header {
     color: #fff;
     background-image: linear-gradient(90deg, #008577, #00574b);
   }

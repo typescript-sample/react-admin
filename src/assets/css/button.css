@@ -103,6 +103,7 @@ ul.list > li > button.btn-pick,
 }
 section.footer > button,
 .detail-content > form > footer > button,
+.page-body > .form > footer > button,
 .view-container > form > footer > button,
 .view-container > footer > button,
 .view-footer > button {
@@ -394,6 +395,8 @@ h4 > .btn-add {
   font-size: 25px;
   content: "\25F3";
 }
+.page-body > .form > header > .btn-new,
+.page-body > .form > header > .btn-right,
 .list-content > header > .btn-new,
 .view-container > header > .btn-new,
 .view-container > form > header > .btn-right,

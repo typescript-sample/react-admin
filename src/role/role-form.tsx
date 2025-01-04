@@ -628,130 +628,128 @@ export function RoleForm() {
     }
   }
   return (
-    <div className="view-container">
-      <form id="roleForm" name="roleForm" model-name="role" ref={refForm as any}>
-        <header>
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2>{resource.role}</h2>
-          <button className="btn-group btn-right" hidden={newMode}>
-            <i className="material-icons" onClick={(e) => assign(e, role.roleId)}>
-              group
-            </i>
+    <form id="roleForm" name="roleForm" className="form" model-name="role" ref={refForm as any}>
+      <header>
+        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <h2>{resource.role}</h2>
+        <button className="btn-group btn-right" hidden={newMode}>
+          <i className="material-icons" onClick={(e) => assign(e, role.roleId)}>
+            group
+          </i>
+        </button>
+      </header>
+      <div>
+        <h4>Role Information</h4>
+        <section className="row section ">
+          <label className="col s6 m6">
+            {resource.role_id}
+            <input
+              type="text"
+              id="roleId"
+              name="roleId"
+              value={role.roleId || ""}
+              onBlur={checkPatternOnBlur}
+              pattern={regexId}
+              config-pattern-error-key={"invalid_pattern_id"}
+              onChange={(e) => {
+                role.roleId = e.target.value
+                setState({ ...state, role })
+              }}
+              maxLength={20}
+              required={true}
+              readOnly={!newMode}
+              placeholder={resource.role_id}
+            />
+          </label>
+          <label className="col s6 m6">
+            {resource.role_name}
+            <input
+              type="text"
+              id="roleName"
+              name="roleName"
+              value={role.roleName || ""}
+              onChange={(e) => {
+                role.roleName = e.target.value
+                setState({ ...state, role })
+              }}
+              maxLength={255}
+              required={true}
+              placeholder={resource.role_name}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.remark}
+            <input
+              type="text"
+              id="remark"
+              name="remark"
+              value={role.remark || ""}
+              onChange={(e) => {
+                role.remark = e.target.value
+                setState({ ...state, role })
+              }}
+              maxLength={255}
+              placeholder={resource.remark}
+            />
+          </label>
+          <div className="col s12 m6 radio-section">
+            {resource.status}
+            <div className="radio-group">
+              <label>
+                <input type="radio" id="active" name="status" onChange={statusOnChange} value="A" checked={role.status === "A"} />
+                {resource.active}
+              </label>
+              <label>
+                <input type="radio" id="inactive" name="status" onChange={statusOnChange} value="I" checked={role.status === "I"} />
+                {resource.inactive}
+              </label>
+            </div>
+          </div>
+        </section>
+        <section className="row">
+          <label className="col s12 m6 search-input">
+            <i className="btn-search" />
+            <input
+              type="text"
+              id="keyword"
+              name="keyword"
+              maxLength={40}
+              placeholder={resource.role_filter_modules}
+              value={state.keyword}
+              onChange={onChange}
+            />
+          </label>
+        </section>
+        <section className="tree-view">
+          <div className="row">
+            <div className="col s6 m4 inline flex-gap-2 col-header">
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  handleCheckAllModule(e, state.role.privileges, state.all, state.actions, (privileges: string[]) => {
+                    const checkedAll = isCheckedAll(privileges, state.all)
+                    setState({ ...state, checkedAll, role: { ...state.role, privileges: privileges } })
+                  })
+                }
+                checked={state.checkedAll}
+                disabled={isReadOnly || state.keyword !== ""}
+              />
+              <p>{resource.module}</p>
+            </div>
+            <p className="col s1 m2 center">{resource.read}</p>
+            <p className="col s1 m2 center">{resource.write}</p>
+            <p className="col s1 m2 center">{resource.delete}</p>
+          </div>
+          {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
+        </section>
+      </div>
+      <footer>
+        {!isReadOnly && (
+          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+            {resource.save}
           </button>
-        </header>
-        <div>
-          <h4>Role Information</h4>
-          <section className="row section ">
-            <label className="col s6 m6">
-              {resource.role_id}
-              <input
-                type="text"
-                id="roleId"
-                name="roleId"
-                value={role.roleId || ""}
-                onBlur={checkPatternOnBlur}
-                pattern={regexId}
-                config-pattern-error-key={"invalid_pattern_id"}
-                onChange={(e) => {
-                  role.roleId = e.target.value
-                  setState({ ...state, role })
-                }}
-                maxLength={20}
-                required={true}
-                readOnly={!newMode}
-                placeholder={resource.role_id}
-              />
-            </label>
-            <label className="col s6 m6">
-              {resource.role_name}
-              <input
-                type="text"
-                id="roleName"
-                name="roleName"
-                value={role.roleName || ""}
-                onChange={(e) => {
-                  role.roleName = e.target.value
-                  setState({ ...state, role })
-                }}
-                maxLength={255}
-                required={true}
-                placeholder={resource.role_name}
-              />
-            </label>
-            <label className="col s12 m6">
-              {resource.remark}
-              <input
-                type="text"
-                id="remark"
-                name="remark"
-                value={role.remark || ""}
-                onChange={(e) => {
-                  role.remark = e.target.value
-                  setState({ ...state, role })
-                }}
-                maxLength={255}
-                placeholder={resource.remark}
-              />
-            </label>
-            <div className="col s12 m6 radio-section">
-              {resource.status}
-              <div className="radio-group">
-                <label>
-                  <input type="radio" id="active" name="status" onChange={statusOnChange} value="A" checked={role.status === "A"} />
-                  {resource.active}
-                </label>
-                <label>
-                  <input type="radio" id="inactive" name="status" onChange={statusOnChange} value="I" checked={role.status === "I"} />
-                  {resource.inactive}
-                </label>
-              </div>
-            </div>
-          </section>
-          <section className="row">
-            <label className="col s12 m6 search-input">
-              <i className="btn-search" />
-              <input
-                type="text"
-                id="keyword"
-                name="keyword"
-                maxLength={40}
-                placeholder={resource.role_filter_modules}
-                value={state.keyword}
-                onChange={onChange}
-              />
-            </label>
-          </section>
-          <section className="tree-view">
-            <div className="row">
-              <div className="col s6 m4 inline flex-gap-2 col-header">
-                <input
-                  type="checkbox"
-                  onChange={(e) =>
-                    handleCheckAllModule(e, state.role.privileges, state.all, state.actions, (privileges: string[]) => {
-                      const checkedAll = isCheckedAll(privileges, state.all)
-                      setState({ ...state, checkedAll, role: { ...state.role, privileges: privileges } })
-                    })
-                  }
-                  checked={state.checkedAll}
-                  disabled={isReadOnly || state.keyword !== ""}
-                />
-                <p>{resource.module}</p>
-              </div>
-              <p className="col s1 m2 center">{resource.read}</p>
-              <p className="col s1 m2 center">{resource.write}</p>
-              <p className="col s1 m2 center">{resource.delete}</p>
-            </div>
-            {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
-          </section>
-        </div>
-        <footer>
-          {!isReadOnly && (
-            <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-              {resource.save}
-            </button>
-          )}
-        </footer>
-      </form>
-    </div>
+        )}
+      </footer>
+    </form>
   )
 }

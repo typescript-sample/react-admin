@@ -564,7 +564,7 @@ h3,
 .grey .page-body > .list-detail-container > .detail-content > form > header,
 .grey .page-body .view-container > form > header,
 .grey .page-body .view-container > header,
-.grey .page-body > .view-header {
+.grey .view-header {
   color: #657181;
   background-color: #fff;
   background-image: none;
@@ -573,7 +573,7 @@ h3,
 @media screen and (max-width: 600px) {
   .grey .page-body .view-container > form > header,
   .grey .page-body .view-container > header,
-  .grey .page-body > .view-header {
+  .grey .view-header {
     color: #fff;
     background-image: linear-gradient(90deg, #657181, #657181);
   }

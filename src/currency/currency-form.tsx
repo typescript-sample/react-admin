@@ -42,79 +42,77 @@ export const CurrencyForm = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const currency = state.currency
   return (
-    <div className="view-container">
-      <form id="currencyForm" name="currencyForm" className="form" model-name="currency" ref={refForm as any}>
-        <header className="view-header">
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2 className="view-title">{resource.currency}</h2>
-        </header>
-        <div className="row">
-          <label className="col s12 m6">
-            {resource.currency_code}
-            <input
-              type="text"
-              id="code"
-              name="code"
-              className="form-control"
-              value={currency.code || ""}
-              readOnly={!flag.newMode}
-              onChange={updateState}
-              maxLength={20}
-              required={true}
-              placeholder={resource.currency_code}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.currency_symbol}
-            <input
-              type="text"
-              id="symbol"
-              name="symbol"
-              className="form-control"
-              value={currency.symbol || ""}
-              onChange={updateState}
-              onBlur={requiredOnBlur}
-              maxLength={40}
-              required={true}
-              placeholder={resource.currency_symbol}
-            />
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.currency_decimal_digits}
-            <input
-              type="text"
-              id="decimalDigits"
-              name="decimalDigits"
-              className="text-right"
-              data-type="integer"
-              value={currency.decimalDigits || ""}
-              onChange={updateState}
-              maxLength={1}
-              placeholder={resource.currency_decimal_digits}
-            />
-          </label>
-          <div className="col s12 m6 radio-section">
-            {resource.status}
-            <div className="radio-group">
-              <label>
-                <input type="radio" id="active" name="status" onChange={updateState} value={Status.Active} checked={currency.status === Status.Active} />
-                {resource.yes}
-              </label>
-              <label>
-                <input type="radio" id="inactive" name="status" onChange={updateState} value={Status.Inactive} checked={currency.status === Status.Inactive} />
-                {resource.no}
-              </label>
-            </div>
+    <form id="currencyForm" name="currencyForm" className="form" model-name="currency" ref={refForm as any}>
+      <header className="view-header">
+        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <h2 className="view-title">{resource.currency}</h2>
+      </header>
+      <div className="row">
+        <label className="col s12 m6">
+          {resource.currency_code}
+          <input
+            type="text"
+            id="code"
+            name="code"
+            className="form-control"
+            value={currency.code || ""}
+            readOnly={!flag.newMode}
+            onChange={updateState}
+            maxLength={20}
+            required={true}
+            placeholder={resource.currency_code}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.currency_symbol}
+          <input
+            type="text"
+            id="symbol"
+            name="symbol"
+            className="form-control"
+            value={currency.symbol || ""}
+            onChange={updateState}
+            onBlur={requiredOnBlur}
+            maxLength={40}
+            required={true}
+            placeholder={resource.currency_symbol}
+          />
+        </label>
+        <label className="col s12 m6 flying">
+          {resource.currency_decimal_digits}
+          <input
+            type="text"
+            id="decimalDigits"
+            name="decimalDigits"
+            className="text-right"
+            data-type="integer"
+            value={currency.decimalDigits || ""}
+            onChange={updateState}
+            maxLength={1}
+            placeholder={resource.currency_decimal_digits}
+          />
+        </label>
+        <div className="col s12 m6 radio-section">
+          {resource.status}
+          <div className="radio-group">
+            <label>
+              <input type="radio" id="active" name="status" onChange={updateState} value={Status.Active} checked={currency.status === Status.Active} />
+              {resource.yes}
+            </label>
+            <label>
+              <input type="radio" id="inactive" name="status" onChange={updateState} value={Status.Inactive} checked={currency.status === Status.Inactive} />
+              {resource.no}
+            </label>
           </div>
         </div>
-        <footer className="view-footer">
-          {!flag.readOnly && (
-            <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-              {resource.save}
-            </button>
-          )}
-        </footer>
-      </form>
-    </div>
+      </div>
+      <footer className="view-footer">
+        {!flag.readOnly && (
+          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+            {resource.save}
+          </button>
+        )}
+      </footer>
+    </form>
   )
 }

@@ -150,13 +150,13 @@ export const RoleAssignmentForm = () => {
     setState({ ...state, q: "" })
   }
   return (
-    <div className="view-container">
-      <form id="roleAssignmentForm" name="roleAssignmentForm" model-name="role">
-        <header>
+    <div>
+      <form id="roleAssignmentForm" name="roleAssignmentForm" className="form" model-name="role">
+        <header className="view-header">
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2>{role.roleName && role.roleName.length > 0 ? role.roleName : resource.role_assignment_subject}</h2>
         </header>
-        <div>
+        <div className="form-body">
           <section className="row">
             <label className="col s12 m6">
               {resource.role_id}
@@ -208,7 +208,7 @@ export const RoleAssignmentForm = () => {
                 placeholder={resource.role_assignment_search_user}
                 autoComplete="off"
               />
-              <button type="button" hidden={!q} className="btn-remove-text" onClick={clearQ} />
+              {/*<button type="button" hidden={!q} className="btn-remove-text" onClick={clearQ} />*/}
             </label>
             <ul className="row list">
               {shownUsers &&
@@ -230,7 +230,7 @@ export const RoleAssignmentForm = () => {
             </ul>
           </section>
         </div>
-        <footer>
+        <footer className="view-footer">
           <button type="submit" id="btnSave" name="btnSave" onClick={save} disabled={isReadOnly}>
             {resource.save}
           </button>

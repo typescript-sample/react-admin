@@ -199,6 +199,16 @@ li.video > section > a {
   font-size: 15px;
   font-weight: 400;
 }
+@media screen and (max-width: 600px) {
+  .img-card h4,
+  .video-container h4,
+  .video h4,
+  .card h4,
+  .list-item h4,
+  .img-item h4 {
+    background-color: inherit;
+  }
+}
 .img-item > p:last-child {
   min-height: 32px;
   margin-block-end: 6px;
