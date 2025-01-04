@@ -126,8 +126,8 @@ export const SigninForm = () => {
 
   return (
     <div className="view-container central-full sign-in-view-container">
-      <form id="signinForm" name="signinForm" noValidate={true} autoComplete="off" ref={form as any}>
-        <div>
+      <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
+        <div className="row">
           <img className="logo" src={logo} alt="logo" />
           <h2>{resource.signin}</h2>
           <div className={"message " + msg.alertClass}>

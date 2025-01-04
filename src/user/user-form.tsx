@@ -146,7 +146,7 @@ export const UserForm = () => {
   }*/
   return (
     <div className="view-container">
-      <form id="userForm" name="userForm" model-name="user" ref={refForm as any}>
+      <form id="userForm" name="userForm" className="form" model-name="user" ref={refForm as any}>
         <header className="view-header">
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2 className="view-title">{resource.user}</h2>
@@ -165,7 +165,7 @@ export const UserForm = () => {
         </header>
         <div>
           <h3>User Information</h3>
-          <section className="row">
+          <section className="row section">
             <label className="col s12 m6">
               {resource.user_id}
               <input
@@ -265,25 +265,13 @@ export const UserForm = () => {
             </div>
           </section>
           <h4>Contact Information</h4>
-          <section className="row">
-            <label className="col s12 m6 flying">
-              {resource.person_title}
-              <select id="title" name="title" value={user.title || ""} className="form-control" data-value onChange={(e) => updateTitle(e.target, state.user)}>
-                <option value="">{resource.please_select}</option>)
-                {state.titleList.map((item, index) => (
-                  <option key={index} value={item.value}>
-                    {item.text}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="col s12 m6 flying">
+          <section className="row section">
+            <label className="col s12 m6 flying ">
               {resource.position}
               <select
                 style={{ width: "99%" }}
                 id="position"
                 name="position"
-                className="form-control"
                 value={user.position || ""}
                 data-value
                 onChange={(e) => {
@@ -293,6 +281,17 @@ export const UserForm = () => {
               >
                 <option value="">{resource.please_select}</option>
                 {state.positionList.map((item, index) => (
+                  <option key={index} value={item.value}>
+                    {item.text}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="col s12 m6 flying">
+              {resource.person_title}
+              <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, state.user)}>
+                <option value="">{resource.please_select}</option>)
+                {state.titleList.map((item, index) => (
                   <option key={index} value={item.value}>
                     {item.text}
                   </option>
