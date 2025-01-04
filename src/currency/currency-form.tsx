@@ -43,7 +43,7 @@ export const CurrencyForm = () => {
   const currency = state.currency
   return (
     <div className="view-container">
-      <form id="currencyForm" name="currencyForm" model-name="currency" ref={refForm as any}>
+      <form id="currencyForm" name="currencyForm" className="form" model-name="currency" ref={refForm as any}>
         <header className="view-header">
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2 className="view-title">{resource.currency}</h2>

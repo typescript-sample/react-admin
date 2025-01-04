@@ -42,7 +42,7 @@ export const CountryForm = () => {
   const country = state.country
   return (
     <div className="view-container">
-      <form id="countryForm" name="countryForm" model-name="country" ref={refForm as any}>
+      <form id="countryForm" name="countryForm" className="form" model-name="country" ref={refForm as any}>
         <header className="view-header">
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2 className="view-title">{resource.country}</h2>

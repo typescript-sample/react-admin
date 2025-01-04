@@ -56,7 +56,7 @@ export const CurrenciesForm = () => {
         </div>
       </header>
       <div>
-        <form id="currencysForm" name="currencysForm" noValidate={true} ref={refForm as any}>
+        <form id="currencysForm" name="currencysForm" className="form" noValidate={true} ref={refForm as any}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />

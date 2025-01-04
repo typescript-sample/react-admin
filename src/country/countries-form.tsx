@@ -53,7 +53,7 @@ export const CountriesForm = () => {
         </div>
       </header>
       <div>
-        <form id="countrysForm" name="countrysForm" noValidate={true} ref={refForm as any}>
+        <form id="countrysForm" name="countrysForm" className="form" noValidate={true} ref={refForm as any}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />
@@ -71,7 +71,7 @@ export const CountriesForm = () => {
               onChange={pageChanged}
             />
           </section>
-          <section className="row search-group" hidden={component.hideFilter}>
+          <section className="row search-group inline" hidden={component.hideFilter}>
             <label className="col s6 l3">
               {resource.currency_decimal_digits}
               <input

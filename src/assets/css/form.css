@@ -79,14 +79,14 @@ form label > select::-ms-expand {
   padding-top: 0;
   padding-bottom: 0;
 }
-
+/*
 .form .row > label.flying > input:focus:not([data-value]) {
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0.3s, 0.3s;
   animation: flyingFrames 0.3s;
 }
-
+*/
 /**************************Select flying************************/
 .form .row > label select:not([data-value])::placeholder {
   visibility: hidden;
@@ -223,9 +223,12 @@ label.focused > span.span-error,
   height: 24px;
   margin-top: 10px;
   -webkit-animation: flyingFrames 0s, 0s;
-  animation: flyingFrames 0s;
+  animation: flyingFrames 0s, 0s;
 }
-
+.form .row.inline > label.focused > input:not([type="checkbox"]):not([type="radio"]) {
+  margin-top: -3px;
+  margin-left: 16px;
+}
 .form-group.suffix-container .form-control,
 .form .row > label.suffix-container > input:not([type="checkbox"]):not([type="radio"]),
 .form .row > label.suffix-container > select,
@@ -268,7 +271,7 @@ select:not([multiple]) {
 
 .form label.flying select:not([data-value]) {
   -webkit-animation: unFlyingFrames 0.3s, 0.3s;
-animation: unFlyingFrames 0.3s, 0.3s;
+  animation: unFlyingFrames 0.3s, 0.3s;
   height: 0;
   margin-top: 0;
   padding-top: 0;
