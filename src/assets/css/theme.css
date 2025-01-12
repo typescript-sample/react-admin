@@ -64,7 +64,7 @@ input[type="radio"]:checked:before {
   background: #01a090; /* #07843b */
 }
 
-.view-container.solid {
+.solid {
   background-image: linear-gradient(90deg, #008577, #00574b);
 }
 
@@ -76,9 +76,9 @@ hr {
   border-color: #808080;
 }
 
-.view-container.solid > form > footer,
-.view-container.solid > footer,
-.view-container.solid .view-footer {
+.solid > form > footer,
+.solid > footer,
+.solid .view-footer {
   box-shadow: none;
 }
 
@@ -200,7 +200,6 @@ footer > button#btnReject {
 body,
 .page-container,
 .page-body,
-.view-container,
 .full-container,
 .page-header,
 .alert-wrapper .alert,
@@ -223,7 +222,7 @@ body,
 .pagination > li > a,
 .pagination > li > span,
 .card > footer > button.btn-cancel,
-.view-container.central-full > form > div > button.btn-cancel,
+.central-full > form > div > button.btn-cancel,
 header > h5,
 .view-subtitle,
 .subtitle {
@@ -518,13 +517,13 @@ section > p > label,
 .mobile .view-container > header > .btn-close,
 .mobile .view-header > .btn-back,
 .mobile .view-header > .btn-close,
-.view-container.solid > form > div > p,
-.view-container.solid > div > p,
-.view-container.solid > .view-body > p,
-.view-container.solid > form > div > h5,
-.view-container.solid > div > h5,
-.view-container.solid > .view-body > h5,
-.view-container > form > div > section.header-container > p {
+.solid > form > div > p,
+.solid > div > p,
+.solid > .view-body > p,
+.solid > form > div > h5,
+.solid > div > h5,
+.solid > .view-body > h5,
+.form > div > section.header-container > p {
   color: #fff;
 }
 

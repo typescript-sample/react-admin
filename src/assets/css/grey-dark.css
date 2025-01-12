@@ -56,22 +56,21 @@
   background: #101011; /* #07843b */
 }
 
-.grey.dark .view-container.solid {
+.grey.dark .solid {
   background-image: linear-gradient(90deg, #008577, #00574b);
 }
 
-.grey.dark .dropdown-content-profile hr,
-.grey.dark .view-container hr {
+.grey.dark hr {
   border-color: #1f1f1f;
 }
 
-.grey.dark .view-container.solid hr {
+.grey.dark .solid hr {
   border-color: #808080;
 }
 
-.grey.dark .view-container.solid > form > footer,
-.grey.dark .view-container.solid > footer,
-.grey.dark .view-container.solid .view-footer {
+.grey.dark .solid > form > footer,
+.grey.dark .solid > footer,
+.grey.dark .solid .view-footer {
   box-shadow: none;
 }
 
@@ -533,13 +532,13 @@
 .grey.dark .mobile .view-container > header > .btn-close,
 .grey.dark .mobile .view-header > .btn-back,
 .grey.dark .mobile .view-header > .btn-close,
-.grey.dark .view-container.solid > form > div > p,
-.grey.dark .view-container.solid > div > p,
-.grey.dark .view-container.solid > .view-body > p,
-.grey.dark .view-container.solid > form > div > h5,
-.grey.dark .view-container.solid > div > h5,
-.grey.dark .view-container.solid > .view-body > h5,
-.grey.dark .view-container > form > div > section.header-container > p {
+.grey.dark .solid > form > div > p,
+.grey.dark .solid > div > p,
+.grey.dark .solid > .view-body > p,
+.grey.dark .solid > form > div > h5,
+.grey.dark .solid > div > h5,
+.grey.dark .solid > .view-body > h5,
+.grey.dark .form > div > section.header-container > p {
   color: #000;
 }
 
