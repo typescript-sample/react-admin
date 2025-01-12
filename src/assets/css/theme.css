@@ -68,12 +68,11 @@ input[type="radio"]:checked:before {
   background-image: linear-gradient(90deg, #008577, #00574b);
 }
 
-.dropdown-content-profile hr,
-.view-container hr {
+hr {
   border-color: #ebebeb;
 }
 
-.view-container.solid hr {
+.solid hr {
   border-color: #808080;
 }
 
@@ -530,8 +529,6 @@ section > p > label,
 }
 
 .modal-portal-content > div > header,
-.view-container > form > header,
-.view-container > header,
 .view-header {
   color: #fff;
   background-image: linear-gradient(90deg, #008577, #00574b);
@@ -547,7 +544,6 @@ section > p > label,
 
 @media screen and (max-width: 600px) {
   .page-body > .form > header,
-  .page-body .view-container > form > header,
   .page-body > div > header,
   .view-header {
     color: #fff;

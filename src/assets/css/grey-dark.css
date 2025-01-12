@@ -117,13 +117,9 @@
 .grey.dark footer > .btn-accept::after,
 .grey.dark footer > .btn-next::after,
 .grey.dark section.btn-group > .btn-search,
-.grey.dark .view-container.central-full > form > div > button,
-.grey.dark .view-container.full > form > div > section > button,
-.grey.dark .view-container.full .view-body > section > button,
-.grey.dark .view-container.solid .view-body > section > button,
-.grey.dark .detail-content > form > footer > button,
-.grey.dark .view-container > form > footer > button,
-.grey.dark .view-container > footer > button,
+.grey.dark .central-full > form > div > button,
+.grey.dark .page-body > .form > footer > button,
+.grey.dark .page-body > .form > footer > section.footer > button,
 .grey.dark .view-footer > button,
 .grey.dark section.footer > button {
   color: #000;
@@ -303,14 +299,14 @@
 }
 */
 .grey.dark .btn-more,
-h3,
+.grey.dark h3,
 .grey.dark .row .form-group.focused label,
 .grey.dark .row > label.focused,
 .grey.dark .row > .col label.focused,
 .grey.dark .view-container > form > div > label.focused,
 .grey.dark .view-container > div > label.focused,
 .grey.dark .view-body > label.focused,
-.grey.dark .view-container > form > div > h2,
+.grey.dark .form > div > h2,
 .grey.dark .card > footer > button,
 .grey.dark .btn-select,
 .grey.dark .btn-add,
@@ -547,18 +543,14 @@ h3,
   color: #000;
 }
 
-.grey.dark .modal-portal-content > .view-container > form > header,
-.grey.dark .view-container > form > header,
-.grey.dark .view-container > header,
+.grey.dark .modal-portal-content > div > header,
 .grey.dark .view-header {
   color: #000;
   background-image: linear-gradient(90deg, #657181, #657181);
 }
 
-.grey.dark .page-body > .list-detail-container > .list-content > header,
-.grey.dark .page-body > .list-detail-container > .detail-content > form > header,
-.grey.dark .page-body .view-container > form > header,
-.grey.dark .page-body .view-container > header,
+.grey.dark .page-body > .form > header,
+.grey.dark .page-body > div > header,
 .grey.dark .view-header {
   color: #657181;
   background-color: #000;
@@ -566,8 +558,9 @@ h3,
 }
 
 @media screen and (max-width: 600px) {
+  .grey.dark .page-body > .form > header,
   .grey.dark .page-body .view-container > form > header,
-  .grey.dark .page-body .view-container > header,
+  .grey.dark .page-body > div > header,
   .grey.dark .view-header {
     color: #000;
     background-image: linear-gradient(90deg, #657181, #657181);

@@ -117,13 +117,9 @@
 .dark footer > .btn-accept::after,
 .dark footer > .btn-next::after,
 .dark section.btn-group > .btn-search,
-.dark .view-container.central-full > form > div > button,
-.dark .view-container.full > form > div > section > button,
-.dark .view-container.full .view-body > section > button,
-.dark .view-container.solid .view-body > section > button,
-.dark .detail-content > form > footer > button,
-.dark .view-container > form > footer > button,
-.dark .view-container > footer > button,
+.dark .central-full > form > div > button,
+.dark .page-body > .form > footer > button,
+.dark .page-body > .form > footer > section.footer > button,
 .dark .view-footer > button,
 .dark section.footer > button {
   color: #000;
@@ -302,13 +298,14 @@
 }
 */
 .dark .btn-more,
-h3,
+.dark h3,
 .dark .row .form-group.focused label,
 .dark .row > label.focused,
 .dark .row > .col label.focused,
 .dark .view-container > form > div > label.focused,
 .dark .view-container > div > label.focused,
 .dark .view-body > label.focused,
+.dark .form > div > h2,
 .dark .view-container > form > div > h2,
 .dark .card > footer > button,
 .dark .btn-select,
@@ -546,18 +543,14 @@ h3,
   color: #000;
 }
 
-.dark .modal-portal-content > .view-container > form > header,
-.dark .view-container > form > header,
-.dark .view-container > header,
+.dark .modal-portal-content > div > header,
 .dark .view-header {
   color: #000;
   background-image: linear-gradient(90deg, #008577, #00574b);
 }
 
-.dark .page-body > .list-detail-container > .list-content > header,
-.dark .page-body > .list-detail-container > .detail-content > form > header,
-.dark .page-body .view-container > form > header,
-.dark .page-body .view-container > header,
+.dark .page-body > .form > header,
+.dark .page-body > div > header,
 .dark .view-header {
   color: #4db6ac;
   background-color: #000;
@@ -565,8 +558,8 @@ h3,
 }
 
 @media screen and (max-width: 600px) {
-  .dark .page-body .view-container > form > header,
-  .dark .page-body .view-container > header,
+  .dark .page-body > .form > header,
+  .dark .page-body > div > header,
   .dark .view-header {
     color: #000;
     background-image: linear-gradient(90deg, #008577, #00574b);

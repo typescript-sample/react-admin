@@ -117,13 +117,9 @@
 .grey footer > .btn-accept::after,
 .grey footer > .btn-next::after,
 .grey section.btn-group > .btn-search,
-.grey .view-container.central-full > form > div > button,
-.grey .view-container.full > form > div > section > button,
-.grey .view-container.full .view-body > section > button,
-.grey .view-container.solid .view-body > section > button,
-.grey .detail-content > form > footer > button,
-.grey .view-container > form > footer > button,
-.grey .view-container > footer > button,
+.grey .central-full > form > div > button,
+.grey .page-body > .form > footer > button,
+.grey .page-body > .form > footer > section.footer > button,
 .grey .view-footer > button,
 .grey section.footer > button {
   color: #fff;
@@ -303,14 +299,14 @@
 }
 */
 .grey .btn-more,
-h3,
+.grey h3,
 .grey .row .form-group.focused label,
 .grey .row > label.focused,
 .grey .row > .col label.focused,
 .grey .view-container > form > div > label.focused,
 .grey .view-container > div > label.focused,
 .grey .view-body > label.focused,
-.grey .view-container > form > div > h2,
+.grey .form > div > h2,
 .grey .card > footer > button,
 .grey .btn-select,
 .grey .btn-add,
@@ -552,18 +548,14 @@ h3,
   color: #fff;
 }
 
-.grey .modal-portal-content > .view-container > form > header,
-.grey .view-container > form > header,
-.grey .view-container > header,
+.grey .modal-portal-content > div > header,
 .grey .view-header {
   color: #fff;
   background-image: linear-gradient(90deg, #657181, #657181);
 }
 
-.grey .page-body > .list-detail-container > .list-content > header,
-.grey .page-body > .list-detail-container > .detail-content > form > header,
-.grey .page-body .view-container > form > header,
-.grey .page-body .view-container > header,
+.grey .page-body > .form > header,
+.grey .page-body > div > header,
 .grey .view-header {
   color: #657181;
   background-color: #fff;
@@ -571,8 +563,8 @@ h3,
 }
 
 @media screen and (max-width: 600px) {
-  .grey .page-body .view-container > form > header,
-  .grey .page-body .view-container > header,
+  .grey .page-body > .form > header,
+  .grey .page-body > div > header,
   .grey .view-header {
     color: #fff;
     background-image: linear-gradient(90deg, #657181, #657181);
