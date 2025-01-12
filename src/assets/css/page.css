@@ -38,6 +38,7 @@
 
 .list-detail-container > .list-content > header,
 .list-detail-container > .detail-content > form > header,
+.page-body > div > header,
 .page-body > .form > header,
 .view-container > form > header,
 .view-container > header,
@@ -88,6 +89,7 @@
 
 .list-content,
 .view-container,
+.page-body > div,
 .form,
 .view-container > form {
   position: relative;
@@ -235,7 +237,7 @@
   background-color: inherit;
   background-image: inherit;
 }
-.page-body > .form > div,
+
 .view-container > form > div,
 .view-body {
   max-height: calc(100vh - 64px);
@@ -318,10 +320,10 @@
   .top-menu .page-container > .page-body .profile.view-container > form > div {
     max-height: unset;
   }
+  .top-menu .page-container > .page-body > .form,
+  .top-menu .page-container > .page-body > div,
+  .top-menu .page-container > .page-body .view-container > div,
   .top-menu .page-container > .page-body .view-container > form {
-    max-height: calc(100vh - 46px - 52px);
-  }
-  .top-menu .page-container > .page-body .view-container > div {
     max-height: calc(100vh - 46px - 52px);
   }
   /* Set height for table container, prevent the parent scroll of whole page  */

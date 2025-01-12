@@ -34,7 +34,7 @@ footer > .btn-cancel {
   border: 0;
   background-color: transparent;
 }
-.view-container > form > footer > button.btn-secondary,
+.form > footer > button.btn-secondary,
 .btn-secondary {
   background-color: transparent;
   border: 1px solid;
@@ -69,21 +69,15 @@ ul.list > li > button.btn-pick,
   background-position-y: center;
   background-repeat: no-repeat;
 }
-.view-container > header > .btn-group > .btn-new,
-.view-container > header > .btn-group > .btn-table,
-.view-container > header > .btn-group > .btn-list,
-.view-container > header > .btn-group > .btn-grid,
-.view-container > header > .btn-group > .btn-map,
-.view-container > header > .btn-new,
-.view-container > form > footer .btn-cancel,
-.view-container > footer .btn-cancel,
-.view-footer .btn-cancel,
-.view-container > form > footer .btn-accept,
-.view-container > footer .btn-accept,
-.view-footer .btn-accept,
-.view-container > form > footer .btn-next,
-.view-container > footer .btn-next,
-.view-footer .btn-next {
+
+.btn-new,
+.btn-table,
+.btn-list,
+.btn-grid,
+.btn-map,
+.btn-cancel,
+.btn-accept,
+.btn-next {
   width: fit-content;
   padding: 0;
   border: 0;
@@ -92,12 +86,12 @@ ul.list > li > button.btn-pick,
   background-color: transparent;
   background-size: 40px 40px;
 }
-.view-container > header > .btn-group > button,
-.view-container > header > .btn-group > .btn-new {
+.btn-group > button,
+.btn-group > .btn-new {
   height: 100%;
   margin-left: 8px;
 }
-.view-container > header > .btn-group > .btn-new {
+.btn-group > .btn-new {
   position: relative;
   width: 22px;
 }
@@ -369,14 +363,14 @@ h4 > .btn-add {
   top: -6px;
   left: 1px;
 }
-.view-container > header > .btn-group > .btn-list {
+header > .btn-group > .btn-list {
   padding-top: 0;
 }
 .btn-list::before {
   font-size: 23px;
   content: "\2630";
 }
-.view-container > header > .btn-group > .btn-grid {
+header > .btn-group > .btn-grid {
   position: relative;
   width: 22px;
 }
@@ -395,22 +389,19 @@ h4 > .btn-add {
   font-size: 25px;
   content: "\25F3";
 }
-.page-body > .form > header > .btn-new,
-.page-body > .form > header > .btn-right,
-.list-content > header > .btn-new,
-.view-container > header > .btn-new,
-.view-container > form > header > .btn-right,
-.view-container > header > .btn-group {
+header > .btn-new,
+header > .btn-right,
+header > .btn-group {
   position: absolute;
   top: 0;
   right: 16px;
   padding-top: 0px;
   height: 100%;
 }
-.modal-portal-content .view-container > header > .btn-group {
+.modal-portal-content header > .btn-group {
   right: 39px;
 }
-.view-container > header > .btn-group {
+.page-body > div > header > .btn-group {
   display: flex;
   flex-direction: row;
 }
