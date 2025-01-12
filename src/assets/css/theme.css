@@ -125,13 +125,7 @@ footer > .btn-cancel::before {
 footer > .btn-accept::after,
 footer > .btn-next::after,
 section.btn-group > .btn-search,
-.view-container.central-full > form > div > button,
-.view-container.full > form > div > section > button,
-.view-container.full .view-body > section > button,
-.view-container.solid .view-body > section > button,
-.detail-content > form > footer > button,
-.view-container > form > footer > button,
-.view-container > footer > button,
+.central-full > form > div > button,
 .page-body > .form > footer > button,
 .page-body > .form > footer > section.footer > button,
 .view-footer > button,
@@ -318,7 +312,7 @@ h3,
 .row > .col label.focused,
 label.focused,
 .view-body > label.focused,
-.view-container > form > div > h2,
+.form > div > h2,
 .card > footer > button,
 .btn-select,
 .btn-add,
@@ -535,7 +529,7 @@ section > p > label,
   color: #fff;
 }
 
-.modal-portal-content > .view-container > form > header,
+.modal-portal-content > div > header,
 .view-container > form > header,
 .view-container > header,
 .view-header {
@@ -543,11 +537,8 @@ section > p > label,
   background-image: linear-gradient(90deg, #008577, #00574b);
 }
 
-.page-body > .list-detail-container > .list-content > header,
-.page-body > .list-detail-container > .detail-content > form > header,
 .page-body > .form > header,
-.page-body .view-container > form > header,
-.page-body .view-container > header,
+.page-body > div > header,
 .view-header {
   color: #4db6ac;
   background-color: #fff;
@@ -557,7 +548,7 @@ section > p > label,
 @media screen and (max-width: 600px) {
   .page-body > .form > header,
   .page-body .view-container > form > header,
-  .page-body .view-container > header,
+  .page-body > div > header,
   .view-header {
     color: #fff;
     background-image: linear-gradient(90deg, #008577, #00574b);

@@ -151,8 +151,11 @@ label.focused > span.span-error,
 .form > div > .form-group,
 .form .row > label,
 .form > label,
+.checkbox-section,
+.radio-section,
 .section .row > label,
-.section > label {
+.section > label,
+.input-container {
   position: relative;
   display: block;
   width: 100%;
@@ -335,13 +338,7 @@ select::-webkit-input-placeholder {
   margin-top: 6px;
 }
 
-.view-container > form > div > section > label.switch-container,
-.view-container > form > div > label.switch-container,
 label.switch-container,
-.view-container > form > div > section > label.checkbox-container,
-.view-container > form > div > label.checkbox-container,
-.view-container > form > div > label.checkbox-group,
-.view-container > form > div > label.radio-group,
 label.checkbox-container,
 label.checkbox-group,
 label.radio-group,
@@ -361,9 +358,9 @@ label.radio-group,
   font-weight: 400;
 }
 
-.view-container > form > div > section > label.switch-container,
-.view-container > form > div > label.switch-container,
-label.switch-container {
+.form .row > label.switch-container,
+.switch-container {
+  padding-top: 14px;
   padding-left: 56px;
 }
 
@@ -380,16 +377,10 @@ section > h4.checkbox-container > input[type="checkbox"]:not(.modal-trigger):not
   margin-right: 10px;
 }
 
-.view-container > form > div > section > label.switch-container,
-.view-container > form > div > label.switch-container,
-label.switch-container,
-.view-container > form > div > section > label.checkbox-container,
-.view-container > form > div > label.checkbox-container,
-.view-container > form > div > label.checkbox-group,
-.view-container > form > div > label.radio-group,
-label.checkbox-container,
-label.checkbox-group,
-label.radio-group,
+.switch-container,
+.checkbox-container,
+.checkbox-group,
+.radio-group,
 .row.checkbox-group > label.col,
 .row.radio-group > label.col,
 .row.checkbox-group > label,
@@ -472,19 +463,6 @@ section > p > label {
   justify-content: flex-end;
 }
 
-@media screen and (max-width: 600px) {
-  .view-container > form > div.row {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  form .view-container > div > label,
-  form .view-body > label,
-  form .row > label.col {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-
 label.required:before {
   position: absolute;
   left: 7px;
@@ -494,7 +472,7 @@ label.required:before {
 .form-group > label.required:before {
   left: -9px;
 }
-.view-container > div > form > section.inline {
+.form > section.inline {
   padding-bottom: 8px;
 }
 .row.inline > label:last-child,
@@ -524,7 +502,6 @@ label.required:before {
   left: 34%;
 }
 
-.view-container > form > div > section > label.inline-input,
 .row > label.col.inline-input,
 .inline-input {
   display: inline-flex;
@@ -533,7 +510,7 @@ label.required:before {
   padding-right: 0;
 }
 
-.view-container > form > div > section > label.inline-input {
+.form > div > section > label.inline-input {
   padding-left: 16px;
   padding-right: 16px;
 }

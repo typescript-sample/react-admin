@@ -88,7 +88,7 @@ export const AuditLogsForm = () => {
               />
             </label>
           </section>
-          <section className="btn-group">
+          <section className="search btn-group">
             <label>
               {resource.page_size}
               <PageSizeSelect size={component.pageSize} sizes={component.pageSizes} onChange={pageSizeChanged} />

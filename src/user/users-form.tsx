@@ -134,7 +134,7 @@ export const UsersForm = () => {
   const filter = value(state.filter)
   const offset = getOffset(limit, page)
   return (
-    <div className="view-container">
+    <div>
       <header>
         <h2>{resource.users}</h2>
         <div className="btn-group">

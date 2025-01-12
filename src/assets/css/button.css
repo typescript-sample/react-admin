@@ -95,11 +95,10 @@ ul.list > li > button.btn-pick,
   position: relative;
   width: 22px;
 }
+.modal-portal-content > div > footer > button,
 section.footer > button,
 .detail-content > form > footer > button,
-.page-body > .form > footer > button,
-.view-container > form > footer > button,
-.view-container > footer > button,
+.form > footer > button,
 .view-footer > button {
   width: 200px;
   height: 40px;
@@ -142,11 +141,7 @@ footer > button.btn-cancel:hover {
   box-shadow: none;
 }
 
-.view-container > form > footer .btn-accept,
-.view-container > footer .btn-accept,
 .view-footer .btn-accept,
-.view-container > form > footer .btn-next,
-.view-container > footer .btn-next,
 .view-footer .btn-next {
   right: 14px;
   padding-right: 45px;
@@ -245,7 +240,7 @@ footer > .btn-next {
   content: "\2573";
 }
 
-.view-container > form > header > .btn,
+.form > header > .btn,
 .btn-group,
 .btn-new,
 .btn-add,

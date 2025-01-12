@@ -143,7 +143,7 @@ export const RolesForm = () => {
 
   const filter = value(state.filter)
   return (
-    <div className="view-container">
+    <div>
       <header>
         <h2>{resource.roles}</h2>
         <div className="btn-group">

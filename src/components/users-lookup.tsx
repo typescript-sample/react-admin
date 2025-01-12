@@ -170,7 +170,7 @@ export const UsersLookup = (props: Props) => {
       overlayClassName="modal-portal-backdrop"
     >
       <div className="view-container">
-        <header>
+        <header className="view-header">
           <h2>{resource.users_lookup}</h2>
           <div className="btn-group">
             {state.view !== "table" && (
@@ -328,7 +328,7 @@ export const UsersLookup = (props: Props) => {
             )}
           </form>
         </div>
-        <footer>
+        <footer className="view-footer">
           <button type="button" onClick={onModelSave}>
             {resource.select}
           </button>
