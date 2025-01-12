@@ -50,6 +50,29 @@ select {
   }
 }
 
+section,
+label p,
+div {
+  font-size: 14px;
+  font-weight: 500;
+}
+input,
+select {
+  font-size: 16px;
+  font-weight: 500;
+}
+th,
+th > a,
+th > button {
+  font-size: 14px;
+  font-weight: 500;
+}
+td,
+td > a,
+td > button {
+  font-size: 14px;
+  font-weight: 400;
+}
 .center-container {
   text-align: center;
 }

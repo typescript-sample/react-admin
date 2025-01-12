@@ -120,8 +120,8 @@ ul.list.row > li.col > *:first-child {
 .img-item > img {
   position: absolute;
   left: 16px;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
 }
 .img-item > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
   position: absolute;
@@ -157,17 +157,18 @@ ul.list.row > li.col > *:first-child {
   padding-top: 2px;
   padding-left: 0;
   padding-right: 0;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
+  margin-bottom: 1px;
 }
 .img-item > a,
 .img-item > h4 {
-  min-height: 32px;
+  min-height: 26px;
 }
 .img-item > a,
 .img-item > h4,
 .img-item > p {
-  padding-left: 68px;
+  padding-left: 56px;
 }
 .detail-content > form > div.video-container {
   padding: 12px;
@@ -196,8 +197,6 @@ li.video > section > a {
   justify-content: space-between;
   margin: 0;
   padding-top: 2px;
-  font-size: 15px;
-  font-weight: 400;
 }
 @media screen and (max-width: 600px) {
   .img-card h4,
@@ -210,12 +209,12 @@ li.video > section > a {
   }
 }
 .img-item > p:last-child {
-  min-height: 32px;
+  min-height: 29px;
   margin-block-end: 6px;
 }
 .list-item > p:last-child {
-  min-height: 28px;
-  margin-block-end: 2px;
+  min-height: 25px;
+  margin-block-end: 4px;
 }
 .card > section > p > a,
 .video > section > p > a {
