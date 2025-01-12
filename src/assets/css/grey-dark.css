@@ -6,6 +6,88 @@
     background: #747979;
   }
 }
+
+.grey.dark body,
+.grey.dark .page-container,
+.grey.dark .page-body,
+.grey.dark .view-container,
+.grey.dark .full-container,
+.grey.dark .page-header,
+.grey.dark .alert-wrapper .alert,
+.grey.dark .dropdown-menu-profile {
+  background-color: #000;
+}
+.grey.dark .page-header {
+  border-color: #212325;
+}
+
+.grey.dark .modal-portal-content > div > header,
+.grey.dark .view-header {
+  color: #000;
+  background-image: linear-gradient(90deg, #657181, #657181);
+}
+
+.grey.dark .page-body > .form > header,
+.grey.dark .page-body > div > header,
+.grey.dark .view-header {
+  color: #657181;
+  background-color: #000;
+  background-image: none;
+}
+
+@media screen and (max-width: 600px) {
+  .grey.dark .page-body > .form > header,
+  .grey.dark .page-body .view-container > form > header,
+  .grey.dark .page-body > div > header,
+  .grey.dark .view-header {
+    color: #000;
+    background-image: linear-gradient(90deg, #657181, #657181);
+  }
+}
+
+.grey.dark footer > .btn-cancel::before {
+  color: #000;
+  background-color: #fc671a;
+}
+
+.grey.dark footer > .btn-accept::after,
+.grey.dark footer > .btn-next::after,
+.grey.dark section.btn-group > .btn-search,
+.grey.dark .central-full > form > div > button,
+.grey.dark .page-body > .form > footer > button,
+.grey.dark .page-body > .form > footer > section.footer > button,
+.grey.dark .view-footer > button,
+.grey.dark section.footer > button {
+  color: #000;
+  background-color: #657181;
+}
+.grey.dark .btn-more:hover,
+.grey.dark footer > button:hover {
+  box-shadow: #565656;
+}
+.grey.dark section.footer > button#btnReject,
+.grey.dark footer > button#btnReject {
+  background-color: #d74738;
+}
+
+.grey.dark .solid {
+  background-image: linear-gradient(90deg, #008577, #00574b);
+}
+
+.grey.dark hr {
+  border-color: #1f1f1f;
+}
+
+.grey.dark .solid hr {
+  border-color: #808080;
+}
+
+.grey.dark .solid > form > footer,
+.grey.dark .solid > footer,
+.grey.dark .solid .view-footer {
+  box-shadow: none;
+}
+
 .grey.dark .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
 .grey.dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
   border-color: #778497;
@@ -56,24 +138,6 @@
   background: #101011; /* #07843b */
 }
 
-.grey.dark .solid {
-  background-image: linear-gradient(90deg, #008577, #00574b);
-}
-
-.grey.dark hr {
-  border-color: #1f1f1f;
-}
-
-.grey.dark .solid hr {
-  border-color: #808080;
-}
-
-.grey.dark .solid > form > footer,
-.grey.dark .solid > footer,
-.grey.dark .solid .view-footer {
-  box-shadow: none;
-}
-
 /* bootstrap */
 /*.panel-heading,*/
 .grey.dark .result .active,
@@ -106,31 +170,6 @@
 .grey.dark .pagination > .active > a:focus,
 .grey.dark .pagination > .active > span:focus {
   background-color: #c9d9f5;
-}
-
-.grey.dark footer > .btn-cancel::before {
-  color: #000;
-  background-color: #fc671a;
-}
-
-.grey.dark footer > .btn-accept::after,
-.grey.dark footer > .btn-next::after,
-.grey.dark section.btn-group > .btn-search,
-.grey.dark .central-full > form > div > button,
-.grey.dark .page-body > .form > footer > button,
-.grey.dark .page-body > .form > footer > section.footer > button,
-.grey.dark .view-footer > button,
-.grey.dark section.footer > button {
-  color: #000;
-  background-color: #657181;
-}
-.grey.dark .btn-more:hover,
-.grey.dark footer > button:hover {
-  box-shadow: #565656;
-}
-.grey.dark section.footer > button#btnReject,
-.grey.dark footer > button#btnReject {
-  background-color: #d74738;
 }
 
 .grey.dark .table-hover tbody tr.active:hover td,
@@ -188,19 +227,6 @@
 }
 /* end bootstrap only */
 
-.grey.dark body,
-.grey.dark .page-container,
-.grey.dark .page-body,
-.grey.dark .view-container,
-.grey.dark .full-container,
-.grey.dark .page-header,
-.grey.dark .alert-wrapper .alert,
-.grey.dark .dropdown-menu-profile {
-  background-color: #000;
-}
-.grey.dark .page-header {
-  border-color: #212325;
-}
 .grey.dark .alert-wrapper {
   background-color: rgba(230, 230, 230, 0.1);
 }
@@ -248,7 +274,8 @@
 }
 
 .grey.dark article,
-.grey.dark .view-container > form > div > section > p,
+.grey.dark .data-list dd,
+.grey.dark .form > div > section > p,
 .grey.dark .section-body > p,
 .grey.dark .brand,
 .grey.dark .card > section > p,
@@ -344,34 +371,30 @@
 }
 
 @media screen and (max-width: 600px) {
-  .grey.dark .view-container > header > .btn-group > *,
-  .grey.dark .view-container > header > .btn-new {
+  .grey.dark header > .btn-group > button,
+  .grey.dark header > .btn-group > *,
+  .grey.dark header > .btn-new {
     color: #000;
   }
 }
 
 .grey.dark .row .form-group.valid label,
-.grey.dark .row > label.valid,
-.grey.dark .row > .col label.valid,
-.grey.dark .view-container > form > div > label.valid,
-.grey.dark .view-container > div > label.valid,
-.grey.dark .view-body > label.valid {
+.grey.dark .row .form-group.valid.focused label,
+.grey.dark label.valid,
+.grey.dark label.valid.focused {
   color: #657181;
 }
 
 .grey.dark .btn-deselect,
 .grey.dark .row .form-group.invalid label,
-.grey.dark .row > label.invalid,
-.grey.dark .row > .col label.invalid,
-.grey.dark .view-container > form > div > label.invalid,
-.grey.dark .view-container > div > label.invalid,
-.grey.dark .view-body > label.invalid,
+.grey.dark .row .form-group.invalid.focused label,
+.grey.dark label.invalid,
+.grey.dark label.invalid.focused,
 .grey.dark .btn-remove,
 .grey.dark label.required:before,
 .grey.dark .span-error,
 .grey.dark .alert-error,
-.grey.dark .danger-icon .alert-icon,
-.grey.dark .row .form-group.invalid label {
+.grey.dark .danger-icon .alert-icon {
   color: #d74738;
 }
 
@@ -386,70 +409,27 @@
 
 .grey.dark .form-group .form-control:focus,
 .grey.dark label.inline-input > input:focus,
-.grey.dark .row > .col > label input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .row > label input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-container > form > div > section > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-container > form > div > section > label > select:not([multiple]):focus,
-.grey.dark .view-container > form > div > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-container > form > div > label > select:not([multiple]):focus,
-.grey.dark .view-container > div > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-container > div > label > select:not([multiple]):focus,
-.grey.dark .view-body > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-body > label > select:not([multiple]):focus,
-.grey.dark .row > .col > label select:not([multiple]):focus,
-.grey.dark .row > label select:not([multiple]):focus {
+.grey.dark label > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey.dark label > select:not([multiple]):focus {
   border-color: #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
 
 .grey.dark .form-group .form-control.valid,
-.grey.dark .row > .col > label input.valid,
-.grey.dark .row > label input.valid,
-.grey.dark .row > .col > label select.valid,
-.grey.dark .row > label select.valid,
-.grey.dark .view-container > form > div > section > label > input.valid,
-.grey.dark .view-container > form > div > section > label > select.valid,
-.grey.dark .view-container > form > div > label > input.valid,
-.grey.dark .view-container > form > div > label > select.valid,
-.grey.dark .view-container > div > label > input.valid,
-.grey.dark .view-container > div > label > select.valid,
-.grey.dark .view-body > label > input.valid,
-.grey.dark .view-body > label > select.valid {
+.grey.dark input.valid,
+.grey.dark select.valid {
   border-color: #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
 
 .grey.dark .form-group .form-control.invalid,
-.grey.dark .row > .col > label input.invalid,
-.grey.dark .row > label input.invalid,
-.grey.dark .row > .col > label select.invalid,
-.grey.dark .row > label select.invalid,
-.grey.dark .view-container > form > div > section > label > input.invalid,
-.grey.dark .view-container > form > div > section > label > select.invalid,
-.grey.dark .view-container > form > div > label > input.invalid,
-.grey.dark .view-container > form > div > label > select.invalid,
-.grey.dark .view-container > div > label > input.invalid,
-.grey.dark .view-container > div > label > select.invalid,
-.grey.dark .view-body > label > input.invalid,
-.grey.dark .view-body > label > select.invalid,
-.grey.dark .row > .col > label input:not([type="checkbox"]):not([type="radio"]).invalid,
-.grey.dark .row > label input:not([type="checkbox"]):not([type="radio"]).invalid,
-.grey.dark .row > .col > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .row > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-container > form > div > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-container > form > div > label.invalid > select:focus,
-.grey.dark .view-container > div > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-container > div > label.invalid > select:focus,
-.grey.dark .view-body > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey.dark .view-body > label.invalid > select:focus,
-.grey.dark .row > .col > label.invalid select:focus,
-.grey.dark .row > label.invalid select:focus {
+.grey.dark label > input:not([type="checkbox"]):not([type="radio"]).invalid,
+.grey.dark label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey.dark label.invalid > select:focus {
   border-color: #d74738;
   box-shadow: 0 1px 0 0 #d74738;
 }
 
-.grey.dark .view-container > form > div > section > article > p,
-.grey.dark .view-container > div > section > article > p,
 .grey.dark .view-body > section > article > p,
 .grey.dark .section-body > p {
   border-color: #808080;
@@ -467,20 +447,12 @@
 }
 
 .grey.dark .form-group .form-control,
+.grey.dark .form-textarea,
 .grey.dark .inline-input > input,
-.grey.dark .row > .col > label input,
-.grey.dark .row > label input,
-.grey.dark .view-container > form > div > section > label > input,
-.grey.dark .view-container > form > div > label > input,
-.grey.dark .view-container > div > label > input,
-.grey.dark .view-body > label > input,
-.grey.dark .view-container > form > div > section > label > select,
-.grey.dark .view-container > form > div > label > select,
-.grey.dark .view-container > div > label > select,
-.grey.dark .view-body > label > select,
-.grey.dark .row > .col > label select,
-.grey.dark .row > label select:not([multiple]),
-.grey.dark .row > label select[multiple] {
+.grey.dark label > input,
+.grey.dark .form .row > label > input,
+.grey.dark label > select:not([multiple]),
+.grey.dark .form .row > label > select:not([multiple]) {
   color: #fff;
   border-color: #4e4e4e;
   -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
@@ -488,50 +460,38 @@
 }
 
 .grey.dark .diff .row .col p > span,
+.grey.dark .data-list dt,
 .grey.dark article > p > label,
 .grey.dark section > p > label,
-.grey.dark .view-container > form > div > section > article > p.remark,
-.grey.dark .view-container > form > div > section > p.remark,
 .grey.dark .remark,
 .grey.dark .article-notice,
 .grey.dark .btn-detail,
 .grey.dark .quick-nav,
-.grey.dark .detail-content > form > header > .btn-back,
-.grey.dark .view-container > form > header > .btn-back,
-.grey.dark .view-container > header > .btn-back,
-.grey.dark .view-header > .btn-back,
+.grey.dark header > .btn-back,
 .grey.dark .btn-close,
 .grey.dark .btn-filter,
 .grey.dark .btn-remove-text,
 .grey.dark .btn-edit,
+.grey.dark .btn-approve,
+.grey.dark .btn-copy,
+.grey.dark .btn-history,
 .grey.dark .btn-transfer,
 .grey.dark .btn-divide,
-.grey.dark .view-container > form > footer > button.btn-secondary,
+.grey.dark .form > footer > button.btn-secondary,
 .grey.dark .btn-secondary {
   color: #808080;
 }
 
 @media screen and (max-width: 600px) {
-  .grey.dark .detail-content > form > header > .btn-back,
-  .grey.dark .view-container > form > header > .btn-back,
-  .grey.dark .view-container > header > .btn-back,
-  .grey.dark .view-container > form > header > .btn-close,
-  .grey.dark .view-container > header > .btn-close,
+  .grey.dark header > .btn-back,
+  .grey.dark header > .btn-close,
   .grey.dark .view-header > .btn-back,
   .grey.dark .view-header > .btn-close {
     color: #000;
   }
 }
 .grey.dark .modal-portal-content header > .btn-group > button,
-.grey.dark .modal-portal-content .view-container > form > header > .btn-close,
-.grey.dark .modal-portal-content .view-container > header > .btn-close,
-.grey.dark .mobile .detail-content > form > header > .btn-back,
-.grey.dark .mobile .view-container > form > header > .btn-back,
-.grey.dark .mobile .view-container > header > .btn-back,
-.grey.dark .mobile .view-container > form > header > .btn-close,
-.grey.dark .mobile .view-container > header > .btn-close,
-.grey.dark .mobile .view-header > .btn-back,
-.grey.dark .mobile .view-header > .btn-close,
+.grey.dark .modal-portal-content > div > header > .btn-close,
 .grey.dark .solid > form > div > p,
 .grey.dark .solid > div > p,
 .grey.dark .solid > .view-body > p,
@@ -540,30 +500,6 @@
 .grey.dark .solid > .view-body > h5,
 .grey.dark .form > div > section.header-container > p {
   color: #000;
-}
-
-.grey.dark .modal-portal-content > div > header,
-.grey.dark .view-header {
-  color: #000;
-  background-image: linear-gradient(90deg, #657181, #657181);
-}
-
-.grey.dark .page-body > .form > header,
-.grey.dark .page-body > div > header,
-.grey.dark .view-header {
-  color: #657181;
-  background-color: #000;
-  background-image: none;
-}
-
-@media screen and (max-width: 600px) {
-  .grey.dark .page-body > .form > header,
-  .grey.dark .page-body .view-container > form > header,
-  .grey.dark .page-body > div > header,
-  .grey.dark .view-header {
-    color: #000;
-    background-image: linear-gradient(90deg, #657181, #657181);
-  }
 }
 
 .grey.dark .light-gray {

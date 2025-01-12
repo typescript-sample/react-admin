@@ -145,12 +145,8 @@ export const RoleAssignmentForm = () => {
     e.preventDefault()
     navigate(-1)
   }
-  const clearQ = (e: OnClick) => {
-    e.preventDefault()
-    setState({ ...state, q: "" })
-  }
   return (
-    <div>
+    <div className="view-container">
       <form id="roleAssignmentForm" name="roleAssignmentForm" className="form" model-name="role">
         <header className="view-header">
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />

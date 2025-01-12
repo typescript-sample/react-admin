@@ -6,6 +6,87 @@
     background: #747979;
   }
 }
+
+.grey body,
+.grey .page-container,
+.grey .page-body,
+.grey .view-container,
+.grey .full-container,
+.grey .page-header,
+.grey .alert-wrapper .alert,
+.grey .dropdown-menu-profile {
+  background-color: #fff;
+}
+.grey .page-header {
+  border-color: #d1d9e3;
+}
+
+.grey .modal-portal-content > div > header,
+.grey .view-header {
+  color: #fff;
+  background-image: linear-gradient(90deg, #657181, #657181);
+}
+
+.grey .page-body > .form > header,
+.grey .page-body > div > header,
+.grey .view-header {
+  color: #657181;
+  background-color: #fff;
+  background-image: none;
+}
+
+@media screen and (max-width: 600px) {
+  .grey .page-body > .form > header,
+  .grey .page-body > div > header,
+  .grey .view-header {
+    color: #fff;
+    background-image: linear-gradient(90deg, #657181, #657181);
+  }
+}
+
+.grey footer > .btn-cancel::before {
+  color: #fff;
+  background-color: #fc671a;
+}
+
+.grey footer > .btn-accept::after,
+.grey footer > .btn-next::after,
+.grey section.btn-group > .btn-search,
+.grey .central-full > form > div > button,
+.grey .page-body > .form > footer > button,
+.grey .page-body > .form > footer > section.footer > button,
+.grey .view-footer > button,
+.grey section.footer > button {
+  color: #fff;
+  background-color: #657181;
+}
+.grey .btn-more:hover,
+.grey footer > button:hover {
+  box-shadow: #565656;
+}
+.grey section.footer > button#btnReject,
+.grey footer > button#btnReject {
+  background-color: #d74738;
+}
+
+.grey .solid {
+  background-image: linear-gradient(90deg, #008577, #00574b);
+}
+
+.grey hr {
+  border-color: #e0e0e0;
+}
+
+.grey .solid hr {
+  border-color: #7f7f7f;
+}
+
+.grey .solid > form > footer,
+.grey .solid > footer,
+.grey .solid .view-footer {
+  box-shadow: none;
+}
+
 .grey .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
 .grey input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
   border-color: #393f48;
@@ -56,24 +137,6 @@
   background: #f7f7fa; /* #07843b */
 }
 
-.grey .solid {
-  background-image: linear-gradient(90deg, #008577, #00574b);
-}
-
-.grey hr {
-  border-color: #e0e0e0;
-}
-
-.grey .solid hr {
-  border-color: #7f7f7f;
-}
-
-.grey .solid > form > footer,
-.grey .solid > footer,
-.grey .solid .view-footer {
-  box-shadow: none;
-}
-
 /* bootstrap */
 /*.panel-heading,*/
 .grey .result .active,
@@ -106,31 +169,6 @@
 .grey .pagination > .active > a:focus,
 .grey .pagination > .active > span:focus {
   background-color: #387ef5;
-}
-
-.grey footer > .btn-cancel::before {
-  color: #fff;
-  background-color: #fc671a;
-}
-
-.grey footer > .btn-accept::after,
-.grey footer > .btn-next::after,
-.grey section.btn-group > .btn-search,
-.grey .central-full > form > div > button,
-.grey .page-body > .form > footer > button,
-.grey .page-body > .form > footer > section.footer > button,
-.grey .view-footer > button,
-.grey section.footer > button {
-  color: #fff;
-  background-color: #657181;
-}
-.grey .btn-more:hover,
-.grey footer > button:hover {
-  box-shadow: #565656;
-}
-.grey section.footer > button#btnReject,
-.grey footer > button#btnReject {
-  background-color: #d74738;
 }
 
 .grey .table-hover tbody tr.active:hover td,
@@ -188,19 +226,6 @@
 }
 /* end bootstrap only */
 
-.grey body,
-.grey .page-container,
-.grey .page-body,
-.grey .view-container,
-.grey .full-container,
-.grey .page-header,
-.grey .alert-wrapper .alert,
-.grey .dropdown-menu-profile {
-  background-color: #fff;
-}
-.grey .page-header {
-  border-color: #d1d9e3;
-}
 .grey .alert-wrapper {
   background-color: rgba(230, 230, 230, 0.1);
 }
@@ -248,7 +273,8 @@
 }
 
 .grey article,
-.grey .view-container > form > div > section > p,
+.grey .data-list dd,
+.grey .form > div > section > p,
 .grey .section-body > p,
 .grey .brand,
 .grey .card > section > p,
@@ -344,34 +370,30 @@
 }
 
 @media screen and (max-width: 600px) {
-  .grey .view-container > header > .btn-group > *,
-  .grey .view-container > header > .btn-new {
+  .grey header > .btn-group > button,
+  .grey header > .btn-group > *,
+  .grey header > .btn-new {
     color: #fff;
   }
 }
 
 .grey .row .form-group.valid label,
-.grey .row > label.valid,
-.grey .row > .col label.valid,
-.grey .view-container > form > div > label.valid,
-.grey .view-container > div > label.valid,
-.grey .view-body > label.valid {
+.grey .row .form-group.valid.focused label,
+.grey label.valid,
+.grey label.valid.focused {
   color: #657181;
 }
 
 .grey .btn-deselect,
 .grey .row .form-group.invalid label,
-.grey .row > label.invalid,
-.grey .row > .col label.invalid,
-.grey .view-container > form > div > label.invalid,
-.grey .view-container > div > label.invalid,
-.grey .view-body > label.invalid,
+.grey .row .form-group.invalid.focused label,
+.grey label.invalid,
+.grey label.invalid.focused,
 .grey .btn-remove,
 .grey label.required:before,
 .grey .span-error,
 .grey .alert-error,
-.grey .danger-icon .alert-icon,
-.grey .row .form-group.invalid label {
+.grey .danger-icon .alert-icon {
   color: #d74738;
 }
 
@@ -390,71 +412,27 @@
 
 .grey .form-group .form-control:focus,
 .grey label.inline-input > input:focus,
-.grey .row > .col > label input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .row > label input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-container > form > div > section > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-container > form > div > section > label > select:not([multiple]):focus,
-.grey .view-container > form > div > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-container > form > div > label > select:not([multiple]):focus,
-.grey .view-container > div > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-container > div > label > select:not([multiple]):focus,
-.grey .view-body > label > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-body > label > select:not([multiple]):focus,
-.grey .row > .col > label select:not([multiple]):focus,
-.grey .row > label select:not([multiple]):focus {
+.grey label > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey label > select:not([multiple]):focus {
   border-color: #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
 
 .grey .form-group .form-control.valid,
-.grey .row > .col > label input.valid,
-.grey .row > label input.valid,
-.grey .row > .col > label select.valid,
-.grey .row > label select.valid,
-.grey .view-container > form > div > section > label > input.valid,
-.grey .view-container > form > div > section > label > select.valid,
-.grey .view-container > form > div > label > input.valid,
-.grey .view-container > form > div > label > select.valid,
-.grey .view-container > div > label > input.valid,
-.grey .view-container > div > label > select.valid,
-.grey .view-body > label > input.valid,
-.grey .view-body > label > select.valid {
+.grey input.valid,
+.grey select.valid {
   border-color: #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
 
 .grey .form-group .form-control.invalid,
-.grey .form-group .form-control.invalid,
-.grey .row > .col > label input.invalid,
-.grey .row > label input.invalid,
-.grey .row > .col > label select.invalid,
-.grey .row > label select.invalid,
-.grey .view-container > form > div > section > label > input.invalid,
-.grey .view-container > form > div > section > label > select.invalid,
-.grey .view-container > form > div > label > input.invalid,
-.grey .view-container > form > div > label > select.invalid,
-.grey .view-container > div > label > input.invalid,
-.grey .view-container > div > label > select.invalid,
-.grey .view-body > label > input.invalid,
-.grey .view-body > label > select.invalid,
-.grey .row > .col > label input:not([type="checkbox"]):not([type="radio"]).invalid,
-.grey .row > label input:not([type="checkbox"]):not([type="radio"]).invalid,
-.grey .row > .col > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .row > label.invalid input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-container > form > div > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-container > form > div > label.invalid > select:focus,
-.grey .view-container > div > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-container > div > label.invalid > select:focus,
-.grey .view-body > label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
-.grey .view-body > label.invalid > select:focus,
-.grey .row > .col > label.invalid select:focus,
-.grey .row > label.invalid select:focus {
+.grey label > input:not([type="checkbox"]):not([type="radio"]).invalid,
+.grey label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
+.grey label.invalid > select:focus {
   border-color: #d74738;
   box-shadow: 0 1px 0 0 #d74738;
 }
 
-.grey .view-container > form > div > section > article > p,
-.grey .view-container > div > section > article > p,
 .grey .view-body > section > article > p,
 .grey .section-body > p {
   border-color: #7f7f7f;
@@ -472,20 +450,12 @@
 }
 
 .grey .form-group .form-control,
+.grey .form-textarea,
 .grey .inline-input > input,
-.grey .row > .col > label input,
-.grey .row > label input,
-.grey .view-container > form > div > section > label > input,
-.grey .view-container > form > div > label > input,
-.grey .view-container > div > label > input,
-.grey .view-body > label > input,
-.grey .view-container > form > div > section > label > select,
-.grey .view-container > form > div > label > select,
-.grey .view-container > div > label > select,
-.grey .view-body > label > select,
-.grey .row > .col > label select,
-.grey .row > label select:not([multiple]),
-.grey .row > label select[multiple] {
+.grey label > input,
+.grey .form .row > label > input,
+.grey label > select:not([multiple]),
+.grey .form .row > label > select:not([multiple]) {
   color: #000;
   border-color: #4e4e4e;
   -webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075);
@@ -493,50 +463,38 @@
 }
 
 .grey .diff .row .col p > span,
+.grey .data-list dt,
 .grey article > p > label,
 .grey section > p > label,
-.grey .view-container > form > div > section > article > p.remark,
-.grey .view-container > form > div > section > p.remark,
 .grey .remark,
 .grey .article-notice,
 .grey .btn-detail,
 .grey .quick-nav,
-.grey .detail-content > form > header > .btn-back,
-.grey .view-container > form > header > .btn-back,
-.grey .view-container > header > .btn-back,
-.grey .view-header > .btn-back,
+.grey header > .btn-back,
 .grey .btn-close,
 .grey .btn-filter,
 .grey .btn-remove-text,
 .grey .btn-edit,
+.grey .btn-approve,
+.grey .btn-copy,
+.grey .btn-history,
 .grey .btn-transfer,
 .grey .btn-divide,
-.grey .view-container > form > footer > button.btn-secondary,
+.grey .form > footer > button.btn-secondary,
 .grey .btn-secondary {
   color: #7f7f7f;
 }
 
 @media screen and (max-width: 600px) {
-  .grey .detail-content > form > header > .btn-back,
-  .grey .view-container > form > header > .btn-back,
-  .grey .view-container > header > .btn-back,
-  .grey .view-container > form > header > .btn-close,
-  .grey .view-container > header > .btn-close,
+  .grey header > .btn-back,
+  .grey header > .btn-close,
   .grey .view-header > .btn-back,
   .grey .view-header > .btn-close {
     color: #fff;
   }
 }
 .grey .modal-portal-content header > .btn-group > button,
-.grey .modal-portal-content .view-container > form > header > .btn-close,
-.grey .modal-portal-content .view-container > header > .btn-close,
-.grey .mobile .detail-content > form > header > .btn-back,
-.grey .mobile .view-container > form > header > .btn-back,
-.grey .mobile .view-container > header > .btn-back,
-.grey .mobile .view-container > form > header > .btn-close,
-.grey .mobile .view-container > header > .btn-close,
-.grey .mobile .view-header > .btn-back,
-.grey .mobile .view-header > .btn-close,
+.grey .modal-portal-content > div > header > .btn-close,
 .grey .solid > form > div > p,
 .grey .solid > div > p,
 .grey .solid > .view-body > p,
@@ -545,29 +503,6 @@
 .grey .solid > .view-body > h5,
 .grey .form > div > section.header-container > p {
   color: #fff;
-}
-
-.grey .modal-portal-content > div > header,
-.grey .view-header {
-  color: #fff;
-  background-image: linear-gradient(90deg, #657181, #657181);
-}
-
-.grey .page-body > .form > header,
-.grey .page-body > div > header,
-.grey .view-header {
-  color: #657181;
-  background-color: #fff;
-  background-image: none;
-}
-
-@media screen and (max-width: 600px) {
-  .grey .page-body > .form > header,
-  .grey .page-body > div > header,
-  .grey .view-header {
-    color: #fff;
-    background-image: linear-gradient(90deg, #657181, #657181);
-  }
 }
 
 .grey .light-gray {

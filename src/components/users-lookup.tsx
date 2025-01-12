@@ -169,7 +169,7 @@ export const UsersLookup = (props: Props) => {
       bodyOpenClassName="modal-portal-open"
       overlayClassName="modal-portal-backdrop"
     >
-      <div className="view-container">
+      <div>
         <header className="view-header">
           <h2>{resource.users_lookup}</h2>
           <div className="btn-group">

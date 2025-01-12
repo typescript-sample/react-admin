@@ -46,7 +46,7 @@ export const AuditLogsForm = () => {
   }, [])
   const filter = value(state.filter)
   return (
-    <div className="view-container">
+    <div>
       <header>
         <h2>{resource.audit_logs}</h2>
         <div className="btn-group float-left">
