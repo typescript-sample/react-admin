@@ -12,6 +12,12 @@
   background: #747978;
 }
 
+@media screen and (min-width: 769px) {
+  .dark .top-menu .menu.sidebar::-webkit-scrollbar-thumb {
+    background: #747979;
+  }
+}
+
 .dark body,
 .dark .page-container,
 .dark .page-body,
@@ -49,6 +55,52 @@
   .dark .view-header {
     color: #000;
     background-image: linear-gradient(90deg, #008577, #00574b);
+  }
+}
+
+/*
+.dark form.list-result > .table-responsive > table > thead > tr,
+  background-color: #141414;
+}
+*/
+.dark .btn-more,
+.dark h2,
+.dark .img-card h3,
+.dark .row .form-group.focused label,
+.dark .row > label.focused,
+.dark .row > .col label.focused,
+.dark .view-container > form > div > label.focused,
+.dark .view-container > div > label.focused,
+.dark .view-body > label.focused,
+.dark .form > div > h1,
+.dark .form > div > h2,
+.dark .view-container > form > div > h2,
+.dark .card > footer > button,
+.dark .btn-select,
+.dark .btn-add,
+.dark .btn-new,
+.dark a.btn-new,
+.dark .btn-table,
+.dark .btn-list,
+.dark .btn-search,
+.dark .btn-lookup,
+.dark .chip:focus,
+.dark header > .btn-group,
+.dark header > .btn-group > button,
+.dark .page-header > form > div > section > button,
+.dark .round-border.active {
+  color: #4db6ac;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 600px) {
+  .dark .page-body > .form > header > h2,
+  .dark .page-body > div > header > h2,
+  .dark .view-header > h2,
+  .dark header > .btn-group > button,
+  .dark header > .btn-group > *,
+  .dark header > .btn-new {
+    color: #000;
   }
 }
 
@@ -95,11 +147,6 @@
   box-shadow: none;
 }
 
-@media screen and (min-width: 769px) {
-  .dark .top-menu .menu.sidebar::-webkit-scrollbar-thumb {
-    background: #747979;
-  }
-}
 .dark .switch-container > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]):before,
 .dark input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]).switch:before {
   border-color: #b2b2b2;
@@ -149,95 +196,6 @@
 .dark .open.active {
   background: #02c2af; /* #07843b */
 }
-
-/* bootstrap */
-/*.panel-heading,*/
-.dark .result .active,
-/*
-.dark .pagination > .active, 
-.dark .pagination-page.active,*/
-
-.dark .table-striped tbody tr.active:nth-child(odd) td,
-.dark .table-striped tbody tr.active:nth-child(odd) th,
-.dark .table > thead > tr > td.active,
-.dark .table > tbody > tr > td.active,
-.dark .table > tfoot > tr > td.active,
-.dark .table > thead > tr > th.active,
-.dark .table > tbody > tr > th.active,
-.dark .table > tfoot > tr > th.active,
-.dark .table > thead > tr.active > td,
-.dark .table > tbody > tr.active > td,
-.dark .table > tfoot > tr.active > td,
-.dark .table > thead > tr.active > th,
-.dark .table > tbody > tr.active > th,
-.dark .table > tfoot > tr.active > th,
-
-.dark .pagination > .active > a,
-.dark .pagination > .active > span,
-.dark .pagination > .active > a:hover,
-.dark .pagination > .active > span:hover,
-.dark .pagination > .active > a:focus,
-.dark .pagination > .active > span:focus,
-.dark .pagination > .active > a:hover,
-.dark .pagination > .active > a:focus,
-.dark .pagination > .active > span:focus {
-  background-color: #387ef5;
-}
-
-.dark .table-hover tbody tr.active:hover td,
-.dark .table-hover tbody tr.active:hover th,
-.dark .table-striped tbody tr.active:nth-child(odd) td,
-.dark .table-striped tbody tr.active:nth-child(odd) th,
-.dark .table > thead > tr > td.active,
-.dark .table > tbody > tr > td.active,
-.dark .table > tfoot > tr > td.active,
-.dark .table > thead > tr > th.active,
-.dark .table > tbody > tr > th.active,
-.dark .table > tfoot > tr > th.active,
-.dark .table > thead > tr.active > td,
-.dark .table > tbody > tr.active > td,
-.dark .table > tfoot > tr.active > td,
-.dark .table > thead > tr.active > th,
-.dark .table > tbody > tr.active > th,
-.dark .table > tfoot > tr.active > th {
-  border-color: #428bca;
-  background-color: #4f5352;
-}
-
-.dark .table > tbody > tr:hover,
-.dark .table > tbody > tr:nth-of-type(odd):hover,
-.dark .table-hover > tbody > tr:hover,
-.dark .table-striped > tbody > tr:nth-of-type(odd):hover {
-  background-color: #111;
-}
-
-.dark .table > thead > tr > th,
-.dark .table > tbody > tr > td {
-  border-bottom-color: #222;
-}
-
-.dark .table,
-.dark .table > tbody > tr > td,
-.dark .table > tbody > tr > th,
-.dark .table > tfoot > tr > td,
-.dark .table > tfoot > tr > th,
-.dark .table > thead > tr > td,
-.dark .table > thead > tr > th,
-.dark .table-bordered,
-.dark .table-bordered > tbody > tr > td,
-.dark .table-bordered > tbody > tr > th,
-.dark .table-bordered > tfoot > tr > td,
-.dark .table-bordered > tfoot > tr > th,
-.dark .table-bordered > thead > tr > td,
-.dark .table-bordered > thead > tr > th {
-  border-color: #ddd;
-}
-
-.dark .table > tbody > tr:nth-of-type(odd),
-.dark .table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #000;
-}
-/* end bootstrap only */
 
 .dark .alert-wrapper {
   background-color: rgba(230, 230, 230, 0.1);
@@ -330,40 +288,7 @@
 .dark label.search-input input {
   color: #b2b2b2 !important;
 }
-/*
-.dark form.list-result > .table-responsive > table > thead > tr,
-  background-color: #141414;
-}
-*/
-.dark .btn-more,
-.dark h2,
-.dark .img-card h3,
-.dark .row .form-group.focused label,
-.dark .row > label.focused,
-.dark .row > .col label.focused,
-.dark .view-container > form > div > label.focused,
-.dark .view-container > div > label.focused,
-.dark .view-body > label.focused,
-.dark .form > div > h1,
-.dark .form > div > h2,
-.dark .view-container > form > div > h2,
-.dark .card > footer > button,
-.dark .btn-select,
-.dark .btn-add,
-.dark .btn-new,
-.dark a.btn-new,
-.dark .btn-table,
-.dark .btn-list,
-.dark .btn-search,
-.dark .btn-lookup,
-.dark .chip:focus,
-.dark header > .btn-group,
-.dark header > .btn-group > button,
-.dark .page-header > form > div > section > button,
-.dark .round-border.active {
-  color: #4db6ac;
-  text-decoration: none;
-}
+
 .dark .player-music {
   background-color: #121212;
   color: white;
@@ -382,17 +307,6 @@
   border-bottom: 1px solid #4db6ac;
   -webkit-box-shadow: 0 1px 0 0 #4db6ac;
   box-shadow: 0 1px 0 0 #4db6ac;
-}
-
-@media screen and (max-width: 600px) {
-  .dark .page-body > .form > header > h2,
-  .dark .page-body > div > header > h2,
-  .dark .view-header > h2,
-  .dark header > .btn-group > button,
-  .dark header > .btn-group > *,
-  .dark header > .btn-new {
-    color: #000;
-  }
 }
 
 .dark .row .form-group.valid label,
@@ -605,3 +519,92 @@
   background-color: #1a1a1a !important;
   color: #f0f0f0;
 }
+
+/* bootstrap */
+/*.panel-heading,*/
+.dark .result .active,
+/*
+.dark .pagination > .active, 
+.dark .pagination-page.active,*/
+
+.dark .table-striped tbody tr.active:nth-child(odd) td,
+.dark .table-striped tbody tr.active:nth-child(odd) th,
+.dark .table > thead > tr > td.active,
+.dark .table > tbody > tr > td.active,
+.dark .table > tfoot > tr > td.active,
+.dark .table > thead > tr > th.active,
+.dark .table > tbody > tr > th.active,
+.dark .table > tfoot > tr > th.active,
+.dark .table > thead > tr.active > td,
+.dark .table > tbody > tr.active > td,
+.dark .table > tfoot > tr.active > td,
+.dark .table > thead > tr.active > th,
+.dark .table > tbody > tr.active > th,
+.dark .table > tfoot > tr.active > th,
+
+.dark .pagination > .active > a,
+.dark .pagination > .active > span,
+.dark .pagination > .active > a:hover,
+.dark .pagination > .active > span:hover,
+.dark .pagination > .active > a:focus,
+.dark .pagination > .active > span:focus,
+.dark .pagination > .active > a:hover,
+.dark .pagination > .active > a:focus,
+.dark .pagination > .active > span:focus {
+  background-color: #387ef5;
+}
+
+.dark .table-hover tbody tr.active:hover td,
+.dark .table-hover tbody tr.active:hover th,
+.dark .table-striped tbody tr.active:nth-child(odd) td,
+.dark .table-striped tbody tr.active:nth-child(odd) th,
+.dark .table > thead > tr > td.active,
+.dark .table > tbody > tr > td.active,
+.dark .table > tfoot > tr > td.active,
+.dark .table > thead > tr > th.active,
+.dark .table > tbody > tr > th.active,
+.dark .table > tfoot > tr > th.active,
+.dark .table > thead > tr.active > td,
+.dark .table > tbody > tr.active > td,
+.dark .table > tfoot > tr.active > td,
+.dark .table > thead > tr.active > th,
+.dark .table > tbody > tr.active > th,
+.dark .table > tfoot > tr.active > th {
+  border-color: #428bca;
+  background-color: #4f5352;
+}
+
+.dark .table > tbody > tr:hover,
+.dark .table > tbody > tr:nth-of-type(odd):hover,
+.dark .table-hover > tbody > tr:hover,
+.dark .table-striped > tbody > tr:nth-of-type(odd):hover {
+  background-color: #111;
+}
+
+.dark .table > thead > tr > th,
+.dark .table > tbody > tr > td {
+  border-bottom-color: #222;
+}
+
+.dark .table,
+.dark .table > tbody > tr > td,
+.dark .table > tbody > tr > th,
+.dark .table > tfoot > tr > td,
+.dark .table > tfoot > tr > th,
+.dark .table > thead > tr > td,
+.dark .table > thead > tr > th,
+.dark .table-bordered,
+.dark .table-bordered > tbody > tr > td,
+.dark .table-bordered > tbody > tr > th,
+.dark .table-bordered > tfoot > tr > td,
+.dark .table-bordered > tfoot > tr > th,
+.dark .table-bordered > thead > tr > td,
+.dark .table-bordered > thead > tr > th {
+  border-color: #ddd;
+}
+
+.dark .table > tbody > tr:nth-of-type(odd),
+.dark .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #000;
+}
+/* end bootstrap only */

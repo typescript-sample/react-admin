@@ -129,7 +129,7 @@ export const SigninForm = () => {
       <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
-          <h2>{resource.signin}</h2>
+          <h1>{resource.signin}</h1>
           <div className={"message " + msg.alertClass}>
             {msg.message}
             <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />
