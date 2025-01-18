@@ -1,10 +1,20 @@
 .dark {
   background: -moz-linear-gradient(left, #008577, #00574b); /* Firefox 3.6 - 15 */
-  background: -webkit-gradient(linear, left top, right top, from(#008577), to(#00574b)); /* Safari 4, Chrome 1-9, iOS 3.2-4.3, Android 2.1-3.0 */
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#008577),
+    to(#00574b)
+  ); /* Safari 4, Chrome 1-9, iOS 3.2-4.3, Android 2.1-3.0 */
   background: -webkit-linear-gradient(left, #008577, #00574b); /* Safari 5.1, iOS 5.0-6.1, Chrome 10-25, Android 4.0-4.3 */
   background: -o-linear-gradient(left, #008577, #00574b); /* Opera 11.1 - 12 */
   background: -ms-linear-gradient(left, #008577, #00574b); /* ie10+ */
-  background: linear-gradient(to right, #008577, #00574b); /* Opera 15+, Chrome 25+, IE 10+, Firefox 16+, Safari 6.1+, iOS 7+, Android 4.4+ */
+  background: linear-gradient(
+    to right,
+    #008577,
+    #00574b
+  ); /* Opera 15+, Chrome 25+, IE 10+, Firefox 16+, Safari 6.1+, iOS 7+, Android 4.4+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008577', endColorstr='#00574b',GradientType=1 ); /* ie6-9 */
 }
 
@@ -259,11 +269,13 @@
   color: #999999;
 }
 
+.dark h2,
 .dark h3 {
   color: #d0cfcf;
 }
 
 @media screen and (max-width: 600px) {
+  .dark h2,
   .dark h3 {
     background-color: #242424;
   }
@@ -336,6 +348,7 @@
 }
 */
 .dark .btn-more,
+.dark h2,
 .dark h3,
 .dark .row .form-group.focused label,
 .dark .row > label.focused,
@@ -343,6 +356,7 @@
 .dark .view-container > form > div > label.focused,
 .dark .view-container > div > label.focused,
 .dark .view-body > label.focused,
+.dark .form > div > h1,
 .dark .form > div > h2,
 .dark .view-container > form > div > h2,
 .dark .card > footer > button,
@@ -426,7 +440,9 @@
   border-color: #4db6ac;
   box-shadow: 0 1px 0 0 #4db6ac;
 }
-
+.dark textarea {
+  outline-color: #4db6ac;
+}
 .dark .form-group .form-control.valid,
 .dark input.valid,
 .dark select.valid {
@@ -440,6 +456,10 @@
 .dark label.invalid > select:focus {
   border-color: #d74738;
   box-shadow: 0 1px 0 0 #d74738;
+}
+.dark label.invalid > textarea {
+  border-color: #d74738;
+  outline-color: #d74738;
 }
 
 .dark .view-body > section > article > p,
@@ -460,6 +480,7 @@
 
 .dark .form-group .form-control,
 .dark .form-textarea,
+.dark textarea,
 .dark .inline-input > input,
 .dark label > input,
 .dark .form .row > label > input,

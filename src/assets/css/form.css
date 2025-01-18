@@ -166,6 +166,7 @@ label.focused > span.span-error,
   text-align: left;
   background-color: inherit;
   background-image: inherit;
+  font-weight: 500;
 }
 
 .row .form-group {

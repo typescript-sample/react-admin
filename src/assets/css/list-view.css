@@ -70,13 +70,17 @@ ul.list.row > li.col {
   right: 16px;
 }
 
+.card-grid {
+  padding-left: 12px;
+  padding-right: 12px;
+}
 .card,
 .video {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 .card {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 ul.list.row > li.col > h3,
 ul.list.row > li.col > h4,
@@ -132,15 +136,18 @@ ul.list.row > li.col > *:first-child {
 .img-card > h3,
 .card > section > h3 {
   width: 100%;
+  height: unset;
   line-height: 1.5;
   display: flex;
   justify-content: space-between;
   margin: 0;
-  padding: 1px;
+  margin-top: 9px;
+  margin-bottom: 3px;
   padding-left: 0;
   padding-right: 0;
   font-size: 18px;
   font-weight: 500;
+  background-color: inherit;
 }
 
 .img-item > a,
@@ -218,8 +225,8 @@ li.video > section > a {
 }
 .card > section > p > a,
 .video > section > p > a {
-  font-size: 15px;
-  font-weight: 400;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 ul.list > li > section:first-child > div > p {
@@ -346,9 +353,10 @@ i.date {
 .video > section > p {
   width: calc(100% - 24px);
   padding-top: 10px;
+  font-weight: 400;
 }
 .card > section > a {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   padding: 8px 0;
 }

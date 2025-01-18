@@ -246,11 +246,13 @@
   color: #657181;
 }
 
+.grey h2,
 .grey h3 {
   color: #181b1f;
 }
 
 @media screen and (max-width: 600px) {
+  .grey h2,
   .grey h3 {
     background-color: #e2e2e2;
   }
@@ -324,6 +326,7 @@
 }
 */
 .grey .btn-more,
+.grey h2,
 .grey h3,
 .grey .row .form-group.focused label,
 .grey .row > label.focused,
@@ -331,6 +334,7 @@
 .grey .view-container > form > div > label.focused,
 .grey .view-container > div > label.focused,
 .grey .view-body > label.focused,
+.grey .form > div > h1,
 .grey .form > div > h2,
 .grey .card > footer > button,
 .grey .btn-select,
@@ -417,7 +421,9 @@
   border-color: #657181;
   box-shadow: 0 1px 0 0 #657181;
 }
-
+.grey textarea {
+  outline-color: #4db6ac;
+}
 .grey .form-group .form-control.valid,
 .grey input.valid,
 .grey select.valid {
@@ -431,6 +437,10 @@
 .grey label.invalid > select:focus {
   border-color: #d74738;
   box-shadow: 0 1px 0 0 #d74738;
+}
+.grey label.invalid > textarea {
+  border-color: #d74738;
+  outline-color: #d74738;
 }
 
 .grey .view-body > section > article > p,
@@ -451,6 +461,7 @@
 
 .grey .form-group .form-control,
 .grey .form-textarea,
+.grey textarea,
 .grey .inline-input > input,
 .grey label > input,
 .grey .form .row > label > input,

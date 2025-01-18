@@ -244,11 +244,13 @@ header > h5,
   color: #999999;
 }
 
+h2,
 h3 {
   color: #3d7678;
 }
 
 @media screen and (max-width: 600px) {
+  h2,
   h3 {
     background-color: #e1ebe9;
   }
@@ -319,12 +321,14 @@ label.search-input input {
 .table > thead > tr,
 */
 .btn-more,
+h2,
 h3,
 .row .form-group.focused label,
 .row > label.focused,
 .row > .col label.focused,
 label.focused,
 .view-body > label.focused,
+.form > div > h1,
 .form > div > h2,
 .card > footer > button,
 .btn-select,
@@ -394,7 +398,9 @@ label > select:not([multiple]):focus {
   border-color: #4db6ac;
   box-shadow: 0 1px 0 0 #4db6ac;
 }
-
+textarea {
+  outline-color: #4db6ac;
+}
 .form-group .form-control.valid,
 input.valid,
 select.valid {
@@ -408,6 +414,10 @@ label.invalid > input:not([type="checkbox"]):not([type="radio"]):focus,
 label.invalid > select:focus {
   border-color: #d74738;
   box-shadow: 0 1px 0 0 #d74738;
+}
+label.invalid > textarea {
+  border-color: #d74738;
+  outline-color: #d74738;
 }
 
 .view-body > section > article > p,
@@ -429,6 +439,7 @@ button:disabled {
 
 .form-group .form-control,
 .form-textarea,
+textarea,
 .inline-input > input,
 label > input,
 .form .row > label > input,
