@@ -132,7 +132,7 @@
   background-color: #fff;
 }
 .grey .sidebar ul.sub-list > li.active,
-.grey .sub-list .active,
+.grey .sidebar > nav > ul > li.active,
 .grey .open.active {
   background: #f7f7fa; /* #07843b */
 }
@@ -246,13 +246,11 @@
   color: #657181;
 }
 
-.grey h2,
 .grey h3 {
   color: #181b1f;
 }
 
 @media screen and (max-width: 600px) {
-  .grey h2,
   .grey h3 {
     background-color: #e2e2e2;
   }
@@ -327,7 +325,7 @@
 */
 .grey .btn-more,
 .grey h2,
-.grey h3,
+.grey .img-card h3,
 .grey .row .form-group.focused label,
 .grey .row > label.focused,
 .grey .row > .col label.focused,
@@ -374,6 +372,9 @@
 }
 
 @media screen and (max-width: 600px) {
+  .grey .page-body > .form > header > h2,
+  .grey .page-body > div > header > h2,
+  .grey .view-header > h2,
   .grey header > .btn-group > button,
   .grey header > .btn-group > *,
   .grey header > .btn-new {

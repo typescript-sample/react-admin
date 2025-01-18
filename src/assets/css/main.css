@@ -100,7 +100,7 @@ td > button {
   align-items: center;
   position: absolute;
   z-index: 3;
-  height: 44px;
+  height: 52px;
   background-color: inherit;
   background-image: inherit;
 }
@@ -273,6 +273,12 @@ header > h2 {
   height: unset;
   color: inherit;
   background-color: transparent;
+}
+@media screen and (max-width: 600px) {
+  header > h1,
+  header > h2 {
+    justify-content: center;
+  }
 }
 h3 {
   font-size: 18px;

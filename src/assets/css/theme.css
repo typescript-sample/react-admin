@@ -130,7 +130,7 @@ input[type="radio"]:checked:before {
   background-color: #00574b;
 }
 .sidebar ul.sub-list > li.active,
-.sub-list .active,
+.sidebar > nav > ul > li.active,
 .open.active {
   background: #01a090; /* #07843b */
 }
@@ -244,13 +244,11 @@ header > h5,
   color: #999999;
 }
 
-h2,
 h3 {
   color: #3d7678;
 }
 
 @media screen and (max-width: 600px) {
-  h2,
   h3 {
     background-color: #e1ebe9;
   }
@@ -322,7 +320,7 @@ label.search-input input {
 */
 .btn-more,
 h2,
-h3,
+.img-card h3,
 .row .form-group.focused label,
 .row > label.focused,
 .row > .col label.focused,
@@ -355,6 +353,10 @@ header > .btn-group > button,
 }
 
 @media screen and (max-width: 600px) {
+  .page-body > .form > header > h2,
+  .page-body > div > header > h2,
+  .view-header > h2,
+  header > .btn-group > button,
   header > .btn-group > button,
   header > .btn-group > *,
   header > .btn-new {
