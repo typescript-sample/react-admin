@@ -28,6 +28,7 @@
 }
 
 .grey .page-body > .form > header,
+.grey .page-body > article > header,
 .grey .page-body > div > header,
 .grey .view-header {
   color: #657181;
@@ -37,6 +38,7 @@
 
 @media screen and (max-width: 600px) {
   .grey .page-body > .form > header,
+  .grey .page-body > article > header,
   .grey .page-body > div > header,
   .grey .view-header {
     color: #fff;

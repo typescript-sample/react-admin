@@ -42,6 +42,7 @@
 }
 
 .dark .page-body > .form > header,
+.dark .page-body > article > header,
 .dark .page-body > div > header,
 .dark .view-header {
   color: #4db6ac;
@@ -51,6 +52,7 @@
 
 @media screen and (max-width: 600px) {
   .dark .page-body > .form > header,
+  .dark .page-body > article > header,
   .dark .page-body > div > header,
   .dark .view-header {
     color: #000;

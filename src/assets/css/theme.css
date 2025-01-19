@@ -27,6 +27,7 @@ input,
 }
 
 .page-body > .form > header,
+.page-body > article > header,
 .page-body > div > header,
 .view-header {
   color: #4db6ac;
@@ -36,6 +37,7 @@ input,
 
 @media screen and (max-width: 600px) {
   .page-body > .form > header,
+  .page-body > article > header,
   .page-body > div > header,
   .view-header {
     color: #fff;
@@ -383,6 +385,8 @@ article,
 .table > thead > tr > th > a,
 .table > thead > tr > th > button,
 h4,
+h5,
+h6,
 section > h4 > .btn-group > button,
 section > h4.title > a,
 section > a,

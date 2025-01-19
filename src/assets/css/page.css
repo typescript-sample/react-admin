@@ -82,6 +82,7 @@
 */
 .page-body > .form,
 .page-body > .view-container > .form,
+.page-body > article > div,
 .page-body > div > div {
   max-height: calc(100vh - 52px); /* - page-header */
   height: calc(100vh - 52px);
@@ -98,6 +99,7 @@
 .modal-portal-content > div > div,
 .detail-content > form > div,
 .page-body > .form > div,
+.page-body > article > div,
 .page-body > div > div,
 .form-body,
 .view-body {
@@ -143,12 +145,7 @@
   background-position: center;
   background-repeat: no-repeat;
 }
-.page-body > .form > div.row,
-.view-body.row {
-  margin-left: 0;
-  margin-right: 0;
-}
-
+/*
 .mobile .page-header {
   position: absolute;
   left: 0;
@@ -162,7 +159,7 @@
 .mobile .page-body {
   margin-bottom: 52px;
 }
-
+*/
 .page-body > .full {
   max-height: calc(100vh - 52px);
   height: calc(100vh - 52px);
@@ -187,6 +184,7 @@
   }
   .top-menu .page-container > .page-body > .view-container > .form,
   .top-menu .page-container > .page-body > .form,
+  .top-menu .page-container > .page-body > article > div,
   .top-menu .page-container > .page-body > div > div {
     max-height: calc(100vh - 46px - 52px);
   }
