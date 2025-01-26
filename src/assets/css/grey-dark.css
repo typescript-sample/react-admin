@@ -378,11 +378,8 @@
 .grey.dark .section-body > p,
 .grey.dark .brand,
 .grey.dark .card > section > p,
-.grey.dark .card > section > p > a,
 .grey.dark .video > section > p,
-.grey.dark .video > section > p > a,
 .grey.dark .video > p,
-.grey.dark .video > h4 > a,
 .grey.dark .img-card > p,
 .grey.dark .horizon > li > a,
 .grey.dark .list-item > a,
@@ -392,7 +389,6 @@
 .grey.dark .table > thead > tr > th > button,
 .grey.dark h4,
 .grey.dark section > h4 > .btn-group > button,
-.grey.dark section > h4.title > a,
 .grey.dark section > a,
 .grey.dark .section-header,
 .grey.dark .section-subheader,
@@ -408,9 +404,7 @@
 .grey.dark label.radio-group,
 .grey.dark .checkbox-group > label,
 .grey.dark .radio-group > label,
-.grey.dark .group label div,
-.grey.dark .video-container > h4 > a,
-.grey.dark .video-container > h4 > i {
+.grey.dark .group label div {
   color: #778497;
 }
 
