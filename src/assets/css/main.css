@@ -120,22 +120,6 @@ td > button {
   margin-right: 0;
 }
 
-.list-detail-container > .list-content > header,
-.list-detail-container > .detail-content > form > header,
-.page-body > article > header,
-.page-body > div > header,
-.page-body > .form > header,
-.view-header {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  z-index: 3;
-  height: 52px;
-  background-color: inherit;
-  background-image: inherit;
-}
 .modal-portal-content > div > header {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -287,9 +271,11 @@ h2 {
   padding-right: 16px;
 }
 h1 {
+  font-weight: 500;
   font-size: 24px;
 }
 
+h1,
 h2,
 h3 {
   width: 100%;
