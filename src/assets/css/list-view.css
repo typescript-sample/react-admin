@@ -71,6 +71,12 @@ ul.list.row > li.col {
   padding-left: 12px;
   padding-right: 12px;
 }
+@media screen and (max-width: 600px) {
+  .card-grid {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
 .card,
 .video {
   margin-top: 6px;

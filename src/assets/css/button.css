@@ -357,7 +357,7 @@ h4 > .btn-add {
   font-size: 36px;
   content: "+";
   position: absolute;
-  top: -3px;
+  top: -7px;
   left: 1px;
 }
 header > .btn-group > .btn-list {
