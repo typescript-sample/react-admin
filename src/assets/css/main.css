@@ -298,6 +298,11 @@ header > h2 {
     justify-content: center;
   }
 }
+.central-full .view-body > h1,
+.central-full .view-body > h2 {
+  justify-content: center;
+}
+
 h3 {
   font-size: 18px;
   font-weight: 500;

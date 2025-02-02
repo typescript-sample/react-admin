@@ -218,7 +218,7 @@ footer > .btn-next {
 }
 .btn-back::before {
   position: absolute;
-  top: -3px;
+  top: -8px;
   left: 3px;
   font-size: 36px;
   font-weight: 300;
