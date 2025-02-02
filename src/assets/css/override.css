@@ -1,7 +1,0 @@
-.page-body > .menu {
-  height: calc(100vh - 52px);
-}
-
-.menu section.row {
-  height: unset;
-}

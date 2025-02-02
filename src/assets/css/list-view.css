@@ -91,16 +91,15 @@ ul.list.row > li.col > *:first-child {
 .img-item > *:last-child {
   border-bottom: 1px solid #ebebeb;
 }
-.img-card > *:last-child {
-  margin-bottom: 16px;
-}
+
 .card > *:first-child,
 .video > *:first-child {
   padding-top: 0;
 }
-
-.card > *:last-child {
-  padding-bottom: 0;
+.img-card > *:last-child,
+.card > *:last-child,
+.video > *:last-child {
+  padding-bottom: 8px;
 }
 
 .video > section:first-child,
@@ -379,13 +378,13 @@ i.date {
 .card > section > p,
 .video > section > p {
   width: calc(100% - 24px);
-  padding-top: 10px;
+  padding-top: 8px;
   font-weight: 400;
 }
 .card > section > a {
   font-size: 16px;
   font-weight: 600;
-  padding: 8px 0;
+  padding: 8px 0 0 0;
 }
 .card .cover,
 .video .cover {
