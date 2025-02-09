@@ -74,6 +74,11 @@ body {
   scrollbar-width: thin;
 }
 
+.round-border {
+  border-radius: 50%;
+  border: 1px solid;
+}
+
 div,
 section,
 p,
@@ -234,7 +239,7 @@ td > button {
   width: 60px;
   height: 60px;
 }
-
+/*
 .page-body > .form > div > p,
 .view-body > p,
 .body-content {
@@ -262,12 +267,11 @@ header > h5,
   padding-left: 16px;
   padding-right: 16px;
 }
-
+*/
 h1,
 h2 {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 0;
   padding-left: 16px;
   padding-right: 16px;
 }
@@ -301,6 +305,8 @@ header > h1,
 header > h2 {
   color: inherit;
   background-color: transparent;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .header {
   padding-left: 8px;
@@ -363,7 +369,16 @@ h4 > i,
 p > a {
   color: inherit;
 }
-
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.p {
+  padding-left: 16px;
+  padding-right: 16px;
+}
 hr {
   border: none;
   border-bottom: 1px solid;
