@@ -61,16 +61,12 @@
 .grey.dark h3 {
   color: #7b8b9f;
 }
-
 @media screen and (max-width: 600px) {
-  .grey.dark h3 {
-    background-color: #414040;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .grey.dark h4 {
+  .grey.dark .header {
     background-color: #0d0d0d;
+  }
+  .grey.dark h3.header {
+    background-color: #414040;
   }
 }
 
