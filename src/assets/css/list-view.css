@@ -3,7 +3,7 @@
 }
 
 .list {
-  padding: 0;
+  margin: 16px 0;
 }
 
 .list.horizon {
@@ -36,8 +36,7 @@
 }
 
 .list.row {
-  margin-left: 0;
-  margin-right: 0;
+  padding: 0 8px;
 }
 
 ul.list > li {
@@ -89,7 +88,7 @@ ul.list.row > li.col > h3,
 ul.list.row > li.col > h4,
 ul.list.row > li.col > a,
 ul.list.row > li.col > p {
-  width: calc(100% - 32px);
+  width: calc(100% - 16px);
 }
 /*
 ul.list.row > li.col > *:first-child {
@@ -125,7 +124,7 @@ ul.list.row > li.col > *:first-child {
 
 .img-item > img {
   position: absolute;
-  left: 16px;
+  left: 8px;
   width: 56px;
   height: 56px;
 }

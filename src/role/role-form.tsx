@@ -706,7 +706,7 @@ export function RoleForm() {
             </div>
           </div>
         </section>
-        <section className="row">
+        <section className="row section">
           <label className="col s12 m6 search-input">
             <i className="btn-search" />
             <input
@@ -720,7 +720,7 @@ export function RoleForm() {
             />
           </label>
         </section>
-        <section className="tree-view">
+        <section className="tree-view section">
           <div className="row">
             <div className="col s6 m4 inline flex-gap-2 col-header">
               <input

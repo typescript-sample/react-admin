@@ -163,8 +163,8 @@ export const UserForm = () => {
         </div>
       </header>
       <div>
-        <h3>User Information</h3>
         <section className="row section">
+          <h3 className="col s12">User Information</h3>
           <label className="col s12 m6">
             {resource.user_id}
             <input
@@ -263,8 +263,8 @@ export const UserForm = () => {
             </div>
           </div>
         </section>
-        <h4>Contact Information</h4>
         <section className="row section">
+          <h4 className="col s12">Contact Information</h4>
           <label className="col s12 m6 flying ">
             {resource.position}
             <select

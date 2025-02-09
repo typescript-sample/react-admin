@@ -118,6 +118,8 @@ td > button {
 .view-body.row {
   margin-left: 0;
   margin-right: 0;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .modal-portal-content > div > header {
@@ -181,13 +183,12 @@ td > button {
   background-color: inherit;
   background-image: inherit;
 }
-
-.page-body > .form > div > section,
-.form-body > section,
-.view-body > section {
+.section {
   background-color: inherit;
   background-image: inherit;
-  padding-bottom: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin: 16px 0;
 }
 
 .page-body > .form > div.background-content > section:nth-child(2),
@@ -287,6 +288,10 @@ section > a {
   margin: 0;
   padding: 0 16px;
   background-color: inherit;
+}
+.section > * {
+  padding-left: 8px;
+  padding-right: 8px;
 }
 section > a,
 h4 {

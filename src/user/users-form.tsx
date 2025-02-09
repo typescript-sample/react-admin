@@ -149,7 +149,7 @@ export const UsersForm = () => {
       </header>
       <div>
         <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm as any}>
-          <section className="row search-group section">
+          <section className="row search-group">
             <label className="col s12 m6 search-input">
               <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
                 {sizes.map((item, i) => {
@@ -193,7 +193,7 @@ export const UsersForm = () => {
             </label>
             <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
           </section>
-          <section className="row search-group inline" hidden={state.hideFilter}>
+          <section className="row section inline" hidden={state.hideFilter}>
             <label className="col s12 m4 l4">
               {resource.username}
               <input
@@ -307,13 +307,33 @@ export const UsersForm = () => {
                 list.length > 0 &&
                 list.map((user, i) => {
                   return (
-                    <li key={i} className="col s12 m6 l4 xl3 img-item" onClick={(e) => edit(e, user.userId)}>
+                    <li key={i} className="col s12 m6 l4 xl3 small img-item" onClick={(e) => edit(e, user.userId)}>
                       <img
                         src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
                         alt="user"
                         className="round-border"
                       />
                       <Link to={`${user.userId}`}>{user.displayName}</Link>
+                      <button className="btn-detail" />
+                      <p>{user.email}</p>
+                    </li>
+                  )
+                })}
+            </ul>
+          )}
+          {state.view !== "table" && (
+            <ul className="row list">
+              {list &&
+                list.length > 0 &&
+                list.map((user, i) => {
+                  return (
+                    <li key={i} className="col s12 m6 l4 xl3 small img-item" onClick={(e) => edit(e, user.userId)}>
+                      <img
+                        src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
+                        alt="user"
+                        className="round-border"
+                      />
+                      <h4>{user.displayName}</h4>
                       <button className="btn-detail" />
                       <p>{user.email}</p>
                     </li>

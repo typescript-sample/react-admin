@@ -213,7 +213,7 @@ footer > .btn-cancel::before {
 
 footer > .btn-accept::after,
 footer > .btn-next::after,
-section.btn-group > .btn-search,
+.section.search > .btn-search,
 .central-full > form > div > button,
 .page-body > .form > footer > button,
 .page-body > .form > footer > section.footer > button,
