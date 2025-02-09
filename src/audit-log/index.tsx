@@ -57,7 +57,7 @@ export const AuditLogsForm = () => {
         </div>
       </header>
       <div>
-        <form id="rolesForm" name="rolesForm" className="form" noValidate={true} ref={refForm as any}>
+        <form id="auditLogsForm" name="auditLogsForm" className="form" noValidate={true} ref={refForm as any}>
           <section className="row section">
             <label className="col s12 m2 l4">
               {resource.action}

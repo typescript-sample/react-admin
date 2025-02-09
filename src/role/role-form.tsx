@@ -640,7 +640,7 @@ export function RoleForm() {
       </header>
       <div>
         <h4>Role Information</h4>
-        <section className="row section ">
+        <section className="row section">
           <label className="col s6 m6">
             {resource.role_id}
             <input
