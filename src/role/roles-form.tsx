@@ -295,6 +295,21 @@ export const RolesForm = () => {
                 })}
             </ul>
           )}
+          {state.view !== "table" && (
+            <ul className="row list">
+              {state.list &&
+                state.list.length > 0 &&
+                state.list.map((item, i) => {
+                  return (
+                    <li key={i} className="col s12 m6 l4 xl3 list-item">
+                      <h4>{item.roleName}</h4>
+                      <button className="btn-detail"></button>
+                      <p>{item.remark}</p>
+                    </li>
+                  )
+                })}
+            </ul>
+          )}
         </form>
       </div>
     </div>
