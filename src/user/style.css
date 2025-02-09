@@ -4,10 +4,11 @@ ul.list .check-item {
 }
 ul.list > .check-item > p {
   margin-left: 24px;
-  padding-top: 8px;
+  padding-top: 10px;
   font-weight: 200;
+  margin-bottom: 9px;
 }
 ul.list > .check-item.header > p {
-  margin-left: 14px;
+  margin-left: 22px;
   font-weight: 600;
 }

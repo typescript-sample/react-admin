@@ -281,10 +281,6 @@ h2,
 h3,
 h4 {
   width: 100%;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0 16px;
   background-color: inherit;
 }
 .section > * {
@@ -306,15 +302,24 @@ header > h2 {
   color: inherit;
   background-color: transparent;
 }
+.header {
+  padding-left: 8px;
+  padding-right: 8px;
+}
 @media screen and (max-width: 600px) {
   header > h1,
   header > h2 {
+    display: flex;
     justify-content: center;
   }
   h4 {
+    display: flex;
     justify-content: space-between;
   }
   .header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
     min-height: 40px;
     width: calc(100% + 16px);
     margin-left: -8px;

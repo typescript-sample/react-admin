@@ -745,9 +745,14 @@ export function RoleForm() {
       </div>
       <footer>
         {!isReadOnly && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-            {resource.save}
-          </button>
+          <>
+            <button type="button" id="btnDelete" name="btnDelete" onClick={save}>
+              {resource.delete}
+            </button>
+            <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+              {resource.save}
+            </button>
+          </>
         )}
       </footer>
     </form>

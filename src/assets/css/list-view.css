@@ -122,6 +122,7 @@ ul.list.row > li.col > *:first-child {
   font-weight: 500;
   min-height: 31px;
   padding-top: 4px;
+  margin-bottom: 0;
 }
 .img-item > h3 {
   height: unset;
@@ -135,7 +136,6 @@ ul.list.row > li.col > *:first-child {
 .list-item > h4,
 .img-card > h4 {
   width: 100%;
-  line-height: 1.5;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -152,6 +152,7 @@ ul.list.row > li.col > *:first-child {
 .img-item > h4 {
   padding-bottom: 0;
 }
+.list-item > h4,
 .list-item > a {
   min-height: 26px;
 }
