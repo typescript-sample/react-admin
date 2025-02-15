@@ -193,7 +193,7 @@ export const UsersForm = () => {
             </label>
             <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
           </section>
-          <section className="row section inline" hidden={state.hideFilter}>
+          <section className="row search-group inline" hidden={state.hideFilter}>
             <label className="col s12 m4 l4">
               {resource.username}
               <input
@@ -239,7 +239,7 @@ export const UsersForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
+        <form>
           {state.view === "table" && (
             <div className="table-responsive">
               <table className="table">

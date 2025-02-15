@@ -73,11 +73,12 @@ ul.list.row > li.col > *:first-child {
 .list-item > .btn-detail,
 .img-item > .btn-detail {
   position: absolute;
-  right: 16px;
+  right: 8px;
+  top: 12px;
 }
 .list-item > .btn-detail,
 .small.img-item > .btn-detail {
-  top: 3px;
+  top: 8px;
 }
 
 .list-item > *:last-child,
@@ -102,7 +103,7 @@ ul.list.row > li.col > *:first-child {
 }
 .img-item > input[type="checkbox"]:not(.modal-trigger):not(.toggle):not(#alert-check):not([id*="lightbox-"]) {
   position: absolute;
-  left: 16px;
+  left: 8px;
 }
 
 .img-item > h3,
@@ -448,4 +449,20 @@ i.date {
 .img-card > h4.center,
 .img-card > p.center {
   justify-content: center;
+}
+
+.card > section > p,
+.video > section > p,
+.video > p,
+.img-card > p,
+.horizon > li > a,
+.img-item > h3,
+.img-item > h4,
+.img-item > a,
+.img-item > p,
+.list-item > h3,
+.list-item > h4,
+.list-item > a,
+.list-item > p {
+  color: inherit;
 }

@@ -141,8 +141,8 @@ th.action {
 }
 
 .table-responsive {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin: 16px;
+  margin-top: 12px;
 }
 /*
 .table-responsive > table {
