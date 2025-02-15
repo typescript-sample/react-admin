@@ -193,7 +193,10 @@ td > button {
   background-image: inherit;
   padding-left: 8px;
   padding-right: 8px;
-  margin: 16px 0;
+  margin: 0 0 16px 0;
+}
+.section:first-child {
+  margin-top: 8px;
 }
 .section:last-child {
   margin-bottom: 0;
@@ -321,6 +324,9 @@ header > h2 {
   padding-right: 8px;
   margin-bottom: 8px;
 }
+.header:first-child {
+  margin-top: 8px;
+}
 @media screen and (max-width: 600px) {
   header > h1,
   header > h2 {
@@ -343,9 +349,12 @@ header > h2 {
     padding-right: 16px;
     margin-bottom: 0;
   }
+  .header:first-child {
+    margin-top: 0;
+  }
   .section:first-child > h3:first-child,
   .section:first-child > h4:first-child {
-    margin-top: -16px;
+    margin-top: -8px;
   }
 }
 
