@@ -5,7 +5,7 @@
 .list {
   margin: 4px 0 16px 0;
 }
-form > .list:last-child {
+.list:last-child {
   margin-bottom: 0;
 }
 .list.horizon {
