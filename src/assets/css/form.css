@@ -172,7 +172,9 @@ label.focused > span.span-error,
   background-image: inherit;
   font-weight: 500;
 }
-
+.page-body > .form > .row > .col:last-child {
+  margin-bottom: 16px;
+}
 .row .form-group {
   width: 100%;
   font-size: 14px;

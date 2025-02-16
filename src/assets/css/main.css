@@ -198,9 +198,11 @@ td > button {
 .section:first-child {
   margin-top: 8px;
 }
+/*
 .section:last-child {
   margin-bottom: 0;
 }
+*/
 .page-body > .form > div.background-content > section:nth-child(2),
 .view-body > section:nth-child(2) {
   background-image: none;

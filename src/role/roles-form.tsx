@@ -216,7 +216,7 @@ export const RolesForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
+        <form>
           {state.view === "table" && (
             <div className="table-responsive">
               <table className="table">
