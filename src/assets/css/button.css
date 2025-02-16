@@ -171,18 +171,17 @@ footer > .btn-accept::after {
   background-color: #4db6ac;
   display: inline-block;
   vertical-align: middle;
-  margin-left: 5px;
+  margin-left: 6px;
   line-height: 40px;
   font-size: 25px;
 }
-
 footer > .btn-cancel::before {
   content: "\2715";
   height: 40px;
   width: 40px;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 5px;
+  margin-right: 6px;
   vertical-align: middle;
   line-height: 40px;
   color: #fff;
