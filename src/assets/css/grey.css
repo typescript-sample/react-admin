@@ -159,8 +159,7 @@
 .grey .btn-close,
 .grey .btn-filter,
 .grey .btn-remove-text,
-.grey .btn-group,
-.grey .btn-secondary {
+.grey .btn-group {
   color: #7f7f7f;
 }
 
@@ -193,10 +192,10 @@
   color: #fff;
   background-color: #657181;
 }
-.grey .view-footer > button.btn-secondary {
+.grey .btn-secondary {
   color: #657181;
 }
-.grey .view-footer > button.btn-delete {
+.grey .btn-delete {
   color: #fc671a;
 }
 .grey .btn-more:hover,

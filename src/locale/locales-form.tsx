@@ -126,138 +126,136 @@ export const LocalesForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
-          {component.view === "table" && (
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>{resource.sequence}</th>
-                    <th data-field="code">
-                      <button type="button" id="sortCode" onClick={sort}>
-                        {resource.locale_code}
-                      </button>
-                    </th>
-                    <th data-field="name">
-                      <button type="button" id="sortName" onClick={sort}>
-                        {resource.locale_name}
-                      </button>
-                    </th>
-                    <th data-field="nativeName">
-                      <button type="button" id="sortNativeName" onClick={sort}>
-                        {resource.locale_native_name}
-                      </button>
-                    </th>
-                    <th data-field="countryName">
-                      <button type="button" id="sortCountryName" onClick={sort}>
-                        {resource.country_name}
-                      </button>
-                    </th>
-                    <th data-field="nativeCountryName">
-                      <button type="button" id="sortNativeCountryName" onClick={sort}>
-                        {resource.country_native_name}
-                      </button>
-                    </th>
-                    <th data-field="dateFormat">
-                      <button type="button" id="sortDateFormat" onClick={sort}>
-                        {resource.date_format}
-                      </button>
-                    </th>
-                    <th data-field="firstDayOfWeek">
-                      <button type="button" id="sortFirstDayOfWeek" onClick={sort}>
-                        {resource.first_day_of_week}
-                      </button>
-                    </th>
-                    <th data-field="decimalSeparator">
-                      <button type="button" id="sortDecimalSeparator" onClick={sort}>
-                        {resource.decimal_separator}
-                      </button>
-                    </th>
-                    <th data-field="groupSeparator">
-                      <button type="button" id="sortGroupSeparator" onClick={sort}>
-                        {resource.group_separator}
-                      </button>
-                    </th>
-                    <th data-field="currencyCode">
-                      <button type="button" id="sortCurrencyCode" onClick={sort}>
-                        {resource.currency_code}
-                      </button>
-                    </th>
-                    <th data-field="currencySymbol">
-                      <button type="button" id="sortCurrencySymbol" onClick={sort}>
-                        {resource.currency_symbol}
-                      </button>
-                    </th>
-                    <th data-field="currencyDecimalDigits">
-                      <button type="button" id="sortCurrencyDecimalDigits" onClick={sort}>
-                        {resource.currency_decimal_digits}
-                      </button>
-                    </th>
-                    <th data-field="currencyPattern">
-                      <button type="button" id="sortCurrencyPattern" onClick={sort}>
-                        {resource.currency_pattern}
-                      </button>
-                    </th>
-                    <th data-field="currencySample">
-                      <button type="button" id="sortCurrencySample" onClick={sort}>
-                        {resource.currency_sample}
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.list &&
-                    state.list.length > 0 &&
-                    state.list.map((item, i) => {
-                      return (
-                        <tr key={i} onClick={(e) => edit(e, item.code)}>
-                          <td className="text-right">{(item as any).sequenceNo}</td>
-                          <td>
-                            <Link to={`${item.code}`}>{item.code}</Link>
-                          </td>
-                          <td>{item.name}</td>
-                          <td>{item.nativeName}</td>
-                          <td>{item.countryName}</td>
-                          <td>{item.nativeCountryName}</td>
-                          <td>{item.dateFormat}</td>
-                          <td>{item.firstDayOfWeek}</td>
-                          <td>{item.decimalSeparator}</td>
-                          <td>{item.groupSeparator}</td>
-                          <td>{item.currencyCode}</td>
-                          <td>{item.currencySymbol}</td>
-                          <td>{item.currencyDecimalDigits}</td>
-                          <td>{item.currencyPattern}</td>
-                          <td>{item.currencySample}</td>
-                        </tr>
-                      )
-                    })}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {component.view !== "table" && (
-            <ul className="row list">
-              {state.list &&
-                state.list.length > 0 &&
-                state.list.map((item, i) => {
-                  return (
-                    <li key={i} className="col s12 m6 l3 xl4 list-item" onClick={(e) => edit(e, item.code)}>
-                      <Link to={`${item.code}`}>
-                        {item.code} - {item.name}
-                      </Link>
-                      <button className="btn-detail" />
-                      <p className="space-between">
-                        {item.nativeName}{" "}
-                        <span>
-                          {item.dateFormat} {item.currencyCode}
-                        </span>
-                      </p>
-                    </li>
-                  )
-                })}
-            </ul>
-          )}
-        </form>
+        {component.view === "table" && (
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{resource.sequence}</th>
+                  <th data-field="code">
+                    <button type="button" id="sortCode" onClick={sort}>
+                      {resource.locale_code}
+                    </button>
+                  </th>
+                  <th data-field="name">
+                    <button type="button" id="sortName" onClick={sort}>
+                      {resource.locale_name}
+                    </button>
+                  </th>
+                  <th data-field="nativeName">
+                    <button type="button" id="sortNativeName" onClick={sort}>
+                      {resource.locale_native_name}
+                    </button>
+                  </th>
+                  <th data-field="countryName">
+                    <button type="button" id="sortCountryName" onClick={sort}>
+                      {resource.country_name}
+                    </button>
+                  </th>
+                  <th data-field="nativeCountryName">
+                    <button type="button" id="sortNativeCountryName" onClick={sort}>
+                      {resource.country_native_name}
+                    </button>
+                  </th>
+                  <th data-field="dateFormat">
+                    <button type="button" id="sortDateFormat" onClick={sort}>
+                      {resource.date_format}
+                    </button>
+                  </th>
+                  <th data-field="firstDayOfWeek">
+                    <button type="button" id="sortFirstDayOfWeek" onClick={sort}>
+                      {resource.first_day_of_week}
+                    </button>
+                  </th>
+                  <th data-field="decimalSeparator">
+                    <button type="button" id="sortDecimalSeparator" onClick={sort}>
+                      {resource.decimal_separator}
+                    </button>
+                  </th>
+                  <th data-field="groupSeparator">
+                    <button type="button" id="sortGroupSeparator" onClick={sort}>
+                      {resource.group_separator}
+                    </button>
+                  </th>
+                  <th data-field="currencyCode">
+                    <button type="button" id="sortCurrencyCode" onClick={sort}>
+                      {resource.currency_code}
+                    </button>
+                  </th>
+                  <th data-field="currencySymbol">
+                    <button type="button" id="sortCurrencySymbol" onClick={sort}>
+                      {resource.currency_symbol}
+                    </button>
+                  </th>
+                  <th data-field="currencyDecimalDigits">
+                    <button type="button" id="sortCurrencyDecimalDigits" onClick={sort}>
+                      {resource.currency_decimal_digits}
+                    </button>
+                  </th>
+                  <th data-field="currencyPattern">
+                    <button type="button" id="sortCurrencyPattern" onClick={sort}>
+                      {resource.currency_pattern}
+                    </button>
+                  </th>
+                  <th data-field="currencySample">
+                    <button type="button" id="sortCurrencySample" onClick={sort}>
+                      {resource.currency_sample}
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.list &&
+                  state.list.length > 0 &&
+                  state.list.map((item, i) => {
+                    return (
+                      <tr key={i} onClick={(e) => edit(e, item.code)}>
+                        <td className="text-right">{(item as any).sequenceNo}</td>
+                        <td>
+                          <Link to={`${item.code}`}>{item.code}</Link>
+                        </td>
+                        <td>{item.name}</td>
+                        <td>{item.nativeName}</td>
+                        <td>{item.countryName}</td>
+                        <td>{item.nativeCountryName}</td>
+                        <td>{item.dateFormat}</td>
+                        <td>{item.firstDayOfWeek}</td>
+                        <td>{item.decimalSeparator}</td>
+                        <td>{item.groupSeparator}</td>
+                        <td>{item.currencyCode}</td>
+                        <td>{item.currencySymbol}</td>
+                        <td>{item.currencyDecimalDigits}</td>
+                        <td>{item.currencyPattern}</td>
+                        <td>{item.currencySample}</td>
+                      </tr>
+                    )
+                  })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {component.view !== "table" && (
+          <ul className="row list">
+            {state.list &&
+              state.list.length > 0 &&
+              state.list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l3 xl4 list-item" onClick={(e) => edit(e, item.code)}>
+                    <Link to={`${item.code}`}>
+                      {item.code} - {item.name}
+                    </Link>
+                    <button className="btn-detail" />
+                    <p className="space-between">
+                      {item.nativeName}{" "}
+                      <span>
+                        {item.dateFormat} {item.currencyCode}
+                      </span>
+                    </p>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
       </div>
     </div>
   )

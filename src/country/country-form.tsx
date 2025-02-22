@@ -47,6 +47,7 @@ export const CountryForm = () => {
         <h2 className="view-title">{resource.country}</h2>
       </header>
       <div className="row">
+        <h4 className="header">Contact Information</h4>
         <label className="col s12 m6">
           {resource.country_code}
           <input

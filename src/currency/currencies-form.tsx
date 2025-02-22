@@ -104,73 +104,71 @@ export const CurrenciesForm = () => {
             </label>
           </section>
         </form>
-        <form className="list-result">
-          {component.view === "table" && (
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>{resource.sequence}</th>
-                    <th data-field="code">
-                      <button type="button" id="sortCode" onClick={sort}>
-                        {resource.currency_code}
-                      </button>
-                    </th>
-                    <th data-field="symbol">
-                      <button type="button" id="sortSymbol" onClick={sort}>
-                        {resource.currency_symbol}
-                      </button>
-                    </th>
-                    <th data-field="decimalDigits">
-                      <button type="button" id="sortDecimalDigits" onClick={sort}>
-                        {resource.currency_decimal_digits}
-                      </button>
-                    </th>
-                    <th data-field="status">
-                      <button type="button" id="sortStatus" onClick={sort}>
-                        {resource.status}
-                      </button>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.list &&
-                    state.list.length > 0 &&
-                    state.list.map((item, i) => {
-                      return (
-                        <tr key={i} onClick={(e) => edit(e, item.code)}>
-                          <td className="text-right">{(item as any).sequenceNo}</td>
-                          <td>
-                            <Link to={`${item.code}`}>{item.code}</Link>
-                          </td>
-                          <td>{item.symbol}</td>
-                          <td className="text-right">{item.decimalDigits}</td>
-                          <td>{getStatusName(item.status)}</td>
-                        </tr>
-                      )
-                    })}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {component.view !== "table" && (
-            <ul className="row list">
-              {state.list &&
-                state.list.length > 0 &&
-                state.list.map((item, i) => {
-                  return (
-                    <li key={i} className="col s6 m4 l3 xl2 list-item" onClick={(e) => edit(e, item.code)}>
-                      <Link to={`${item.code}`}>{item.code}</Link>
-                      <button className="btn-detail" />
-                      <p>
-                        {item.symbol} <span>{item.decimalDigits}</span>
-                      </p>
-                    </li>
-                  )
-                })}
-            </ul>
-          )}
-        </form>
+        {component.view === "table" && (
+          <div className="table-responsive">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{resource.sequence}</th>
+                  <th data-field="code">
+                    <button type="button" id="sortCode" onClick={sort}>
+                      {resource.currency_code}
+                    </button>
+                  </th>
+                  <th data-field="symbol">
+                    <button type="button" id="sortSymbol" onClick={sort}>
+                      {resource.currency_symbol}
+                    </button>
+                  </th>
+                  <th data-field="decimalDigits">
+                    <button type="button" id="sortDecimalDigits" onClick={sort}>
+                      {resource.currency_decimal_digits}
+                    </button>
+                  </th>
+                  <th data-field="status">
+                    <button type="button" id="sortStatus" onClick={sort}>
+                      {resource.status}
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.list &&
+                  state.list.length > 0 &&
+                  state.list.map((item, i) => {
+                    return (
+                      <tr key={i} onClick={(e) => edit(e, item.code)}>
+                        <td className="text-right">{(item as any).sequenceNo}</td>
+                        <td>
+                          <Link to={`${item.code}`}>{item.code}</Link>
+                        </td>
+                        <td>{item.symbol}</td>
+                        <td className="text-right">{item.decimalDigits}</td>
+                        <td>{getStatusName(item.status)}</td>
+                      </tr>
+                    )
+                  })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {component.view !== "table" && (
+          <ul className="row list">
+            {state.list &&
+              state.list.length > 0 &&
+              state.list.map((item, i) => {
+                return (
+                  <li key={i} className="col s6 m4 l3 xl2 list-item" onClick={(e) => edit(e, item.code)}>
+                    <Link to={`${item.code}`}>{item.code}</Link>
+                    <button className="btn-detail" />
+                    <p>
+                      {item.symbol} <span>{item.decimalDigits}</span>
+                    </p>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
       </div>
     </div>
   )

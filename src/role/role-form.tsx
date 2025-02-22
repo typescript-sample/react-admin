@@ -569,10 +569,6 @@ export function RoleForm() {
     }
   }
 
-  const validate = (role: Role): boolean => {
-    const valid = validateForm(refForm?.current, getLocale())
-    return valid
-  }
   const role = state.role
   const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     role.status = e.target.value
@@ -587,9 +583,29 @@ export function RoleForm() {
       confirm(resource.msg_confirm_back, () => navigate(-1))
     }
   }
+  const deleteOnClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    confirm(resource.msg_confirm_delete, () => {
+      const service = getRoleService()
+      showLoading()
+      service
+        .delete(role.roleId)
+        .then((res) => {
+          if (res > 0) {
+            alertSuccess(resource.msg_delete_success, () => navigate(-1))
+          } else if (res === 0) {
+            alertWarning(resource.msg_delete_fail)
+          } else {
+            alertWarning(resource.msg_role_delete_fail)
+          }
+        })
+        .catch(handleError)
+        .finally(hideLoading)
+    })
+  }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
-    const valid = validate(role)
+    const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getRoleService()
       confirm(resource.msg_confirm_save, () => {
@@ -639,7 +655,7 @@ export function RoleForm() {
         </button>
       </header>
       <div>
-        <h4>Role Information</h4>
+        <h4 className="header">Role Information</h4>
         <section className="row section">
           <label className="col s6 m6">
             {resource.role_id}
@@ -746,7 +762,7 @@ export function RoleForm() {
       <footer>
         {!isReadOnly && (
           <>
-            <button type="button" id="btnDelete" name="btnDelete" onClick={save}>
+            <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
               {resource.delete}
             </button>
             <button type="submit" id="btnSave" name="btnSave" onClick={save}>

@@ -80,10 +80,6 @@ export const UserForm = () => {
     user.gender = user.title === "Mr" ? Gender.Male : Gender.Female
     setState({ ...state, user })
   }
-  const validate = (user: User): boolean => {
-    const valid = validateForm(refForm?.current, getLocale())
-    return valid
-  }
 
   const user = state.user
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -105,7 +101,7 @@ export const UserForm = () => {
   }
   const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
-    const valid = validate(user)
+    const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getUserService()
       confirm(resource.msg_confirm_save, () => {
