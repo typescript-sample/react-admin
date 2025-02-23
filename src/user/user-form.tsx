@@ -167,7 +167,6 @@ export const UserForm = () => {
               type="text"
               id="userId"
               name="userId"
-              className="form-control"
               value={user.userId || ""}
               readOnly={!newMode}
               onChange={(e) => {
@@ -185,7 +184,6 @@ export const UserForm = () => {
               type="text"
               id="username"
               name="username"
-              className="form-control"
               value={user.username || ""}
               readOnly={!newMode}
               onChange={(e) => {
@@ -204,7 +202,6 @@ export const UserForm = () => {
               type="text"
               id="displayName"
               name="displayName"
-              className="form-control"
               value={user.displayName || ""}
               onChange={(e) => {
                 user.displayName = e.target.value
@@ -299,7 +296,6 @@ export const UserForm = () => {
               type="tel"
               id="phone"
               name="phone"
-              className="form-control"
               value={formatPhone(user.phone) || ""}
               onChange={(e) => {
                 user.phone = e.target.value
