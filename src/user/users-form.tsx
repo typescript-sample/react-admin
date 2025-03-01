@@ -63,7 +63,7 @@ export const UsersForm = () => {
 
   const canWrite = hasPermission(Permission.write)
   useEffect(() => {
-    const filter = mergeFilter(buildFromUrl<UserFilter>(), state.filter, sizes, ["status", "userType"])
+    const filter = mergeFilter(buildFromUrl<UserFilter>(), state.filter, sizes, ["status"])
     setSort(state, filter.sort)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
