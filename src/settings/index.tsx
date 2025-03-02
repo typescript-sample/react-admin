@@ -48,7 +48,7 @@ export const SettingsForm = () => {
 
   return (
     <div className="view-container">
-      <form id="settingsForm" name="settingsForm" model-name="settings" ref={refForm as any}>
+      <form id="settingsForm" name="settingsForm" className="form" model-name="settings" ref={refForm as any}>
         <header>
           <h2>{resource.settings}</h2>
         </header>
