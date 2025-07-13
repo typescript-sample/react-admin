@@ -1,8 +1,8 @@
 import { Item } from "onecore"
 import { useEffect, useRef } from "react"
 import { createModel, EditComponentParam, useEdit } from "react-hook-core"
-import { setReadOnly } from "ui-plus"
-import { hasPermission, inputEdit, Permission, requiredOnBlur, Status } from "uione"
+import { requiredOnBlur, setReadOnly } from "ui-plus"
+import { hasPermission, inputEdit, Permission, Status } from "uione"
 import { Currency, getCurrencyService } from "./service"
 
 interface InternalState {

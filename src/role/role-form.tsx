@@ -4,8 +4,8 @@ import { clone, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hoo
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { registerEvents, setReadOnly, showFormError, validateForm } from "ui-plus"
-import { checkPatternOnBlur, getLocale, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
+import { patternOnBlur, registerEvents, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { getLocale, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
 import { getRoleService, Privilege, Role } from "./service"
 import "./style.css"
 
@@ -664,7 +664,7 @@ export function RoleForm() {
               id="roleId"
               name="roleId"
               value={role.roleId || ""}
-              onBlur={checkPatternOnBlur}
+              onBlur={patternOnBlur}
               pattern={regexId}
               config-pattern-error-key={"invalid_pattern_id"}
               onChange={(e) => {
