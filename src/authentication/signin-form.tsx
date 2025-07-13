@@ -2,11 +2,11 @@ import { AuthResult, dayDiff, getMessage, handleCookie, initFromCookie, Status, 
 import { CookieService } from "cookie-core"
 import { Base64 } from "js-base64"
 import { useEffect, useRef } from "react"
-import { OnClick, useMessage, useUpdate } from "react-hook-core"
+import { formatText, OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link, useNavigate } from "react-router-dom"
 import { alertInfo } from "ui-alert"
 import { initForm } from "ui-plus"
-import { getResource, handleError, loading, message, registerEvents, setPrivileges, setUser, storage, useResource } from "uione"
+import { handleError, loading, message, registerEvents, setPrivileges, setUser, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
 import { getAuthen } from "./service"
 
@@ -82,9 +82,8 @@ export const SigninForm = () => {
   }
   const signin = async (event: OnClick) => {
     event.preventDefault()
-    const r = getResource()
     const user = state.user
-    if (!validate(user, r, showError)) {
+    if (!validate(user, resource, showError)) {
       return
     } else {
       hideMessage()
@@ -104,7 +103,7 @@ export const SigninForm = () => {
         if (result.user) {
           const expiredDays = dayDiff(result.user.passwordExpiredTime, new Date())
           if (expiredDays && expiredDays > 0) {
-            const ms = r.format(resource.msg_password_expired_soon, expiredDays)
+            const ms = formatText(resource.msg_password_expired_soon, expiredDays)
             message(ms)
           }
         }
