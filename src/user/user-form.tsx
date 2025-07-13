@@ -4,8 +4,8 @@ import { afterSaved, clone, goBack, isEmptyObject, makeDiff } from "react-hook-c
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { emailOnBlur, formatPhone, phoneOnBlur, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
-import { Gender, getLocale, handleError, handleSelect, hasPermission, initForm, Permission, Status, useResource } from "uione"
+import { emailOnBlur, formatPhone, initForm, phoneOnBlur, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { Gender, getLocale, handleError, handleSelect, hasPermission, Permission, Status, useResource } from "uione"
 import { getMasterData, getUserService, User } from "./service"
 
 const createUser = (): User => {

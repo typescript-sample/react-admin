@@ -4,8 +4,8 @@ import { clone, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hoo
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { patternOnBlur, registerEvents, setReadOnly, showFormError, validateForm } from "ui-plus"
-import { getLocale, handleError, hasPermission, initForm, Status, useResource, write } from "uione"
+import { initForm, patternOnBlur, registerEvents, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { getLocale, handleError, hasPermission, Status, useResource, write } from "uione"
 import { getRoleService, Privilege, Role } from "./service"
 import "./style.css"
 
