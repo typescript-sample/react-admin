@@ -11,14 +11,14 @@ interface LocaleSearch extends SearchComponentState<Locale, LocaleFilter> {
   statusList: Item[]
 }
 const localeFilter: LocaleFilter = {
-  limit: resources.limit,
+  limit: resources.defaultLimit,
   q: "",
   code: "",
   name: "",
   dateFormat: "",
 }
 const localeSearch: LocaleSearch = {
-  limit: resources.limit,
+  limit: resources.defaultLimit,
   statusList: [],
   list: [],
   filter: localeFilter,
@@ -114,11 +114,11 @@ export const LocalesForm = () => {
               {resource.first_day_of_week}
               <input
                 type="text"
-                id="firstDayOfWeek"
-                name="firstDayOfWeek"
+                id="groupSeparator"
+                name="groupSeparator"
                 className="text-right"
                 data-type="integer"
-                value={filter.firstDayOfWeek || ""}
+                value={filter.groupSeparator || ""}
                 onChange={updateState}
                 maxLength={1}
                 placeholder={resource.first_day_of_week}

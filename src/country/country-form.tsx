@@ -1,6 +1,7 @@
 import { Item } from "onecore"
 import { useEffect, useRef } from "react"
-import { createModel, EditComponentParam, setReadOnly, useEdit } from "react-hook-core"
+import { createModel, EditComponentParam, useEdit } from "react-hook-core"
+import { setReadOnly } from "ui-plus"
 import { hasPermission, inputEdit, Permission, requiredOnBlur } from "uione"
 import { Country, getCountryService } from "./service"
 

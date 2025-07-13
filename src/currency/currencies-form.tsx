@@ -11,14 +11,14 @@ interface CurrencySearch extends SearchComponentState<Currency, CurrencyFilter> 
   statusList: Item[]
 }
 const currencyFilter: CurrencyFilter = {
-  limit: resources.limit,
+  limit: resources.defaultLimit,
   q: "",
   code: "",
   symbol: "",
   status: [],
 }
 const currencySearch: CurrencySearch = {
-  limit: resources.limit,
+  limit: resources.defaultLimit,
   statusList: [],
   list: [],
   filter: currencyFilter,

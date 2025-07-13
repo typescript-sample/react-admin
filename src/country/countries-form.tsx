@@ -11,11 +11,11 @@ interface CountrySearch extends SearchComponentState<Country, CountryFilter> {
   statusList: Item[]
 }
 const countryFilter: CountryFilter = {
-  limit: resources.limit,
+  limit: resources.defaultLimit,
   q: "",
 }
 const countrySearch: CountrySearch = {
-  limit: resources.limit,
+  limit: resources.defaultLimit,
   statusList: [],
   list: [],
   filter: countryFilter,
