@@ -4,7 +4,7 @@ import { checked, OnClick, PageSizeSelect, resources, SearchComponentState, useS
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
-import { getStatusName, hasPermission, inputSearch, write } from "uione"
+import { getStatusName, hasPermission, inputSearch, useResource, write } from "uione"
 import { Currency, CurrencyFilter, getCurrencyService } from "./service"
 
 interface CurrencySearch extends SearchComponentState<Currency, CurrencyFilter> {
@@ -24,13 +24,14 @@ const currencySearch: CurrencySearch = {
   filter: currencyFilter,
 }
 export const CurrenciesForm = () => {
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
+  const { state, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     Currency,
     CurrencyFilter,
     CurrencySearch
-  >(refForm, currencySearch, getCurrencyService(), inputSearch())
+  >(refForm, currencySearch, getCurrencyService(), resource, inputSearch())
   const canWrite = hasPermission(write)
   const edit = (e: OnClick, code: string) => {
     e.preventDefault()

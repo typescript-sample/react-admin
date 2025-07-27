@@ -4,7 +4,7 @@ import { OnClick, PageSizeSelect, SearchComponentState, checked, resources, useS
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
-import { getStatusName, hasPermission, inputSearch, write } from "uione"
+import { getStatusName, hasPermission, inputSearch, useResource, write } from "uione"
 import { Country, CountryFilter, getCountryService } from "./service"
 
 interface CountrySearch extends SearchComponentState<Country, CountryFilter> {
@@ -21,13 +21,14 @@ const countrySearch: CountrySearch = {
   filter: countryFilter,
 }
 export const CountriesForm = () => {
+  const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
+  const { state, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     Country,
     CountryFilter,
     CountrySearch
-  >(refForm, countrySearch, getCountryService(), inputSearch())
+  >(refForm, countrySearch, getCountryService(), resource, inputSearch())
   const canWrite = hasPermission(write)
   const edit = (e: OnClick, code: string) => {
     e.preventDefault()

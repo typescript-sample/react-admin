@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react"
 import { datetimeToString, PageSizeSelect, resources, SearchComponentState, useSearch, value } from "react-hook-core"
 import Pagination from "reactx-pagination"
 import { addDays, addSeconds, formatFullDateTime } from "ui-plus"
-import { getDateFormat, inputSearch, useLocale } from "uione"
+import { getDateFormat, inputSearch, useLocale, useResource } from "uione"
 import { AuditLog, AuditLogFilter, useAuditLog } from "./service"
 import "./style.css"
 
@@ -38,9 +38,10 @@ const mapStyleStatus: Map<string, string> = new Map([
 export const AuditLogsForm = () => {
   const dateFormat = getDateFormat().toUpperCase()
   const locale = useLocale()
+  const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
-  const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch())
-  const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, search, sort } = hooks
+  const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), resource, inputSearch())
+  const { state, component, updateState, pageSizeChanged, pageChanged, changeView, search, sort } = hooks
   useEffect(() => {
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
