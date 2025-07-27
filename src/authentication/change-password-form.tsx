@@ -42,13 +42,11 @@ const msgData = {
 
 export const ChangePasswordForm = () => {
   const resource = useResource()
-  const form = useRef()
+  const form = useRef<HTMLFormElement>(null)
   const { msg, showError, hideMessage } = useMessage(msgData)
   const { state, setState, updateState } = useUpdate<ChangePasswordState>(ChangePasswordData, "user")
   useEffect(() => {
-    if (form && form.current) {
-      initForm(form.current, registerEvents)
-    }
+    initForm(form.current, registerEvents)
   }, [])
 
   const changePassword = (event: OnClick) => {

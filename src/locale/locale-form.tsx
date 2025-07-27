@@ -2,7 +2,7 @@ import { Item } from "onecore"
 import { useEffect, useRef } from "react"
 import { createModel, EditComponentParam, useEdit } from "react-hook-core"
 import { requiredOnBlur, setReadOnly } from "ui-plus"
-import { hasPermission, inputEdit, Permission } from "uione"
+import { hasPermission, inputEdit, Permission, useResource } from "uione"
 import { getLocaleService, Locale } from "./service"
 
 interface InternalState {
@@ -26,11 +26,13 @@ const param: EditComponentParam<Locale, string, InternalState> = {
   createModel: createLocale,
 }
 export const LocaleForm = () => {
-  const refForm = useRef()
-  const { resource, state, updateState, flag, save, back } = useEdit<Locale, string, InternalState>(
+  const resource = useResource()
+  const refForm = useRef<HTMLFormElement>(null)
+  const { state, updateState, flag, save, back } = useEdit<Locale, string, InternalState>(
     refForm,
     initialState,
     getLocaleService(),
+    resource,
     inputEdit(),
     param,
   )

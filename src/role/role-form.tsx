@@ -279,7 +279,7 @@ export function RoleForm() {
   const isReadOnly = !hasPermission(write, 1)
   const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const [initialRole, setInitialRole] = useState<Role>(createRole())
   const [state, setState] = useState<InternalState>(initialState)
   const [privileges, setPrivileges] = useState<Permission[]>([])

@@ -4,7 +4,7 @@ import { OnClick, PageSizeSelect, resources, SearchComponentState, useSearch, va
 import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
-import { hasPermission, inputSearch, write } from "uione"
+import { hasPermission, inputSearch, useResource, write } from "uione"
 import { getLocaleService, Locale, LocaleFilter } from "./service"
 
 interface LocaleSearch extends SearchComponentState<Locale, LocaleFilter> {
@@ -24,13 +24,14 @@ const localeSearch: LocaleSearch = {
   filter: localeFilter,
 }
 export const LocalesForm = () => {
+  const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
-  const { state, resource, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
+  const refForm = useRef<HTMLFormElement>(null)
+  const { state, component, updateState, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     Locale,
     LocaleFilter,
     LocaleSearch
-  >(refForm, localeSearch, getLocaleService(), inputSearch())
+  >(refForm, localeSearch, getLocaleService(), resource, inputSearch())
   const canWrite = hasPermission(write)
   const edit = (e: OnClick, code: string) => {
     e.preventDefault()

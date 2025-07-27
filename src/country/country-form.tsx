@@ -2,7 +2,7 @@ import { Item } from "onecore"
 import { useEffect, useRef } from "react"
 import { createModel, EditComponentParam, useEdit } from "react-hook-core"
 import { requiredOnBlur, setReadOnly } from "ui-plus"
-import { hasPermission, inputEdit, Permission } from "uione"
+import { hasPermission, inputEdit, Permission, useResource } from "uione"
 import { Country, getCountryService } from "./service"
 
 interface InternalState {
@@ -26,11 +26,13 @@ const param: EditComponentParam<Country, string, InternalState> = {
   createModel: createCountry,
 }
 export const CountryForm = () => {
-  const refForm = useRef()
-  const { resource, state, updateState, flag, save, back } = useEdit<Country, string, InternalState>(
+  const resource = useResource()
+  const refForm = useRef<HTMLFormElement>(null)
+  const { state, updateState, flag, save, back } = useEdit<Country, string, InternalState>(
     refForm,
     initialState,
     getCountryService(),
+    resource,
     inputEdit(),
     param,
   )

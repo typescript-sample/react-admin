@@ -26,7 +26,7 @@ import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
-import { getStatusName, handleError, hasPermission, inputSearch, Permission } from "uione"
+import { getStatusName, handleError, hasPermission, Permission, useResource } from "uione"
 import femaleIcon from "../assets/images/female.png"
 import maleIcon from "../assets/images/male.png"
 import { getUserService, User, UserFilter } from "./service"
@@ -50,18 +50,17 @@ const userFilter: UserFilter = {
 
 const sizes = pageSizes
 export const UsersForm = () => {
+  const canWrite = hasPermission(Permission.write)
   const initialState: UserSearch = {
     statusList: [],
     list: [],
     filter: userFilter,
   }
+  const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
-  const sp = inputSearch()
-  const resource = sp.resource.resource()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<UserSearch>(initialState)
 
-  const canWrite = hasPermission(Permission.write)
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<UserFilter>(), state.filter, sizes, ["status"])
     setSort(state, filter.sort)

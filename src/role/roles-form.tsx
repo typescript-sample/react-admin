@@ -25,7 +25,7 @@ import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
-import { getStatusName, handleError, hasPermission, inputSearch, write } from "uione"
+import { getStatusName, handleError, hasPermission, useResource, write } from "uione"
 import { getRoleService, Role, RoleFilter } from "./service"
 
 interface RoleSearch extends Sortable {
@@ -48,17 +48,17 @@ const roleFilter: RoleFilter = {
 
 const sizes = pageSizes
 export const RolesForm = () => {
+  const canWrite = hasPermission(write)
   const initialState: RoleSearch = {
     statusList: [],
     list: [],
     filter: roleFilter,
   }
+  const resource = useResource()
   const navigate = useNavigate()
-  const refForm = useRef()
-  const sp = inputSearch()
-  const resource = sp.resource.resource()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useMergeState<RoleSearch>(initialState)
-  const canWrite = hasPermission(write)
+
   useEffect(() => {
     const filter = mergeFilter(buildFromUrl<RoleFilter>(), state.filter, sizes, ["status", "userType"])
     setSort(state, filter.sort)

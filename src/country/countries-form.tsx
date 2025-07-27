@@ -22,7 +22,7 @@ const countrySearch: CountrySearch = {
 }
 export const CountriesForm = () => {
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     Country,
     CountryFilter,

@@ -22,7 +22,7 @@ import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
-import { handleError, inputSearch } from "uione"
+import { handleError, useResource } from "uione"
 import { getUserService, User, UserFilter } from "../service"
 
 ReactModal.setAppElement("#root")
@@ -63,9 +63,8 @@ export const UsersLookup = (props: Props) => {
     users: [],
     availableUsers: [],
   }
-  const refForm = useRef()
-  const sp = inputSearch()
-  const resource = sp.resource.resource()
+  const resource = useResource()
+  const refForm = useRef<HTMLFormElement>(null)
   const [state, setState] = useState<UserSearch>(initialState)
 
   const isOpenModel = props.isOpenModel
@@ -77,6 +76,7 @@ export const UsersLookup = (props: Props) => {
     setSort(state, filter.sort)
     search() // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const target = getSortElement(event.target as HTMLElement)
     const sort = handleSort(target, state.sortTarget, state.sortField, state.sortType)

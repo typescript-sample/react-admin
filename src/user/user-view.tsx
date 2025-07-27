@@ -6,9 +6,9 @@ import { handleError, useResource } from "uione"
 import { getUserService, User } from "./service"
 
 export const UserView = () => {
-  const navigate = useNavigate()
   const resource = useResource()
-  const refForm = useRef()
+  const navigate = useNavigate()
+  const refForm = useRef<HTMLFormElement>(null)
   const [user, setUser] = useState<User>()
   const { id } = useParams()
   useLayoutEffect(() => {

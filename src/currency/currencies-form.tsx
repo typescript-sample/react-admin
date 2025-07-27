@@ -25,7 +25,7 @@ const currencySearch: CurrencySearch = {
 }
 export const CurrenciesForm = () => {
   const navigate = useNavigate()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const { state, resource, component, updateState, doSearch, search, sort, toggleFilter, clearQ, changeView, pageChanged, pageSizeChanged } = useSearch<
     Currency,
     CurrencyFilter,

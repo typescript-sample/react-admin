@@ -2,7 +2,7 @@ import { Item } from "onecore"
 import { useEffect, useRef } from "react"
 import { createModel, EditComponentParam, useEdit } from "react-hook-core"
 import { requiredOnBlur, setReadOnly } from "ui-plus"
-import { hasPermission, inputEdit, Permission, Status } from "uione"
+import { hasPermission, inputEdit, Permission, Status, useResource } from "uione"
 import { Currency, getCurrencyService } from "./service"
 
 interface InternalState {
@@ -27,11 +27,13 @@ const param: EditComponentParam<Currency, string, InternalState> = {
   createModel: createCurrency,
 }
 export const CurrencyForm = () => {
-  const refForm = useRef()
-  const { resource, state, updateState, flag, save, back } = useEdit<Currency, string, InternalState>(
+  const resource = useResource()
+  const refForm = useRef<HTMLFormElement>(null)
+  const { state, updateState, flag, save, back } = useEdit<Currency, string, InternalState>(
     refForm,
     initialState,
     getCurrencyService(),
+    resource,
     inputEdit(),
     param,
   )

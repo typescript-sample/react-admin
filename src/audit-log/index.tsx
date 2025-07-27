@@ -38,7 +38,7 @@ const mapStyleStatus: Map<string, string> = new Map([
 export const AuditLogsForm = () => {
   const dateFormat = getDateFormat().toUpperCase()
   const locale = useLocale()
-  const refForm = useRef()
+  const refForm = useRef<HTMLFormElement>(null)
   const hooks = useSearch<AuditLog, AuditLogFilter, AuditLogSearch>(refForm, AuditSearch, useAuditLog(), inputSearch())
   const { state, resource, component, updateState, pageSizeChanged, pageChanged, changeView, search, sort } = hooks
   useEffect(() => {
