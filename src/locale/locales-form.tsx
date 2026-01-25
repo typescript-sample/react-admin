@@ -51,7 +51,7 @@ export const LocalesForm = () => {
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
       </header>
-      <div>
+      <div className="search-body">
         <form id="localesForm" name="localesForm" className="form" noValidate={true} ref={refForm as any}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
