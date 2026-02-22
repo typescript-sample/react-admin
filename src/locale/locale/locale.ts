@@ -1,22 +1,5 @@
 import { Attributes, Filter, Service } from "onecore"
 
-export interface LocaleFilter extends Filter {
-  code?: string
-  name?: string
-  nativeName?: string
-  countryCode?: string
-  countryName?: string
-  nativeCountryName?: string
-  dateFormat: string
-  firstDayOfWeek?: number
-  decimalSeparator?: string
-  groupSeparator?: string
-  currencyCode?: string
-  currencySymbol?: string
-  currencyDecimalDigits?: number
-  currencyPattern?: number
-  currencySample?: string
-}
 export interface Locale {
   code: string
   name?: string
@@ -34,6 +17,25 @@ export interface Locale {
   currencyPattern?: number
   currencySample?: string
 }
+
+export interface LocaleFilter extends Filter {
+  code?: string
+  name?: string
+  nativeName?: string
+  countryCode?: string
+  countryName?: string
+  nativeCountryName?: string
+  dateFormat: string
+  firstDayOfWeek?: number
+  decimalSeparator?: string
+  groupSeparator?: string
+  currencyCode?: string
+  currencySymbol?: string
+  currencyDecimalDigits?: number
+  currencyPattern?: number
+  currencySample?: string
+}
+
 export interface LocaleService extends Service<Locale, string, LocaleFilter> {}
 
 export const localeModel: Attributes = {

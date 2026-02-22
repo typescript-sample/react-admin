@@ -1,18 +1,18 @@
 import { Attributes, Filter, Result, SearchResult, Service, Tracking } from "onecore"
 
-export interface RoleFilter extends Filter {
-  roleId: string
-  roleName: string
-  status: string[]
-  remark: string
-  description?: string
-}
 export interface Role extends Tracking {
   roleId: string
   roleName: string
   status: string
   remark: string
   privileges?: string[]
+}
+export interface RoleFilter extends Filter {
+  roleId: string
+  roleName: string
+  status: string[]
+  remark: string
+  description?: string
 }
 export interface Privilege {
   id: string

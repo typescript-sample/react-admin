@@ -1,16 +1,17 @@
 import { Attributes, Filter, Service } from "onecore"
 
-export interface CurrencyFilter extends Filter {
-  code?: string
-  symbol?: string
-  decimalDigits?: number
-  status?: string[]
-}
 export interface Currency {
   code: string
   symbol?: string
   decimalDigits?: number
   status?: string
+}
+
+export interface CurrencyFilter extends Filter {
+  code?: string
+  symbol?: string
+  decimalDigits?: number
+  status?: string[]
 }
 
 export interface CurrencyService extends Service<Currency, string, CurrencyFilter> {}

@@ -1,18 +1,5 @@
 import { Attributes, Filter, Service } from "onecore"
 
-export interface CountryFilter extends Filter {
-  countryCode?: string
-  countryName?: string
-  nativeCountryName?: string
-  decimalSeparator?: string
-  groupSeparator?: string
-  currencyCode?: string
-  currencySymbol?: string
-  currencyDecimalDigits?: number
-  currencyPattern?: number
-  currencySample?: string
-  status?: string
-}
 export interface Country {
   countryCode: string
   countryName?: string
@@ -26,6 +13,21 @@ export interface Country {
   currencySample?: string
   status?: string
 }
+
+export interface CountryFilter extends Filter {
+  countryCode?: string
+  countryName?: string
+  nativeCountryName?: string
+  decimalSeparator?: string
+  groupSeparator?: string
+  currencyCode?: string
+  currencySymbol?: string
+  currencyDecimalDigits?: number
+  currencyPattern?: number
+  currencySample?: string
+  status?: string
+}
+
 export interface CountryService extends Service<Country, string, CountryFilter> {}
 
 export const countryModel: Attributes = {
