@@ -6,9 +6,10 @@ import { formatText, OnClick, useMessage, useUpdate } from "react-hook-core"
 import { Link, useNavigate } from "react-router-dom"
 import { alertInfo } from "ui-alert"
 import { initForm, registerEvents } from "ui-plus"
-import { handleError, loading, message, setPrivileges, setUser, storage, useResource } from "uione"
+import { toast } from "ui-toast"
+import { handleError, loading, setPrivileges, setUser, storage, useResource } from "uione"
 import logo from "../assets/images/logo.png"
-import { getAuthen } from "./service"
+import { getAuthenticator } from "./service"
 
 export const map = {
   "3": "fail_authentication",
@@ -68,6 +69,7 @@ export const SigninForm = () => {
     setState(usr)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
   const updateRemember = (e: any) => {
     e.preventDefault()
     state.remember = !state.remember
@@ -90,7 +92,7 @@ export const SigninForm = () => {
     const remember = state.remember
     try {
       loading().showLoading()
-      const authenticator = getAuthen()
+      const authenticator = getAuthenticator()
       const result = await authenticator.authenticate(user)
       const s = result.status
       if (s === status.two_factor_required) {
@@ -103,7 +105,7 @@ export const SigninForm = () => {
           const expiredDays = dayDiff(result.user.passwordExpiredTime, new Date())
           if (expiredDays && expiredDays > 0) {
             const ms = formatText(resource.msg_password_expired_soon, expiredDays)
-            message(ms)
+            toast(ms)
           }
         }
         if (s === status.success) {
@@ -128,7 +130,7 @@ export const SigninForm = () => {
       <form id="signinForm" name="signinForm" className="form" noValidate={true} autoComplete="off" ref={form as any}>
         <div className="view-body row">
           <img className="logo" src={logo} alt="logo" />
-          <h1>{resource.signin}</h1>
+          <h2>{resource.signin}</h2>
           <div className={"message " + msg.alertClass}>
             {msg.message}
             <span onClick={hideMessage} hidden={!msg.message || msg.message === ""} />

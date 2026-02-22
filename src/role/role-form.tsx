@@ -1,6 +1,6 @@
 import { Result } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, isEmptyObject, isSuccessful, makeDiff, OnClick } from "react-hook-core"
+import { clone, createModel, isEmptyObject, isSuccessful, makeDiff, OnClick, useUpdate } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -45,7 +45,7 @@ const initialState: InternalState = {
 }
 
 const createRole = (): Role => {
-  const role = {} as Role
+  const role = createModel<Role>()
   role.privileges = []
   role.status = Status.Active
   return role
@@ -128,10 +128,6 @@ function filterPermission(parentId: string | undefined, mapPermissions: Permissi
 function isChecked(id: string, privileges: Permission[]): boolean {
   if (!privileges) return false
   return privileges && privileges.find((item) => item.id === id && item.permissions > 0) ? true : false
-}
-function isCheckedAll(privileges: string[] | undefined, all: string[]): boolean | undefined {
-  const checkedAll = privileges && all && privileges.length === all.length
-  return checkedAll
 }
 
 function checked(id: string, action: number, privileges: Permission[]): boolean {
@@ -281,7 +277,7 @@ export function RoleForm() {
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialRole, setInitialRole] = useState<Role>(createRole())
-  const [state, setState] = useState<InternalState>(initialState)
+  const { state, setState, updateState } = useUpdate<InternalState>(initialState)
   const [privileges, setPrivileges] = useState<Permission[]>([])
   let seq = 1
 
@@ -301,7 +297,7 @@ export function RoleForm() {
           const role = createRole()
           setPrivileges(buildPermissions(actions, role.privileges))
           setInitialRole(clone(role))
-          setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+          setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
         } else {
           showLoading()
           service
@@ -315,7 +311,7 @@ export function RoleForm() {
                 }
                 setPrivileges(buildPermissions(actions, role.privileges))
                 setInitialRole(clone(role))
-                setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
+                setState({ all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
                 if (isReadOnly) {
                   setReadOnly(refForm.current as any)
                 }
@@ -339,10 +335,15 @@ export function RoleForm() {
       if (isReadOnly) {
         setReadOnly(refForm.current as any, "keyword", "btnSave")
       }
-      const checkedAll = isCheckedAll(obj.privileges, all)
-      setState({ ...state, checkedAll, role: obj })
+      setState({ role: obj }, () => isCheckedAll(obj.privileges, all))
     }
   }, [state.role, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const isCheckedAll = (privileges: string[] | undefined, all: string[]) => {
+    const checkedAll = privileges && all && privileges.length === all.length
+    setState({ checkedAll })
+    return checkedAll
+  }
 
   const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
@@ -367,15 +368,14 @@ export function RoleForm() {
     const mapToSavePrivileges = mapPermissions.map((p) => {
       return p.id + " " + p.permissions
     })
-    const checkedAll = isCheckedAll(role.privileges, all)
-    setState({ ...state, checkedAll, role: { ...obj, privileges: mapToSavePrivileges } })
+    setState({ role: { ...obj, privileges: mapToSavePrivileges } }, () => isCheckedAll(role.privileges, all))
   }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value
     const { allPrivileges } = state
     const shownPrivileges = buildShownModules(q, allPrivileges)
-    setState({ ...state, keyword: q, shownPrivileges })
+    setState({ keyword: q, shownPrivileges })
   }
 
   const assign = (e: OnClick, id: string) => {
@@ -479,8 +479,9 @@ export function RoleForm() {
       return p.id + " " + p.permissions
     })
     setPrivileges(permissions)
-    const checkedAll = isCheckedAll(mapToSavePrivileges, state.all)
-    setState({ ...state, checkedAll, role: { ...state.role, privileges: mapToSavePrivileges } })
+    setState({ role: { ...state.role, privileges: mapToSavePrivileges } }, function () {
+      isCheckedAll(mapToSavePrivileges, state.all)
+    })
   }
 
   const isParentChecked = (id: string, child: Privilege[], privileges: Permission[]) => {
@@ -537,7 +538,7 @@ export function RoleForm() {
     } else {
       return (
         <div className={`row ${isChild && "sub-menu-level-2"}`} key={p.id}>
-          <div className={`col s6 m4 inline flex-gap-2`}>
+          <div className={`col s6 m3 inline flex-gap-2`}>
             {seq++} .
             <input
               type="checkbox"
@@ -570,10 +571,6 @@ export function RoleForm() {
   }
 
   const role = state.role
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    role.status = e.target.value
-    setState({ ...state, role })
-  }
   const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     const diff = makeDiff(initialRole, role)
@@ -655,7 +652,6 @@ export function RoleForm() {
         </button>
       </header>
       <div>
-        <h4 className="header">Role Information</h4>
         <section className="row section">
           <label className="col s6 m6">
             {resource.role_id}
@@ -664,16 +660,13 @@ export function RoleForm() {
               id="roleId"
               name="roleId"
               value={role.roleId || ""}
+              readOnly={!newMode}
               onBlur={patternOnBlur}
               pattern={regexId}
               config-pattern-error-key={"invalid_pattern_id"}
-              onChange={(e) => {
-                role.roleId = e.target.value
-                setState({ ...state, role })
-              }}
+              onChange={updateState}
               maxLength={20}
               required={true}
-              readOnly={!newMode}
               placeholder={resource.role_id}
             />
           </label>
@@ -684,10 +677,7 @@ export function RoleForm() {
               id="roleName"
               name="roleName"
               value={role.roleName || ""}
-              onChange={(e) => {
-                role.roleName = e.target.value
-                setState({ ...state, role })
-              }}
+              onChange={updateState}
               maxLength={255}
               required={true}
               placeholder={resource.role_name}
@@ -695,28 +685,17 @@ export function RoleForm() {
           </label>
           <label className="col s12 m6">
             {resource.remark}
-            <input
-              type="text"
-              id="remark"
-              name="remark"
-              value={role.remark || ""}
-              onChange={(e) => {
-                role.remark = e.target.value
-                setState({ ...state, role })
-              }}
-              maxLength={255}
-              placeholder={resource.remark}
-            />
+            <input type="text" id="remark" name="remark" value={role.remark || ""} onChange={updateState} maxLength={255} placeholder={resource.remark} />
           </label>
           <div className="col s12 m6 radio-section">
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={statusOnChange} value="A" checked={role.status === "A"} />
+                <input type="radio" id="active" name="status" onChange={(e) => updateState(e, () => setState)} value="A" checked={role.status === "A"} />
                 {resource.active}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={statusOnChange} value="I" checked={role.status === "I"} />
+                <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, () => setState)} value="I" checked={role.status === "I"} />
                 {resource.inactive}
               </label>
             </div>
@@ -743,8 +722,9 @@ export function RoleForm() {
                 type="checkbox"
                 onChange={(e) =>
                   handleCheckAllModule(e, state.role.privileges, state.all, state.actions, (privileges: string[]) => {
-                    const checkedAll = isCheckedAll(privileges, state.all)
-                    setState({ ...state, checkedAll, role: { ...state.role, privileges: privileges } })
+                    setState({ role: { ...state.role, privileges: privileges } }, () => {
+                      isCheckedAll(privileges, state.all)
+                    })
                   })
                 }
                 checked={state.checkedAll}
@@ -755,6 +735,7 @@ export function RoleForm() {
             <p className="col s1 m2 center">{resource.read}</p>
             <p className="col s1 m2 center">{resource.write}</p>
             <p className="col s1 m2 center">{resource.delete}</p>
+            <p className="col s1 m2 center">{resource.approve}</p>
           </div>
           {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
         </section>
@@ -762,9 +743,11 @@ export function RoleForm() {
       <footer>
         {!isReadOnly && (
           <>
-            <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
-              {resource.delete}
-            </button>
+            {!newMode && (
+              <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
+                {resource.delete}
+              </button>
+            )}
             <button type="submit" id="btnSave" name="btnSave" onClick={save}>
               {resource.save}
             </button>

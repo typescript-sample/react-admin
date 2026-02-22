@@ -14,8 +14,17 @@ export interface Config {
   privilege_url: string
 }
 
-let userService: UserService | undefined
 let roleService: RoleService | undefined
+
+export function getRoleService(): RoleService {
+  if (!roleService) {
+    const c = storage.config()
+    roleService = new RoleClient(httpRequest, c.role_url, c.privilege_url)
+  }
+  return roleService
+}
+
+let userService: UserService | undefined
 
 export function getUserService(): UserService {
   if (!userService) {
@@ -23,11 +32,4 @@ export function getUserService(): UserService {
     userService = new UserClient(httpRequest, c.user_url)
   }
   return userService
-}
-export function getRoleService(): RoleService {
-  if (!roleService) {
-    const c = storage.config()
-    roleService = new RoleClient(httpRequest, c.role_url, c.privilege_url)
-  }
-  return roleService
 }

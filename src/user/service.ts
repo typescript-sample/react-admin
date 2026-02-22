@@ -12,28 +12,29 @@ export interface Config {
   user_url: string
   role_url: string
 }
-let masterDataService: MasterDataService | undefined
-let userService: UserService | undefined
-let roleService: RoleService | undefined
 
-// export const getUserService = context.getUserService
-export function getMasterData(): MasterDataService {
+let masterDataService: MasterDataService | undefined
+export function getMasterDataService(): MasterDataService {
   if (!masterDataService) {
     masterDataService = new MasterDataClient()
   }
   return masterDataService
 }
-export function getUserService(): UserService {
-  if (!userService) {
-    const c = storage.config()
-    userService = new UserClient(httpRequest, c.user_url)
-  }
-  return userService
-}
+
+let roleService: RoleService | undefined
 export function getRoleService(): RoleService {
   if (!roleService) {
     const c = storage.config()
     roleService = new RoleClient(httpRequest, c.role_url)
   }
   return roleService
+}
+
+let userService: UserService | undefined
+export function getUserService(): UserService {
+  if (!userService) {
+    const c = storage.config()
+    userService = new UserClient(httpRequest, c.user_url)
+  }
+  return userService
 }

@@ -48,7 +48,10 @@ export const RoleAssignmentForm = () => {
       showLoading()
       Promise.all([userService.getUsersByRole(id), roleService.load(id)])
         .then((values) => {
-          const [users, role] = values
+          let [users, role] = values
+          if (!users) {
+            users = []
+          }
           if (role) {
             setState({ ...state, users, shownUsers: users, role })
           }
@@ -125,8 +128,9 @@ export const RoleAssignmentForm = () => {
         return null
       })
       users = arr
+      const shownUsers = arr
       selectedUsers = []
-      setState({ ...state, role, users, selectedUsers, isCheckboxShown: false })
+      setState({ ...state, role, users, shownUsers, selectedUsers, isCheckboxShown: false })
     })
   }
 
@@ -218,8 +222,8 @@ export const RoleAssignmentForm = () => {
                       src={user.imageURL && user.imageURL.length > 0 ? user.imageURL : user.gender === "F" ? femaleIcon : maleIcon}
                       className="round-border"
                     />
-                    {isCheckboxShown === true ? <input type="checkbox" name="selected" checked={result ? true : false} /> : ""}
                     <h4>{user.displayName}</h4>
+                    {isCheckboxShown === true ? <input type="checkbox" name="selected" checked={result ? true : false} /> : ""}
                     <p>{user.email}</p>
                   </li>
                 )

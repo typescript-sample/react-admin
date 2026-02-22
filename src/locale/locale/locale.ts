@@ -1,4 +1,4 @@
-import { Attributes, Filter, Repository, Service } from "onecore"
+import { Attributes, Filter, Service } from "onecore"
 
 export interface LocaleFilter extends Filter {
   code?: string
@@ -34,7 +34,6 @@ export interface Locale {
   currencyPattern?: number
   currencySample?: string
 }
-export interface LocaleRepository extends Repository<Locale, string> {}
 export interface LocaleService extends Service<Locale, string, LocaleFilter> {}
 
 export const localeModel: Attributes = {
