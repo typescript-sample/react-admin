@@ -1,48 +1,96 @@
-import { Item } from "onecore"
-import { useEffect, useRef } from "react"
-import { createModel, EditComponentParam, useEdit } from "react-hook-core"
-import { requiredOnBlur, setReadOnly } from "ui-plus"
-import { hasPermission, inputEdit, Permission, useResource } from "uione"
+import { Result } from "onecore"
+import React, { useEffect, useRef, useState } from "react"
+import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { useNavigate, useParams } from "react-router-dom"
+import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
+import { hideLoading, showLoading } from "ui-loading"
+import { initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { getLocale, handleError, hasPermission, Permission, useResource } from "uione"
 import { getLocaleService, Locale } from "./service"
 
-interface InternalState {
-  locale: Locale
-  titleList: Item[]
-  positionList: Item[]
-}
-
 const createLocale = (): Locale => {
-  const locale = createModel<Locale>()
+  const locale = {} as Locale
   return locale
 }
 
-const initialState: InternalState = {
-  locale: {} as Locale,
-  titleList: [],
-  positionList: [],
-}
-
-const param: EditComponentParam<Locale, string, InternalState> = {
-  createModel: createLocale,
-}
 export const LocaleForm = () => {
+  const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
+  const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const { state, updateState, flag, save, back } = useEdit<Locale, string, InternalState>(
-    refForm,
-    initialState,
-    getLocaleService(),
-    resource,
-    inputEdit(),
-    param,
-  )
+  const [initialLocale, setInitialLocale] = useState<Locale>(createLocale())
+  const [locale, setLocale] = useState<Locale>(createLocale())
+  const { id } = useParams()
+  const newMode = !id
   useEffect(() => {
-    const isReadOnly = !hasPermission(Permission.write, 1)
-    if (isReadOnly) {
-      setReadOnly(refForm.current as any)
+    initForm(refForm?.current, registerEvents)
+    if (!id) {
+      const locale = createLocale()
+      setInitialLocale(clone(locale))
+      setLocale(locale)
+    } else {
+      showLoading()
+      getLocaleService()
+        .load(id)
+        .then((locale) => {
+          if (!locale) {
+            alertError(resource.error_404, () => navigate(-1))
+          } else {
+            setInitialLocale(clone(locale))
+            setLocale(locale)
+            if (isReadOnly) {
+              setReadOnly(refForm?.current)
+            }
+          }
+        })
+        .catch(handleError)
+        .finally(hideLoading)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  const locale = state.locale
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialLocale, locale)
+
+  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    const valid = validateForm(refForm?.current, getLocale())
+    if (valid) {
+      const service = getLocaleService()
+      confirm(resource.msg_confirm_save, () => {
+        if (newMode) {
+          showLoading()
+          service
+            .create(locale)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        } else {
+          const diff = makeDiff(initialLocale, locale, ["id"])
+          if (isEmptyObject(diff)) {
+            alertWarning(resource.msg_no_change)
+          } else {
+            showLoading()
+            service
+              .patch(locale)
+              .then((res) => afterSaved(res))
+              .catch(handleError)
+              .finally(hideLoading)
+          }
+        }
+      })
+    }
+  }
+  const afterSaved = (res: Result<Locale>) => {
+    if (Array.isArray(res)) {
+      showFormError(refForm?.current, res)
+    } else if (isSuccessful(res)) {
+      alertSuccess(resource.msg_save_success, () => navigate(-1))
+    } else if (res === 0) {
+      alertError(resource.error_not_found)
+    } else {
+      alertError(resource.error_conflict)
+    }
+  }
+
   return (
     <form id="localeForm" name="localeForm" className="form" model-name="locale" ref={refForm as any}>
       <header className="view-header">
@@ -57,8 +105,8 @@ export const LocaleForm = () => {
             id="code"
             name="code"
             value={locale.code || ""}
-            readOnly={!flag.newMode}
-            onChange={updateState}
+            readOnly={!newMode}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={20}
             required={true}
             placeholder={resource.locale_code}
@@ -71,7 +119,7 @@ export const LocaleForm = () => {
             id="name"
             name="name"
             value={locale.name || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={100}
             required={true}
             placeholder={resource.locale_name}
@@ -84,7 +132,7 @@ export const LocaleForm = () => {
             id="nativeName"
             name="nativeName"
             value={locale.nativeName || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={100}
             required={true}
             placeholder={resource.locale_native_name}
@@ -97,7 +145,7 @@ export const LocaleForm = () => {
             id="countryCode"
             name="countryCode"
             value={locale.countryCode || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={3}
             required={true}
             placeholder={resource.country_code}
@@ -110,7 +158,7 @@ export const LocaleForm = () => {
             id="countryName"
             name="countryName"
             value={locale.countryName || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={20}
             required={true}
             placeholder={resource.country_name}
@@ -123,7 +171,7 @@ export const LocaleForm = () => {
             id="nativeCountryName"
             name="nativeCountryName"
             value={locale.nativeCountryName || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={100}
             required={true}
             placeholder={resource.country_native_name}
@@ -136,7 +184,7 @@ export const LocaleForm = () => {
             id="dateFormat"
             name="dateFormat"
             value={locale.dateFormat || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={12}
             required={true}
             placeholder={resource.date_format}
@@ -151,7 +199,7 @@ export const LocaleForm = () => {
             className="text-right"
             data-type="integer"
             value={locale.firstDayOfWeek || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={1}
             placeholder={resource.first_day_of_week}
           />
@@ -163,7 +211,7 @@ export const LocaleForm = () => {
             id="currencyCode"
             name="currencyCode"
             value={locale.currencyCode || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={3}
             required={true}
@@ -177,7 +225,7 @@ export const LocaleForm = () => {
             id="currencySymbol"
             name="currencySymbol"
             value={locale.currencySymbol || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -192,8 +240,8 @@ export const LocaleForm = () => {
             name="currencyDecimalDigits"
             className="text-right"
             data-type="integer"
-            value={locale.currencyDecimalDigits || ""}
-            onChange={updateState}
+            value={locale.currencyDecimalDigits?.toString()}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             maxLength={1}
             placeholder={resource.currency_decimal_digits}
           />
@@ -206,8 +254,8 @@ export const LocaleForm = () => {
             name="currencyPattern"
             className="text-right"
             data-type="integer"
-            value={locale.currencyPattern || ""}
-            onChange={updateState}
+            value={locale.currencyPattern?.toString()}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -221,7 +269,7 @@ export const LocaleForm = () => {
             id="currencySample"
             name="currencySample"
             value={locale.currencySample || ""}
-            onChange={updateState}
+            onChange={ (e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -230,7 +278,7 @@ export const LocaleForm = () => {
         </label>
       </div>
       <footer className="view-footer">
-        {!flag.readOnly && (
+        {!isReadOnly && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

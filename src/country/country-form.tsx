@@ -1,48 +1,96 @@
-import { Item } from "onecore"
-import { useEffect, useRef } from "react"
-import { createModel, EditComponentParam, useEdit } from "react-hook-core"
-import { requiredOnBlur, setReadOnly } from "ui-plus"
-import { hasPermission, inputEdit, Permission, useResource } from "uione"
+import { Result } from "onecore"
+import React, { useEffect, useRef, useState } from "react"
+import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { useNavigate, useParams } from "react-router-dom"
+import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
+import { hideLoading, showLoading } from "ui-loading"
+import { initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Country, getCountryService } from "./service"
 
-interface InternalState {
-  country: Country
-  titleList: Item[]
-  positionList: Item[]
-}
-
 const createCountry = (): Country => {
-  const country = createModel<Country>()
+  const country = {} as Country
+  country.status = Status.Active
   return country
 }
 
-const initialState: InternalState = {
-  country: {} as Country,
-  titleList: [],
-  positionList: [],
-}
-
-const param: EditComponentParam<Country, string, InternalState> = {
-  createModel: createCountry,
-}
 export const CountryForm = () => {
+  const isReadOnly = !hasPermission(Permission.write, 1)
   const resource = useResource()
+  const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const { state, updateState, flag, save, back } = useEdit<Country, string, InternalState>(
-    refForm,
-    initialState,
-    getCountryService(),
-    resource,
-    inputEdit(),
-    param,
-  )
+  const [initialCountry, setInitialCountry] = useState<Country>(createCountry())
+  const [country, setCountry] = useState<Country>(createCountry())
+  const { id } = useParams()
+  const newMode = !id
   useEffect(() => {
-    const isReadOnly = !hasPermission(Permission.write, 1)
-    if (isReadOnly) {
-      setReadOnly(refForm.current as any)
+    initForm(refForm?.current, registerEvents)
+    if (!id) {
+      const country = createCountry()
+      setInitialCountry(clone(country))
+      setCountry(country)
+    } else {
+      showLoading()
+      getCountryService()
+        .load(id)
+        .then((country) => {
+          if (!country) {
+            alertError(resource.error_404, () => navigate(-1))
+          } else {
+            setInitialCountry(clone(country))
+            setCountry(country)
+            if (isReadOnly) {
+              setReadOnly(refForm?.current)
+            }
+          }
+        })
+        .catch(handleError)
+        .finally(hideLoading)
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  const country = state.country
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialCountry, country)
+
+  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault()
+    const valid = validateForm(refForm?.current, getLocale())
+    if (valid) {
+      const service = getCountryService()
+      confirm(resource.msg_confirm_save, () => {
+        if (newMode) {
+          showLoading()
+          service
+            .create(country)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        } else {
+          const diff = makeDiff(initialCountry, country, ["id"])
+          if (isEmptyObject(diff)) {
+            alertWarning(resource.msg_no_change)
+          } else {
+            showLoading()
+            service
+              .patch(country)
+              .then((res) => afterSaved(res))
+              .catch(handleError)
+              .finally(hideLoading)
+          }
+        }
+      })
+    }
+  }
+  const afterSaved = (res: Result<Country>) => {
+    if (Array.isArray(res)) {
+      showFormError(refForm?.current, res)
+    } else if (isSuccessful(res)) {
+      alertSuccess(resource.msg_save_success, () => navigate(-1))
+    } else if (res === 0) {
+      alertError(resource.error_not_found)
+    } else {
+      alertError(resource.error_conflict)
+    }
+  }
   return (
     <form id="countryForm" name="countryForm" className="form" model-name="country" ref={refForm as any}>
       <header className="view-header">
@@ -58,8 +106,8 @@ export const CountryForm = () => {
             id="countryCode"
             name="countryCode"
             value={country.countryCode || ""}
-            readOnly={!flag.newMode}
-            onChange={updateState}
+            readOnly={!newMode}
+            onChange={(e) => updateState(e, country, setCountry)}
             maxLength={3}
             required={true}
             placeholder={resource.country_code}
@@ -72,7 +120,7 @@ export const CountryForm = () => {
             id="countryName"
             name="countryName"
             value={country.countryName || ""}
-            onChange={updateState}
+            onChange={(e) => updateState(e, country, setCountry)}
             maxLength={20}
             required={true}
             placeholder={resource.country_name}
@@ -85,7 +133,7 @@ export const CountryForm = () => {
             id="nativeCountryName"
             name="nativeCountryName"
             value={country.nativeCountryName || ""}
-            onChange={updateState}
+            onChange={(e) => updateState(e, country, setCountry)}
             maxLength={100}
             required={true}
             placeholder={resource.country_native_name}
@@ -98,7 +146,7 @@ export const CountryForm = () => {
             id="currencyCode"
             name="currencyCode"
             value={country.currencyCode || ""}
-            onChange={updateState}
+            onChange={(e) => updateState(e, country, setCountry)}
             onBlur={requiredOnBlur}
             maxLength={3}
             required={true}
@@ -112,7 +160,7 @@ export const CountryForm = () => {
             id="currencySymbol"
             name="currencySymbol"
             value={country.currencySymbol || ""}
-            onChange={updateState}
+            onChange={(e) => updateState(e, country, setCountry)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -127,8 +175,8 @@ export const CountryForm = () => {
             name="currencyDecimalDigits"
             className="text-right"
             data-type="integer"
-            value={country.currencyDecimalDigits || ""}
-            onChange={updateState}
+            value={country.currencyDecimalDigits?.toString()}
+            onChange={(e) => updateState(e, country, setCountry)}
             maxLength={1}
             placeholder={resource.currency_decimal_digits}
           />
@@ -141,8 +189,8 @@ export const CountryForm = () => {
             name="currencyPattern"
             className="text-right"
             data-type="integer"
-            value={country.currencyPattern || ""}
-            onChange={updateState}
+            value={country.currencyPattern?.toString()}
+            onChange={(e) => updateState(e, country, setCountry)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -156,7 +204,7 @@ export const CountryForm = () => {
             id="currencySample"
             name="currencySample"
             value={country.currencySample || ""}
-            onChange={updateState}
+            onChange={(e) => updateState(e, country, setCountry)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -165,7 +213,7 @@ export const CountryForm = () => {
         </label>
       </div>
       <footer className="view-footer">
-        {!flag.readOnly && (
+        {!isReadOnly && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>
