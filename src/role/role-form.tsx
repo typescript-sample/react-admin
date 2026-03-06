@@ -276,7 +276,7 @@ function buildPermissions(actions: Map<string, number>, privileges?: string[]): 
 }
 
 export function RoleForm() {
-  const isReadOnly = !hasPermission(write, 1)
+  const canWrite = hasPermission(write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -316,7 +316,7 @@ export function RoleForm() {
                 setPrivileges(buildPermissions(actions, role.privileges))
                 setInitialRole(clone(role))
                 setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
-                if (isReadOnly) {
+                if (!canWrite) {
                   setReadOnly(refForm.current as any)
                 }
               }
@@ -326,7 +326,7 @@ export function RoleForm() {
         }
       })
       .catch(handleError)
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const obj = state.role
     if (obj) {
@@ -336,13 +336,13 @@ export function RoleForm() {
       } else {
         setPrivileges(buildPermissions(actions, obj.privileges))
       }
-      if (isReadOnly) {
+      if (!canWrite) {
         setReadOnly(refForm.current as any, "keyword", "btnSave")
       }
       const checkedAll = isCheckedAll(obj.privileges, all)
       setState({ ...state, checkedAll, role: obj })
     }
-  }, [state.role, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.role, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
@@ -383,10 +383,10 @@ export function RoleForm() {
     navigate(`/roles/${id}/assign`)
     return
   }
-  const handleCheckBox = (event: ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
-    event.preventDefault()
-    const uChecked: boolean = event.target.checked
-    let pChecked: number = +event.target.value
+  const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, id: string, parentId?: string, currentPrivilege?: Privilege, force?: boolean) => {
+    e.preventDefault()
+    const uChecked: boolean = e.target.checked
+    let pChecked: number = +e.target.value
     const { actions, allPrivileges } = state
     let permissions = privileges
 
@@ -574,8 +574,8 @@ export function RoleForm() {
     role.status = e.target.value
     setState({ ...state, role })
   }
-  const back = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const diff = makeDiff(initialRole, role)
     if (isEmptyObject(diff)) {
       navigate(-1)
@@ -583,8 +583,8 @@ export function RoleForm() {
       confirm(resource.msg_confirm_back, () => navigate(-1))
     }
   }
-  const deleteOnClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const deleteOnClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     confirm(resource.msg_confirm_delete, () => {
       const service = getRoleService()
       showLoading()
@@ -603,8 +603,8 @@ export function RoleForm() {
         .finally(hideLoading)
     })
   }
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getRoleService()
@@ -748,7 +748,7 @@ export function RoleForm() {
                   })
                 }
                 checked={state.checkedAll}
-                disabled={isReadOnly || state.keyword !== ""}
+                disabled={!canWrite || state.keyword !== ""}
               />
               <p>{resource.module}</p>
             </div>
@@ -757,16 +757,16 @@ export function RoleForm() {
             <p className="col s1 m2">{resource.delete}</p>
             <p className="col s1 m2">{resource.approve}</p>
           </div>
-          {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
+          {renderForms(state.shownPrivileges, "", !canWrite || state.keyword !== "")}
         </section>
       </div>
       <footer>
-        {!isReadOnly && (
+        {canWrite && (
           <>
             {!newMode && (
-            <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
-              {resource.delete}
-            </button>
+              <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>
+                {resource.delete}
+              </button>
             )}
             <button type="submit" id="btnSave" name="btnSave" onClick={save}>
               {resource.save}

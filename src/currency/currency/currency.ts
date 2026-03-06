@@ -2,8 +2,8 @@ import { Attributes, Filter, Service } from "onecore"
 
 export interface Currency {
   code: string
-  symbol?: string
-  decimalDigits?: number
+  symbol: string
+  decimalDigits: number
   status?: string
 }
 

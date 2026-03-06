@@ -1,5 +1,5 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
   addParametersIntoUrl,
   buildFromUrl,
@@ -8,16 +8,16 @@ import {
   checked,
   getFields,
   getNumber,
-  handleSort,
+  getOffset,
   handleToggle,
   mergeFilter,
+  onSort,
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
-  Sortable,
-  useMergeState,
-  value
+  Sortable
 } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
@@ -28,123 +28,106 @@ import { getRoleService, Role, RoleFilter } from "./service"
 
 interface RoleSearch extends Sortable {
   statusList: Item[]
-  filter: RoleFilter
-  list: Role[]
   total?: number
   view?: string
-  hideFilter?: boolean
   fields?: string[]
-}
-const roleFilter: RoleFilter = {
-  limit: 24,
-  q: "",
-  roleId: "",
-  roleName: "",
-  status: [],
-  remark: "",
 }
 
 const sizes = pageSizes
 export const RolesForm = () => {
   const canWrite = hasPermission(write)
+
+  const roleFilter: RoleFilter = {
+    limit: resources.defaultLimit,
+    roleId: "",
+    roleName: "",
+    status: [],
+    remark: "",
+  }
   const initialState: RoleSearch = {
     statusList: [],
-    list: [],
-    filter: roleFilter,
-    hideFilter: true
   }
+
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
-  const [state, setState] = useMergeState<RoleSearch>(initialState)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
+  const [state, setState] = useState<RoleSearch>(initialState)
+  const [filter, setFilter] = useState<RoleFilter>(roleFilter)
+  const [list, setList] = useState<Role[]>([])
 
   useEffect(() => {
-    const filter = mergeFilter(buildFromUrl<RoleFilter>(), state.filter, sizes, ["status", "userType"])
-    setSort(state, filter.sort)
-    search() // eslint-disable-next-line react-hooks/exhaustive-deps
+    const initFilter = mergeFilter(buildFromUrl<RoleFilter>(), filter, sizes, ["status", "userType"])
+    setSort(state, initFilter.sort)
+    setFilter(initFilter)
+    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault()
-    if (event && event.target) {
-      const target = event.target as any
-      const s = handleSort(target, state.sortTarget, state.sortField, state.sortType)
-      setState({
-        sortField: s.field,
-        sortType: s.type,
-        sortTarget: target,
-      })
-      state.sortField = s.field
-      state.sortType = s.type
-      state.sortTarget = target
-    }
-    search()
-  }
-  const pageSizeChanged = (event: any) => {
-    state.filter.page = 1
-    state.filter.limit = getNumber(event)
+
+  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state, setState)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
+    filter.page = 1
+    filter.limit = getNumber(e)
+    setFilter(filter)
     search()
   }
   const pageChanged = (data: PageChange) => {
     const { page, size } = data
-    state.filter.page = page
-    state.filter.limit = size
+    filter.page = page
+    filter.limit = size
+    setFilter(filter)
     search()
   }
-  const searchOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    event.preventDefault()
+  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    e.preventDefault()
     removeSortStatus(state.sortTarget)
-    state.filter.page = 1
+    filter.page = 1
     state.sortTarget = undefined
     state.sortField = undefined
+    setFilter(filter)
+    setState(state)
     search()
   }
-  const limit = state.filter.limit
-  const page = state.filter.page
+
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const filter = buildSortFilter(state.filter, state)
-    addParametersIntoUrl(filter, isFirstLoad)
+    const urlFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    setFilter(urlFilter)
+    const { limit, page } = urlFilter
     getRoleService()
-      .search(filter, limit, page, fields)
+      .search(urlFilter, limit, page, fields)
       .then((res) => {
-        setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
 
-  const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { filter } = state
-    const value = event.target.value
-    if (event.target.checked) {
+  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (e.target.checked) {
       filter.status.push(value)
     } else {
       filter.status = filter.status.filter((i) => i !== value)
     }
     filter.page = 1
-    setState({ ...state, filter })
+    setFilter({ ...filter })
     search()
   }
-  const changeView = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (event && event.target) {
-      const target = event.target as any
-      const v: string = target.getAttribute("data-view")
-      if (v && v.length > 0) {
-        setState({ view: v })
-      }
-    }
-  }
 
-  const filter = value(state.filter)
+  const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
       <header>
         <h2>{resource.roles}</h2>
         <div className="btn-group">
-          {state.view !== "table" && <button type="button" id="btnTable" name="btnTable" className="btn-table" data-view="table" onClick={changeView} />}
-          {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" data-view="listview" onClick={changeView} />
+          {state.view === "list" && (
+            <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
+          )}
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -170,7 +153,7 @@ export const RolesForm = () => {
                 maxLength={255}
                 onChange={(e) => {
                   filter.q = e.target.value
-                  setState({ ...state, filter })
+                  setFilter({ ...filter })
                 }}
                 placeholder={resource.keyword}
               />
@@ -180,22 +163,22 @@ export const RolesForm = () => {
                 className="btn-remove-text"
                 onClick={(e) => {
                   filter.q = ""
-                  setState({ ...state, filter })
+                  setFilter({ ...filter })
                 }}
               />
               <button
                 type="button"
                 className="btn-filter"
                 onClick={(e) => {
-                  const hideFilter = handleToggle(e.target as HTMLElement, state.hideFilter)
-                  setState({ ...state, hideFilter })
+                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
+                  setShowFilter(toggleFilter)
                 }}
               />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
-            <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
+            <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
-          <section className="row search-group inline" hidden={state.hideFilter}>
+          <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m6">
               {resource.status}
               <section className="checkbox-group">
@@ -211,12 +194,12 @@ export const RolesForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="roleId">
                     <button type="button" id="sortRoleId" onClick={sort}>
                       {resource.role_id}
@@ -240,12 +223,11 @@ export const RolesForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {state.list &&
-                  state.list.length > 0 &&
-                  state.list.map((item, i) => {
+                {list &&
+                  list.map((item, i) => {
                     return (
                       <tr key={i}>
-                        <td className="text-right">{(item as any).sequenceNo}</td>
+                        <td className="text-right">{offset + i + 1}</td>
                         <td>{item.roleId}</td>
                         <td>
                           <Link to={`${item.roleId}`}>{item.roleName}</Link>
@@ -259,11 +241,10 @@ export const RolesForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
-            {state.list &&
-              state.list.length > 0 &&
-              state.list.map((item, i) => {
+            {list &&
+              list.map((item, i) => {
                 return (
                   <li key={i} className="col s12 m6 l4 xl3 list-item">
                     <Link to={`${item.roleId}`}>{item.roleName}</Link>

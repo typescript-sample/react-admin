@@ -15,7 +15,7 @@ const createCountry = (): Country => {
 }
 
 export const CountryForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -39,7 +39,7 @@ export const CountryForm = () => {
           } else {
             setInitialCountry(clone(country))
             setCountry(country)
-            if (isReadOnly) {
+            if (!canWrite) {
               setReadOnly(refForm?.current)
             }
           }
@@ -47,37 +47,38 @@ export const CountryForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialCountry, country)
+  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialCountry, country)
 
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getCountryService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialCountry, country, ["countryId"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(country)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(country)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialCountry, country, ["id"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(country)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Country>) => {
@@ -213,7 +214,7 @@ export const CountryForm = () => {
         </label>
       </div>
       <footer className="view-footer">
-        {!isReadOnly && (
+        {canWrite && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

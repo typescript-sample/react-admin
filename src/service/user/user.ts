@@ -2,9 +2,9 @@ import { Attributes, Filter, SearchService } from "onecore"
 
 export interface UserFilter extends Filter {
   userId: string
-  username: string
-  email: string
-  displayName: string
+  username?: string
+  email?: string
+  displayName?: string
   status: string[]
 }
 export interface User {

@@ -14,7 +14,7 @@ const createLocale = (): Locale => {
 }
 
 export const LocaleForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -38,7 +38,7 @@ export const LocaleForm = () => {
           } else {
             setInitialLocale(clone(locale))
             setLocale(locale)
-            if (isReadOnly) {
+            if (!canWrite) {
               setReadOnly(refForm?.current)
             }
           }
@@ -46,37 +46,38 @@ export const LocaleForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialLocale, locale)
+  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialLocale, locale)
 
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getLocaleService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialLocale, locale, ["localeId"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(locale)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(locale)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialLocale, locale, ["id"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(locale)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Locale>) => {
@@ -106,7 +107,7 @@ export const LocaleForm = () => {
             name="code"
             value={locale.code || ""}
             readOnly={!newMode}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={20}
             required={true}
             placeholder={resource.locale_code}
@@ -119,7 +120,7 @@ export const LocaleForm = () => {
             id="name"
             name="name"
             value={locale.name || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={100}
             required={true}
             placeholder={resource.locale_name}
@@ -132,7 +133,7 @@ export const LocaleForm = () => {
             id="nativeName"
             name="nativeName"
             value={locale.nativeName || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={100}
             required={true}
             placeholder={resource.locale_native_name}
@@ -145,7 +146,7 @@ export const LocaleForm = () => {
             id="countryCode"
             name="countryCode"
             value={locale.countryCode || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={3}
             required={true}
             placeholder={resource.country_code}
@@ -158,7 +159,7 @@ export const LocaleForm = () => {
             id="countryName"
             name="countryName"
             value={locale.countryName || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={20}
             required={true}
             placeholder={resource.country_name}
@@ -171,7 +172,7 @@ export const LocaleForm = () => {
             id="nativeCountryName"
             name="nativeCountryName"
             value={locale.nativeCountryName || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={100}
             required={true}
             placeholder={resource.country_native_name}
@@ -184,7 +185,7 @@ export const LocaleForm = () => {
             id="dateFormat"
             name="dateFormat"
             value={locale.dateFormat || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={12}
             required={true}
             placeholder={resource.date_format}
@@ -198,8 +199,8 @@ export const LocaleForm = () => {
             name="firstDayOfWeek"
             className="text-right"
             data-type="integer"
-            value={locale.firstDayOfWeek || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            value={locale.firstDayOfWeek?.toString()}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={1}
             placeholder={resource.first_day_of_week}
           />
@@ -211,7 +212,7 @@ export const LocaleForm = () => {
             id="currencyCode"
             name="currencyCode"
             value={locale.currencyCode || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={3}
             required={true}
@@ -225,7 +226,7 @@ export const LocaleForm = () => {
             id="currencySymbol"
             name="currencySymbol"
             value={locale.currencySymbol || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -241,7 +242,7 @@ export const LocaleForm = () => {
             className="text-right"
             data-type="integer"
             value={locale.currencyDecimalDigits?.toString()}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={1}
             placeholder={resource.currency_decimal_digits}
           />
@@ -255,7 +256,7 @@ export const LocaleForm = () => {
             className="text-right"
             data-type="integer"
             value={locale.currencyPattern?.toString()}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -269,7 +270,7 @@ export const LocaleForm = () => {
             id="currencySample"
             name="currencySample"
             value={locale.currencySample || ""}
-            onChange={ (e) => updateState(e, locale, setLocale)}
+            onChange={(e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
             maxLength={40}
             required={true}
@@ -278,7 +279,7 @@ export const LocaleForm = () => {
         </label>
       </div>
       <footer className="view-footer">
-        {!isReadOnly && (
+        {canWrite && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

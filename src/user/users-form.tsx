@@ -9,19 +9,17 @@ import {
   getFields,
   getNumber,
   getOffset,
-  getSortElement,
-  handleSort,
   handleToggle,
   mergeFilter,
-  OnClick,
+  onSort,
   PageChange,
   pageSizes,
   removeSortStatus,
+  resources,
   setSort,
   Sortable,
-  value,
+  updateState
 } from "react-hook-core"
-import { useNavigate } from "react-router"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -33,112 +31,106 @@ import { getUserService, User, UserFilter } from "./service"
 
 interface UserSearch extends Sortable {
   statusList: Item[]
-  filter: UserFilter
-  list: User[]
   total?: number
   view?: string
-  hideFilter?: boolean
   fields?: string[]
-}
-const userFilter: UserFilter = {
-  limit: 24,
-  username: "",
-  displayName: "",
-  status: ["A"],
-  q: "",
 }
 
 const sizes = pageSizes
+export type ReactMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>
 export const UsersForm = () => {
   const canWrite = hasPermission(Permission.write)
+
+  const userFilter: UserFilter = {
+    limit: resources.defaultLimit,
+    username: "",
+    displayName: "",
+    status: ["A"],
+    q: "",
+  }
   const initialState: UserSearch = {
     statusList: [],
-    list: [],
-    filter: userFilter,
-    hideFilter: true,
   }
+
   const resource = useResource()
-  const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
+  const [showFilter, setShowFilter] = useState<boolean>(false)
   const [state, setState] = useState<UserSearch>(initialState)
+  const [filter, setFilter] = useState<UserFilter>(userFilter)
+  const [list, setList] = useState<User[]>([])
 
   useEffect(() => {
-    const filter = mergeFilter(buildFromUrl<UserFilter>(), state.filter, sizes, ["status"])
+    const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, sizes, ["status"])
     setSort(state, filter.sort)
-    search() // eslint-disable-next-line react-hooks/exhaustive-deps
+    setFilter(initFilter)
+    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  const sort = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const target = getSortElement(event.target as HTMLElement)
-    const sort = handleSort(target, state.sortTarget, state.sortField, state.sortType)
-    state.sortField = sort.field
-    state.sortType = sort.type
-    state.sortTarget = target
-    search()
-  }
-  const pageSizeChanged = (event: ChangeEvent<HTMLSelectElement>) => {
-    state.filter.page = 1
-    state.filter.limit = getNumber(event)
+
+  const sort = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => onSort(e, search, state, setState)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => {
+    filter.page = 1
+    filter.limit = getNumber(e)
+    setFilter(filter)
     search()
   }
   const pageChanged = (data: PageChange) => {
     const { page, size } = data
-    state.filter.page = page
-    state.filter.limit = size
+    filter.page = page
+    filter.limit = size
+    setFilter(filter)
     search()
   }
-  const searchOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
-    event.preventDefault()
+  const searchOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    e.preventDefault()
     removeSortStatus(state.sortTarget)
-    state.filter.page = 1
+    filter.page = 1
     state.sortTarget = undefined
     state.sortField = undefined
+    setFilter(filter)
+    setState(state)
     search()
   }
-  const limit = state.filter.limit
-  const page = state.filter.page
+
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const filter = buildSortFilter(state.filter, state)
-    addParametersIntoUrl(filter, isFirstLoad)
+    const urlFilter = buildSortFilter(filter, state)
+    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    setFilter(urlFilter)
+    const { limit, page } = urlFilter
     getUserService()
-      .search(filter, limit, page, fields)
+      .search(urlFilter, limit, page, fields)
       .then((res) => {
-        setState({ ...state, filter: state.filter, list: res.list, total: res.total, fields })
+        setState({ ...state, total: res.total, fields })
+        setList(res.list)
         toast(buildMessage(resource, res.list, limit, page, res.total))
       })
       .catch(handleError)
       .finally(hideLoading)
   }
-  const view = (e: OnClick, id: string) => {
-    e.preventDefault()
-    navigate(`${id}/view`)
-  }
-  const checkboxOnChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { filter } = state
-    const value = event.target.value
-    if (event.target.checked) {
+
+  const checkboxOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    if (e.target.checked) {
       filter.status.push(value)
     } else {
       filter.status = filter.status.filter((i) => i !== value)
     }
     filter.page = 1
-    setState({ ...state, filter })
+    setFilter({ ...filter })
     search()
   }
-  const { list } = state
-  const filter = value(state.filter)
-  const offset = getOffset(limit, page)
+  const offset = getOffset(filter.limit, filter.page)
   return (
     <div>
       <header>
         <h2>{resource.users}</h2>
         <div className="btn-group">
-          {state.view !== "table" && (
+          {state.view === "list" && (
             <button type="button" id="btnTable" name="btnTable" className="btn-table" onClick={(e) => setState({ ...state, view: "table" })} />
           )}
-          {state.view === "table" && (
-            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "" })} />
+          {state.view !== "list" && (
+            <button type="button" id="btnListView" name="btnListView" className="btn-list" onClick={(e) => setState({ ...state, view: "list" })} />
           )}
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
@@ -162,10 +154,7 @@ export const UsersForm = () => {
                 name="q"
                 value={filter.q || ""}
                 maxLength={255}
-                onChange={(e) => {
-                  filter.q = e.target.value
-                  setState({ ...state, filter })
-                }}
+                onChange={(e) => updateState(e, filter, setFilter)}
                 placeholder={resource.keyword}
               />
               <button
@@ -174,22 +163,22 @@ export const UsersForm = () => {
                 className="btn-remove-text"
                 onClick={(e) => {
                   filter.q = ""
-                  setState({ ...state, filter })
+                  setFilter({ ...filter })
                 }}
               />
               <button
                 type="button"
                 className="btn-filter"
                 onClick={(e) => {
-                  const hideFilter = handleToggle(e.target as HTMLElement, state.hideFilter)
-                  setState({ ...state, hideFilter })
+                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
+                  setShowFilter(toggleFilter)
                 }}
               />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
-            <Pagination className="col s12 m6" total={state.total} size={state.filter.limit} max={7} page={state.filter.page} onChange={pageChanged} />
+            <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
-          <section className="row search-group inline" hidden={state.hideFilter}>
+          <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m4 l4">
               {resource.username}
               <input
@@ -197,10 +186,7 @@ export const UsersForm = () => {
                 id="username"
                 name="username"
                 value={filter.username || ""}
-                onChange={(e) => {
-                  filter.username = e.target.value
-                  setState({ ...state, filter })
-                }}
+                onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={255}
                 placeholder={resource.username}
               />
@@ -212,10 +198,7 @@ export const UsersForm = () => {
                 id="displayName"
                 name="displayName"
                 value={filter.displayName || ""}
-                onChange={(e) => {
-                  filter.displayName = e.target.value
-                  setState({ ...state, filter })
-                }}
+                onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={255}
                 placeholder={resource.display_name}
               />
@@ -235,12 +218,12 @@ export const UsersForm = () => {
             </label>
           </section>
         </form>
-        {state.view === "table" && (
+        {state.view !== "list" && (
           <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="userId">
                     <button type="button" id="sortUserId" onClick={sort}>
                       {resource.user_id}
@@ -271,7 +254,6 @@ export const UsersForm = () => {
               </thead>
               <tbody>
                 {list &&
-                  list.length > 0 &&
                   list.map((user, i) => {
                     return (
                       <tr key={i}>
@@ -286,7 +268,7 @@ export const UsersForm = () => {
                         <td>
                           <div className="btn-group">
                             <button type="button" className="btn-edit"></button>
-                            <button type="button" className="btn-history" onClick={(e) => view(e, user.userId)}></button>
+                            <button type="button" className="btn-history"></button>
                           </div>
                         </td>
                       </tr>
@@ -296,10 +278,9 @@ export const UsersForm = () => {
             </table>
           </div>
         )}
-        {state.view !== "table" && (
+        {state.view === "list" && (
           <ul className="row list">
             {list &&
-              list.length > 0 &&
               list.map((user, i) => {
                 return (
                   <li key={i} className="col s12 m6 l4 xl3 img-item">

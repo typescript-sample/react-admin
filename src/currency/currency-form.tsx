@@ -15,7 +15,7 @@ const createCurrency = (): Currency => {
 }
 
 export const CurrencyForm = () => {
-  const isReadOnly = !hasPermission(Permission.write, 1)
+  const canWrite = hasPermission(Permission.write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -39,7 +39,7 @@ export const CurrencyForm = () => {
           } else {
             setInitialCurrency(clone(currency))
             setCurrency(currency)
-            if (isReadOnly) {
+            if (!canWrite) {
               setReadOnly(refForm?.current)
             }
           }
@@ -47,37 +47,38 @@ export const CurrencyForm = () => {
         .catch(handleError)
         .finally(hideLoading)
     }
-  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (event: OnClick) => goBack(navigate, confirm, resource, initialCurrency, currency)
+  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialCurrency, currency)
 
-  const save = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
+  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getCurrencyService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialCurrency, currency, ["currencyId"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(currency)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(currency)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialCurrency, currency, ["id"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(currency)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Currency>) => {
@@ -91,6 +92,7 @@ export const CurrencyForm = () => {
       alertError(resource.error_conflict)
     }
   }
+
   return (
     <form id="currencyForm" name="currencyForm" className="form" model-name="currency" ref={refForm as any}>
       <header className="view-header">
@@ -105,7 +107,7 @@ export const CurrencyForm = () => {
             id="code"
             name="code"
             className="form-control"
-            value={currency.code || ""}
+            value={currency.code}
             readOnly={!newMode}
             onChange={(e) => updateState(e, currency, setCurrency)}
             maxLength={20}
@@ -120,7 +122,7 @@ export const CurrencyForm = () => {
             id="symbol"
             name="symbol"
             className="form-control"
-            value={currency.symbol || ""}
+            value={currency.symbol}
             onChange={(e) => updateState(e, currency, setCurrency)}
             onBlur={requiredOnBlur}
             maxLength={40}
@@ -131,7 +133,7 @@ export const CurrencyForm = () => {
         <label className="col s12 m6 flying">
           {resource.currency_decimal_digits}
           <input
-            type="text"
+            type="tel"
             id="decimalDigits"
             name="decimalDigits"
             className="text-right"
@@ -157,7 +159,7 @@ export const CurrencyForm = () => {
         </div>
       </div>
       <footer className="view-footer">
-        {!isReadOnly && (
+        {canWrite && (
           <button type="submit" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>
