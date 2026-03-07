@@ -276,7 +276,7 @@ function buildPermissions(actions: Map<string, number>, privileges?: string[]): 
 }
 
 export function RoleForm() {
-  const canWrite = hasPermission(write, 1)
+  const isReadOnly = !hasPermission(write, 1)
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -316,7 +316,7 @@ export function RoleForm() {
                 setPrivileges(buildPermissions(actions, role.privileges))
                 setInitialRole(clone(role))
                 setState({ ...state, all, actions, allPrivileges, shownPrivileges: allPrivileges, maxAction: getMax(actions), role })
-                if (!canWrite) {
+                if (isReadOnly) {
                   setReadOnly(refForm.current as any)
                 }
               }
@@ -326,7 +326,7 @@ export function RoleForm() {
         }
       })
       .catch(handleError)
-  }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, newMode, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const obj = state.role
     if (obj) {
@@ -336,13 +336,13 @@ export function RoleForm() {
       } else {
         setPrivileges(buildPermissions(actions, obj.privileges))
       }
-      if (!canWrite) {
+      if (isReadOnly) {
         setReadOnly(refForm.current as any, "keyword", "btnSave")
       }
       const checkedAll = isCheckedAll(obj.privileges, all)
       setState({ ...state, checkedAll, role: obj })
     }
-  }, [state.role, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.role, isReadOnly]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCheckParent = (e: ChangeEvent<HTMLInputElement>, id: string) => {
     e.preventDefault()
@@ -608,28 +608,29 @@ export function RoleForm() {
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getRoleService()
-      confirm(resource.msg_confirm_save, () => {
-        if (newMode) {
+      if (!newMode) {
+        const diff = makeDiff(initialRole, role, ["roleId"])
+        if (isEmptyObject(diff)) {
+          return alertWarning(resource.msg_no_change)
+        }
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .patch(role)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
             .create(role)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
-        } else {
-          const diff = makeDiff(initialRole, role, ["roleId"])
-          if (isEmptyObject(diff)) {
-            alertWarning(resource.msg_no_change)
-          } else {
-            showLoading()
-            service
-              .patch(role)
-              .then((res) => afterSaved(res))
-              .catch(handleError)
-              .finally(hideLoading)
-          }
-        }
-      })
+        })
+      }
     }
   }
   const afterSaved = (res: Result<Role>) => {
@@ -748,7 +749,7 @@ export function RoleForm() {
                   })
                 }
                 checked={state.checkedAll}
-                disabled={!canWrite || state.keyword !== ""}
+                disabled={isReadOnly || state.keyword !== ""}
               />
               <p>{resource.module}</p>
             </div>
@@ -757,11 +758,11 @@ export function RoleForm() {
             <p className="col s1 m2">{resource.delete}</p>
             <p className="col s1 m2">{resource.approve}</p>
           </div>
-          {renderForms(state.shownPrivileges, "", !canWrite || state.keyword !== "")}
+          {renderForms(state.shownPrivileges, "", isReadOnly || state.keyword !== "")}
         </section>
       </div>
       <footer>
-        {canWrite && (
+        {!isReadOnly && (
           <>
             {!newMode && (
               <button type="button" id="btnDelete" name="btnDelete" className="btn-delete" onClick={deleteOnClick}>

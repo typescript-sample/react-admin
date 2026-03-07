@@ -1,5 +1,11 @@
 import { Attributes, Filter, Result, SearchResult, Service, Tracking } from "onecore"
 
+export interface Privilege {
+  id: string
+  name: string
+  actions: number
+  children?: Privilege[]
+}
 export interface Role extends Tracking {
   roleId: string
   roleName: string
@@ -8,17 +14,11 @@ export interface Role extends Tracking {
   privileges?: string[]
 }
 export interface RoleFilter extends Filter {
-  roleId: string
-  roleName: string
+  roleId?: string
+  roleName?: string
   status: string[]
-  remark: string
+  remark?: string
   description?: string
-}
-export interface Privilege {
-  id: string
-  name: string
-  actions: number
-  children?: Privilege[]
 }
 
 export interface RoleService extends Service<Role, string, RoleFilter> {

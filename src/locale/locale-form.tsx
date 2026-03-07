@@ -15,20 +15,18 @@ const createLocale = (): Locale => {
 
 export const LocaleForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialLocale, setInitialLocale] = useState<Locale>(createLocale())
   const [locale, setLocale] = useState<Locale>(createLocale())
+
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
-    if (!id) {
-      const locale = createLocale()
-      setInitialLocale(clone(locale))
-      setLocale(locale)
-    } else {
+    if (id) {
       showLoading()
       getLocaleService()
         .load(id)
