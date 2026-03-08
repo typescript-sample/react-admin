@@ -21,6 +21,7 @@ export const CurrencyForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialCurrency, setInitialCurrency] = useState<Currency>(createCurrency())
   const [currency, setCurrency] = useState<Currency>(createCurrency())
+
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
@@ -56,7 +57,16 @@ export const CurrencyForm = () => {
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getCurrencyService()
-      if (!newMode) {
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(currency)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
         const diff = makeDiff(initialCurrency, currency, ["currencyId"])
         if (isEmptyObject(diff)) {
           return alertWarning(resource.msg_no_change)
@@ -65,15 +75,6 @@ export const CurrencyForm = () => {
           showLoading()
           service
             .patch(currency)
-            .then((res) => afterSaved(res))
-            .catch(handleError)
-            .finally(hideLoading)
-        })
-      } else {
-        confirm(resource.msg_confirm_save, () => {
-          showLoading()
-          service
-            .create(currency)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
