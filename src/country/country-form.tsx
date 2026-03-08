@@ -1,5 +1,4 @@
-import { Result } from "onecore"
-import React, { useEffect, useRef, useState } from "react"
+import React, { MouseEvent, useEffect, useRef, useState } from "react"
 import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
@@ -22,6 +21,7 @@ export const CountryForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialCountry, setInitialCountry] = useState<Country>(createCountry())
   const [country, setCountry] = useState<Country>(createCountry())
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, country, setCountry)
 
   const { id } = useParams()
   const newMode = !id
@@ -49,7 +49,7 @@ export const CountryForm = () => {
 
   const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialCountry, country)
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
@@ -93,20 +93,6 @@ export const CountryForm = () => {
             .catch(handleError)
             .finally(hideLoading)
         })
-      }
-    }
-  }
-  const afterSaved = (res: Result<Country>) => {
-    if (Array.isArray(res)) {
-      showFormError(refForm?.current, res)
-    } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else {
-      if (newMode) {
-        const msg = formatText(resource.error_duplicated, resource.country_code)
-        addError(refForm?.current as HTMLFormElement, "countryCode", msg)
-      } else {
-        alertError(resource.error_not_found)
       }
     }
   }
@@ -162,9 +148,9 @@ export const CountryForm = () => {
             type="text"
             id="countryCode"
             name="countryCode"
-            value={country.countryCode || ""}
+            value={country.countryCode}
             readOnly={!newMode}
-            onChange={(e) => updateState(e, country, setCountry)}
+            onChange={onChange}
             maxLength={3}
             required={true}
             placeholder={resource.country_code}
@@ -176,9 +162,9 @@ export const CountryForm = () => {
             type="text"
             id="countryName"
             name="countryName"
-            value={country.countryName || ""}
-            onChange={(e) => updateState(e, country, setCountry)}
-            maxLength={20}
+            value={country.countryName}
+            onChange={onChange}
+            maxLength={100}
             required={true}
             placeholder={resource.country_name}
           />
@@ -189,8 +175,8 @@ export const CountryForm = () => {
             type="text"
             id="nativeCountryName"
             name="nativeCountryName"
-            value={country.nativeCountryName || ""}
-            onChange={(e) => updateState(e, country, setCountry)}
+            value={country.nativeCountryName}
+            onChange={onChange}
             maxLength={100}
             required={true}
             placeholder={resource.country_native_name}
@@ -202,8 +188,8 @@ export const CountryForm = () => {
             type="text"
             id="currencyCode"
             name="currencyCode"
-            value={country.currencyCode || ""}
-            onChange={(e) => updateState(e, country, setCountry)}
+            value={country.currencyCode}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={3}
             required={true}
@@ -216,8 +202,8 @@ export const CountryForm = () => {
             type="text"
             id="currencySymbol"
             name="currencySymbol"
-            value={country.currencySymbol || ""}
-            onChange={(e) => updateState(e, country, setCountry)}
+            value={country.currencySymbol}
+            onChange={onChange}
             onBlur={requiredOnBlur}
             maxLength={4}
             required={true}
@@ -233,7 +219,7 @@ export const CountryForm = () => {
             className="text-right"
             data-type="int"
             value={country.currencyDecimalDigits?.toString()}
-            onChange={(e) => updateState(e, country, setCountry)}
+            onChange={onChange}
             maxLength={1}
             min={0}
             max={3}
@@ -249,9 +235,11 @@ export const CountryForm = () => {
             className="text-right"
             data-type="int"
             value={country.currencyPattern?.toString()}
-            onChange={(e) => updateState(e, country, setCountry)}
+            onChange={onChange}
             onBlur={requiredOnBlur}
-            maxLength={40}
+            maxLength={1}
+            min={0}
+            max={3}
             required={true}
             placeholder={resource.currency_pattern}
           />
@@ -262,10 +250,10 @@ export const CountryForm = () => {
             type="text"
             id="currencySample"
             name="currencySample"
-            value={country.currencySample || ""}
-            onChange={(e) => updateState(e, country, setCountry)}
+            value={country.currencySample}
+            onChange={onChange}
             onBlur={requiredOnBlur}
-            maxLength={40}
+            maxLength={20}
             required={true}
             placeholder={resource.currency_sample}
           />

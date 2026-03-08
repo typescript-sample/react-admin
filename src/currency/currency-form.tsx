@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react"
-import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
+import React, { MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -22,16 +22,13 @@ export const CurrencyForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialCurrency, setInitialCurrency] = useState<Currency>(createCurrency())
   const [currency, setCurrency] = useState<Currency>(createCurrency())
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, currency, setCurrency)
 
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
-    if (!id) {
-      const currency = createCurrency()
-      setInitialCurrency(clone(currency))
-      setCurrency(currency)
-    } else {
+    if (id) {
       showLoading()
       getCurrencyService()
         .load(id)
@@ -48,9 +45,9 @@ export const CurrencyForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialCurrency, currency)
+  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, initialCurrency, currency)
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
@@ -135,7 +132,7 @@ export const CurrencyForm = () => {
               name="code"
               value={currency.code}
               readOnly={!newMode}
-              onChange={(e) => updateState(e, currency, setCurrency)}
+              onChange={onChange}
               maxLength={3}
               required={true}
               placeholder={resource.currency_code}
@@ -148,7 +145,7 @@ export const CurrencyForm = () => {
               id="symbol"
               name="symbol"
               value={currency.symbol}
-              onChange={(e) => updateState(e, currency, setCurrency)}
+              onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={4}
               required={true}
@@ -164,8 +161,10 @@ export const CurrencyForm = () => {
               className="text-right"
               data-type="int"
               value={currency.decimalDigits?.toString()}
-              onChange={(e) => updateState(e, currency, setCurrency)}
+              onChange={onChange}
               maxLength={1}
+              min={0}
+              max={3}
               placeholder={resource.currency_decimal_digits}
             />
           </label>
@@ -173,22 +172,20 @@ export const CurrencyForm = () => {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={(e) => updateState(e, currency, setCurrency)} value={Status.Active} checked={currency.status === Status.Active} />
+                <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={currency.status === Status.Active} />
                 {resource.yes}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, currency, setCurrency)} value={Status.Inactive} checked={currency.status === Status.Inactive} />
+                <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={currency.status === Status.Inactive} />
                 {resource.no}
               </label>
             </div>
           </div>
         </div>
         <footer className="view-footer">
-          {canWrite && (
-            <button type="button" id="btnSave" name="btnSave" onClick={save}>
-              {resource.save}
-            </button>
-          )}
+          <button type="button" id="btnSave" name="btnSave" onClick={save}>
+            {resource.save}
+          </button>
         </footer>
       </form>)
   )

@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react"
-import { buildMessage, buildSortFilter, ButtonMouseEvent, getFields, getOffset, OnClick, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, resources, Sortable, updateState } from "react-hook-core"
+import React, { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { buildMessage, buildSortFilter, getFields, getOffset, onClearQ, OnClick, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, PageSizeSelect, resources, Sortable, updateState } from "react-hook-core"
 import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -22,7 +22,6 @@ interface UserSearch extends Sortable {
 }
 
 // props onModelSave onModelClose isOpenModel users?=[]
-const sizes = pageSizes
 export const UsersLookup = (props: Props) => {
   const userFilter: UserFilter = {
     limit: resources.defaultLimit,
@@ -33,10 +32,11 @@ export const UsersLookup = (props: Props) => {
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
+  const [users, setUsers] = useState<User[]>([])
+  const [list, setList] = useState<User[]>([])
   const [state, setState] = useState<UserSearch>(initialState)
   const [filter, setFilter] = useState<UserFilter>(userFilter)
-  const [list, setList] = useState<User[]>([])
-  const [users, setUsers] = useState<User[]>([])
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
 
   useEffect(() => {
     if (props.isOpenModel) {
@@ -44,10 +44,11 @@ export const UsersLookup = (props: Props) => {
     }
   }, [props.isOpenModel])
 
-  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = () => {
     showLoading()
@@ -123,26 +124,10 @@ export const UsersLookup = (props: Props) => {
           <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm}>
             <section className="row search-group">
               <label className="col s12 m6 search-input">
-                <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
-                  {sizes.map((item, i) => {
-                    return (
-                      <option key={i} value={item}>
-                        {item}
-                      </option>
-                    )
-                  })}
-                </select>
-                <input type="text" id="q" name="q" value={filter.q} onChange={(e) => updateState(e, filter, setFilter)} maxLength={40} placeholder={resource.keyword} />
-                <button
-                  type="button"
-                  hidden={!filter.q}
-                  className="btn-remove-text"
-                  onClick={(e) => {
-                    filter.q = ""
-                    setFilter({ ...filter })
-                  }}
-                />
-                <button type="submit" className="btn-search" onClick={searchOnClick} />
+                <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
+                <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
+                <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
+                <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
               </label>
               <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
             </section>
