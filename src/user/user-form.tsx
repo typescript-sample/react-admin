@@ -110,7 +110,7 @@ export const UserForm = () => {
 
   return (
     !canWrite ? (
-      <form id="userForm" name="userForm" className="form" ref={refForm as any}>
+      <form id="userForm" name="userForm" className="form" ref={refForm}>
         <header className="view-header">
           <h2>{resource.user}</h2>
           <div className="btn-group">
@@ -146,7 +146,7 @@ export const UserForm = () => {
         </footer>
       </form>
     ) : (
-      <form id="userForm" name="userForm" className="form" model-name="user" ref={refForm as any}>
+      <form id="userForm" name="userForm" className="form" ref={refForm}>
         <header>
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2 className="view-title">{resource.user}</h2>
@@ -167,7 +167,7 @@ export const UserForm = () => {
                 type="text"
                 id="userId"
                 name="userId"
-                value={user.userId || ""}
+                value={user.userId}
                 readOnly={!newMode}
                 onChange={(e) => updateState(e, user, setUser)}
                 maxLength={20}
@@ -181,7 +181,7 @@ export const UserForm = () => {
                 type="text"
                 id="username"
                 name="username"
-                value={user.username || ""}
+                value={user.username}
                 readOnly={!newMode}
                 onChange={(e) => updateState(e, user, setUser)}
                 onBlur={requiredOnBlur}
@@ -196,7 +196,7 @@ export const UserForm = () => {
                 type="text"
                 id="displayName"
                 name="displayName"
-                value={user.displayName || ""}
+                value={user.displayName}
                 onChange={(e) => updateState(e, user, setUser)}
                 onBlur={requiredOnBlur}
                 maxLength={40}
@@ -255,7 +255,7 @@ export const UserForm = () => {
                 style={{ width: "99%" }}
                 id="position"
                 name="position"
-                value={user.position || ""}
+                value={user.position}
                 data-value
                 onChange={(e) => updateState(e, user, setUser)}
               >
@@ -269,7 +269,7 @@ export const UserForm = () => {
             </label>
             <label className="col s12 m6 flying">
               {resource.person_title}
-              <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, user)}>
+              <select id="title" name="title" value={user.title} data-value onChange={(e) => updateTitle(e.target, user)}>
                 <option value="">{resource.please_select}</option>
                 {titleList.map((item, index) => (
                   <option key={index} value={item.value}>
@@ -284,7 +284,7 @@ export const UserForm = () => {
                 type="tel"
                 id="phone"
                 name="phone"
-                value={formatPhone(user.phone) || ""}
+                value={formatPhone(user.phone)}
                 onChange={(e) => updateState(e, user, setUser)}
                 onBlur={phoneOnBlur}
                 maxLength={17}
@@ -298,7 +298,7 @@ export const UserForm = () => {
                 id="email"
                 name="email"
                 data-type="email"
-                value={user.email || ""}
+                value={user.email}
                 onChange={(e) => updateState(e, user, setUser)}
                 onBlur={emailOnBlur}
                 maxLength={100}

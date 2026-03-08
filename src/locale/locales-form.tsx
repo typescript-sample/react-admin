@@ -1,6 +1,6 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { addParametersIntoUrl, buildFromUrl, buildMessage, buildSortFilter, ButtonMouseEvent, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, resources, setSort, Sortable, updateState } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { addParametersIntoUrl, buildFromUrl, buildMessage, buildSortFilter, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, resources, setSort, Sortable, updateState } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -43,10 +43,10 @@ export const LocalesForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
@@ -82,7 +82,7 @@ export const LocalesForm = () => {
         </div>
       </header>
       <div className="search-body">
-        <form id="localesForm" name="localesForm" className="form" noValidate={true} ref={refForm as any}>
+        <form id="localesForm" name="localesForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>

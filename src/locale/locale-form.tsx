@@ -1,4 +1,3 @@
-import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
 import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
@@ -55,7 +54,16 @@ export const LocaleForm = () => {
           showLoading()
           service
             .create(locale)
-            .then((res) => afterSaved(res))
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                const msg = formatText(resource.error_duplicated, resource.locale_code)
+                addError(refForm?.current as HTMLFormElement, "code", msg)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
@@ -68,29 +76,24 @@ export const LocaleForm = () => {
           showLoading()
           service
             .patch(diff)
-            .then((res) => afterSaved(res))
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                alertError(resource.error_not_found)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
       }
     }
   }
-  const afterSaved = (res: Result<Locale>) => {
-    if (Array.isArray(res)) {
-      showFormError(refForm?.current, res)
-    } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else {
-      if (newMode) {
-        const msg = formatText(resource.error_duplicated, resource.country_code)
-        addError(refForm?.current as HTMLFormElement, "code", msg)
-      } else {
-        alertError(resource.error_not_found)
-      }
-    }
-  }
+
   return (
-    !canWrite ? (<form id="localeForm" name="localeForm" className="form" ref={refForm as any}>
+    !canWrite ? (<form id="localeForm" name="localeForm" className="form" ref={refForm}>
       <header>
         <h2>{resource.locale}</h2>
       </header>
@@ -134,7 +137,7 @@ export const LocaleForm = () => {
           {resource.close}
         </button>
       </footer>
-    </form>) : (<form id="localeForm" name="localeForm" className="form" model-name="locale" ref={refForm as any}>
+    </form>) : (<form id="localeForm" name="localeForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2>{resource.locale}</h2>

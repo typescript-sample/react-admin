@@ -99,7 +99,7 @@ export const CurrencyForm = () => {
   }
 
   return (
-    !canWrite ? (<form id="currencyForm" name="currencyForm" className="form" ref={refForm as any}>
+    !canWrite ? (<form id="currencyForm" name="currencyForm" className="form" ref={refForm}>
       <header>
         <h2>{resource.currency}</h2>
       </header>
@@ -121,7 +121,7 @@ export const CurrencyForm = () => {
         </button>
       </footer>
     </form>) : (
-      <form id="currencyForm" name="currencyForm" className="form" ref={refForm as any}>
+      <form id="currencyForm" name="currencyForm" className="form" ref={refForm}>
         <header>
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
           <h2>{resource.currency}</h2>

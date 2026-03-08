@@ -610,8 +610,8 @@ export function RoleForm() {
               } else if (isSuccessful(res)) {
                 alertSuccess(resource.msg_save_success, () => navigate(-1))
               } else {
-                const msg = formatText(resource.error_duplicated, resource.currency_code)
-                addError(refForm?.current as HTMLFormElement, "code", msg)
+                const msg = formatText(resource.error_duplicated, resource.role_id)
+                addError(refForm?.current as HTMLFormElement, "roleId", msg)
               }
             })
             .catch(handleError)
@@ -641,8 +641,9 @@ export function RoleForm() {
       }
     }
   }
+
   return (
-    <form id="roleForm" name="roleForm" className="form" model-name="role" ref={refForm as any}>
+    <form id="roleForm" name="roleForm" className="form" ref={refForm}>
       <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2>{resource.role}</h2>

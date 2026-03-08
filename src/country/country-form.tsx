@@ -59,7 +59,16 @@ export const CountryForm = () => {
           showLoading()
           service
             .create(country)
-            .then((res) => afterSaved(res))
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                const msg = formatText(resource.error_duplicated, resource.country_code)
+                addError(refForm?.current as HTMLFormElement, "countryCode", msg)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
@@ -72,7 +81,15 @@ export const CountryForm = () => {
           showLoading()
           service
             .patch(diff)
-            .then((res) => afterSaved(res))
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                alertError(resource.error_not_found)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
@@ -87,14 +104,15 @@ export const CountryForm = () => {
     } else {
       if (newMode) {
         const msg = formatText(resource.error_duplicated, resource.country_code)
-        addError(refForm?.current as HTMLFormElement, "code", msg)
+        addError(refForm?.current as HTMLFormElement, "countryCode", msg)
       } else {
         alertError(resource.error_not_found)
       }
     }
   }
+
   return (
-    !canWrite ? (<form id="countryForm" name="countryForm" className="form" ref={refForm as any}>
+    !canWrite ? (<form id="countryForm" name="countryForm" className="form" ref={refForm}>
       <header>
         <h2>{resource.country}</h2>
       </header>
@@ -131,7 +149,7 @@ export const CountryForm = () => {
           {resource.close}
         </button>
       </footer>
-    </form>) : (<form id="countryForm" name="countryForm" className="form" model-name="country" ref={refForm as any}>
+    </form>) : (<form id="countryForm" name="countryForm" className="form" ref={refForm}>
       <header className="view-header">
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.country}</h2>

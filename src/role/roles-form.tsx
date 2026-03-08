@@ -1,11 +1,10 @@
 import { Item } from "onecore"
-import { ChangeEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
   addParametersIntoUrl,
   buildFromUrl,
   buildMessage,
   buildSortFilter,
-  ButtonMouseEvent,
   checked,
   getFields,
   getOffset,
@@ -64,10 +63,10 @@ export const RolesForm = () => {
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const sort = (e: ButtonMouseEvent) => onSort(e, search, state)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: ButtonMouseEvent) => onSearch(e, search, filter, state, setFilter, setState)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
@@ -103,7 +102,7 @@ export const RolesForm = () => {
         </div>
       </header>
       <div className="search-body">
-        <form id="rolesForm" name="rolesForm" noValidate={true} ref={refForm as any}>
+        <form id="rolesForm" name="rolesForm" noValidate={true} ref={refForm}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>

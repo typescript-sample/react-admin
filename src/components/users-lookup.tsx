@@ -120,7 +120,7 @@ export const UsersLookup = (props: Props) => {
           <button type="button" id="btnClose" name="btnClose" className="btn-close" onClick={onModelClose} />
         </header>
         <div className="search-body">
-          <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm as any}>
+          <form id="usersLookupForm" name="usersLookupForm" className="usersLookupForm" noValidate={true} ref={refForm}>
             <section className="row search-group">
               <label className="col s12 m6 search-input">
                 <select id="limit" name="limit" onChange={pageSizeChanged} defaultValue={filter.limit}>
