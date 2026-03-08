@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { addParametersIntoUrl, buildFromUrl, buildMessage, buildSortFilter, ButtonMouseEvent, getFields, getOffset, handleToggle, mergeFilter, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, resources, setSort, Sortable, updateState } from "react-hook-core"
+import { addParametersIntoUrl, buildFromUrl, buildMessage, buildSortFilter, ButtonMouseEvent, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, resources, setSort, Sortable, updateState } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -94,32 +94,9 @@ export const LocalesForm = () => {
                   )
                 })}
               </select>
-              <input
-                type="text"
-                id="q"
-                name="q"
-                value={filter.q || ""}
-                maxLength={40}
-                onChange={(e) => updateState(e, filter, setFilter)}
-                placeholder={resource.keyword}
-              />
-              <button
-                type="button"
-                hidden={!filter.q}
-                className="btn-remove-text"
-                onClick={(e) => {
-                  filter.q = ""
-                  setFilter({ ...filter })
-                }}
-              />
-              <button
-                type="button"
-                className="btn-filter"
-                onClick={(e) => {
-                  const toggleFilter = handleToggle(e.target as HTMLElement, showFilter)
-                  setShowFilter(toggleFilter)
-                }}
-              />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
+              <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />

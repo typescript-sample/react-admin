@@ -126,30 +126,6 @@ export const UsersForm = () => {
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>
-            <label className="col s12 m4 l4">
-              {resource.username}
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={filter.username || ""}
-                onChange={(e) => updateState(e, filter, setFilter)}
-                maxLength={255}
-                placeholder={resource.username}
-              />
-            </label>
-            <label className="col s12 m4 l4">
-              {resource.display_name}
-              <input
-                type="text"
-                id="displayName"
-                name="displayName"
-                value={filter.displayName || ""}
-                onChange={(e) => updateState(e, filter, setFilter)}
-                maxLength={255}
-                placeholder={resource.display_name}
-              />
-            </label>
             <label className="col s12 m4 l4 checkbox-section">
               {resource.status}
               <section className="checkbox-group">
@@ -196,7 +172,6 @@ export const UsersForm = () => {
                       {resource.status}
                     </button>
                   </th>
-                  <th className="action">{resource.action}</th>
                 </tr>
               </thead>
               <tbody>
@@ -211,12 +186,6 @@ export const UsersForm = () => {
                       <td>{user.email}</td>
                       <td>{user.displayName}</td>
                       <td>{getStatusName(user.status, resource)}</td>
-                      <td>
-                        <div className="btn-group">
-                          <button type="button" className="btn-edit"></button>
-                          <button type="button" className="btn-history"></button>
-                        </div>
-                      </td>
                     </tr>
                   )
                 })}

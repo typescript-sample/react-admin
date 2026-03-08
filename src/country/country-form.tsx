@@ -1,10 +1,10 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { addError, formatText, initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Country, getCountryService } from "./service"
 
@@ -16,20 +16,18 @@ const createCountry = (): Country => {
 
 export const CountryForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
   const [initialCountry, setInitialCountry] = useState<Country>(createCountry())
   const [country, setCountry] = useState<Country>(createCountry())
+
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
     initForm(refForm?.current, registerEvents)
-    if (!id) {
-      const country = createCountry()
-      setInitialCountry(clone(country))
-      setCountry(country)
-    } else {
+    if (id) {
       showLoading()
       getCountryService()
         .load(id)
@@ -49,31 +47,31 @@ export const CountryForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialCountry, country)
+  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialCountry, country)
 
   const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getCountryService()
-      if (!newMode) {
-        const diff = makeDiff(initialCountry, country, ["countryId"])
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(country)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        const diff = makeDiff(initialCountry, country, ["countryCode"])
         if (isEmptyObject(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
-            .patch(country)
-            .then((res) => afterSaved(res))
-            .catch(handleError)
-            .finally(hideLoading)
-        })
-      } else {
-        confirm(resource.msg_confirm_save, () => {
-          showLoading()
-          service
-            .create(country)
+            .patch(diff)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
@@ -86,10 +84,13 @@ export const CountryForm = () => {
       showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
       alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
     } else {
-      alertError(resource.error_conflict)
+      if (newMode) {
+        const msg = formatText(resource.error_duplicated, resource.country_code)
+        addError(refForm?.current as HTMLFormElement, "code", msg)
+      } else {
+        alertError(resource.error_not_found)
+      }
     }
   }
   return (
@@ -200,7 +201,7 @@ export const CountryForm = () => {
             value={country.currencySymbol || ""}
             onChange={(e) => updateState(e, country, setCountry)}
             onBlur={requiredOnBlur}
-            maxLength={40}
+            maxLength={4}
             required={true}
             placeholder={resource.currency_symbol}
           />
@@ -216,6 +217,8 @@ export const CountryForm = () => {
             value={country.currencyDecimalDigits?.toString()}
             onChange={(e) => updateState(e, country, setCountry)}
             maxLength={1}
+            min={0}
+            max={3}
             placeholder={resource.currency_decimal_digits}
           />
         </label>

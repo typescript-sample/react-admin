@@ -1,10 +1,10 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
+import { addError, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Permission, useResource } from "uione"
 import { getLocaleService, Locale } from "./service"
 
@@ -43,31 +43,31 @@ export const LocaleForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialLocale, locale)
+  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialLocale, locale)
 
   const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getLocaleService()
-      if (!newMode) {
-        const diff = makeDiff(initialLocale, locale, ["localeId"])
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(locale)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
+        const diff = makeDiff(initialLocale, locale, ["code"])
         if (isEmptyObject(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
-            .patch(locale)
-            .then((res) => afterSaved(res))
-            .catch(handleError)
-            .finally(hideLoading)
-        })
-      } else {
-        confirm(resource.msg_confirm_save, () => {
-          showLoading()
-          service
-            .create(locale)
+            .patch(diff)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
@@ -80,13 +80,15 @@ export const LocaleForm = () => {
       showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
       alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
     } else {
-      alertError(resource.error_conflict)
+      if (newMode) {
+        const msg = formatText(resource.error_duplicated, resource.country_code)
+        addError(refForm?.current as HTMLFormElement, "code", msg)
+      } else {
+        alertError(resource.error_not_found)
+      }
     }
   }
-
   return (
     !canWrite ? (<form id="localeForm" name="localeForm" className="form" ref={refForm as any}>
       <header>

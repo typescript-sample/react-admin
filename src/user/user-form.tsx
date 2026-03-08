@@ -16,6 +16,7 @@ const createUser = (): User => {
 
 export const UserForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -72,7 +73,16 @@ export const UserForm = () => {
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
       const service = getUserService()
-      if (!newMode) {
+      if (newMode) {
+        confirm(resource.msg_confirm_save, () => {
+          showLoading()
+          service
+            .create(user)
+            .then((res) => afterSaved(res))
+            .catch(handleError)
+            .finally(hideLoading)
+        })
+      } else {
         const diff = makeDiff(initialUser, user, ["userId"])
         if (isEmptyObject(diff)) {
           return alertWarning(resource.msg_no_change)
@@ -80,16 +90,7 @@ export const UserForm = () => {
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
-            .patch(user)
-            .then((res) => afterSaved(res))
-            .catch(handleError)
-            .finally(hideLoading)
-        })
-      } else {
-        confirm(resource.msg_confirm_save, () => {
-          showLoading()
-          service
-            .create(user)
+            .patch(diff)
             .then((res) => afterSaved(res))
             .catch(handleError)
             .finally(hideLoading)
@@ -102,10 +103,8 @@ export const UserForm = () => {
       showFormError(refForm?.current, res)
     } else if (isSuccessful(res)) {
       alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
     } else {
-      alertError(resource.error_conflict)
+      alertError(resource.error_not_found)
     }
   }
 

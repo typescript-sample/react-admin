@@ -1,21 +1,22 @@
-import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
+import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
+import { addError, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Currency, getCurrencyService } from "./service"
 
 const createCurrency = (): Currency => {
   const currency = {} as Currency
+  currency.decimalDigits = 2
   currency.status = Status.Active
   return currency
 }
 
 export const CurrencyForm = () => {
   const canWrite = hasPermission(Permission.write, 1)
+
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
@@ -59,35 +60,41 @@ export const CurrencyForm = () => {
           showLoading()
           service
             .create(currency)
-            .then((res) => afterSaved(res))
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                const msg = formatText(resource.error_duplicated, resource.currency_code)
+                addError(refForm?.current as HTMLFormElement, "code", msg)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialCurrency, currency, ["currencyId"])
+        const diff = makeDiff(initialCurrency, currency, ["code"])
         if (isEmptyObject(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {
           showLoading()
           service
-            .patch(currency)
-            .then((res) => afterSaved(res))
+            .patch(diff)
+            .then((res) => {
+              if (Array.isArray(res)) {
+                showFormError(refForm?.current, res)
+              } else if (isSuccessful(res)) {
+                alertSuccess(resource.msg_save_success, () => navigate(-1))
+              } else {
+                alertError(resource.error_not_found)
+              }
+            })
             .catch(handleError)
             .finally(hideLoading)
         })
       }
-    }
-  }
-  const afterSaved = (res: Result<Currency>) => {
-    if (Array.isArray(res)) {
-      showFormError(refForm?.current, res)
-    } else if (isSuccessful(res)) {
-      alertSuccess(resource.msg_save_success, () => navigate(-1))
-    } else if (res === 0) {
-      alertError(resource.error_not_found)
-    } else {
-      alertError(resource.error_conflict)
     }
   }
 
