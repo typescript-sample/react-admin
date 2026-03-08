@@ -1,6 +1,6 @@
 import { Item, Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, updateState } from "react-hook-core"
+import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -58,7 +58,7 @@ export const UserForm = () => {
     navigate(`/users/${userId}/assign`)
   }
 
-  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => goBack(navigate, confirm, resource, initialUser, user)
+  const back = (e: React.MouseEvent<HTMLElement, MouseEvent>) => onBack(e, navigate, confirm, resource, initialUser, user)
 
   const updateTitle = (ele: HTMLSelectElement, user: User) => {
     handleSelect(ele)
@@ -113,8 +113,7 @@ export const UserForm = () => {
     !canWrite ? (
       <form id="userForm" name="userForm" className="form" ref={refForm as any}>
         <header className="view-header">
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2 className="view-title">{resource.user}</h2>
+          <h2>{resource.user}</h2>
           <div className="btn-group">
             <button className="btn-group btn-right" hidden={newMode}>
               <i className="material-icons" onClick={(e) => assign(e, user.userId)}>
@@ -141,7 +140,7 @@ export const UserForm = () => {
             <dd className="col s6 l9">{user.email}</dd>
           </dl>
         </div>
-        <footer className="view-footer">
+        <footer>
           <button type="button" id="btnClose" name="btnClose" onClick={back}>
             {resource.close}
           </button>
@@ -259,10 +258,7 @@ export const UserForm = () => {
                 name="position"
                 value={user.position || ""}
                 data-value
-                onChange={(e) => {
-                  user.position = e.target.value
-                  setUser({ ...user })
-                }}
+                onChange={(e) => updateState(e, user, setUser)}
               >
                 <option value="">{resource.please_select}</option>
                 {positionList.map((item, index) => (
@@ -275,7 +271,7 @@ export const UserForm = () => {
             <label className="col s12 m6 flying">
               {resource.person_title}
               <select id="title" name="title" value={user.title || ""} data-value onChange={(e) => updateTitle(e.target, user)}>
-                <option value="">{resource.please_select}</option>)
+                <option value="">{resource.please_select}</option>
                 {titleList.map((item, index) => (
                   <option key={index} value={item.value}>
                     {item.text}
@@ -317,6 +313,6 @@ export const UserForm = () => {
             {resource.save}
           </button>
         </footer>
-      </form>)
+      </form >)
   )
 }

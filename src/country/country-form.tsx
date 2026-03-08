@@ -93,7 +93,44 @@ export const CountryForm = () => {
     }
   }
   return (
-    <form id="countryForm" name="countryForm" className="form" model-name="country" ref={refForm as any}>
+    !canWrite ? (<form id="countryForm" name="countryForm" className="form" ref={refForm as any}>
+      <header>
+        <h2>{resource.country}</h2>
+      </header>
+      <div>
+        <dl className="data-list row">
+          <dt className="col s6 m3 xl2">{resource.country_code}</dt>
+          <dd className="col s6 m3 xl4">{country.countryCode}</dd>
+          <dt className="col s6 m3 xl2">{resource.country_name}</dt>
+          <dd className="col s6 m3 xl4">{country.countryName}</dd>
+          <dt className="col s6 m3 xl2">{resource.country_native_name}</dt>
+          <dd className="col s6 m3 xl4">{country.nativeCountryName}</dd>
+          <dt className="col s6 m3 xl2">{resource.status}</dt>
+          <dd className="col s6 m3 xl4">{country.status === "A" ? resource.active : resource.inactive}</dd>
+          <hr />
+          <dt className="col s6 m3 xl2">{resource.decimal_separator}</dt>
+          <dd className="col s6 m3 xl4">{country.decimalSeparator}</dd>
+          <dt className="col s6 m3 xl2">{resource.group_separator}</dt>
+          <dd className="col s6 m3 xl4">{country.groupSeparator}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_pattern}</dt>
+          <dd className="col s6 m3 xl4">{country.currencyPattern}</dd>
+          <hr />
+          <dt className="col s6 m3 xl2">{resource.currency_code}</dt>
+          <dd className="col s6 m3 xl4">{country.currencyCode}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_symbol}</dt>
+          <dd className="col s6 m3 xl4">{country.currencySymbol}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_decimal_digits}</dt>
+          <dd className="col s6 m3 xl4">{country.currencyDecimalDigits}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_sample}</dt>
+          <dd className="col s6 m3 xl4">{country.currencySample}</dd>
+        </dl>
+      </div>
+      <footer>
+        <button type="button" id="btnClose" name="btnClose" onClick={back}>
+          {resource.close}
+        </button>
+      </footer>
+    </form>) : (<form id="countryForm" name="countryForm" className="form" model-name="country" ref={refForm as any}>
       <header className="view-header">
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
         <h2 className="view-title">{resource.country}</h2>
@@ -175,7 +212,7 @@ export const CountryForm = () => {
             id="currencyDecimalDigits"
             name="currencyDecimalDigits"
             className="text-right"
-            data-type="integer"
+            data-type="int"
             value={country.currencyDecimalDigits?.toString()}
             onChange={(e) => updateState(e, country, setCountry)}
             maxLength={1}
@@ -189,7 +226,7 @@ export const CountryForm = () => {
             id="currencyPattern"
             name="currencyPattern"
             className="text-right"
-            data-type="integer"
+            data-type="int"
             value={country.currencyPattern?.toString()}
             onChange={(e) => updateState(e, country, setCountry)}
             onBlur={requiredOnBlur}
@@ -220,6 +257,6 @@ export const CountryForm = () => {
           </button>
         )}
       </footer>
-    </form>
+    </form>)
   )
 }

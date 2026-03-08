@@ -179,7 +179,7 @@ export const AuditLogsForm = () => {
         <form className="list-result">
           {state.view !== "list" && (
             <div className="table-responsive">
-              <table>
+              <table className="table">
                 <thead>
                   <tr>
                     <th>{resource.number}</th>

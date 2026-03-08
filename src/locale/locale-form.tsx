@@ -4,7 +4,7 @@ import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateSt
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Permission, useResource } from "uione"
 import { getLocaleService, Locale } from "./service"
 
@@ -36,9 +36,6 @@ export const LocaleForm = () => {
           } else {
             setInitialLocale(clone(locale))
             setLocale(locale)
-            if (!canWrite) {
-              setReadOnly(refForm?.current)
-            }
           }
         })
         .catch(handleError)
@@ -91,10 +88,54 @@ export const LocaleForm = () => {
   }
 
   return (
-    <form id="localeForm" name="localeForm" className="form" model-name="locale" ref={refForm as any}>
-      <header className="view-header">
+    !canWrite ? (<form id="localeForm" name="localeForm" className="form" ref={refForm as any}>
+      <header>
+        <h2>{resource.locale}</h2>
+      </header>
+      <div>
+        <dl className="data-list row">
+          <dt className="col s6 m3 xl2">{resource.locale_code}</dt>
+          <dd className="col s6 m3 xl4">{locale.code}</dd>
+          <dt className="col s6 m3 xl2">{resource.locale_name}</dt>
+          <dd className="col s6 m3 xl4">{locale.name}</dd>
+          <dt className="col s6 m3 xl2">{resource.locale_native_name}</dt>
+          <dd className="col s6 m3 xl4">{locale.nativeName}</dd>
+          <dt className="col s6 m3 xl2">{resource.country_code}</dt>
+          <dd className="col s6 m3 xl4">{locale.countryCode}</dd>
+          <dt className="col s6 m3 xl2">{resource.country_name}</dt>
+          <dd className="col s6 m3 xl4">{locale.countryName}</dd>
+          <dt className="col s6 m3 xl2">{resource.country_native_name}</dt>
+          <dd className="col s6 m3 xl4">{locale.nativeCountryName}</dd>
+          <hr />
+          <dt className="col s6 m3 xl2">{resource.first_day_of_week}</dt>
+          <dd className="col s6 m3 xl4">{locale.firstDayOfWeek}</dd>
+          <hr />
+          <dt className="col s6 m3 xl2">{resource.decimal_separator}</dt>
+          <dd className="col s6 m3 xl4">{locale.decimalSeparator}</dd>
+          <dt className="col s6 m3 xl2">{resource.group_separator}</dt>
+          <dd className="col s6 m3 xl4">{locale.groupSeparator}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_pattern}</dt>
+          <dd className="col s6 m3 xl4">{locale.currencyPattern}</dd>
+          <hr />
+          <dt className="col s6 m3 xl2">{resource.currency_code}</dt>
+          <dd className="col s6 m3 xl4">{locale.currencyCode}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_symbol}</dt>
+          <dd className="col s6 m3 xl4">{locale.currencySymbol}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_decimal_digits}</dt>
+          <dd className="col s6 m3 xl4">{locale.currencyDecimalDigits}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_sample}</dt>
+          <dd className="col s6 m3 xl4">{locale.currencySample}</dd>
+        </dl>
+      </div>
+      <footer>
+        <button type="button" id="btnClose" name="btnClose" onClick={back}>
+          {resource.close}
+        </button>
+      </footer>
+    </form>) : (<form id="localeForm" name="localeForm" className="form" model-name="locale" ref={refForm as any}>
+      <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.locale}</h2>
+        <h2>{resource.locale}</h2>
       </header>
       <div className="row">
         <label className="col s12 m6">
@@ -103,7 +144,7 @@ export const LocaleForm = () => {
             type="text"
             id="code"
             name="code"
-            value={locale.code || ""}
+            value={locale.code}
             readOnly={!newMode}
             onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={20}
@@ -176,6 +217,20 @@ export const LocaleForm = () => {
             placeholder={resource.country_native_name}
           />
         </label>
+        <label className="col s12 m6 flying">
+          {resource.first_day_of_week}
+          <input
+            type="text"
+            id="firstDayOfWeek"
+            name="firstDayOfWeek"
+            className="text-right"
+            data-type="int"
+            value={locale.firstDayOfWeek?.toString()}
+            onChange={(e) => updateState(e, locale, setLocale)}
+            maxLength={1}
+            placeholder={resource.first_day_of_week}
+          />
+        </label>
         <label className="col s12 m6">
           {resource.date_format}
           <input
@@ -187,20 +242,6 @@ export const LocaleForm = () => {
             maxLength={12}
             required={true}
             placeholder={resource.date_format}
-          />
-        </label>
-        <label className="col s12 m6 flying">
-          {resource.first_day_of_week}
-          <input
-            type="text"
-            id="firstDayOfWeek"
-            name="firstDayOfWeek"
-            className="text-right"
-            data-type="integer"
-            value={locale.firstDayOfWeek?.toString()}
-            onChange={(e) => updateState(e, locale, setLocale)}
-            maxLength={1}
-            placeholder={resource.first_day_of_week}
           />
         </label>
         <label className="col s12 m6">
@@ -238,7 +279,7 @@ export const LocaleForm = () => {
             id="currencyDecimalDigits"
             name="currencyDecimalDigits"
             className="text-right"
-            data-type="integer"
+            data-type="int"
             value={locale.currencyDecimalDigits?.toString()}
             onChange={(e) => updateState(e, locale, setLocale)}
             maxLength={1}
@@ -252,7 +293,7 @@ export const LocaleForm = () => {
             id="currencyPattern"
             name="currencyPattern"
             className="text-right"
-            data-type="integer"
+            data-type="int"
             value={locale.currencyPattern?.toString()}
             onChange={(e) => updateState(e, locale, setLocale)}
             onBlur={requiredOnBlur}
@@ -283,6 +324,6 @@ export const LocaleForm = () => {
           </button>
         )}
       </footer>
-    </form>
+    </form>)
   )
 }

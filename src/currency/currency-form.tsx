@@ -1,10 +1,10 @@
 import { Result } from "onecore"
 import React, { useEffect, useRef, useState } from "react"
-import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Currency, getCurrencyService } from "./service"
 
@@ -40,9 +40,6 @@ export const CurrencyForm = () => {
           } else {
             setInitialCurrency(clone(currency))
             setCurrency(currency)
-            if (!canWrite) {
-              setReadOnly(refForm?.current)
-            }
           }
         })
         .catch(handleError)
@@ -50,7 +47,7 @@ export const CurrencyForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => goBack(navigate, confirm, resource, initialCurrency, currency)
+  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialCurrency, currency)
 
   const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
@@ -95,77 +92,97 @@ export const CurrencyForm = () => {
   }
 
   return (
-    <form id="currencyForm" name="currencyForm" className="form" model-name="currency" ref={refForm as any}>
-      <header className="view-header">
-        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.currency}</h2>
+    !canWrite ? (<form id="currencyForm" name="currencyForm" className="form" ref={refForm as any}>
+      <header>
+        <h2>{resource.currency}</h2>
       </header>
-      <div className="row">
-        <label className="col s12 m6">
-          {resource.currency_code}
-          <input
-            type="text"
-            id="code"
-            name="code"
-            className="form-control"
-            value={currency.code}
-            readOnly={!newMode}
-            onChange={(e) => updateState(e, currency, setCurrency)}
-            maxLength={20}
-            required={true}
-            placeholder={resource.currency_code}
-          />
-        </label>
-        <label className="col s12 m6">
-          {resource.currency_symbol}
-          <input
-            type="text"
-            id="symbol"
-            name="symbol"
-            className="form-control"
-            value={currency.symbol}
-            onChange={(e) => updateState(e, currency, setCurrency)}
-            onBlur={requiredOnBlur}
-            maxLength={40}
-            required={true}
-            placeholder={resource.currency_symbol}
-          />
-        </label>
-        <label className="col s12 m6 flying">
-          {resource.currency_decimal_digits}
-          <input
-            type="tel"
-            id="decimalDigits"
-            name="decimalDigits"
-            className="text-right"
-            data-type="integer"
-            value={currency.decimalDigits?.toString()}
-            onChange={(e) => updateState(e, currency, setCurrency)}
-            maxLength={1}
-            placeholder={resource.currency_decimal_digits}
-          />
-        </label>
-        <div className="col s12 m6 radio-section">
-          {resource.status}
-          <div className="radio-group">
-            <label>
-              <input type="radio" id="active" name="status" onChange={(e) => updateState(e, currency, setCurrency)} value={Status.Active} checked={currency.status === Status.Active} />
-              {resource.yes}
-            </label>
-            <label>
-              <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, currency, setCurrency)} value={Status.Inactive} checked={currency.status === Status.Inactive} />
-              {resource.no}
-            </label>
+      <div>
+        <dl className="data-list row">
+          <dt className="col s6 l3 xl2">{resource.currency_code}</dt>
+          <dd className="col s6 l9 xl10">{currency.code}</dd>
+          <dt className="col s6 l3 xl2">{resource.currency_symbol}</dt>
+          <dd className="col s6 l9 xl10">{currency.symbol}</dd>
+          <dt className="col s6 l3 xl2">{resource.currency_decimal_digits}</dt>
+          <dd className="col s6 l9 xl10">{currency.decimalDigits}</dd>
+          <dt className="col s6 l3 xl2">{resource.status}</dt>
+          <dd className="col s6 l9 xl10">{currency.status === "A" ? resource.active : resource.inactive}</dd>
+        </dl>
+      </div>
+      <footer>
+        <button type="submit" id="btnClose" name="btnClose" onClick={back}>
+          {resource.close}
+        </button>
+      </footer>
+    </form>) : (
+      <form id="currencyForm" name="currencyForm" className="form" ref={refForm as any}>
+        <header>
+          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+          <h2>{resource.currency}</h2>
+        </header>
+        <div className="row">
+          <label className="col s12 m6">
+            {resource.currency_code}
+            <input
+              type="text"
+              id="code"
+              name="code"
+              value={currency.code}
+              readOnly={!newMode}
+              onChange={(e) => updateState(e, currency, setCurrency)}
+              maxLength={3}
+              required={true}
+              placeholder={resource.currency_code}
+            />
+          </label>
+          <label className="col s12 m6">
+            {resource.currency_symbol}
+            <input
+              type="text"
+              id="symbol"
+              name="symbol"
+              value={currency.symbol}
+              onChange={(e) => updateState(e, currency, setCurrency)}
+              onBlur={requiredOnBlur}
+              maxLength={4}
+              required={true}
+              placeholder={resource.currency_symbol}
+            />
+          </label>
+          <label className="col s12 m6 flying">
+            {resource.currency_decimal_digits}
+            <input
+              type="tel"
+              id="decimalDigits"
+              name="decimalDigits"
+              className="text-right"
+              data-type="int"
+              value={currency.decimalDigits?.toString()}
+              onChange={(e) => updateState(e, currency, setCurrency)}
+              maxLength={1}
+              placeholder={resource.currency_decimal_digits}
+            />
+          </label>
+          <div className="col s12 m6 radio-section">
+            {resource.status}
+            <div className="radio-group">
+              <label>
+                <input type="radio" id="active" name="status" onChange={(e) => updateState(e, currency, setCurrency)} value={Status.Active} checked={currency.status === Status.Active} />
+                {resource.yes}
+              </label>
+              <label>
+                <input type="radio" id="inactive" name="status" onChange={(e) => updateState(e, currency, setCurrency)} value={Status.Inactive} checked={currency.status === Status.Inactive} />
+                {resource.no}
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <footer className="view-footer">
-        {canWrite && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-            {resource.save}
-          </button>
-        )}
-      </footer>
-    </form>
+        <footer className="view-footer">
+          {canWrite && (
+            <button type="button" id="btnSave" name="btnSave" onClick={save}>
+              {resource.save}
+            </button>
+          )}
+        </footer>
+      </form>)
   )
 }

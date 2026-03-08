@@ -99,7 +99,7 @@ export const LocalesForm = () => {
                 id="q"
                 name="q"
                 value={filter.q || ""}
-                maxLength={255}
+                maxLength={40}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 placeholder={resource.keyword}
               />
@@ -144,7 +144,7 @@ export const LocalesForm = () => {
                 id="currencyDecimalDigits"
                 name="currencyDecimalDigits"
                 className="text-right"
-                data-type="integer"
+                data-type="int"
                 value={filter.currencyDecimalDigits?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}
@@ -158,7 +158,7 @@ export const LocalesForm = () => {
                 id="currencyPattern"
                 name="currencyPattern"
                 className="text-right"
-                data-type="integer"
+                data-type="int"
                 value={filter.currencyPattern?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}
@@ -172,7 +172,7 @@ export const LocalesForm = () => {
                 id="groupSeparator"
                 name="groupSeparator"
                 className="text-right"
-                data-type="integer"
+                data-type="int"
                 value={filter.groupSeparator?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}
@@ -265,9 +265,9 @@ export const LocalesForm = () => {
                     <tr key={i}>
                       <td className="text-right">{offset + i + 1}</td>
                       <td>
-                        <Link to={`${item.code}`}>{item.code}</Link>
+                        {item.code}
                       </td>
-                      <td>{item.name}</td>
+                      <td><Link to={`${item.code}`}>{item.name}</Link></td>
                       <td>{item.nativeName}</td>
                       <td>{item.countryName}</td>
                       <td>{item.nativeCountryName}</td>

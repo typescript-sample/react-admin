@@ -118,7 +118,7 @@ export const UsersForm = () => {
                   )
                 })}
               </select>
-              <input type="text" id="q" name="q" value={filter.q} maxLength={100} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={(e) => updateState(e, filter, setFilter)} placeholder={resource.keyword} />
               <button type="button" hidden={!filter.q} className="btn-remove-text" onClick={(e) => onClearQ(filter, setFilter)} />
               <button type="button" className="btn-filter" onClick={(e) => onToggleSearch(e, showFilter, setShowFilter)} />
               <button type="submit" className="btn-search" onClick={searchOnClick} />

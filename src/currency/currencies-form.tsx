@@ -97,7 +97,7 @@ export const CurrenciesForm = () => {
                 id="q"
                 name="q"
                 value={filter.q || ""}
-                maxLength={255}
+                maxLength={40}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 placeholder={resource.keyword}
               />
@@ -130,7 +130,7 @@ export const CurrenciesForm = () => {
                 id="decimalDigits"
                 name="decimalDigits"
                 className="text-right"
-                data-type="integer"
+                data-type="int"
                 value={filter.decimalDigits?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}
@@ -157,7 +157,7 @@ export const CurrenciesForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="code">
                     <button type="button" id="sortCode" onClick={sort}>
                       {resource.currency_code}

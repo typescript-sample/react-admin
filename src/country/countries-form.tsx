@@ -116,7 +116,7 @@ export const CountriesForm = () => {
                 id="q"
                 name="q"
                 value={filter.q || ""}
-                maxLength={255}
+                maxLength={40}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 placeholder={resource.keyword}
               />
@@ -149,7 +149,7 @@ export const CountriesForm = () => {
                 id="currencyDecimalDigits"
                 name="currencyDecimalDigits"
                 className="text-right"
-                data-type="integer"
+                data-type="int"
                 value={filter.currencyDecimalDigits?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}
@@ -163,7 +163,7 @@ export const CountriesForm = () => {
                 id="currencyPattern"
                 name="currencyPattern"
                 className="text-right"
-                data-type="integer"
+                data-type="int"
                 value={filter.currencyPattern?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}
@@ -177,7 +177,7 @@ export const CountriesForm = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th>{resource.sequence}</th>
+                  <th>{resource.number}</th>
                   <th data-field="countryCode">
                     <button type="button" id="sortCountryCode" onClick={sort}>
                       {resource.country_code}
@@ -241,9 +241,9 @@ export const CountriesForm = () => {
                     <tr key={i}>
                       <td className="text-right">{offset + i + 1}</td>
                       <td>
-                        <Link to={`${item.countryCode}`}>{item.countryCode}</Link>
+                        {item.countryCode}
                       </td>
-                      <td>{item.countryName}</td>
+                      <td><Link to={`${item.countryCode}`}>{item.countryName}</Link></td>
                       <td>{item.nativeCountryName}</td>
                       <td>{item.decimalSeparator}</td>
                       <td>{item.groupSeparator}</td>
