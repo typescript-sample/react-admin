@@ -1,10 +1,9 @@
 import { Item } from "onecore"
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrl,
+  addParametersIntoUrlWithSort,
   buildFromUrl,
   buildMessage,
-  buildSortFilter,
   ButtonMouseEvent,
   datetimeToString,
   getFields,
@@ -18,7 +17,7 @@ import {
   pageSizes,
   PageSizeSelect,
   resources,
-  setSort,
+  setSortFilter,
   Sortable,
   updateState
 } from "react-hook-core"
@@ -70,8 +69,7 @@ export const AuditLogsForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, pageSizes)
-    setSort(state, initFilter.sort)
-    setFilter(initFilter)
+    setSortFilter(initFilter, state, setFilter)
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -82,11 +80,10 @@ export const AuditLogsForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const urlFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(urlFilter, isFirstLoad)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
     setFilter(filter)
-    const { limit, page } = urlFilter
+    const { limit, page } = filter
     getAuditLogService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {

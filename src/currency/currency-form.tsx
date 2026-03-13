@@ -1,5 +1,5 @@
 import React, { MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -20,7 +20,7 @@ export const CurrencyForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialCurrency, setInitialCurrency] = useState<Currency>(createCurrency())
+  const [initialCurrency, setInitialCurrency] = useState<Currency>()
   const [currency, setCurrency] = useState<Currency>(createCurrency())
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, currency, setCurrency)
 
@@ -71,8 +71,8 @@ export const CurrencyForm = () => {
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialCurrency, currency, ["code"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(currency, initialCurrency, ["code"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {

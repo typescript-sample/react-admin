@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
+import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -18,7 +18,7 @@ export const LocaleForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialLocale, setInitialLocale] = useState<Locale>(createLocale())
+  const [initialLocale, setInitialLocale] = useState<Locale>()
   const [locale, setLocale] = useState<Locale>(createLocale())
   const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, locale, setLocale)
 
@@ -43,7 +43,7 @@ export const LocaleForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialLocale, locale)
+  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, locale, initialLocale)
 
   const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
@@ -69,8 +69,8 @@ export const LocaleForm = () => {
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialLocale, locale, ["code"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(locale, initialLocale, ["code"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {

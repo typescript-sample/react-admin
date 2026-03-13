@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, formatText, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick } from "react-hook-core"
+import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack, OnClick } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -279,7 +279,7 @@ export function RoleForm() {
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialRole, setInitialRole] = useState<Role>(createRole())
+  const [initialRole, setInitialRole] = useState<Role>()
   const [state, setState] = useState<InternalState>(initialState)
   const [privileges, setPrivileges] = useState<Permission[]>([])
   let seq = 1
@@ -573,7 +573,7 @@ export function RoleForm() {
     role.status = e.target.value
     setState({ ...state, role })
   }
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialRole, role)
+  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, role, initialRole)
   const deleteOnClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     e.preventDefault()
     confirm(resource.msg_confirm_delete, () => {
@@ -618,8 +618,8 @@ export function RoleForm() {
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialRole, role, ["roleId"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(role, initialRole, ["roleId"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {

@@ -1,10 +1,9 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
-  addParametersIntoUrl,
+  addParametersIntoUrlWithSort,
   buildFromUrl,
   buildMessage,
-  buildSortFilter,
   checked,
   getFields,
   getOffset,
@@ -20,7 +19,7 @@ import {
   PageSizeSelect,
   resetSearch,
   resources,
-  setSort,
+  setSortFilter,
   Sortable,
   updateState
 } from "react-hook-core"
@@ -62,8 +61,7 @@ export const UsersForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<UserFilter>(), filter, pageSizes, ["status"])
-    setSort(state, initFilter.sort)
-    setFilter(initFilter)
+    setSortFilter(initFilter, state, setFilter)
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -76,11 +74,10 @@ export const UsersForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const urlFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
     setFilter(filter)
-    const { limit, page } = urlFilter
+    const { limit, page } = filter
     getUserService()
       .search({ ...filter }, limit, page, fields)
       .then((res) => {

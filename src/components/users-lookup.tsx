@@ -52,8 +52,8 @@ export const UsersLookup = (props: Props) => {
 
   const search = () => {
     showLoading()
-    buildSortFilter(filter, state)
     const fields = getFields(refForm.current, state.fields)
+    buildSortFilter(filter, state)
     filter.excluding = props.users.map(u => u.userId)
     setFilter(filter)
     const { limit, page } = filter

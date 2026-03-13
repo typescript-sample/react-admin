@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { clone, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -22,7 +22,7 @@ export const UserForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [titleList, setTitleList] = useState<Item[]>([])
   const [positionList, setPositionList] = useState<Item[]>([])
-  const [initialUser, setInitialUser] = useState<User>(createUser())
+  const [initialUser, setInitialUser] = useState<User>()
   const [user, setUser] = useState<User>(createUser())
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => updateState(e, user, setUser)
 
@@ -90,8 +90,8 @@ export const UserForm = () => {
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialUser, user, ["userId"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(user, initialUser, ["userId"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {

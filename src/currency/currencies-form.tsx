@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { addParametersIntoUrl, buildFromUrl, buildMessage, buildSortFilter, checked, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resetSearch, resources, setSort, Sortable, updateState } from "react-hook-core"
+import { addParametersIntoUrlWithSort, buildFromUrl, buildMessage, checked, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resetSearch, resources, setSort, Sortable, updateState } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -51,13 +51,12 @@ export const CurrenciesForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const urlFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
-    setFilter(urlFilter)
-    const { limit, page } = urlFilter
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
+    setFilter(filter)
+    const { limit, page } = filter
     getCurrencyService()
-      .search(urlFilter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)

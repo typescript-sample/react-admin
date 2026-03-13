@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { addParametersIntoUrl, buildFromUrl, buildMessage, buildSortFilter, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resources, setSort, Sortable, updateState } from "react-hook-core"
+import { addParametersIntoUrlWithSort, buildFromUrl, buildMessage, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resources, setSortFilter, Sortable, updateState } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -35,8 +35,7 @@ export const CountriesForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<CountryFilter>(), filter, pageSizes, ["status"])
-    setSort(state, initFilter.sort)
-    setFilter(initFilter)
+    setSortFilter(initFilter, state, setFilter)
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -49,9 +48,8 @@ export const CountriesForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    const urlFilter = buildSortFilter(filter, state)
-    addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
     setFilter(filter)
     const { limit, page } = filter
     getCountryService()

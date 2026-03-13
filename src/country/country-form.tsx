@@ -1,7 +1,6 @@
-import { StringMap } from "onecore"
 import React, { MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
-import { NavigateFunction, useNavigate, useParams } from "react-router-dom"
+import { clone, isEmpty, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
+import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { addError, formatText, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
@@ -20,7 +19,7 @@ export const CountryForm = () => {
   const resource = useResource()
   const navigate = useNavigate()
   const refForm = useRef<HTMLFormElement>(null)
-  const [initialCountry, setInitialCountry] = useState<Country>(createCountry())
+  const [initialCountry, setInitialCountry] = useState<Country>()
   const [country, setCountry] = useState<Country>(createCountry())
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, country, setCountry)
 
@@ -45,20 +44,7 @@ export const CountryForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  function onBack<T>(
-    e: MouseEvent<HTMLElement>,
-    navigate: NavigateFunction,
-    confirm: (msg: string, yesCallback?: () => void) => void,
-    resource: StringMap,
-    o1: T,
-    o2: T,
-    keys?: string[],
-    version?: string,
-  ) {
-    e.preventDefault()
-    goBack(navigate, confirm, resource, o1, o2, keys, version)
-  }
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialCountry, country)
+  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, country, initialCountry)
 
   const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
@@ -84,8 +70,8 @@ export const CountryForm = () => {
             .finally(hideLoading)
         })
       } else {
-        const diff = makeDiff(initialCountry, country, ["countryCode"])
-        if (isEmptyObject(diff)) {
+        const diff = makeDiff(country, initialCountry, ["countryCode"])
+        if (isEmpty(diff)) {
           return alertWarning(resource.msg_no_change)
         }
         confirm(resource.msg_confirm_save, () => {
