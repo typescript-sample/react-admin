@@ -611,7 +611,7 @@ export function RoleForm() {
                 alertSuccess(resource.msg_save_success, () => navigate(-1))
               } else {
                 const msg = formatText(resource.error_duplicated, resource.role_id)
-                addError(refForm?.current as HTMLFormElement, "roleId", msg)
+                addError(refForm?.current, "roleId", msg)
               }
             })
             .catch(handleError)

@@ -53,9 +53,9 @@ export const CountriesForm = () => {
     addParametersIntoUrl(urlFilter, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
     setFilter(filter)
-    const { limit, page } = urlFilter
+    const { limit, page } = filter
     getCountryService()
-      .search(urlFilter, limit, page, fields)
+      .search({ ...filter }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)

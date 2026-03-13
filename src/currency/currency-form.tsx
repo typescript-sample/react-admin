@@ -64,7 +64,7 @@ export const CurrencyForm = () => {
                 alertSuccess(resource.msg_save_success, () => navigate(-1))
               } else {
                 const msg = formatText(resource.error_duplicated, resource.currency_code)
-                addError(refForm?.current as HTMLFormElement, "code", msg)
+                addError(refForm?.current, "code", msg)
               }
             })
             .catch(handleError)
@@ -168,19 +168,19 @@ export const CurrencyForm = () => {
               placeholder={resource.currency_decimal_digits}
             />
           </label>
-          <div className="col s12 m6 radio-section">
+          <label className="col s12 m6">
             {resource.status}
             <div className="radio-group">
               <label>
                 <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={currency.status === Status.Active} />
-                {resource.yes}
+                {resource.active}
               </label>
               <label>
                 <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={currency.status === Status.Inactive} />
-                {resource.no}
+                {resource.inactive}
               </label>
             </div>
-          </div>
+          </label>
         </div>
         <footer className="view-footer">
           <button type="button" id="btnSave" name="btnSave" onClick={save}>

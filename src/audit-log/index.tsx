@@ -68,9 +68,8 @@ export const AuditLogsForm = () => {
   const [filter, setFilter] = useState<AuditLogFilter>(auditLogfilter)
   const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
 
-
   useEffect(() => {
-    const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, pageSizes, ["status", "auditLogType"])
+    const initFilter = mergeFilter(buildFromUrl<AuditLogFilter>(), filter, pageSizes)
     setSort(state, initFilter.sort)
     setFilter(initFilter)
     search(true) // eslint-disable-next-line react-hooks/exhaustive-deps

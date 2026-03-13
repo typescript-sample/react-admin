@@ -1,9 +1,10 @@
+import { StringMap } from "onecore"
 import React, { MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, isEmptyObject, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
-import { useNavigate, useParams } from "react-router-dom"
+import { clone, goBack, isEmptyObject, isSuccessful, makeDiff, OnClick, updateState } from "react-hook-core"
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
-import { addError, formatText, initForm, registerEvents, requiredOnBlur, setReadOnly, showFormError, validateForm } from "ui-plus"
+import { addError, formatText, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
 import { getLocale, handleError, hasPermission, Permission, Status, useResource } from "uione"
 import { Country, getCountryService } from "./service"
 
@@ -37,9 +38,6 @@ export const CountryForm = () => {
           } else {
             setInitialCountry(clone(country))
             setCountry(country)
-            if (!canWrite) {
-              setReadOnly(refForm?.current)
-            }
           }
         })
         .catch(handleError)
@@ -47,6 +45,19 @@ export const CountryForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  function onBack<T>(
+    e: MouseEvent<HTMLElement>,
+    navigate: NavigateFunction,
+    confirm: (msg: string, yesCallback?: () => void) => void,
+    resource: StringMap,
+    o1: T,
+    o2: T,
+    keys?: string[],
+    version?: string,
+  ) {
+    e.preventDefault()
+    goBack(navigate, confirm, resource, o1, o2, keys, version)
+  }
   const back = (e: OnClick) => onBack(e, navigate, confirm, resource, initialCountry, country)
 
   const save = (e: MouseEvent<HTMLElement>) => {
@@ -66,7 +77,7 @@ export const CountryForm = () => {
                 alertSuccess(resource.msg_save_success, () => navigate(-1))
               } else {
                 const msg = formatText(resource.error_duplicated, resource.country_code)
-                addError(refForm?.current as HTMLFormElement, "countryCode", msg)
+                addError(refForm?.current, "countryCode", msg)
               }
             })
             .catch(handleError)
@@ -110,15 +121,13 @@ export const CountryForm = () => {
           <dd className="col s6 m3 xl4">{country.countryName}</dd>
           <dt className="col s6 m3 xl2">{resource.country_native_name}</dt>
           <dd className="col s6 m3 xl4">{country.nativeCountryName}</dd>
-          <dt className="col s6 m3 xl2">{resource.status}</dt>
-          <dd className="col s6 m3 xl4">{country.status === "A" ? resource.active : resource.inactive}</dd>
+          <dt className="col s6 m3 xl2">{resource.date_format}</dt>
+          <dd className="col s6 m3 xl4">{country.dateFormat}</dd>
           <hr />
           <dt className="col s6 m3 xl2">{resource.decimal_separator}</dt>
           <dd className="col s6 m3 xl4">{country.decimalSeparator}</dd>
           <dt className="col s6 m3 xl2">{resource.group_separator}</dt>
           <dd className="col s6 m3 xl4">{country.groupSeparator}</dd>
-          <dt className="col s6 m3 xl2">{resource.currency_pattern}</dt>
-          <dd className="col s6 m3 xl4">{country.currencyPattern}</dd>
           <hr />
           <dt className="col s6 m3 xl2">{resource.currency_code}</dt>
           <dd className="col s6 m3 xl4">{country.currencyCode}</dd>
@@ -126,22 +135,25 @@ export const CountryForm = () => {
           <dd className="col s6 m3 xl4">{country.currencySymbol}</dd>
           <dt className="col s6 m3 xl2">{resource.currency_decimal_digits}</dt>
           <dd className="col s6 m3 xl4">{country.currencyDecimalDigits}</dd>
+          <dt className="col s6 m3 xl2">{resource.currency_pattern}</dt>
+          <dd className="col s6 m3 xl4">{country.currencyPattern}</dd>
           <dt className="col s6 m3 xl2">{resource.currency_sample}</dt>
           <dd className="col s6 m3 xl4">{country.currencySample}</dd>
+          <dt className="col s6 m3 xl2">{resource.status}</dt>
+          <dd className="col s6 m3 xl4">{country.status === "A" ? resource.active : resource.inactive}</dd>
         </dl>
       </div>
       <footer>
-        <button type="button" id="btnClose" name="btnClose" onClick={back}>
+        <button type="submit" id="btnClose" name="btnClose" onClick={back}>
           {resource.close}
         </button>
       </footer>
     </form>) : (<form id="countryForm" name="countryForm" className="form" ref={refForm}>
-      <header className="view-header">
+      <header>
         <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-        <h2 className="view-title">{resource.country}</h2>
+        <h2>{resource.country}</h2>
       </header>
       <div className="row">
-        <h4 className="header">Contact Information</h4>
         <label className="col s12 m6">
           {resource.country_code}
           <input
@@ -151,7 +163,7 @@ export const CountryForm = () => {
             value={country.countryCode}
             readOnly={!newMode}
             onChange={onChange}
-            maxLength={3}
+            maxLength={2}
             required={true}
             placeholder={resource.country_code}
           />
@@ -180,6 +192,47 @@ export const CountryForm = () => {
             maxLength={100}
             required={true}
             placeholder={resource.country_native_name}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.date_format}
+          <input
+            type="text"
+            id="dateFormat"
+            name="dateFormat"
+            value={country.dateFormat}
+            onChange={onChange}
+            maxLength={13}
+            required={true}
+            placeholder={resource.date_format}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.decimal_separator}
+          <input
+            type="text"
+            id="decimalSeparator"
+            name="decimalSeparator"
+            value={country.decimalSeparator}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={1}
+            required={true}
+            placeholder={resource.decimal_separator}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.group_separator}
+          <input
+            type="text"
+            id="groupSeparator"
+            name="groupSeparator"
+            value={country.groupSeparator}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={1}
+            required={true}
+            placeholder={resource.group_separator}
           />
         </label>
         <label className="col s12 m6">
@@ -213,7 +266,7 @@ export const CountryForm = () => {
         <label className="col s12 m6 flying">
           {resource.currency_decimal_digits}
           <input
-            type="text"
+            type="tel"
             id="currencyDecimalDigits"
             name="currencyDecimalDigits"
             className="text-right"
@@ -229,7 +282,7 @@ export const CountryForm = () => {
         <label className="col s12 m6">
           {resource.currency_pattern}
           <input
-            type="text"
+            type="tel"
             id="currencyPattern"
             name="currencyPattern"
             className="text-right"
@@ -253,18 +306,29 @@ export const CountryForm = () => {
             value={country.currencySample}
             onChange={onChange}
             onBlur={requiredOnBlur}
-            maxLength={20}
+            maxLength={16}
             required={true}
             placeholder={resource.currency_sample}
           />
         </label>
+        <label className="col s12 m6">
+          {resource.status}
+          <div className="radio-group">
+            <label>
+              <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={country.status === Status.Active} />
+              {resource.active}
+            </label>
+            <label>
+              <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={country.status === Status.Inactive} />
+              {resource.inactive}
+            </label>
+          </div>
+        </label>
       </div>
       <footer className="view-footer">
-        {canWrite && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-            {resource.save}
-          </button>
-        )}
+        <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+          {resource.save}
+        </button>
       </footer>
     </form>)
   )

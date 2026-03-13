@@ -7,8 +7,8 @@ export interface Locale {
   countryCode?: string
   countryName?: string
   nativeCountryName?: string
-  dateFormat?: string
   firstDayOfWeek?: number
+  dateFormat?: string
   decimalSeparator?: string
   groupSeparator?: string
   currencyCode?: string
@@ -25,8 +25,8 @@ export interface LocaleFilter extends Filter {
   countryCode?: string
   countryName?: string
   nativeCountryName?: string
-  dateFormat: string
   firstDayOfWeek?: number
+  dateFormat: string
   decimalSeparator?: string
   groupSeparator?: string
   currencyCode?: string
