@@ -352,12 +352,10 @@ export const LocaleForm = () => {
           />
         </label>
       </div>
-      <footer className="view-footer">
-        {canWrite && (
-          <button type="submit" id="btnSave" name="btnSave" onClick={save}>
-            {resource.save}
-          </button>
-        )}
+      <footer>
+        <button type="submit" id="btnSave" name="btnSave" onClick={save}>
+          {resource.save}
+        </button>
       </footer>
     </form>)
   )

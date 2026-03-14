@@ -45,7 +45,7 @@ export const CurrencyForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, initialCurrency, currency)
+  const back = (e: MouseEvent<HTMLElement>) => onBack(e, navigate, confirm, resource, currency, initialCurrency)
 
   const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
@@ -182,7 +182,7 @@ export const CurrencyForm = () => {
             </div>
           </label>
         </div>
-        <footer className="view-footer">
+        <footer>
           <button type="button" id="btnSave" name="btnSave" onClick={save}>
             {resource.save}
           </button>

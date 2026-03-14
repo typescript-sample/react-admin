@@ -80,8 +80,8 @@ export const AuditLogsForm = () => {
 
   const search = (isFirstLoad?: boolean) => {
     showLoading()
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
     const fields = getFields(refForm.current, state.fields)
+    addParametersIntoUrlWithSort(filter, state, isFirstLoad)
     setFilter(filter)
     const { limit, page } = filter
     getAuditLogService()

@@ -117,7 +117,7 @@ export const UserForm = () => {
   return (
     !canWrite ? (
       <form id="userForm" name="userForm" className="form" ref={refForm}>
-        <header className="view-header">
+        <header>
           <h2>{resource.user}</h2>
           <div className="btn-group">
             <button className="btn-group btn-right" hidden={newMode}>
@@ -155,7 +155,7 @@ export const UserForm = () => {
       <form id="userForm" name="userForm" className="form" ref={refForm}>
         <header>
           <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2 className="view-title">{resource.user}</h2>
+          <h2>{resource.user}</h2>
           <div className="btn-group">
             <button className="btn-group btn-right" hidden={newMode}>
               <i className="material-icons" onClick={(e) => assign(e, user.userId)}>

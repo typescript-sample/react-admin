@@ -311,7 +311,7 @@ export const CountryForm = () => {
           </div>
         </label>
       </div>
-      <footer className="view-footer">
+      <footer>
         <button type="submit" id="btnSave" name="btnSave" onClick={save}>
           {resource.save}
         </button>
