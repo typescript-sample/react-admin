@@ -1,5 +1,5 @@
-import React, { MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, isEmpty, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -21,7 +21,7 @@ export const CountryForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialCountry, setInitialCountry] = useState<Country>()
   const [country, setCountry] = useState<Country>(createCountry())
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, country, setCountry)
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, country, setCountry)
 
   const { id } = useParams()
   const newMode = !id
@@ -44,7 +44,7 @@ export const CountryForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, country, initialCountry)
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, country, initialCountry)
 
   const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()

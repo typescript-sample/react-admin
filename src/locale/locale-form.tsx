@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack, OnClick, updateState } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -43,9 +43,9 @@ export const LocaleForm = () => {
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, locale, initialLocale)
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, locale, initialLocale)
 
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {

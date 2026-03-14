@@ -1,5 +1,5 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { buildMessage, buildSortFilter, getFields, getOffset, onClearQ, OnClick, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, PageSizeSelect, resources, Sortable, updateState } from "react-hook-core"
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { buildMessage, buildSortFilter, getFields, getOffset, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, PageChange, pageSizes, PageSizeSelect, resources, Sortable, updateState } from "react-hook-core"
 import ReactModal from "react-modal"
 import Pagination from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -11,7 +11,7 @@ ReactModal.setAppElement("#root")
 interface Props {
   isOpenModel: boolean
   users: User[]
-  onModelClose?: (e: React.MouseEvent | React.KeyboardEvent) => void
+  onModelClose?: (e: MouseEvent | KeyboardEvent) => void
   onModelSave: (e: User[]) => void
 }
 
@@ -68,7 +68,7 @@ export const UsersLookup = (props: Props) => {
       .finally(hideLoading)
   }
 
-  const onCheckUser = (e: OnClick) => {
+  const onCheckUser = (e: MouseEvent<HTMLElement>) => {
     const target: HTMLInputElement = e.target as HTMLInputElement
     const user = list ? list.find((v: User) => v.userId === target.value) : undefined
     if (user) {
@@ -86,7 +86,7 @@ export const UsersLookup = (props: Props) => {
     props.onModelSave(users)
   }
 
-  const onModelClose = (e: React.MouseEvent | React.KeyboardEvent) => {
+  const onModelClose = (e: MouseEvent | KeyboardEvent) => {
     filter.q = ""
     filter.page = 0
     filter.limit = resources.defaultLimit

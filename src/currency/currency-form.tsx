@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useRef, useState } from "react"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
@@ -22,7 +22,7 @@ export const CurrencyForm = () => {
   const refForm = useRef<HTMLFormElement>(null)
   const [initialCurrency, setInitialCurrency] = useState<Currency>()
   const [currency, setCurrency] = useState<Currency>(createCurrency())
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, currency, setCurrency)
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, currency, setCurrency)
 
   const { id } = useParams()
   const newMode = !id

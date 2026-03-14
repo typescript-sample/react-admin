@@ -1,5 +1,5 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react"
-import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack, OnClick } from "react-hook-core"
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, formatText, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -377,7 +377,7 @@ export function RoleForm() {
     setState({ ...state, keyword: q, shownPrivileges })
   }
 
-  const assign = (e: OnClick, id: string) => {
+  const assign = (e: MouseEvent<HTMLElement>, id: string) => {
     e.preventDefault()
     navigate(`/roles/${id}/assign`)
     return
@@ -569,12 +569,12 @@ export function RoleForm() {
   }
 
   const role = state.role
-  const statusOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     role.status = e.target.value
     setState({ ...state, role })
   }
-  const back = (e: OnClick) => onBack(e, navigate, confirm, resource, role, initialRole)
-  const deleteOnClick = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const back = (e: MouseEvent<HTMLButtonElement>) => onBack(e, navigate, confirm, resource, role, initialRole)
+  const deleteOnClick = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     confirm(resource.msg_confirm_delete, () => {
       const service = getRoleService()
@@ -594,7 +594,7 @@ export function RoleForm() {
         .finally(hideLoading)
     })
   }
-  const save = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+  const save = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
