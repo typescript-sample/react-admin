@@ -127,57 +127,57 @@ export const CountriesForm = () => {
                 <tr>
                   <th>{resource.number}</th>
                   <th data-field="countryCode">
-                    <button type="button" id="sortCountryCode" onClick={sort}>
+                    <button type="button" id="countryCodeSort" onClick={sort}>
                       {resource.country_code}
                     </button>
                   </th>
                   <th data-field="countryName">
-                    <button type="button" id="sortCountryName" onClick={sort}>
+                    <button type="button" id="countryNameSort" onClick={sort}>
                       {resource.country_name}
                     </button>
                   </th>
                   <th data-field="nativeCountryName">
-                    <button type="button" id="sortNativeCountryName" onClick={sort}>
+                    <button type="button" id="nativeCountryNameSort" onClick={sort}>
                       {resource.country_native_name}
                     </button>
                   </th>
                   <th data-field="decimalSeparator">
-                    <button type="button" id="sortDecimalSeparator" onClick={sort}>
+                    <button type="button" id="decimalSeparatorSort" onClick={sort}>
                       {resource.decimal_separator}
                     </button>
                   </th>
                   <th data-field="groupSeparator">
-                    <button type="button" id="sortGroupSeparator" onClick={sort}>
+                    <button type="button" id="groupSeparatorSort" onClick={sort}>
                       {resource.group_separator}
                     </button>
                   </th>
                   <th data-field="currencyCode">
-                    <button type="button" id="sortCurrencyCode" onClick={sort}>
+                    <button type="button" id="currencyCodeSort" onClick={sort}>
                       {resource.currency_code}
                     </button>
                   </th>
                   <th data-field="currencySymbol">
-                    <button type="button" id="sortCurrencySymbol" onClick={sort}>
+                    <button type="button" id="currencySymbolSort" onClick={sort}>
                       {resource.currency_symbol}
                     </button>
                   </th>
                   <th data-field="currencyDecimalDigits">
-                    <button type="button" id="sortCurrencyDecimalDigits" onClick={sort}>
+                    <button type="button" id="currencyDecimalDigitsSort" onClick={sort}>
                       {resource.currency_decimal_digits}
                     </button>
                   </th>
                   <th data-field="currencyPattern">
-                    <button type="button" id="sortCurrencyPattern" onClick={sort}>
+                    <button type="button" id="currencyPatternSort" onClick={sort}>
                       {resource.currency_pattern}
                     </button>
                   </th>
                   <th data-field="currencySample">
-                    <button type="button" id="sortCurrencySample" onClick={sort}>
+                    <button type="button" id="currencySampleSort" onClick={sort}>
                       {resource.currency_sample}
                     </button>
                   </th>
                   <th data-field="status">
-                    <button type="button" id="sortStatus" onClick={sort}>
+                    <button type="button" id="statusSort" onClick={sort}>
                       {resource.status}
                     </button>
                   </th>

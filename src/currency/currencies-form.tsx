@@ -129,22 +129,22 @@ export const CurrenciesForm = () => {
                 <tr>
                   <th>{resource.number}</th>
                   <th data-field="code">
-                    <button type="button" id="sortCode" onClick={sort}>
+                    <button type="button" id="codeSort" onClick={sort}>
                       {resource.currency_code}
                     </button>
                   </th>
                   <th data-field="symbol">
-                    <button type="button" id="sortSymbol" onClick={sort}>
+                    <button type="button" id="symbolSort" onClick={sort}>
                       {resource.currency_symbol}
                     </button>
                   </th>
                   <th data-field="decimalDigits">
-                    <button type="button" id="sortDecimalDigits" onClick={sort}>
+                    <button type="button" id="decimalDigitsSort" onClick={sort}>
                       {resource.currency_decimal_digits}
                     </button>
                   </th>
                   <th data-field="status">
-                    <button type="button" id="sortStatus" onClick={sort}>
+                    <button type="button" id="statusSort" onClick={sort}>
                       {resource.status}
                     </button>
                   </th>
