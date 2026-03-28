@@ -259,8 +259,8 @@ export const CountryForm = () => {
               type="tel"
               id="currencyDecimalDigits"
               name="currencyDecimalDigits"
-              className="text-right"
               data-type="int"
+              className="text-right"
               value={country.currencyDecimalDigits?.toString()}
               onChange={onChange}
               maxLength={1}
@@ -275,8 +275,8 @@ export const CountryForm = () => {
               type="tel"
               id="currencyPattern"
               name="currencyPattern"
-              className="text-right"
               data-type="int"
+              className="text-right"
               value={country.currencyPattern?.toString()}
               onChange={onChange}
               onBlur={requiredOnBlur}

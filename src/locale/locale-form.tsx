@@ -158,7 +158,7 @@ export const LocaleForm = () => {
               value={locale.code}
               readOnly={!newMode}
               onChange={onChange}
-              maxLength={20}
+              maxLength={11}
               required={true}
               placeholder={resource.locale_code}
             />
@@ -231,11 +231,11 @@ export const LocaleForm = () => {
           <label className="col s12 m6 flying">
             {resource.first_day_of_week}
             <input
-              type="text"
+              type="tel"
               id="firstDayOfWeek"
               name="firstDayOfWeek"
-              className="text-right"
               data-type="int"
+              className="text-right"
               value={locale.firstDayOfWeek?.toString()}
               onChange={onChange}
               maxLength={1}
@@ -317,8 +317,8 @@ export const LocaleForm = () => {
               type="tel"
               id="currencyDecimalDigits"
               name="currencyDecimalDigits"
-              className="text-right"
               data-type="int"
+              className="text-right"
               value={locale.currencyDecimalDigits?.toString()}
               onChange={onChange}
               maxLength={1}
@@ -331,8 +331,8 @@ export const LocaleForm = () => {
               type="tel"
               id="currencyPattern"
               name="currencyPattern"
-              className="text-right"
               data-type="int"
+              className="text-right"
               value={locale.currencyPattern?.toString()}
               onChange={onChange}
               onBlur={requiredOnBlur}

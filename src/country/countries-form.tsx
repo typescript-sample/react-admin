@@ -96,8 +96,8 @@ export const CountriesForm = () => {
                 type="text"
                 id="currencyDecimalDigits"
                 name="currencyDecimalDigits"
-                className="text-right"
                 data-type="int"
+                className="text-right"
                 value={filter.currencyDecimalDigits?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}
@@ -110,8 +110,8 @@ export const CountriesForm = () => {
                 type="text"
                 id="currencyPattern"
                 name="currencyPattern"
-                className="text-right"
                 data-type="int"
+                className="text-right"
                 value={filter.currencyPattern?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
                 maxLength={1}

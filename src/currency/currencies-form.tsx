@@ -96,11 +96,11 @@ export const CurrenciesForm = () => {
             <label className="col s12 m6">
               {resource.currency_decimal_digits}
               <input
-                type="text"
+                type="tel"
                 id="decimalDigits"
                 name="decimalDigits"
-                className="text-right"
                 data-type="int"
+                className="text-right"
                 value={filter.decimalDigits?.toString()}
                 onChange={onChange}
                 maxLength={1}
