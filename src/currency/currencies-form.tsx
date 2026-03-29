@@ -80,7 +80,7 @@ export const CurrenciesForm = () => {
           {canWrite && <Link id="btnNew" className="btn-new" to="new" />}
         </div>
       </header>
-      <div className="search-body">
+      <div className="main-body">
         <form id="currencysForm" name="currencysForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
             <label className="col s12 m6 search-input">
