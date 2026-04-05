@@ -99,7 +99,7 @@ export const CurrenciesForm = () => {
                 type="tel"
                 id="decimalDigits"
                 name="decimalDigits"
-                data-type="int"
+                data-type="integer"
                 className="text-right"
                 value={filter.decimalDigits?.toString()}
                 onChange={onChange}

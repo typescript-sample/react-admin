@@ -112,7 +112,7 @@ export const LocalesForm = () => {
                 type="text"
                 id="currencyDecimalDigits"
                 name="currencyDecimalDigits"
-                data-type="int"
+                data-type="integer"
                 className="text-right"
                 value={filter.currencyDecimalDigits?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
@@ -126,7 +126,7 @@ export const LocalesForm = () => {
                 type="text"
                 id="currencyPattern"
                 name="currencyPattern"
-                data-type="int"
+                data-type="integer"
                 className="text-right"
                 value={filter.currencyPattern?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
@@ -140,7 +140,7 @@ export const LocalesForm = () => {
                 type="text"
                 id="groupSeparator"
                 name="groupSeparator"
-                data-type="int"
+                data-type="integer"
                 className="text-right"
                 value={filter.groupSeparator?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}

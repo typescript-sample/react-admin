@@ -234,7 +234,7 @@ export const LocaleForm = () => {
               type="tel"
               id="firstDayOfWeek"
               name="firstDayOfWeek"
-              data-type="int"
+              data-type="integer"
               className="text-right"
               value={locale.firstDayOfWeek?.toString()}
               onChange={onChange}
@@ -317,7 +317,7 @@ export const LocaleForm = () => {
               type="tel"
               id="currencyDecimalDigits"
               name="currencyDecimalDigits"
-              data-type="int"
+              data-type="integer"
               className="text-right"
               value={locale.currencyDecimalDigits?.toString()}
               onChange={onChange}
@@ -331,7 +331,7 @@ export const LocaleForm = () => {
               type="tel"
               id="currencyPattern"
               name="currencyPattern"
-              data-type="int"
+              data-type="integer"
               className="text-right"
               value={locale.currencyPattern?.toString()}
               onChange={onChange}

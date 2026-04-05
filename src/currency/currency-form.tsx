@@ -162,7 +162,7 @@ export const CurrencyForm = () => {
               type="tel"
               id="decimalDigits"
               name="decimalDigits"
-              data-type="int"
+              data-type="integer"
               className="text-right"
               value={currency.decimalDigits?.toString()}
               onChange={onChange}

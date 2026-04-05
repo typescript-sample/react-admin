@@ -259,7 +259,7 @@ export const CountryForm = () => {
               type="tel"
               id="currencyDecimalDigits"
               name="currencyDecimalDigits"
-              data-type="int"
+              data-type="integer"
               className="text-right"
               value={country.currencyDecimalDigits?.toString()}
               onChange={onChange}
@@ -275,7 +275,7 @@ export const CountryForm = () => {
               type="tel"
               id="currencyPattern"
               name="currencyPattern"
-              data-type="int"
+              data-type="integer"
               className="text-right"
               value={country.currencyPattern?.toString()}
               onChange={onChange}
