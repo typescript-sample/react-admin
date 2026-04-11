@@ -28,6 +28,7 @@
 
 .dark body,
 .dark .page-container,
+.dark .alert-wrapper .alert,
 .dark .dropdown-menu-profile {
   background-color: #000;
 }
@@ -102,7 +103,7 @@
 
 
 .dark .cover > i:first-child {
-  background: #ffffff;
+  background: #fff;
   color: #000;
 }
 
@@ -374,11 +375,11 @@
 
 .dark .toast-message {
   background-color: #cacaca;
-  color: #000000;
+  color: #000;
 }
 .dark .sidebar {
   background-color: #121212;
-  color: #ffffff;
+  color: #fff;
   border-color: #00574b;
 }
 
@@ -393,7 +394,7 @@
   background: #4b4f4f; /* #07843b */
 }
 .dark .sidebar .menu-item {
-  color: #ffffff;
+  color: #fff;
 }
 
 .dark .btn-more,
@@ -561,6 +562,6 @@
 
 .dark .table > tbody > tr:nth-of-type(odd),
 .dark .table-striped > tbody > tr:nth-of-type(odd) {
-  background-color: #000000;
+  background-color: #000;
 }
 /* end bootstrap only */
