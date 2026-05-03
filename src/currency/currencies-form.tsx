@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { addParametersIntoUrlWithSort, buildFromUrl, buildMessage, checked, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resetSearch, resources, setSort, Sortable, updateState } from "react-hook-core"
+import { addParametersIntoUrlWithSort, buildFromUrl, buildMessage, checked, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resetSearch, resources, setSortFilter, Sortable, updateState } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -37,25 +37,25 @@ export const CurrenciesForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<CurrencyFilter>(), filter, pageSizes, ["status"])
-    setSort(state, filter.sort)
-    setFilter(initFilter)
-    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSortFilter(initFilter, state, setFilter)
+    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
-  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
 
-  const search = (isFirstLoad?: boolean) => {
+  const search = (obj: CurrencyFilter, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad, setFilter)
-    const { limit, page } = filter
+    addParametersIntoUrlWithSort(obj, state, isFirstLoad)
+    setFilter(obj)
+    const { limit, page } = obj
     getCurrencyService()
-      .search({ ...filter }, limit, page, fields)
+      .search({ ...obj }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)

@@ -40,25 +40,25 @@ export const UsersLookup = (props: Props) => {
 
   useEffect(() => {
     if (props.isOpenModel) {
-      search()
+      search(filter)
     }
   }, [props.isOpenModel])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
-  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
 
-  const search = () => {
+  const search = (obj: UserFilter) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    buildSortFilter(filter, state)
-    filter.excluding = props.users.map(u => u.userId)
-    setFilter(filter)
-    const { limit, page } = filter
+    buildSortFilter(obj, state)
+    obj.excluding = props.users.map(u => u.userId)
+    setFilter(obj)
+    const { limit, page } = obj
     getUserService()
-      .search({ ...filter }, limit, page, fields)
+      .search({ ...obj }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
@@ -135,7 +135,7 @@ export const UsersLookup = (props: Props) => {
           <form className="list-result">
             {state.view !== "list" && (
               <div className="table-responsive">
-                <table className="table">
+                <table>
                   <thead>
                     <tr>
                       <th>{resource.number}</th>

@@ -36,23 +36,24 @@ export const CountriesForm = () => {
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<CountryFilter>(), filter, pageSizes, ["status"])
     setSortFilter(initFilter, state, setFilter)
-    search(true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, state)
-  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter, setFilter)
-  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter, setFilter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state, setFilter, setState)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
+  const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
 
-  const search = (isFirstLoad?: boolean) => {
+  const search = (obj: CountryFilter, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(filter, state, isFirstLoad, setFilter)
-    const { limit, page } = filter
+    addParametersIntoUrlWithSort(obj, state, isFirstLoad)
+    setFilter(obj)
+    const { limit, page } = obj
     getCountryService()
-      .search({ ...filter }, limit, page, fields)
+      .search({ ...obj }, limit, page, fields)
       .then((res) => {
         setState({ ...state, total: res.total, fields })
         setList(res.list)
