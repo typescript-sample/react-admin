@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { addParametersIntoUrlWithSort, buildFromUrl, buildMessage, checked, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resetSearch, resources, setSortFilter, Sortable, updateState } from "react-hook-core"
+import { buildFromUrl, buildMessage, checked, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resetSearch, resources, setSortFilter, Sortable, updateState, updateUrl } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -37,21 +37,21 @@ export const CurrenciesForm = () => {
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<CurrencyFilter>(), filter, pageSizes, ["status"])
-    setSortFilter(initFilter, state, setFilter)
-    search(initFilter, true) // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSortFilter(state, initFilter, setFilter)
+    search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, state, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
-  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, state, search, filter)
+  const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
 
-  const search = (obj: CurrencyFilter, isFirstLoad?: boolean) => {
+  const search = (obj: CurrencyFilter, sort?: Sortable, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
-    addParametersIntoUrlWithSort(obj, state, isFirstLoad)
+    updateUrl(obj, isFirstLoad, setFilter, sort)
     setFilter(obj)
     const { limit, page } = obj
     getCurrencyService()

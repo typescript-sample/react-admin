@@ -103,6 +103,7 @@ export const en = {
   sort_relevance: "Relevance",
   sort_date: "Date",
   sort_rating: "Rank",
+  sort_by: "Sort by:",
 
   error_not_found: "Not found.",
   error_internal: "System Error.",
