@@ -18,6 +18,7 @@ import {
   PageSizeSelect,
   resetSearch,
   resources,
+  Select,
   setSortFilter,
   Sortable,
   updateState,
@@ -44,12 +45,24 @@ export const UsersForm = () => {
 
   const userFilter: UserFilter = {
     limit: resources.defaultLimit,
-    status: ["A"],
+    status: [],
   }
   const initialState: UserSearch = {
     statusList: [],
   }
 
+  const items: Item[] = [
+    { value: "userId", text: "User Id asc" },
+    { value: "-userId", text: "User Id desc" },
+    { value: "username", text: "Username asc" },
+    { value: "-username", text: "Username desc" },
+    { value: "email", text: "Email asc" },
+    { value: "-email", text: "Email desc" },
+    { value: "displayName", text: "DisplayName asc" },
+    { value: "-displayName", text: "DisplayName desc" },
+    { value: "status", text: "Status asc" },
+    { value: "-status", text: "Status desc" },
+  ]
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
   const [showFilter, setShowFilter] = useState(false)
@@ -72,6 +85,11 @@ export const UsersForm = () => {
   const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
   const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
 
+  const sortOnChange = (target: HTMLSelectElement) => {
+    filter.sort = target.value
+    search(filter)
+  }
+
   const search = (obj: UserFilter, sort?: Sortable, isFirstLoad?: boolean) => {
     showLoading()
     const fields = getFields(refForm.current, state.fields)
@@ -86,7 +104,6 @@ export const UsersForm = () => {
       .catch(handleError)
       .finally(hideLoading)
   }
-
 
   const offset = getOffset(filter.limit, filter.page)
   return (
@@ -106,14 +123,20 @@ export const UsersForm = () => {
       <div className="main-body">
         <form id="usersForm" name="usersForm" className="form" noValidate={true} ref={refForm}>
           <section className="row search-group">
-            <label className="col s12 m6 search-input">
+            <label className="col s12 m6 l4 xl6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
               <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
               <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
-            <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
+            {state.view === "list" && <div className="col s12 m6 l4 xl3 sort">
+              <label>
+                {resource.sort_by}
+                <Select id="sort" name="sort" value={filter.sort} items={items} onChange={(e) => sortOnChange(e.target)} />
+              </label>
+            </div>}
+            <Pagination className="col s12 m6 l4 xl3" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s12 m4 l4 checkbox-section">
