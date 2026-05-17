@@ -86,7 +86,7 @@ export const CountriesForm = () => {
               <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
               <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
               <button type="button" id="btnToggleSearch" className="btn-filter" onClick={toggleSearch} />
-              <button type="submit" id="btnSearch" className="btn-search" onClick={searchOnClick} />
+              <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>

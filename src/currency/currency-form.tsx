@@ -187,7 +187,7 @@ export const CurrencyForm = () => {
           </label>
         </div>
         <footer>
-          <button type="button" id="btnSave" name="btnSave" onClick={save}>
+          <button type="button" id="saveBtn" name="saveBtn" onClick={save}>
             {resource.save}
           </button>
         </footer>
