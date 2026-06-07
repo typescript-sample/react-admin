@@ -53,9 +53,7 @@ export const AuditLogsForm = () => {
       max: addSeconds(now, 300),
     },
   }
-  const initialState: AuditLogSearch = {
-    statusList: [],
-  }
+  const initialState: AuditLogSearch = { statusList: [] }
 
   const locale = useLocale()
   const resource = useResource()
@@ -71,10 +69,9 @@ export const AuditLogsForm = () => {
     search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
-  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
+  const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
   const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
 
   const search = (obj: AuditLogFilter, sort?: Sortable, isFirstLoad?: boolean) => {

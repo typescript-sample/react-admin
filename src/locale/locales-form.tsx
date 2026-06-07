@@ -18,15 +18,8 @@ interface LocaleSearch extends Sortable {
 export const LocalesForm = () => {
   const canWrite = hasPermission(Permission.write)
 
-  const localeFilter: LocaleFilter = {
-    limit: resources.defaultLimit,
-    code: "",
-    name: "",
-    dateFormat: "",
-  }
-  const initialState: LocaleSearch = {
-    statusList: [],
-  }
+  const localeFilter: LocaleFilter = { limit: resources.defaultLimit }
+  const initialState: LocaleSearch = { statusList: [] }
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)

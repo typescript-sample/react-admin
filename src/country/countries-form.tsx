@@ -1,6 +1,6 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { buildFromUrl, buildMessage, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resources, setSortFilter, Sortable, updateState, updateUrl } from "react-hook-core"
+import { buildFromUrl, buildMessage, checked, getFields, getOffset, mergeFilter, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resources, setSortFilter, Sortable, updateState, updateUrl } from "react-hook-core"
 import { Link } from "react-router-dom"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
@@ -18,12 +18,8 @@ interface CountrySearch extends Sortable {
 export const CountriesForm = () => {
   const canWrite = hasPermission(Permission.write)
 
-  const countryFilter: CountryFilter = {
-    limit: resources.defaultLimit,
-  }
-  const initialState: CountrySearch = {
-    statusList: [],
-  }
+  const countryFilter: CountryFilter = { limit: resources.defaultLimit }
+  const initialState: CountrySearch = { statusList: [] }
 
   const resource = useResource()
   const refForm = useRef<HTMLFormElement>(null)
@@ -31,7 +27,6 @@ export const CountriesForm = () => {
   const [state, setState] = useState<CountrySearch>(initialState)
   const [list, setList] = useState<Country[]>([])
   const [filter, setFilter] = useState<CountryFilter>(countryFilter)
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => updateState(e, filter, setFilter)
 
   useEffect(() => {
     const initFilter = mergeFilter(buildFromUrl<CountryFilter>(), filter, pageSizes, ["status"])
@@ -39,12 +34,17 @@ export const CountriesForm = () => {
     search(initFilter, state, true) // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const clearQ = (e: MouseEvent<HTMLButtonElement>) => onClearQ(filter, setFilter)
   const toggleSearch = (e: MouseEvent<HTMLButtonElement>) => onToggleSearch(e, showFilter, setShowFilter)
   const sort = (e: MouseEvent<HTMLButtonElement>) => onSort(e, search, filter, state)
   const pageSizeChanged = (e: ChangeEvent<HTMLSelectElement>) => onPageSizeChanged(e, search, filter)
   const pageChanged = (data: PageChange) => onPageChanged(data, search, filter)
   const searchOnClick = (e: MouseEvent<HTMLButtonElement>) => onSearch(e, search, filter, state)
+
+  const statusOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    filter.page = 1
+    setFilter(filter)
+    search(filter)
+  }
 
   const search = (obj: CountryFilter, sort?: Sortable, isFirstLoad?: boolean) => {
     showLoading()
@@ -83,18 +83,50 @@ export const CountriesForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} onChange={onChange} placeholder={resource.keyword} />
-              <button type="button" id="btnClearQ" hidden={!filter.q} className="btn-remove-text" onClick={clearQ} />
-              <button type="button" id="btnToggleSearch" className="btn-filter" onClick={toggleSearch} />
+              <input type="text" id="q" name="q" value={filter.q} maxLength={80} placeholder={resource.keyword}
+                onChange={e => {
+                  filter.q = e.target.value
+                  setFilter(filter)
+                }} />
+              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text"
+                onClick={e => {
+                  filter.q = ""
+                  setFilter(filter)
+                }} />
+              <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
             <Pagination className="col s12 m6" total={state.total} size={filter.limit} max={7} page={filter.page} onChange={pageChanged} />
           </section>
           <section className="row search-group inline" hidden={!showFilter}>
             <label className="col s6 l3">
-              {resource.currency_decimal_digits}
+              {resource.decimal_separator}
               <input
                 type="text"
+                id="decimalSeparator"
+                name="decimalSeparator"
+                value={filter.decimalSeparator?.toString()}
+                onChange={(e) => updateState(e, filter, setFilter)}
+                maxLength={1}
+                placeholder={resource.decimal_separator}
+              />
+            </label>
+            <label className="col s6 l3">
+              {resource.group_separator}
+              <input
+                type="text"
+                id="groupSeparator"
+                name="groupSeparator"
+                value={filter.groupSeparator?.toString()}
+                onChange={(e) => updateState(e, filter, setFilter)}
+                maxLength={1}
+                placeholder={resource.group_separator}
+              />
+            </label>
+            <label className="col s6 l3">
+              {resource.currency_decimal_digits}
+              <input
+                type="tel"
                 id="currencyDecimalDigits"
                 name="currencyDecimalDigits"
                 data-type="integer"
@@ -108,7 +140,7 @@ export const CountriesForm = () => {
             <label className="col s6 l3">
               {resource.currency_pattern}
               <input
-                type="text"
+                type="tel"
                 id="currencyPattern"
                 name="currencyPattern"
                 data-type="integer"
@@ -118,6 +150,19 @@ export const CountriesForm = () => {
                 maxLength={1}
                 placeholder={resource.currency_pattern}
               />
+            </label>
+            <label className="col s12 m6">
+              {resource.status}
+              <section className="checkbox-group">
+                <label>
+                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  {resource.active}
+                </label>
+                <label>
+                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
+                  {resource.inactive}
+                </label>
+              </section>
             </label>
           </section>
         </form>

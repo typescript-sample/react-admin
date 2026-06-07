@@ -28,7 +28,7 @@ import RolesRoute from "./role"
 import { SettingsForm } from "./settings"
 import UsersRoute from "./user"
 
-// tslint:disable:ordered-imports
+// tslint:disable:ordered-import
 import "./App.css"
 import "./assets/css/reset.css"
 import "./assets/fonts/material-icon/css/material-icons.css"

@@ -1,5 +1,5 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, Error, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { MouseEvent, useEffect, useRef, useState } from "react"
+import { clone, Error, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
 import { useNavigate, useParams } from "react-router-dom"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -22,13 +22,11 @@ export const CountryForm = () => {
   const [error500, setError500] = useState(false)
   const [initialCountry, setInitialCountry] = useState<Country>()
   const [country, setCountry] = useState<Country>(createCountry())
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => updateState(e, country, setCountry)
 
   const service = getCountryService()
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
-    initForm(refForm?.current, registerEvents)
     if (id) {
       showLoading()
       service
@@ -37,10 +35,13 @@ export const CountryForm = () => {
           if (country) {
             setInitialCountry(clone(country))
             setCountry(country)
+            initForm(refForm?.current, registerEvents)
           }
         })
         .catch(err => setError500(true))
         .finally(hideLoading)
+    } else {
+      initForm(refForm?.current, registerEvents)
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -152,7 +153,10 @@ export const CountryForm = () => {
               name="countryCode"
               value={country.countryCode}
               readOnly={!newMode}
-              onChange={onChange}
+              onChange={e => {
+                country.countryCode = e.target.value
+                setCountry(country)
+              }}
               maxLength={2}
               required={true}
               placeholder={resource.country_code}
@@ -165,7 +169,10 @@ export const CountryForm = () => {
               id="countryName"
               name="countryName"
               value={country.countryName}
-              onChange={onChange}
+              onChange={e => {
+                country.countryName = e.target.value
+                setCountry(country)
+              }}
               maxLength={100}
               required={true}
               placeholder={resource.country_name}
@@ -178,7 +185,10 @@ export const CountryForm = () => {
               id="nativeCountryName"
               name="nativeCountryName"
               value={country.nativeCountryName}
-              onChange={onChange}
+              onChange={e => {
+                country.nativeCountryName = e.target.value
+                setCountry(country)
+              }}
               maxLength={100}
               required={true}
               placeholder={resource.country_native_name}
@@ -191,7 +201,10 @@ export const CountryForm = () => {
               id="dateFormat"
               name="dateFormat"
               value={country.dateFormat}
-              onChange={onChange}
+              onChange={e => {
+                country.dateFormat = e.target.value
+                setCountry(country)
+              }}
               maxLength={13}
               required={true}
               placeholder={resource.date_format}
@@ -204,7 +217,10 @@ export const CountryForm = () => {
               id="decimalSeparator"
               name="decimalSeparator"
               value={country.decimalSeparator}
-              onChange={onChange}
+              onChange={e => {
+                country.decimalSeparator = e.target.value
+                setCountry(country)
+              }}
               onBlur={requiredOnBlur}
               maxLength={1}
               required={true}
@@ -218,7 +234,10 @@ export const CountryForm = () => {
               id="groupSeparator"
               name="groupSeparator"
               value={country.groupSeparator}
-              onChange={onChange}
+              onChange={e => {
+                country.groupSeparator = e.target.value
+                setCountry(country)
+              }}
               onBlur={requiredOnBlur}
               maxLength={1}
               required={true}
@@ -232,7 +251,10 @@ export const CountryForm = () => {
               id="currencyCode"
               name="currencyCode"
               value={country.currencyCode}
-              onChange={onChange}
+              onChange={e => {
+                country.currencyCode = e.target.value
+                setCountry(country)
+              }}
               onBlur={requiredOnBlur}
               maxLength={3}
               required={true}
@@ -246,7 +268,10 @@ export const CountryForm = () => {
               id="currencySymbol"
               name="currencySymbol"
               value={country.currencySymbol}
-              onChange={onChange}
+              onChange={e => {
+                country.currencySymbol = e.target.value
+                setCountry(country)
+              }}
               onBlur={requiredOnBlur}
               maxLength={4}
               required={true}
@@ -261,8 +286,11 @@ export const CountryForm = () => {
               name="currencyDecimalDigits"
               data-type="integer"
               className="text-right"
-              value={country.currencyDecimalDigits?.toString()}
-              onChange={onChange}
+              value={country.currencyDecimalDigits}
+              onChange={e => {
+                country.currencyDecimalDigits = parseInt(e.target.value)
+                setCountry(country)
+              }}
               maxLength={1}
               min={0}
               max={3}
@@ -277,8 +305,11 @@ export const CountryForm = () => {
               name="currencyPattern"
               data-type="integer"
               className="text-right"
-              value={country.currencyPattern?.toString()}
-              onChange={onChange}
+              value={country.currencyPattern}
+              onChange={e => {
+                country.currencyDecimalDigits = parseInt(e.target.value)
+                setCountry(country)
+              }}
               onBlur={requiredOnBlur}
               maxLength={1}
               min={0}
@@ -294,7 +325,10 @@ export const CountryForm = () => {
               id="currencySample"
               name="currencySample"
               value={country.currencySample}
-              onChange={onChange}
+              onChange={e => {
+                country.currencySample = e.target.value
+                setCountry(country)
+              }}
               onBlur={requiredOnBlur}
               maxLength={16}
               required={true}
@@ -305,11 +339,19 @@ export const CountryForm = () => {
             {resource.status}
             <div className="radio-group">
               <label>
-                <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={country.status === Status.Active} />
+                <input type="radio" id="active" name="status" value={Status.Active} checked={country.status === Status.Active}
+                  onChange={e => {
+                    country.status = e.target.value
+                    setCountry(country)
+                  }} />
                 {resource.active}
               </label>
               <label>
-                <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={country.status === Status.Inactive} />
+                <input type="radio" id="inactive" name="status" value={Status.Inactive} checked={country.status === Status.Inactive}
+                  onChange={e => {
+                    country.status = e.target.value
+                    setCountry(country)
+                  }} />
                 {resource.inactive}
               </label>
             </div>

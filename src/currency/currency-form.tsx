@@ -164,7 +164,7 @@ export const CurrencyForm = () => {
               name="decimalDigits"
               data-type="integer"
               className="text-right"
-              value={currency.decimalDigits?.toString()}
+              value={currency.decimalDigits}
               onChange={onChange}
               maxLength={1}
               min={0}

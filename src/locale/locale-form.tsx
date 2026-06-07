@@ -27,7 +27,6 @@ export const LocaleForm = () => {
   const { id } = useParams()
   const newMode = !id
   useEffect(() => {
-    initForm(refForm?.current, registerEvents)
     if (id) {
       showLoading()
       service
@@ -36,10 +35,13 @@ export const LocaleForm = () => {
           if (locale) {
             setInitialLocale(clone(locale))
             setLocale(locale)
+            initForm(refForm?.current, registerEvents)
           }
         })
         .catch(err => setError500(true))
         .finally(hideLoading)
+    } else {
+      initForm(refForm?.current, registerEvents)
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -236,7 +238,7 @@ export const LocaleForm = () => {
               name="firstDayOfWeek"
               data-type="integer"
               className="text-right"
-              value={locale.firstDayOfWeek?.toString()}
+              value={locale.firstDayOfWeek}
               onChange={onChange}
               maxLength={1}
               placeholder={resource.first_day_of_week}
@@ -319,7 +321,7 @@ export const LocaleForm = () => {
               name="currencyDecimalDigits"
               data-type="integer"
               className="text-right"
-              value={locale.currencyDecimalDigits?.toString()}
+              value={locale.currencyDecimalDigits}
               onChange={onChange}
               maxLength={1}
               placeholder={resource.currency_decimal_digits}
@@ -333,7 +335,7 @@ export const LocaleForm = () => {
               name="currencyPattern"
               data-type="integer"
               className="text-right"
-              value={locale.currencyPattern?.toString()}
+              value={locale.currencyPattern}
               onChange={onChange}
               onBlur={requiredOnBlur}
               maxLength={1}

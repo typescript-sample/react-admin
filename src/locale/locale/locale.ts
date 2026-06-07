@@ -26,7 +26,7 @@ export interface LocaleFilter extends Filter {
   countryName?: string
   nativeCountryName?: string
   firstDayOfWeek?: number
-  dateFormat: string
+  dateFormat?: string
   decimalSeparator?: string
   groupSeparator?: string
   currencyCode?: string
