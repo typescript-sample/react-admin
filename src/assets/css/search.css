@@ -200,6 +200,14 @@ section.row.search-group nav.col {
   padding-left: 12px;
   padding-bottom: 4px;
 }
+.section.search > label > .limit {
+  margin-top: 0;
+  background-color: transparent;
+}
+.section.search > label > .limit .dropdown {
+  top: 26px;
+  left: -28px;
+}
 .section.search > label > select {
   margin-top: -4px;
   padding-top: 0;

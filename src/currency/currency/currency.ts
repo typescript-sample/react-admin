@@ -20,21 +20,21 @@ export const currencyModel: Attributes = {
   code: {
     key: true,
     length: 3,
-    q: true
+    q: true,
   },
   symbol: {
     length: 4,
-    q: true
+    q: true,
   },
   decimalDigits: {
     column: "decimal_digits",
     type: "integer",
     operator: "=",
     min: 0,
-    max: 3
+    max: 3,
   },
   status: {
     length: 1,
-    operator: "="
+    operator: "=",
   },
 }
