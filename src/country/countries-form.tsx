@@ -1,7 +1,27 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { buildFromUrl, buildMessage, checked, getFields, getOffset, mergeFilter, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resources, setSortFilter, Sortable, updateState, updateUrl } from "react-hook-core"
-import { Link } from "react-router-dom"
+import {
+  buildFromUrl,
+  buildMessage,
+  checked,
+  getFields,
+  getOffset,
+  mergeFilter,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
+  onSort,
+  onToggleSearch,
+  PageChange,
+  pageSizes,
+  PageSizeSelect,
+  resources,
+  setSortFilter,
+  Sortable,
+  updateState,
+  updateUrl,
+} from "react-hook-core"
+import { Link } from "react-router"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
@@ -83,16 +103,29 @@ export const CountriesForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} placeholder={resource.keyword}
-                onChange={e => {
+              <input
+                type="text"
+                id="q"
+                name="q"
+                value={filter.q}
+                maxLength={80}
+                placeholder={resource.keyword}
+                onChange={(e) => {
                   filter.q = e.target.value
                   setFilter(filter)
-                }} />
-              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text"
-                onClick={e => {
+                }}
+              />
+              <button
+                type="button"
+                id="clearQBtn"
+                name="clearQBtn"
+                hidden={!filter.q}
+                className="btn-remove-text"
+                onClick={(e) => {
                   filter.q = ""
                   setFilter(filter)
-                }} />
+                }}
+              />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
@@ -230,45 +263,47 @@ export const CountriesForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list && list.map((item, i) => {
-                  return (
-                    <tr key={i}>
-                      <td className="text-right">{offset + i + 1}</td>
-                      <td>
-                        {item.countryCode}
-                      </td>
-                      <td><Link to={`${item.countryCode}`}>{item.countryName}</Link></td>
-                      <td>{item.nativeCountryName}</td>
-                      <td>{item.decimalSeparator}</td>
-                      <td>{item.groupSeparator}</td>
-                      <td>{item.currencyCode}</td>
-                      <td>{item.currencySymbol}</td>
-                      <td>{item.currencyDecimalDigits}</td>
-                      <td>{item.currencyPattern}</td>
-                      <td>{item.currencySample}</td>
-                      <td>{getStatusName(item.status)}</td>
-                    </tr>
-                  )
-                })}
+                {list &&
+                  list.map((item, i) => {
+                    return (
+                      <tr key={i}>
+                        <td className="text-right">{offset + i + 1}</td>
+                        <td>{item.countryCode}</td>
+                        <td>
+                          <Link to={`${item.countryCode}`}>{item.countryName}</Link>
+                        </td>
+                        <td>{item.nativeCountryName}</td>
+                        <td>{item.decimalSeparator}</td>
+                        <td>{item.groupSeparator}</td>
+                        <td>{item.currencyCode}</td>
+                        <td>{item.currencySymbol}</td>
+                        <td>{item.currencyDecimalDigits}</td>
+                        <td>{item.currencyPattern}</td>
+                        <td>{item.currencySample}</td>
+                        <td>{getStatusName(item.status)}</td>
+                      </tr>
+                    )
+                  })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {list && list.map((item, i) => {
-              return (
-                <li key={i} className="col s12 m6 l3 xl4 list-item">
-                  <Link to={`${item.countryCode}`}>
-                    {item.countryCode} - {item.currencyCode}
-                  </Link>
-                  <button className="btn-detail" />
-                  <p className="space-between">
-                    {item.countryName} <span>{item.currencySymbol}</span>
-                  </p>
-                </li>
-              )
-            })}
+            {list &&
+              list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l3 xl4 list-item">
+                    <Link to={`${item.countryCode}`}>
+                      {item.countryCode} - {item.currencyCode}
+                    </Link>
+                    <button className="btn-detail" />
+                    <p className="space-between">
+                      {item.countryName} <span>{item.currencySymbol}</span>
+                    </p>
+                  </li>
+                )
+              })}
           </ul>
         )}
       </div>

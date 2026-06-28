@@ -18,9 +18,9 @@ import {
   resources,
   setSortFilter,
   Sortable,
-  updateUrl
+  updateUrl,
 } from "react-hook-core"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
@@ -100,16 +100,29 @@ export const RolesForm = () => {
           <section className="row search-group">
             <label className="col s12 m6 search-input">
               <PageSizeSelect id="limit" name="limit" size={filter.limit} sizes={pageSizes} onChange={pageSizeChanged} />
-              <input type="text" id="q" name="q" value={filter.q} maxLength={80} placeholder={resource.keyword}
-                onChange={e => {
+              <input
+                type="text"
+                id="q"
+                name="q"
+                defaultValue={filter.q}
+                maxLength={80}
+                placeholder={resource.keyword}
+                onChange={(e) => {
                   filter.q = e.target.value
                   setFilter(filter)
-                }} />
-              <button type="button" id="clearQBtn" name="clearQBtn" hidden={!filter.q} className="btn-remove-text"
-                onClick={e => {
+                }}
+              />
+              <button
+                type="button"
+                id="clearQBtn"
+                name="clearQBtn"
+                hidden={!filter.q}
+                className="btn-remove-text"
+                onClick={(e) => {
                   filter.q = ""
                   setFilter(filter)
-                }} />
+                }}
+              />
               <button type="button" id="toggleSearchBtn" name="toggleSearchBtn" className="btn-filter" onClick={toggleSearch} />
               <button type="submit" id="searchBtn" name="searchBtn" className="btn-search" onClick={searchOnClick} />
             </label>
@@ -120,11 +133,11 @@ export const RolesForm = () => {
               {resource.status}
               <section className="checkbox-group">
                 <label>
-                  <input type="checkbox" id="active" name="status" value="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
+                  <input type="checkbox" id="active" name="status" defaultValue="A" checked={checked(filter.status, "A")} onChange={statusOnChange} />
                   {resource.active}
                 </label>
                 <label>
-                  <input type="checkbox" id="inactive" name="status" value="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
+                  <input type="checkbox" id="inactive" name="status" defaultValue="I" checked={checked(filter.status, "I")} onChange={statusOnChange} />
                   {resource.inactive}
                 </label>
               </section>

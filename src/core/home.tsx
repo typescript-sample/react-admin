@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { buildShownItems, Groups, Item } from "react-groups"
-import { useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router"
 import { getPrivileges, useResource } from "uione"
 
 export default function HomePage() {

@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router"
 
 const AboutPage: FunctionComponent = () => {
   const [message, setMessage] = useState("")

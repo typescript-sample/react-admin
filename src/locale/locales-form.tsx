@@ -1,7 +1,27 @@
 import { Item } from "onecore"
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { buildFromUrl, buildMessage, getFields, getOffset, mergeFilter, onClearQ, onPageChanged, onPageSizeChanged, onSearch, onSort, onToggleSearch, PageChange, pageSizes, PageSizeSelect, resources, setSortFilter, Sortable, updateState, updateUrl } from "react-hook-core"
-import { Link } from "react-router-dom"
+import {
+  buildFromUrl,
+  buildMessage,
+  getFields,
+  getOffset,
+  mergeFilter,
+  onClearQ,
+  onPageChanged,
+  onPageSizeChanged,
+  onSearch,
+  onSort,
+  onToggleSearch,
+  PageChange,
+  pageSizes,
+  PageSizeSelect,
+  resources,
+  setSortFilter,
+  Sortable,
+  updateState,
+  updateUrl,
+} from "react-hook-core"
+import { Link } from "react-router"
 import { Pagination } from "reactx-pagination"
 import { hideLoading, showLoading } from "ui-loading"
 import { toast } from "ui-toast"
@@ -222,51 +242,53 @@ export const LocalesForm = () => {
                 </tr>
               </thead>
               <tbody>
-                {list && list.map((item, i) => {
-                  return (
-                    <tr key={i}>
-                      <td className="text-right">{offset + i + 1}</td>
-                      <td>
-                        {item.code}
-                      </td>
-                      <td><Link to={`${item.code}`}>{item.name}</Link></td>
-                      <td>{item.nativeName}</td>
-                      <td>{item.countryName}</td>
-                      <td>{item.nativeCountryName}</td>
-                      <td>{item.dateFormat}</td>
-                      <td>{item.firstDayOfWeek}</td>
-                      <td>{item.decimalSeparator}</td>
-                      <td>{item.groupSeparator}</td>
-                      <td>{item.currencyCode}</td>
-                      <td>{item.currencySymbol}</td>
-                      <td>{item.currencyDecimalDigits}</td>
-                      <td>{item.currencyPattern}</td>
-                      <td>{item.currencySample}</td>
-                    </tr>
-                  )
-                })}
+                {list &&
+                  list.map((item, i) => {
+                    return (
+                      <tr key={i}>
+                        <td className="text-right">{offset + i + 1}</td>
+                        <td>{item.code}</td>
+                        <td>
+                          <Link to={`${item.code}`}>{item.name}</Link>
+                        </td>
+                        <td>{item.nativeName}</td>
+                        <td>{item.countryName}</td>
+                        <td>{item.nativeCountryName}</td>
+                        <td>{item.dateFormat}</td>
+                        <td>{item.firstDayOfWeek}</td>
+                        <td>{item.decimalSeparator}</td>
+                        <td>{item.groupSeparator}</td>
+                        <td>{item.currencyCode}</td>
+                        <td>{item.currencySymbol}</td>
+                        <td>{item.currencyDecimalDigits}</td>
+                        <td>{item.currencyPattern}</td>
+                        <td>{item.currencySample}</td>
+                      </tr>
+                    )
+                  })}
               </tbody>
             </table>
           </div>
         )}
         {state.view === "list" && (
           <ul className="row list">
-            {list && list.map((item, i) => {
-              return (
-                <li key={i} className="col s12 m6 l4 xl3 list-item">
-                  <Link to={`${item.code}`}>
-                    {item.code} - {item.name}
-                  </Link>
-                  <button className="btn-detail" />
-                  <p className="space-between">
-                    {item.nativeName}{" "}
-                    <span>
-                      {item.dateFormat} {item.currencyCode}
-                    </span>
-                  </p>
-                </li>
-              )
-            })}
+            {list &&
+              list.map((item, i) => {
+                return (
+                  <li key={i} className="col s12 m6 l4 xl3 list-item">
+                    <Link to={`${item.code}`}>
+                      {item.code} - {item.name}
+                    </Link>
+                    <button className="btn-detail" />
+                    <p className="space-between">
+                      {item.nativeName}{" "}
+                      <span>
+                        {item.dateFormat} {item.currencyCode}
+                      </span>
+                    </p>
+                  </li>
+                )
+              })}
           </ul>
         )}
       </div>

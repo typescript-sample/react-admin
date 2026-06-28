@@ -1,8 +1,7 @@
 import axios from "axios"
 import { HttpRequest } from "axios-core"
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react"
-import { useNavigate } from "react-router"
-import { Link, Outlet, useLocation, useSearchParams } from "react-router-dom"
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from "react-router"
 import { collapseAll, expandAll, Nav, sub } from "reactx-nav"
 import { getPrivileges, getUsername, hasClass, options, parentHasClass, Privilege, storage, StringMap, useResource, useUser } from "uione"
 import logo from "../assets/images/logo.png"
@@ -215,7 +214,7 @@ export const LayoutPage = () => {
     const request = new HttpRequest(axios, options)
     const config: any = storage.config()
     const url = config.authentication_url + "/authentication/signout/" // + storage.username();
-    request.get(url).catch(() => { })
+    request.get(url).catch(() => {})
     sessionStorage.removeItem("authService")
     sessionStorage.clear()
     storage.setUser(null)
@@ -297,7 +296,7 @@ export const LayoutPage = () => {
                   name="q"
                   maxLength={1000}
                   placeholder={resource.keyword}
-                  value={state.keyword || ""}
+                  value={state.keyword}
                   style={{ paddingLeft: "12px" }}
                   onChange={handleInput}
                   autoComplete="off"

@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import { clone, Error, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
 import { addError, initForm, registerEvents, requiredOnBlur, showFormError, validateForm } from "ui-plus"
@@ -40,7 +40,7 @@ export const CurrencyForm = () => {
             setCurrency(currency)
           }
         })
-        .catch(err => setError500(true))
+        .catch((err) => setError500(true))
         .finally(hideLoading)
     }
   }, [id, newMode, canWrite]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -51,7 +51,6 @@ export const CurrencyForm = () => {
     e.preventDefault()
     const valid = validateForm(refForm?.current, getLocale())
     if (valid) {
-
       if (newMode) {
         confirm(resource.msg_confirm_save, () => {
           showLoading()
@@ -97,100 +96,101 @@ export const CurrencyForm = () => {
 
   const errorTitle = error500 ? resource.error_500_title : resource.error_404_title
   const errorMessage = error500 ? resource.error_500_message : resource.error_404_message
-  return (
-    error500 || (!newMode && !initialCurrency) ? <Error title={errorTitle} message={errorMessage} back={back} /> : !canWrite ? (
-      <form id="currencyForm" name="currencyForm" className="form" ref={refForm}>
-        <header>
-          <h2>{resource.currency}</h2>
-        </header>
-        <div>
-          <dl className="data-list row">
-            <dt className="col s6 l3 xl2">{resource.currency_code}</dt>
-            <dd className="col s6 l9 xl10">{currency.code}</dd>
-            <dt className="col s6 l3 xl2">{resource.currency_symbol}</dt>
-            <dd className="col s6 l9 xl10">{currency.symbol}</dd>
-            <dt className="col s6 l3 xl2">{resource.currency_decimal_digits}</dt>
-            <dd className="col s6 l9 xl10">{currency.decimalDigits}</dd>
-            <dt className="col s6 l3 xl2">{resource.status}</dt>
-            <dd className="col s6 l9 xl10">{currency.status === "A" ? resource.active : resource.inactive}</dd>
-          </dl>
-        </div>
-        <footer>
-          <button type="submit" id="btnClose" name="btnClose" onClick={back}>
-            {resource.close}
-          </button>
-        </footer>
-      </form>
-    ) : (
-      <form id="currencyForm" name="currencyForm" className="form" ref={refForm}>
-        <header>
-          <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
-          <h2>{resource.currency}</h2>
-        </header>
-        <div className="row">
-          <label className="col s12 m6">
-            {resource.currency_code}
-            <input
-              type="text"
-              id="code"
-              name="code"
-              value={currency.code}
-              readOnly={!newMode}
-              onChange={onChange}
-              maxLength={3}
-              required={true}
-              placeholder={resource.currency_code}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.currency_symbol}
-            <input
-              type="text"
-              id="symbol"
-              name="symbol"
-              value={currency.symbol}
-              onChange={onChange}
-              onBlur={requiredOnBlur}
-              maxLength={4}
-              required={true}
-              placeholder={resource.currency_symbol}
-            />
-          </label>
-          <label className="col s12 m6 flying">
-            {resource.currency_decimal_digits}
-            <input
-              type="tel"
-              id="decimalDigits"
-              name="decimalDigits"
-              data-type="integer"
-              className="text-right"
-              value={currency.decimalDigits}
-              onChange={onChange}
-              maxLength={1}
-              min={0}
-              max={3}
-              placeholder={resource.currency_decimal_digits}
-            />
-          </label>
-          <label className="col s12 m6">
-            {resource.status}
-            <div className="radio-group">
-              <label>
-                <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={currency.status === Status.Active} />
-                {resource.active}
-              </label>
-              <label>
-                <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={currency.status === Status.Inactive} />
-                {resource.inactive}
-              </label>
-            </div>
-          </label>
-        </div>
-        <footer>
-          <button type="button" id="saveBtn" name="saveBtn" onClick={save}>
-            {resource.save}
-          </button>
-        </footer>
-      </form>)
+  return error500 || (!newMode && !initialCurrency) ? (
+    <Error title={errorTitle} message={errorMessage} back={back} />
+  ) : !canWrite ? (
+    <form id="currencyForm" name="currencyForm" className="form" ref={refForm}>
+      <header>
+        <h2>{resource.currency}</h2>
+      </header>
+      <div>
+        <dl className="data-list row">
+          <dt className="col s6 l3 xl2">{resource.currency_code}</dt>
+          <dd className="col s6 l9 xl10">{currency.code}</dd>
+          <dt className="col s6 l3 xl2">{resource.currency_symbol}</dt>
+          <dd className="col s6 l9 xl10">{currency.symbol}</dd>
+          <dt className="col s6 l3 xl2">{resource.currency_decimal_digits}</dt>
+          <dd className="col s6 l9 xl10">{currency.decimalDigits}</dd>
+          <dt className="col s6 l3 xl2">{resource.status}</dt>
+          <dd className="col s6 l9 xl10">{currency.status === "A" ? resource.active : resource.inactive}</dd>
+        </dl>
+      </div>
+      <footer>
+        <button type="submit" id="btnClose" name="btnClose" onClick={back}>
+          {resource.close}
+        </button>
+      </footer>
+    </form>
+  ) : (
+    <form id="currencyForm" name="currencyForm" className="form" ref={refForm}>
+      <header>
+        <button type="button" id="btnBack" name="btnBack" className="btn-back" onClick={back} />
+        <h2>{resource.currency}</h2>
+      </header>
+      <div className="row">
+        <label className="col s12 m6">
+          {resource.currency_code}
+          <input
+            type="text"
+            id="code"
+            name="code"
+            value={currency.code}
+            readOnly={!newMode}
+            onChange={onChange}
+            maxLength={3}
+            required={true}
+            placeholder={resource.currency_code}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.currency_symbol}
+          <input
+            type="text"
+            id="symbol"
+            name="symbol"
+            value={currency.symbol}
+            onChange={onChange}
+            onBlur={requiredOnBlur}
+            maxLength={4}
+            required={true}
+            placeholder={resource.currency_symbol}
+          />
+        </label>
+        <label className="col s12 m6 flying">
+          {resource.currency_decimal_digits}
+          <input
+            type="tel"
+            id="decimalDigits"
+            name="decimalDigits"
+            data-type="integer"
+            className="text-right"
+            value={currency.decimalDigits}
+            onChange={onChange}
+            maxLength={1}
+            min={0}
+            max={3}
+            placeholder={resource.currency_decimal_digits}
+          />
+        </label>
+        <label className="col s12 m6">
+          {resource.status}
+          <div className="radio-group">
+            <label>
+              <input type="radio" id="active" name="status" onChange={onChange} value={Status.Active} checked={currency.status === Status.Active} />
+              {resource.active}
+            </label>
+            <label>
+              <input type="radio" id="inactive" name="status" onChange={onChange} value={Status.Inactive} checked={currency.status === Status.Inactive} />
+              {resource.inactive}
+            </label>
+          </div>
+        </label>
+      </div>
+      <footer>
+        <button type="button" id="saveBtn" name="saveBtn" onClick={save}>
+          {resource.save}
+        </button>
+      </footer>
+    </form>
   )
 }
