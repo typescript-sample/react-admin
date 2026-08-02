@@ -4,6 +4,7 @@ import {
   buildFromUrl,
   buildMessage,
   checked,
+  digitOnKeyDown,
   getFields,
   getOffset,
   mergeFilter,
@@ -125,6 +126,7 @@ export const CurrenciesForm = () => {
                 className="text-right"
                 value={filter.decimalDigits?.toString()}
                 onChange={onChange}
+                onKeyDown={digitOnKeyDown}
                 maxLength={1}
                 placeholder={resource.currency_decimal_digits}
               />

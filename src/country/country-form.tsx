@@ -1,5 +1,5 @@
 import { MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, Error, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
+import { clone, digitOnKeyDown, Error, isEmpty, isSuccessful, makeDiff, onBack } from "react-hook-core"
 import { useNavigate, useParams } from "react-router"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -292,6 +292,7 @@ export const CountryForm = () => {
               country.currencyDecimalDigits = parseInt(e.target.value)
               setCountry(country)
             }}
+            onKeyDown={digitOnKeyDown}
             maxLength={1}
             min={0}
             max={3}
@@ -311,6 +312,7 @@ export const CountryForm = () => {
               country.currencyDecimalDigits = parseInt(e.target.value)
               setCountry(country)
             }}
+            onKeyDown={digitOnKeyDown}
             onBlur={requiredOnBlur}
             maxLength={1}
             min={0}

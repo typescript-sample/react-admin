@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, Error, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { clone, digitOnKeyDown, Error, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -166,6 +166,7 @@ export const CurrencyForm = () => {
             className="text-right"
             value={currency.decimalDigits}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             maxLength={1}
             min={0}
             max={3}

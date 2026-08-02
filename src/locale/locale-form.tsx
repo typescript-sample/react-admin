@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
-import { clone, Error, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
+import { clone, digitOnKeyDown, Error, formatText, isEmpty, isSuccessful, makeDiff, onBack, updateState } from "react-hook-core"
 import { useNavigate, useParams } from "react-router"
 import { alertError, alertSuccess, alertWarning, confirm } from "ui-alert"
 import { hideLoading, showLoading } from "ui-loading"
@@ -232,6 +232,7 @@ export const LocaleForm = () => {
             className="text-right"
             value={locale.firstDayOfWeek}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             maxLength={1}
             placeholder={resource.first_day_of_week}
           />
@@ -315,6 +316,7 @@ export const LocaleForm = () => {
             className="text-right"
             value={locale.currencyDecimalDigits}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             maxLength={1}
             placeholder={resource.currency_decimal_digits}
           />
@@ -329,6 +331,7 @@ export const LocaleForm = () => {
             className="text-right"
             value={locale.currencyPattern}
             onChange={onChange}
+            onKeyDown={digitOnKeyDown}
             onBlur={requiredOnBlur}
             maxLength={1}
             required={true}

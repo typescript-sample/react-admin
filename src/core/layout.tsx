@@ -296,7 +296,7 @@ export const LayoutPage = () => {
                   name="q"
                   maxLength={1000}
                   placeholder={resource.keyword}
-                  value={state.keyword}
+                  defaultValue={state.keyword}
                   style={{ paddingLeft: "12px" }}
                   onChange={handleInput}
                   autoComplete="off"

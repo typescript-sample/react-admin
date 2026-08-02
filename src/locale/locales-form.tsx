@@ -3,6 +3,7 @@ import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react"
 import {
   buildFromUrl,
   buildMessage,
+  digitOnKeyDown,
   getFields,
   getOffset,
   mergeFilter,
@@ -129,6 +130,7 @@ export const LocalesForm = () => {
                 className="text-right"
                 value={filter.currencyDecimalDigits?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
+                onKeyDown={digitOnKeyDown}
                 maxLength={1}
                 placeholder={resource.currency_decimal_digits}
               />
@@ -143,6 +145,7 @@ export const LocalesForm = () => {
                 className="text-right"
                 value={filter.currencyPattern?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
+                onKeyDown={digitOnKeyDown}
                 maxLength={1}
                 placeholder={resource.currency_pattern}
               />
@@ -157,6 +160,7 @@ export const LocalesForm = () => {
                 className="text-right"
                 value={filter.groupSeparator?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
+                onKeyDown={digitOnKeyDown}
                 maxLength={1}
                 placeholder={resource.first_day_of_week}
               />

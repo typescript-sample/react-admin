@@ -4,6 +4,7 @@ import {
   buildFromUrl,
   buildMessage,
   checked,
+  digitOnKeyDown,
   getFields,
   getOffset,
   mergeFilter,
@@ -166,6 +167,7 @@ export const CountriesForm = () => {
                 className="text-right"
                 value={filter.currencyDecimalDigits?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
+                onKeyDown={digitOnKeyDown}
                 maxLength={1}
                 placeholder={resource.currency_decimal_digits}
               />
@@ -180,6 +182,7 @@ export const CountriesForm = () => {
                 className="text-right"
                 value={filter.currencyPattern?.toString()}
                 onChange={(e) => updateState(e, filter, setFilter)}
+                onKeyDown={digitOnKeyDown}
                 maxLength={1}
                 placeholder={resource.currency_pattern}
               />
